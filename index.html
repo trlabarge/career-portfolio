@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>document.documentElement.classList.add('js');</script>
 
   <title>Tim LaBarge | B2B SaaS Marketing Leader (VP / Head of Marketing / CMO)</title>
   <meta name="description" content="Tim LaBarge is a B2B SaaS marketing leader with 15 years building and scaling demand, content, and product-led growth. He has generated $5.5MM+ in ARR from conversion optimization and doubled organic traffic in under a year.">
@@ -25,8 +26,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 
   <script type="application/ld+json">
   {
@@ -80,10 +82,26 @@
   <main id="main">
     <!-- Hero -->
     <section class="hero">
+      <div class="hero__backdrop" aria-hidden="true">
+        <svg viewBox="0 0 1440 340" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 340 L0 210 L280 120 L520 190 L820 90 L1130 180 L1440 110 L1440 340 Z" fill="#E4E0EA" opacity="0.55"/>
+          <path d="M0 340 L0 250 L340 170 L640 235 L940 150 L1220 225 L1440 175 L1440 340 Z" fill="#DCE5DA" opacity="0.85"/>
+        </svg>
+      </div>
       <div class="container hero__inner">
-        <h1>Modern marketing leadership. Built to scale, built to execute.</h1>
-        <p class="hero__subhead">15 years leading B2B marketing teams, from zero to scaled. Fluent in the modern stack, from Claude Code to HubSpot, so I can direct strategy and still execute when it matters.</p>
-        <div class="btn-row">
+        <h1>
+          <span class="word" style="--i:0">Modern</span>
+          <span class="word" style="--i:1">marketing</span>
+          <span class="word" style="--i:2">leadership.</span>
+          <span class="word" style="--i:3">Built</span>
+          <span class="word" style="--i:4">to</span>
+          <span class="word" style="--i:5">scale,</span>
+          <span class="word" style="--i:6">built</span>
+          <span class="word" style="--i:7">to</span>
+          <span class="word" style="--i:8"><span class="rotator" data-rotator><span class="rotator__word">execute.</span><span class="rotator__word" aria-hidden="true">ship.</span><span class="rotator__word" aria-hidden="true">build.</span><span class="rotator__word" aria-hidden="true">lead.</span></span></span>
+        </h1>
+        <p class="hero__subhead reveal">15 years leading B2B marketing teams, from zero to scaled. Fluent in the modern stack, from Claude Code to HubSpot, so I can direct strategy and still execute when it matters.</p>
+        <div class="btn-row reveal" style="--reveal-delay:120ms">
           <a class="btn btn--primary" href="/the-work">See The Work</a>
           <a class="btn btn--ghost" href="/contact">Get In Touch</a>
         </div>
@@ -107,22 +125,24 @@
     <!-- What I Do -->
     <section class="section">
       <div class="container">
-        <p class="eyebrow">What I do</p>
-        <h2>Four things I bring to a marketing org.</h2>
+        <div class="section__head reveal">
+          <p class="eyebrow">What I do</p>
+          <h2>Four things I bring to a marketing org.</h2>
+        </div>
         <div class="pillars">
-          <article class="pillar">
+          <article class="pillar reveal">
             <h3>Demand that compounds.</h3>
             <p>SEO, paid, and community channels are built to work together. I've grown organic traffic 2x and driven millions in pipeline by relying on a combination of channels to carry the team.</p>
           </article>
-          <article class="pillar">
+          <article class="pillar reveal" style="--reveal-delay:80ms">
             <h3>Content built for how people search now.</h3>
             <p>I build content strategy around real ICP pain points, so my companies can be found whether someone's typing a query in a Google search bar, or asking an LLM.</p>
           </article>
-          <article class="pillar">
+          <article class="pillar reveal" style="--reveal-delay:160ms">
             <h3>PLG when it makes sense, full-funnel when it doesn't.</h3>
             <p>I've built and launched product-led growth motions from scratch. There are times when PLG is the right lever and others when traditional B2B demand gen still wins. Don't force a trend where it doesn't fit.</p>
           </article>
-          <article class="pillar">
+          <article class="pillar reveal" style="--reveal-delay:240ms">
             <h3>A leader people want to work for.</h3>
             <p>I build teams as strong as my campaigns. I run fast, stay sharp, and push the people around me to make them better.</p>
           </article>
@@ -130,27 +150,69 @@
       </div>
     </section>
 
-    <!-- The Numbers -->
+    <!-- The Numbers + growth curve -->
     <section class="section section--tint">
       <div class="container">
-        <p class="eyebrow">The numbers</p>
-        <p class="metrics__lead">Here's what that's looked like in practice.</p>
-        <div class="metrics__grid">
-          <div class="metric">
-            <p class="metric__value">$5.5MM+</p>
-            <p class="metric__label">ARR generated from conversion optimization</p>
+        <div class="section__head reveal">
+          <p class="eyebrow">The numbers</p>
+          <h2>Here's what that's looked like in practice.</h2>
+        </div>
+        <div class="metrics__layout">
+          <div class="metrics__grid">
+            <div class="metric reveal">
+              <p class="metric__value" data-count="5.5" data-decimals="1" data-prefix="$" data-suffix="MM+">$5.5MM+</p>
+              <p class="metric__label">ARR generated from conversion optimization</p>
+            </div>
+            <div class="metric reveal" style="--reveal-delay:80ms">
+              <p class="metric__value" data-count="2" data-suffix="x">2x</p>
+              <p class="metric__label">organic traffic growth in under a year</p>
+            </div>
+            <div class="metric reveal" style="--reveal-delay:160ms">
+              <p class="metric__value" data-count="1" data-prefix="$" data-suffix="MM+">$1MM+</p>
+              <p class="metric__label">AI pipeline generated from a GTM built from scratch</p>
+            </div>
+            <div class="metric reveal" style="--reveal-delay:240ms">
+              <p class="metric__value" data-count="140" data-suffix="K">140K</p>
+              <p class="metric__label">leads delivered across 5 web properties</p>
+            </div>
           </div>
-          <div class="metric">
-            <p class="metric__value">2x</p>
-            <p class="metric__label">organic traffic growth in under a year</p>
+
+          <div class="growth reveal" role="img" aria-label="A growth curve trending up and to the right, representing compounding marketing results over time.">
+            <svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="12" y1="288" x2="388" y2="288" stroke="rgba(74,107,82,0.25)" stroke-width="1.5"/>
+              <path class="growth__area" d="M14 264 L82 246 L150 220 L216 182 L284 120 L372 36 L372 288 L14 288 Z" fill="rgba(74,107,82,0.14)"/>
+              <path class="growth__line" d="M14 264 L82 246 L150 220 L216 182 L284 120 L372 36"/>
+              <circle class="growth__dot" cx="82" cy="246" r="4" fill="#4A6B52"/>
+              <circle class="growth__dot" cx="150" cy="220" r="4" fill="#4A6B52"/>
+              <circle class="growth__dot" cx="216" cy="182" r="4" fill="#4A6B52"/>
+              <circle class="growth__dot" cx="284" cy="120" r="4" fill="#4A6B52"/>
+              <circle class="growth__dot" cx="372" cy="36" r="6.5" fill="#A8654F"/>
+            </svg>
+            <span class="growth__caption">Compounding results</span>
           </div>
-          <div class="metric">
-            <p class="metric__value">$1MM+</p>
-            <p class="metric__label">AI pipeline generated from a GTM built from scratch</p>
-          </div>
-          <div class="metric">
-            <p class="metric__value">140K</p>
-            <p class="metric__label">leads delivered across 5 web properties</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tool-stack constellation -->
+    <section class="section stack section--sage">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">The stack</p>
+          <h2>Fluent in the modern stack.</h2>
+          <p>These are the tools I actually work in day to day. I direct strategy and still execute when it matters.</p>
+        </div>
+        <div class="stack__canvas-wrap reveal">
+          <canvas class="stack__canvas" aria-hidden="true"></canvas>
+          <div class="stack__nodes" role="list" aria-label="Marketing and AI tools">
+            <span class="stack__node" role="listitem" tabindex="0" data-x="24" data-y="30">Claude Code</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="62" data-y="24">HubSpot</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="83" data-y="46">Ahrefs</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="47" data-y="52">GA4</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="20" data-y="68">Webflow</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="68" data-y="72">Segment</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="38" data-y="82">Semrush</span>
+            <span class="stack__node" role="listitem" tabindex="0" data-x="86" data-y="30">Notion</span>
           </div>
         </div>
       </div>
@@ -159,7 +221,7 @@
     <!-- Testimonial -->
     <section class="section section--sage testimonial">
       <div class="container">
-        <figure>
+        <figure class="reveal">
           <blockquote>
             "Tim is scary smart and has strong hands-on technical skills. I've seen him build marketing campaigns from soup to nuts. He genuinely cares about the customers, and the people on his team. He's a natural leader."
           </blockquote>
@@ -171,17 +233,20 @@
     </section>
 
     <!-- Closing CTA -->
-    <section class="section">
+    <section class="section section--terracotta">
       <div class="container">
-        <p class="eyebrow">Where to next</p>
+        <div class="section__head reveal">
+          <p class="eyebrow" style="color:#F2EFE7">Where to next</p>
+          <h2>See how this comes together.</h2>
+        </div>
         <div class="cta-split">
-          <div class="cta-card">
+          <div class="cta-card reveal">
             <p>More detail on how this comes together.</p>
             <a class="btn btn--primary" href="/the-work">See The Work</a>
           </div>
-          <div class="cta-card">
+          <div class="cta-card reveal" style="--reveal-delay:100ms">
             <p>Also open to fractional and advisory work, if that's a fit.</p>
-            <a class="btn btn--accent" href="/fractional-cmo">Fractional CMO</a>
+            <a class="btn btn--ghost" href="/fractional-cmo">Fractional CMO</a>
           </div>
         </div>
       </div>
