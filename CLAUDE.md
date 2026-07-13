@@ -65,6 +65,10 @@ them, do not hardcode hex values in new pages.
 - JSON-LD structured data: `Person` on homepage/about, `Article` on case studies.
 - Add the new URL to `sitemap.xml`.
 
+The social share image `/assets/og-image.png` (1200x630) is generated from
+`/assets/og-image.source.html` by rendering it in a 1200x630 headless Chromium
+viewport and screenshotting. Edit the source HTML and re-render to update it.
+
 The canonical production origin used throughout is `https://timlabarge.com`.
 Update it everywhere (meta tags, JSON-LD, sitemap, robots) if the real domain
 differs.
@@ -88,7 +92,6 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 ## Known placeholders to replace later
 
 - `/assets/resume.pdf` — placeholder PDF, swap for the real resume.
-- `/assets/og-image.png` — referenced in meta tags but not yet created.
 - LinkedIn URL `linkedin.com/in/timlabarge` — confirm the real handle.
 - Proof-strip brand logos are text labels. Real logo files to come.
 - Case study bodies are stubs. Copy still to be written.

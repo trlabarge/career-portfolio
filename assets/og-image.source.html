@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --bg:#FAF9F6; --text:#2B2B2B; --sage:#4A6B52; --sage-tint:#DCE5DA;
+    --terracotta:#A8654F; --gold:#C9A051; --muted:#5A5A56;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px}
+  body{
+    font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+    position:relative;overflow:hidden;
+  }
+  .frame{position:absolute;inset:0;border:14px solid var(--sage);}
+  .content{
+    position:absolute;inset:0;padding:64px 80px 72px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .top{display:flex;align-items:center;gap:16px}
+  .name{font-size:30px;font-weight:700;letter-spacing:-0.02em}
+  .rule{height:3px;width:56px;background:var(--gold)}
+  .mid{max-width:900px}
+  .eyebrow{
+    font-size:20px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--sage);margin-bottom:22px;
+  }
+  h1{
+    font-size:62px;line-height:1.05;font-weight:800;letter-spacing:-0.03em;
+    color:var(--text);
+  }
+  h1 .accent{color:var(--sage)}
+  .metrics{display:flex;gap:56px;margin-top:6px}
+  .metric .v{font-size:44px;font-weight:800;letter-spacing:-0.03em;color:var(--terracotta);line-height:1}
+  .metric .l{font-size:18px;color:var(--muted);margin-top:8px;max-width:230px;line-height:1.35}
+  .mountains{position:absolute;left:0;right:0;bottom:0;width:100%;display:block}
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <svg class="mountains" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true" style="height:96px">
+    <path d="M0 120 L0 78 L300 30 L520 72 L780 22 L1010 66 L1200 40 L1200 120 Z" fill="#DCE5DA"/>
+    <path d="M0 120 L0 96 L340 62 L600 96 L840 54 L1080 92 L1200 70 L1200 120 Z" fill="#4A6B52" opacity="0.9"/>
+  </svg>
+  <div class="content">
+    <div class="top">
+      <span class="name">Tim LaBarge</span>
+      <span class="rule"></span>
+      <span style="font-size:20px;color:var(--muted);font-weight:500">B2B SaaS Marketing Leader</span>
+    </div>
+    <div class="mid">
+      <p class="eyebrow">15 years, zero to scaled</p>
+      <h1>Modern marketing leadership.<br><span class="accent">Built to scale, built to&nbsp;execute.</span></h1>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="v">$5.5MM+</div><div class="l">ARR from conversion optimization</div></div>
+      <div class="metric"><div class="v">2x</div><div class="l">organic traffic in under a year</div></div>
+      <div class="metric"><div class="v">$1MM+</div><div class="l">AI pipeline built from scratch</div></div>
+    </div>
+  </div>
+</body>
+</html>
