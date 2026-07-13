@@ -36,12 +36,48 @@ Follow these on every piece of copy written for this site.
 | Accent 3 (gold) | `#C9A051` | Small details only: underlines, hover, icon fills |
 | Accent 4 (lavender) | `#E4E0EA` | Optional background wash, very sparingly |
 
-Design direction: minimalist, generous white space, flat (no gradients, no
-skeuomorphic shadows/gloss). Typography and color carry the visual interest, no
-stock-photo clutter. Font is Inter (Google Fonts).
-
 CSS tokens live as custom properties in `/css/style.css` under `:root`. Reuse
 them, do not hardcode hex values in new pages.
+
+## Visual direction: clean but bold
+
+The v1 build was clean but read as boring. The current direction keeps the
+uncluttered foundation and the palette but commits to real visual boldness and
+modern motion. Minimalist does not mean timid. Generous white space is
+punctuated by confident full-bleed color-field sections.
+
+- Typography. Space Grotesk (display, headings, buttons, nav, eyebrows, metric
+  values) paired with Inter (body). Both from Google Fonts. Use dramatic scale
+  contrast, huge tightly tracked headlines against calm body text. Headings use
+  `--font-display`, body uses `--font-body`.
+- Color as field, not accent. Sage and terracotta appear as large full-bleed
+  section backgrounds (`.section--sage`, `.section--terracotta`), not just small
+  touches. Rhythm is white space, then a bold color block, then white again.
+  Headings on solid color fields are set to the off-white for contrast.
+- Warm texture. A faint SVG grain overlays the whole page (`body::before`).
+  Layered mountain-inspired flat SVG shapes sit behind the hero.
+- Motion patterns (all in `/js/main.js`, all gated by `prefers-reduced-motion`):
+  - Kinetic hero. Headline words fade and rise in with a stagger on load. The
+    final word rotates through variants (execute, ship, build, lead). The real
+    word ships in the DOM so no-JS and crawlers read the true copy.
+  - Reveal on scroll. Any element with class `reveal` fades up when scrolled
+    into view. Hiding is gated behind an `html.js` class (set by an inline head
+    script) so content is never hidden when JS is off. Stagger via
+    `--reveal-delay` inline.
+  - Metric counters. `.metric__value[data-count]` counts up when in view. Store
+    `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
+    is the initial text so no-JS still shows it.
+  - Scroll-progress bar, injected at the top of `<body>` by JS.
+- Signature interactive elements (two, both on the homepage):
+  - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
+    next to the metric counters, reinforcing compounding results.
+  - Tool-stack constellation (`.stack`). Tool pills drift slowly on a dark sage
+    field with connective lines drawn on a `<canvas>`, lighting up on hover.
+    Reinforces command of the modern stack.
+- Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
+  vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
+  navigable, reduced-motion honored). Motion frames the proof, it never delays
+  the numbers, case study links, or testimonial.
 
 ## Tech and conventions
 
@@ -49,8 +85,9 @@ them, do not hardcode hex values in new pages.
 - Clean URLs via folder + `index.html` (e.g. `/about/index.html` serves at
   `/about`). `vercel.json` sets `cleanUrls` and `trailingSlash: false`.
 - Deployed on Vercel.
-- Mobile-first and responsive. Minimal JS (`/js/main.js` handles only the mobile
-  nav toggle).
+- Mobile-first and responsive. Vanilla JS only, no libraries (`/js/main.js`
+  handles nav toggle, scroll progress, reveal-on-scroll, metric counters, the
+  rotating hero word, the growth-curve draw, and the tool-stack constellation).
 - Semantic HTML5 (header, nav, main, section, article, footer). One H1 per page.
 - Accessibility: skip link, alt text, ARIA where needed, keyboard navigable,
   sufficient contrast.
