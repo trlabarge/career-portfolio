@@ -83,9 +83,13 @@
     <!-- Hero -->
     <section class="hero">
       <div class="hero__backdrop" aria-hidden="true">
-        <svg viewBox="0 0 1440 340" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 340 L0 210 L280 120 L520 190 L820 90 L1130 180 L1440 110 L1440 340 Z" fill="#E4E0EA" opacity="0.55"/>
-          <path d="M0 340 L0 250 L340 170 L640 235 L940 150 L1220 225 L1440 175 L1440 340 Z" fill="#DCE5DA" opacity="0.85"/>
+        <svg viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 250 C 200 200 340 300 540 250 S 900 190 1080 250 S 1320 300 1440 250 L1440 400 L0 400 Z" fill="#E4E0EA" opacity="0.5"/>
+          <path d="M0 285 C 220 235 360 330 560 285 S 940 230 1120 285 S 1340 330 1440 285 L1440 400 L0 400 Z" fill="#DCE5DA" opacity="0.7"/>
+          <path d="M0 315 C 180 275 320 360 520 315 S 880 265 1080 315 S 1320 360 1440 315 L1440 400 L0 400 Z" fill="#A8654F" opacity="0.16"/>
+          <path d="M0 340 C 240 300 380 388 600 340 S 960 296 1140 340 S 1360 388 1440 340 L1440 400 L0 400 Z" fill="#4A6B52" opacity="0.26"/>
+          <path d="M0 340 C 240 300 380 388 600 340 S 960 296 1140 340 S 1360 388 1440 340" fill="none" stroke="#C9A051" stroke-width="1.5" opacity="0.35"/>
+          <path d="M0 368 C 200 338 360 398 560 368 S 940 332 1140 368 S 1340 398 1440 368 L1440 400 L0 400 Z" fill="#3B5642" opacity="0.4"/>
         </svg>
       </div>
       <div class="container hero__inner">
@@ -98,7 +102,7 @@
           <span class="word" style="--i:5">scale,</span>
           <span class="word" style="--i:6">built</span>
           <span class="word" style="--i:7">to</span>
-          <span class="word" style="--i:8"><span class="rotator" data-rotator><span class="rotator__word">execute.</span><span class="rotator__word" aria-hidden="true">ship.</span><span class="rotator__word" aria-hidden="true">build.</span><span class="rotator__word" aria-hidden="true">lead.</span></span></span>
+          <span class="word" style="--i:8"><span class="rotator" data-rotator><span class="rotator__word">execute.</span><span class="rotator__word" aria-hidden="true">ship.</span><span class="rotator__word" aria-hidden="true">lead.</span><span class="rotator__word" aria-hidden="true">grow.</span></span></span>
         </h1>
         <p class="hero__subhead reveal">15 years leading B2B marketing teams, from zero to scaled. Fluent in the modern stack, from Claude Code to HubSpot, so I can direct strategy and still execute when it matters.</p>
         <div class="btn-row reveal" style="--reveal-delay:120ms">
@@ -129,23 +133,95 @@
           <p class="eyebrow">What I do</p>
           <h2>Four things I bring to a marketing org.</h2>
         </div>
-        <div class="pillars">
-          <article class="pillar reveal">
-            <h3>Demand that compounds.</h3>
-            <p>SEO, paid, and community channels are built to work together. I've grown organic traffic 2x and driven millions in pipeline by relying on a combination of channels to carry the team.</p>
-          </article>
-          <article class="pillar reveal" style="--reveal-delay:80ms">
-            <h3>Content built for how people search now.</h3>
-            <p>I build content strategy around real ICP pain points, so my companies can be found whether someone's typing a query in a Google search bar, or asking an LLM.</p>
-          </article>
-          <article class="pillar reveal" style="--reveal-delay:160ms">
-            <h3>PLG when it makes sense, full-funnel when it doesn't.</h3>
-            <p>I've built and launched product-led growth motions from scratch. There are times when PLG is the right lever and others when traditional B2B demand gen still wins. Don't force a trend where it doesn't fit.</p>
-          </article>
-          <article class="pillar reveal" style="--reveal-delay:240ms">
-            <h3>A leader people want to work for.</h3>
-            <p>I build teams as strong as my campaigns. I run fast, stay sharp, and push the people around me to make them better.</p>
-          </article>
+        <div class="capabilities reveal">
+          <div class="cap-list" role="tablist" aria-label="What I bring to a marketing org" aria-orientation="vertical">
+            <button class="cap-item is-active" role="tab" aria-selected="true" id="cap-tab-1" aria-controls="cap-panel-1" data-cap="1">
+              <span class="cap-item__num">01</span>
+              <span class="cap-item__text">
+                <span class="cap-item__title">Demand that compounds.</span>
+                <span class="cap-item__desc">SEO, paid, and community channels are built to work together. I've grown organic traffic 2x and driven millions in pipeline by relying on a combination of channels to carry the team.</span>
+              </span>
+            </button>
+            <button class="cap-item" role="tab" aria-selected="false" tabindex="-1" id="cap-tab-2" aria-controls="cap-panel-2" data-cap="2">
+              <span class="cap-item__num">02</span>
+              <span class="cap-item__text">
+                <span class="cap-item__title">Content built for how people search now.</span>
+                <span class="cap-item__desc">I build content strategy around real ICP pain points, so my companies can be found whether someone's typing a query in a Google search bar, or asking an LLM.</span>
+              </span>
+            </button>
+            <button class="cap-item" role="tab" aria-selected="false" tabindex="-1" id="cap-tab-3" aria-controls="cap-panel-3" data-cap="3">
+              <span class="cap-item__num">03</span>
+              <span class="cap-item__text">
+                <span class="cap-item__title">PLG when it makes sense, full-funnel when it doesn't.</span>
+                <span class="cap-item__desc">I've built and launched product-led growth motions from scratch. There are times when PLG is the right lever and others when traditional B2B demand gen still wins. Don't force a trend where it doesn't fit.</span>
+              </span>
+            </button>
+            <button class="cap-item" role="tab" aria-selected="false" tabindex="-1" id="cap-tab-4" aria-controls="cap-panel-4" data-cap="4">
+              <span class="cap-item__num">04</span>
+              <span class="cap-item__text">
+                <span class="cap-item__title">A leader people want to work for.</span>
+                <span class="cap-item__desc">I build teams as strong as my campaigns. I run fast, stay sharp, and push the people around me to make them better.</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="cap-stage">
+            <div class="cap-panel is-active" role="tabpanel" id="cap-panel-1" aria-labelledby="cap-tab-1" tabindex="0">
+              <div class="cap-demo cap-demo--demand">
+                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Demand engine</span></div>
+                <div class="cap-demo__body">
+                  <div class="cap-demo__channels">
+                    <span class="cap-chan"><i style="--h:38%"></i>SEO</span>
+                    <span class="cap-chan"><i style="--h:64%"></i>Paid</span>
+                    <span class="cap-chan"><i style="--h:52%"></i>Content</span>
+                    <span class="cap-chan"><i style="--h:78%"></i>Community</span>
+                  </div>
+                  <div class="cap-demo__out">Pipeline<strong>compounding</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="cap-panel" role="tabpanel" id="cap-panel-2" aria-labelledby="cap-tab-2" tabindex="0" hidden>
+              <div class="cap-demo cap-demo--content">
+                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Found everywhere</span></div>
+                <div class="cap-demo__body">
+                  <div class="cap-demo__search">How do I reset a locked-out customer's MFA?</div>
+                  <div class="cap-demo__answer">
+                    <span class="cap-demo__src">Google</span>
+                    <span class="cap-demo__src">ChatGPT</span>
+                    <span class="cap-demo__src">Perplexity</span>
+                    <span class="cap-demo__src">Claude</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cap-panel" role="tabpanel" id="cap-panel-3" aria-labelledby="cap-tab-3" tabindex="0" hidden>
+              <div class="cap-demo cap-demo--plg">
+                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Right lever</span></div>
+                <div class="cap-demo__body">
+                  <div class="cap-demo__funnel">
+                    <span style="--w:100%">Signups</span>
+                    <span style="--w:72%">Activated</span>
+                    <span style="--w:44%">Paid</span>
+                    <span style="--w:26%">Expanded</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cap-panel" role="tabpanel" id="cap-panel-4" aria-labelledby="cap-tab-4" tabindex="0" hidden>
+              <div class="cap-demo cap-demo--leader">
+                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Team that ships</span></div>
+                <div class="cap-demo__body">
+                  <div class="cap-demo__team">
+                    <span class="cap-node">Demand</span>
+                    <span class="cap-node">Content</span>
+                    <span class="cap-node">Ops</span>
+                    <span class="cap-node">Design</span>
+                    <span class="cap-node">Product</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -202,18 +278,18 @@
           <h2>Fluent in the modern stack.</h2>
           <p>These are the tools I actually work in day to day. I direct strategy and still execute when it matters.</p>
         </div>
-        <div class="stack__canvas-wrap reveal">
+        <div class="stack__canvas-wrap reveal" data-constellation>
           <canvas class="stack__canvas" aria-hidden="true"></canvas>
-          <div class="stack__nodes" role="list" aria-label="Marketing and AI tools">
-            <span class="stack__node" role="listitem" tabindex="0" data-x="24" data-y="30">Claude Code</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="62" data-y="24">HubSpot</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="83" data-y="46">Ahrefs</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="47" data-y="52">GA4</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="20" data-y="68">Webflow</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="68" data-y="72">Segment</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="38" data-y="82">Semrush</span>
-            <span class="stack__node" role="listitem" tabindex="0" data-x="86" data-y="30">Notion</span>
-          </div>
+          <div class="stack__nodes" aria-hidden="true"></div>
+          <ul class="stack__fallback" aria-label="Marketing, AI, and engineering tools by cluster">
+            <li><span class="stack__cluster-label">AI</span> Claude Code, Claude Design</li>
+            <li><span class="stack__cluster-label">AI app builders</span> Lovable, Bolt, Replit</li>
+            <li><span class="stack__cluster-label">CRM and marketing ops</span> HubSpot, Salesforce, Marketo, Pardot</li>
+            <li><span class="stack__cluster-label">SEO and paid</span> GA4, Google Ads, SEM Rush</li>
+            <li><span class="stack__cluster-label">Design</span> Canva, Figma</li>
+            <li><span class="stack__cluster-label">Product analytics</span> PostHog, Amplitude</li>
+            <li><span class="stack__cluster-label">Dev and deploy</span> GitHub, Vercel, Netlify</li>
+          </ul>
         </div>
       </div>
     </section>

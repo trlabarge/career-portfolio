@@ -58,8 +58,14 @@ punctuated by confident full-bleed color-field sections.
   Layered mountain-inspired flat SVG shapes sit behind the hero.
 - Motion patterns (all in `/js/main.js`, all gated by `prefers-reduced-motion`):
   - Kinetic hero. Headline words fade and rise in with a stagger on load. The
-    final word rotates through variants (execute, ship, build, lead). The real
-    word ships in the DOM so no-JS and crawlers read the true copy.
+    final word rotates through variants (execute, ship, lead, grow). The real
+    word (execute) ships in the DOM so no-JS and crawlers read the true copy.
+    Only `html:not(.js) .rotator__word:first-child` forces a word visible with
+    no JS. With JS the rotator owns visibility (is-active / is-leaving), so do
+    not add a plain `:first-child` visible rule or the anchor word stacks under
+    the rotating one.
+  - Layered rolling hills sit behind the hero (`.hero__backdrop` SVG), several
+    soft bezier bands in palette tones. No clouds.
   - Reveal on scroll. Any element with class `reveal` fades up when scrolled
     into view. Hiding is gated behind an `html.js` class (set by an inline head
     script) so content is never hidden when JS is off. Stagger via
@@ -68,12 +74,23 @@ punctuated by confident full-bleed color-field sections.
     `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
     is the initial text so no-JS still shows it.
   - Scroll-progress bar, injected at the top of `<body>` by JS.
+- Interactive capabilities section (`.capabilities`, the "Four things I bring"
+  block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
+  tab/tabpanel, arrow-key navigable). The active item highlights and its
+  description expands. The right `.cap-stage` swaps a dynamic demo panel per
+  item. The demo panels are branded PLACEHOLDERS for now (channel bars, a
+  search/answer mock, a funnel, team nodes) each tagged "Interactive demo
+  coming soon"; real animations land later.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
-  - Tool-stack constellation (`.stack`). Tool pills drift slowly on a dark sage
-    field with connective lines drawn on a `<canvas>`, lighting up on hover.
-    Reinforces command of the modern stack.
+  - Tool-stack constellation (`.stack`). JS builds the nodes from a cluster spec
+    (7 labeled clusters: AI, App builders, CRM & MOPs, SEO & paid, Design,
+    Product analytics, Dev & deploy) positioned around cluster centers on a dark
+    sage field, drifting slowly with connective lines on a `<canvas>` and hover
+    highlight. A grouped `.stack__fallback` list is the accessible/no-JS view and
+    also replaces the constellation on narrow screens. Reinforces command of the
+    modern stack.
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
   vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
   navigable, reduced-motion honored). Motion frames the proof, it never delays
