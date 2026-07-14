@@ -983,7 +983,7 @@ html:not(.js) .cap-item__desc {
   border-radius: var(--radius-lg);
   border: 1px solid rgba(220, 229, 218, 0.25);
   background: radial-gradient(120% 120% at 50% 0%, #46654e 0%, #37503f 100%);
-  min-height: 480px;
+  min-height: 620px;
   overflow: hidden;
 }
 
@@ -998,7 +998,7 @@ html:not(.js) .cap-item__desc {
 .stack__nodes {
   position: relative;
   z-index: 2;
-  min-height: 480px;
+  min-height: 620px;
 }
 
 /* Cluster grouping labels (JS-generated, positioned absolutely) */

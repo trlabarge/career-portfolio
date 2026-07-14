@@ -85,12 +85,16 @@ punctuated by confident full-bleed color-field sections.
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
   - Tool-stack constellation (`.stack`). JS builds the nodes from a cluster spec
-    (7 labeled clusters: AI, App builders, CRM & MOPs, SEO & paid, Design,
-    Product analytics, Dev & deploy) positioned around cluster centers on a dark
-    sage field, drifting slowly with connective lines on a `<canvas>` and hover
-    highlight. A grouped `.stack__fallback` list is the accessible/no-JS view and
-    also replaces the constellation on narrow screens. Reinforces command of the
-    modern stack.
+    (8 labeled clusters: AI, App builders, CRM & MOPs, Website builders, SEO &
+    paid, Product analytics, Dev & deploy, Design) positioned around cluster
+    centers on a dark sage field, drifting slowly with connective lines on a
+    `<canvas>` and hover highlight. Each cluster can set its own `rx`/`ry` radius
+    (the AI cluster is larger). A grouped `.stack__fallback` list is the
+    accessible/no-JS view and also replaces the constellation on narrow screens.
+    Reinforces command of the modern stack. FUTURE: the text pills are
+    placeholders for tool logos/images floating on an interconnected knowledge
+    graph, so keep the node/cluster model flexible enough to swap text for
+    images and grow the panel footprint as tools are added.
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
   vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
   navigable, reduced-motion honored). Motion frames the proof, it never delays

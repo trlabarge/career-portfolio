@@ -228,13 +228,14 @@
 
     // Clusters: center in percent of the panel, plus the tools in each.
     var clusters = [
-      { label: 'AI', cx: 13, cy: 32, tools: ['Claude Code', 'Claude Design'] },
-      { label: 'App builders', cx: 39, cy: 24, tools: ['Lovable', 'Bolt', 'Replit'] },
-      { label: 'CRM & MOPs', cx: 75, cy: 27, tools: ['HubSpot', 'Salesforce', 'Marketo', 'Pardot'] },
-      { label: 'SEO & paid', cx: 84, cy: 62, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
-      { label: 'Design', cx: 13, cy: 72, tools: ['Canva', 'Figma'] },
-      { label: 'Product analytics', cx: 42, cy: 80, tools: ['PostHog', 'Amplitude'] },
-      { label: 'Dev & deploy', cx: 66, cy: 74, tools: ['GitHub', 'Vercel', 'Netlify'] }
+      { label: 'AI', cx: 20, cy: 32, rx: 12, ry: 17, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
+      { label: 'App builders', cx: 47, cy: 17, tools: ['Lovable', 'Bolt', 'Replit'] },
+      { label: 'CRM & MOPs', cx: 78, cy: 20, tools: ['HubSpot', 'Salesforce', 'Marketo', 'Pardot'] },
+      { label: 'Website builders', cx: 55, cy: 49, rx: 9, ry: 12, tools: ['Webflow', 'Squarespace', 'WordPress'] },
+      { label: 'SEO & paid', cx: 85, cy: 58, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
+      { label: 'Product analytics', cx: 66, cy: 83, tools: ['PostHog', 'Amplitude'] },
+      { label: 'Dev & deploy', cx: 35, cy: 78, tools: ['GitHub', 'Vercel', 'Netlify'] },
+      { label: 'Design', cx: 11, cy: 63, tools: ['Canva', 'Figma'] }
     ];
 
     var pts = [];
@@ -248,8 +249,8 @@
       label.className = 'stack__group-label';
       label.textContent = c.label;
       var n = c.tools.length;
-      var rx = n >= 4 ? 9.5 : 7.5;
-      var ry = n >= 4 ? 14 : (n >= 3 ? 12.5 : 11);
+      var rx = c.rx || (n >= 4 ? 9.5 : 7.5);
+      var ry = c.ry || (n >= 4 ? 14 : (n >= 3 ? 12.5 : 11));
 
       label.setAttribute('data-lx', c.cx);
       label.setAttribute('data-ly', Math.max(4, c.cy - ry - 6));
