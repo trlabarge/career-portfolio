@@ -196,11 +196,19 @@ punctuated by confident full-bleed color-field sections.
   Zapier, BrightEdge, LinkedIn Ads, Make, PhantomBuster) are not wired into
   any current section, kept in the raw folders for possible future use (e.g.
   case study pages). The brand strip currently includes every uploaded brand
-  logo (Puma, Hugo Boss, ConstructConnect, CEI, Rockport, Solstice
-  Sunglasses, On Center, PlanSwift, SmartBid, Implicit); if a future upload
-  shouldn't be a public "brands I've helped grow" logo, pull it from the
-  marquee markup in `index.html` rather than assuming it's excluded by
-  default.
+  logo (Puma, Hugo Boss, ConstructConnect, CEI, Rockport, On Center,
+  PlanSwift, SmartBid, Implicit, Inkwell), each linking out to the brand's
+  own site (`target="_blank" rel="noopener noreferrer"`, real `<a>` only on
+  the first (non-duplicate) copy of each logo so the marquee's seamless-loop
+  duplicate isn't a second identical tab stop). **Cole Haan is expected but
+  not yet uploaded** (no file in `/assets/brand-logos/` as of this writing);
+  once it lands, process it through the same pipeline and add it to the
+  marquee list (both the real and `aria-hidden` duplicate `<li>`) linking to
+  `https://www.colehaan.com/`. Solstice Sunglasses was removed from the
+  strip entirely per explicit request (source file still in the raw folder
+  for provenance, just not referenced). If a future upload shouldn't be a
+  public "brands I've helped grow" logo, pull it from the marquee markup in
+  `index.html` rather than assuming it's excluded by default.
 - Pardot was removed from the CRM & MOPs cluster and the accessible fallback
   list entirely (not kept as a text-pill placeholder) per explicit request.
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight

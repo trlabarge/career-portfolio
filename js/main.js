@@ -265,10 +265,10 @@
     // inside its cell, and the label sits directly above that sub-grid, so
     // label-to-cluster proximity is guaranteed by construction.
     var clusters = [
-      { label: 'AI', x0: 2, x1: 30, y0: 34, y1: 63, cols: 3, tools: ['Claude', 'Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
-      { label: 'App builders', x0: 30, x1: 52, y0: 34, y1: 63, cols: 2, tools: ['Lovable', 'Bolt', 'Replit'] },
-      { label: 'CRM & MOPs', x0: 52, x1: 75, y0: 34, y1: 63, cols: 2, tools: ['HubSpot', 'Salesforce', 'Marketo'] },
-      { label: 'Website builders', x0: 75, x1: 98, y0: 34, y1: 63, cols: 2, tools: ['Webflow', 'Squarespace', 'WordPress'] },
+      { label: 'AI', x0: 2, x1: 37, y0: 34, y1: 63, cols: 3, tools: ['Claude', 'Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
+      { label: 'App builders', x0: 37, x1: 57, y0: 34, y1: 63, cols: 2, tools: ['Lovable', 'Bolt', 'Replit'] },
+      { label: 'CRM & MOPs', x0: 57, x1: 78, y0: 34, y1: 63, cols: 2, tools: ['HubSpot', 'Salesforce', 'Marketo'] },
+      { label: 'Website builders', x0: 78, x1: 98, y0: 34, y1: 63, cols: 2, tools: ['Webflow', 'Squarespace', 'WordPress'] },
       { label: 'SEO & paid', x0: 2, x1: 27, y0: 66, y1: 96, cols: 2, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
       { label: 'Product analytics', x0: 27, x1: 47, y0: 66, y1: 96, cols: 2, tools: ['PostHog', 'Amplitude'] },
       { label: 'Dev & deploy', x0: 47, x1: 72, y0: 66, y1: 96, cols: 2, tools: ['GitHub', 'Vercel', 'Netlify'] },
