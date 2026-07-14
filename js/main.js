@@ -230,15 +230,15 @@
 
     var LOGO_BASE = '/assets/tools-logos/';
     // Tools without a mapped file fall back to a plain text pill.
-    // Bolt ships as a dark self-contained tile, so it skips the multiply blend.
     var LOGOS = {
+      'Claude': LOGO_BASE + 'claude-generic.png',
       'Claude Code': LOGO_BASE + 'claude-code.png',
       'Claude Cowork': LOGO_BASE + 'claude-cowork.png',
-      'Claude Design': LOGO_BASE + 'claude-generic.png',
+      'Claude Design': LOGO_BASE + 'claude-design.png',
       'ChatGPT': LOGO_BASE + 'chatgpt.png',
       'Codex': LOGO_BASE + 'codex.png',
       'Lovable': LOGO_BASE + 'lovable.png',
-      'Bolt': { src: LOGO_BASE + 'bolt.png', noBlend: true },
+      'Bolt': LOGO_BASE + 'bolt.png',
       'Replit': LOGO_BASE + 'replit.png',
       'HubSpot': LOGO_BASE + 'hubspot.png',
       'Salesforce': LOGO_BASE + 'salesforce.png',
@@ -258,34 +258,46 @@
       'Figma': LOGO_BASE + 'figma.png'
     };
 
-    // Clusters: center in percent of the full-bleed panel, plus the tools in
-    // each. Kept clear of the top-left text zone (roughly x<48%, y<34%).
+    // Clusters are explicit, non-overlapping rectangular cells (percent of
+    // the panel) that tile the space below the headline, sized roughly to
+    // each cluster's tool count so the grid reads as deliberate, not
+    // scattered. Each cluster's own nodes are laid out in a small sub-grid
+    // inside its cell, and the label sits directly above that sub-grid, so
+    // label-to-cluster proximity is guaranteed by construction.
     var clusters = [
-      { label: 'AI', cx: 14, cy: 60, rx: 14, ry: 20, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
-      { label: 'App builders', cx: 75, cy: 16, rx: 8, ry: 6, tools: ['Lovable', 'Bolt', 'Replit'] },
-      { label: 'CRM & MOPs', cx: 89, cy: 27, rx: 8, ry: 12, tools: ['HubSpot', 'Salesforce', 'Marketo'] },
-      { label: 'Website builders', cx: 68, cy: 45, rx: 10, ry: 11, tools: ['Webflow', 'Squarespace', 'WordPress'] },
-      { label: 'SEO & paid', cx: 91, cy: 66, rx: 8, ry: 12, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
-      { label: 'Product analytics', cx: 66, cy: 83, rx: 8, ry: 9, tools: ['PostHog', 'Amplitude'] },
-      { label: 'Dev & deploy', cx: 39, cy: 88, rx: 10, ry: 9, tools: ['GitHub', 'Vercel', 'Netlify'] },
-      { label: 'Design', cx: 15, cy: 91, rx: 8, ry: 7, tools: ['Canva', 'Figma'] }
+      { label: 'AI', x0: 2, x1: 30, y0: 34, y1: 63, cols: 3, tools: ['Claude', 'Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
+      { label: 'App builders', x0: 30, x1: 52, y0: 34, y1: 63, cols: 2, tools: ['Lovable', 'Bolt', 'Replit'] },
+      { label: 'CRM & MOPs', x0: 52, x1: 75, y0: 34, y1: 63, cols: 2, tools: ['HubSpot', 'Salesforce', 'Marketo'] },
+      { label: 'Website builders', x0: 75, x1: 98, y0: 34, y1: 63, cols: 2, tools: ['Webflow', 'Squarespace', 'WordPress'] },
+      { label: 'SEO & paid', x0: 2, x1: 27, y0: 66, y1: 96, cols: 2, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
+      { label: 'Product analytics', x0: 27, x1: 47, y0: 66, y1: 96, cols: 2, tools: ['PostHog', 'Amplitude'] },
+      { label: 'Dev & deploy', x0: 47, x1: 72, y0: 66, y1: 96, cols: 2, tools: ['GitHub', 'Vercel', 'Netlify'] },
+      { label: 'Design', x0: 72, x1: 98, y0: 66, y1: 96, cols: 2, tools: ['Canva', 'Figma'] }
     ];
 
     var pts = [];
     var centers = [];
 
     clusters.forEach(function (c, ci) {
-      centers.push({ x: 0, y: 0, bx: c.cx, by: c.cy });
+      var n = c.tools.length;
+      var cols = c.cols || Math.min(3, n);
+      var rows = Math.ceil(n / cols);
+      var cellCx = (c.x0 + c.x1) / 2;
+      var cellW = c.x1 - c.x0;
+      var cellH = c.y1 - c.y0;
+      var labelSpace = 8; // percent reserved at the top of the cell for the label
+      var gridTop = c.y0 + labelSpace;
+      var gridH = cellH - labelSpace;
+      var colW = cellW / cols;
+      var rowH = gridH / rows;
+
+      centers.push({ x: 0, y: 0, bx: cellCx, by: c.y0 + cellH / 2 + labelSpace / 2 });
 
       var label = document.createElement('span');
       label.className = 'stack__group-label';
       label.textContent = c.label;
-      var n = c.tools.length;
-      var rx = c.rx;
-      var ry = c.ry;
-
-      label.setAttribute('data-lx', c.cx);
-      label.setAttribute('data-ly', Math.max(4, c.cy - ry - 7));
+      label.setAttribute('data-lx', cellCx);
+      label.setAttribute('data-ly', c.y0 + 2);
       nodesHost.appendChild(label);
 
       c.tools.forEach(function (tool, k) {
@@ -295,12 +307,10 @@
         el.tabIndex = 0;
 
         if (logo) {
-          var src = typeof logo === 'string' ? logo : logo.src;
-          var noBlend = typeof logo === 'object' && logo.noBlend;
           el.className = 'stack__node stack__node--logo';
           el.innerHTML =
-            '<span class="stack__node-chip' + (noBlend ? ' no-blend' : '') + '">' +
-              '<img src="' + src + '" alt="' + tool + ' logo" loading="lazy" decoding="async">' +
+            '<span class="stack__node-chip">' +
+              '<img src="' + logo + '" alt="' + tool + ' logo" loading="lazy" decoding="async">' +
             '</span>' +
             '<span class="stack__node-label">' + tool + '</span>';
         } else {
@@ -309,22 +319,18 @@
         }
         nodesHost.appendChild(el);
 
-        var bx, by;
-        if (n === 1) {
-          bx = c.cx; by = c.cy;
-        } else {
-          // Start at the bottom so no node sits directly under the label.
-          var ang = (k / n) * Math.PI * 2 + ci * 0.7 + Math.PI / 2;
-          bx = c.cx + Math.cos(ang) * rx;
-          by = c.cy + Math.sin(ang) * ry;
-        }
-        // Keep nodes clear of the panel edges.
-        bx = Math.max(8, Math.min(92, bx));
-        by = Math.max(9, Math.min(93, by));
+        var col = k % cols;
+        var row = Math.floor(k / cols);
+        // Center the last (possibly incomplete) row of the sub-grid.
+        var itemsInRow = Math.min(cols, n - row * cols);
+        var rowOffset = (cols - itemsInRow) * colW / 2;
+        var bx = c.x0 + rowOffset + colW * (col + 0.5);
+        var by = gridTop + rowH * (row + 0.5);
+
         pts.push({
           el: el, cluster: ci, bx: bx, by: by,
           phase: Math.random() * Math.PI * 2,
-          amp: 3 + Math.random() * 3,
+          amp: 2 + Math.random() * 2,
           hoverInfluence: 0,
           x: 0, y: 0
         });
