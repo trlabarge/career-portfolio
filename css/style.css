@@ -985,15 +985,21 @@ html:not(.js) .cap-item__desc {
 .stack {
   position: relative;
   overflow: hidden;
+  min-height: 980px;
+  background: radial-gradient(140% 100% at 15% 0%, #4c6f54 0%, #35492f 55%, #2c3d28 100%);
 }
 
-.stack__canvas-wrap {
+.stack .container {
   position: relative;
-  margin-top: var(--space-lg);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(220, 229, 218, 0.25);
-  background: radial-gradient(120% 120% at 50% 0%, #46654e 0%, #37503f 100%);
-  min-height: 760px;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Full-bleed knowledge-graph backdrop, no frame, spans the entire section. */
+.stack__canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
   touch-action: pan-y;
 }
@@ -1008,9 +1014,9 @@ html:not(.js) .cap-item__desc {
 }
 
 .stack__nodes {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  min-height: 760px;
 }
 
 /* Cluster grouping labels (JS-generated, positioned absolutely) */
@@ -1038,6 +1044,9 @@ html:not(.js) .cap-item__desc {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.1rem;
+  background: rgba(20, 32, 18, 0.35);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(3px);
 }
 
 .stack__fallback li {
@@ -1082,38 +1091,40 @@ html:not(.js) .cap-item__desc {
 
 .stack__node:hover,
 .stack__node:focus-visible {
-  transform: translate(-50%, -50%) scale(1.16);
+  transform: translate(-50%, -50%) scale(1.14);
   z-index: 6;
   outline: none;
 }
 
-/* Logo chip nodes: an image tile with a small caption underneath. */
+/* Logo chip nodes: a circular tile with a small caption underneath. Content
+   is not clipped to the circle (object-fit: contain inside an inset square)
+   so wide wordmark logos stay fully legible. */
 .stack__node--logo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .stack__node-chip {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
   background: var(--color-bg);
   border: 1px solid rgba(220, 229, 218, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 16px;
   box-sizing: border-box;
-  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.65);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stack__node--logo:hover .stack__node-chip,
 .stack__node--logo:focus-visible .stack__node-chip {
   border-color: var(--color-gold);
-  box-shadow: 0 16px 32px -14px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.7);
 }
 
 .stack__node-chip img {
@@ -1129,13 +1140,13 @@ html:not(.js) .cap-item__desc {
 
 .stack__node-label {
   font-family: var(--font-display);
-  font-size: 0.66rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--color-sage-tint);
   text-align: center;
   white-space: nowrap;
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 /* Text-only fallback pill for tools with no logo asset yet. */
@@ -1145,7 +1156,7 @@ html:not(.js) .cap-item__desc {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--color-bg);
-  background: rgba(250, 249, 246, 0.08);
+  background: rgba(250, 249, 246, 0.1);
   border: 1px solid rgba(220, 229, 218, 0.35);
   border-radius: 999px;
   padding: 0.5rem 1rem;
@@ -1456,8 +1467,8 @@ html:not(.js) .cap-item__desc {
   }
 }
 
-/* On narrow screens the animated constellation is cramped, so show the
-   clean grouped list instead. */
+/* On narrow screens the animated knowledge graph is cramped, so show the
+   clean grouped list instead, back in normal document flow. */
 @media (max-width: 720px) {
   .js .stack__canvas-wrap[data-constellation] .stack__fallback {
     position: relative;
@@ -1476,7 +1487,13 @@ html:not(.js) .cap-item__desc {
   }
 
   .stack__canvas-wrap {
+    position: relative;
+    inset: auto;
+  }
+
+  .stack {
     min-height: 0;
+    display: block;
   }
 }
 

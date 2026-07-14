@@ -226,17 +226,20 @@
     if (!canvas || !nodesHost) return;
     var ctx = canvas.getContext('2d');
 
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
     var LOGO_BASE = '/assets/tools-logos/';
     // Tools without a mapped file fall back to a plain text pill.
     // Bolt ships as a dark self-contained tile, so it skips the multiply blend.
     var LOGOS = {
       'Claude Code': LOGO_BASE + 'claude-code.png',
-      'Claude Cowork': LOGO_BASE + 'claude-generic.png',
+      'Claude Cowork': LOGO_BASE + 'claude-cowork.png',
       'Claude Design': LOGO_BASE + 'claude-generic.png',
       'ChatGPT': LOGO_BASE + 'chatgpt.png',
       'Codex': LOGO_BASE + 'codex.png',
       'Lovable': LOGO_BASE + 'lovable.png',
       'Bolt': { src: LOGO_BASE + 'bolt.png', noBlend: true },
+      'Replit': LOGO_BASE + 'replit.png',
       'HubSpot': LOGO_BASE + 'hubspot.png',
       'Salesforce': LOGO_BASE + 'salesforce.png',
       'Marketo': LOGO_BASE + 'marketo.png',
@@ -248,22 +251,24 @@
       'SEM Rush': LOGO_BASE + 'semrush.png',
       'PostHog': LOGO_BASE + 'posthog.png',
       'Amplitude': LOGO_BASE + 'amplitude.svg',
+      'GitHub': LOGO_BASE + 'github.png',
       'Vercel': LOGO_BASE + 'vercel.svg',
       'Netlify': LOGO_BASE + 'netlify.svg',
       'Canva': LOGO_BASE + 'canva.png',
       'Figma': LOGO_BASE + 'figma.png'
     };
 
-    // Clusters: center in percent of the panel, plus the tools in each.
+    // Clusters: center in percent of the full-bleed panel, plus the tools in
+    // each. Kept clear of the top-left text zone (roughly x<48%, y<34%).
     var clusters = [
-      { label: 'AI', cx: 19, cy: 30, rx: 15, ry: 20, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
-      { label: 'App builders', cx: 47, cy: 15, rx: 11, ry: 12, tools: ['Lovable', 'Bolt', 'Replit'] },
-      { label: 'CRM & MOPs', cx: 79, cy: 19, rx: 12, ry: 14, tools: ['HubSpot', 'Salesforce', 'Marketo', 'Pardot'] },
-      { label: 'Website builders', cx: 54, cy: 48, rx: 12, ry: 13, tools: ['Webflow', 'Squarespace', 'WordPress'] },
-      { label: 'SEO & paid', cx: 87, cy: 57, rx: 11, ry: 13, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
-      { label: 'Product analytics', cx: 68, cy: 84, rx: 10, ry: 11, tools: ['PostHog', 'Amplitude'] },
-      { label: 'Dev & deploy', cx: 33, cy: 80, rx: 11, ry: 12, tools: ['GitHub', 'Vercel', 'Netlify'] },
-      { label: 'Design', cx: 9, cy: 65, rx: 10, ry: 11, tools: ['Canva', 'Figma'] }
+      { label: 'AI', cx: 14, cy: 60, rx: 14, ry: 20, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
+      { label: 'App builders', cx: 75, cy: 16, rx: 8, ry: 6, tools: ['Lovable', 'Bolt', 'Replit'] },
+      { label: 'CRM & MOPs', cx: 89, cy: 27, rx: 8, ry: 12, tools: ['HubSpot', 'Salesforce', 'Marketo'] },
+      { label: 'Website builders', cx: 68, cy: 45, rx: 10, ry: 11, tools: ['Webflow', 'Squarespace', 'WordPress'] },
+      { label: 'SEO & paid', cx: 91, cy: 66, rx: 8, ry: 12, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
+      { label: 'Product analytics', cx: 66, cy: 83, rx: 8, ry: 9, tools: ['PostHog', 'Amplitude'] },
+      { label: 'Dev & deploy', cx: 39, cy: 88, rx: 10, ry: 9, tools: ['GitHub', 'Vercel', 'Netlify'] },
+      { label: 'Design', cx: 15, cy: 91, rx: 8, ry: 7, tools: ['Canva', 'Figma'] }
     ];
 
     var pts = [];
@@ -333,6 +338,90 @@
     var lerp = function (a, b, t) { return a + (b - a) * t; };
     var mouse = { x: 0, y: 0, targetX: 0, targetY: 0, active: false, strength: 0 };
 
+    // Dense ambient background mesh, echoing a knowledge-graph texture behind
+    // the meaningful cluster nodes. Avoids the headline/copy text zone.
+    var textEl = wrap.parentElement.querySelector('.section__head');
+    var mesh = { points: [], edges: [] };
+    var meshPulses = [];
+
+    function measureTextZone() {
+      if (!textEl) return null;
+      var tr = textEl.getBoundingClientRect();
+      var wr = wrap.getBoundingClientRect();
+      var pad = 44;
+      return {
+        x0: tr.left - wr.left - pad, y0: tr.top - wr.top - pad,
+        x1: tr.right - wr.left + pad, y1: tr.bottom - wr.top + pad
+      };
+    }
+
+    function buildMesh() {
+      var textRect = measureTextZone();
+      var area = w * h;
+      var count = clamp(Math.floor(area / 8500), 70, 170);
+      var maxDist = Math.min(w, h) * 0.17;
+
+      function inQuiet(x, y) {
+        return textRect && x > textRect.x0 && x < textRect.x1 && y > textRect.y0 && y < textRect.y1;
+      }
+
+      var points = [];
+      var attempts = 0;
+      while (points.length < count && attempts < count * 8) {
+        attempts++;
+        var x = Math.random() * w;
+        var y = Math.random() * h;
+        if (inQuiet(x, y)) continue;
+        points.push({ x0: x, y0: y, x: x, y: y, phase: Math.random() * Math.PI * 2, amp: 4 + Math.random() * 5 });
+      }
+
+      var edges = [];
+      for (var i = 0; i < points.length; i++) {
+        var nearby = [];
+        for (var j = 0; j < points.length; j++) {
+          if (i === j) continue;
+          var dx = points[i].x0 - points[j].x0;
+          var dy = points[i].y0 - points[j].y0;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < maxDist) nearby.push({ j: j, d: d });
+        }
+        nearby.sort(function (a, b) { return a.d - b.d; }).slice(0, 2).forEach(function (nb) {
+          edges.push({ a: i, b: nb.j, d: nb.d });
+        });
+      }
+
+      mesh.points = points;
+      mesh.edges = edges;
+      mesh.maxDist = maxDist;
+
+      meshPulses = [];
+      var pulseCount = Math.min(18, Math.floor(edges.length / 5));
+      for (var k = 0; k < pulseCount; k++) {
+        meshPulses.push({
+          edge: edges[Math.floor(Math.random() * edges.length)],
+          progress: Math.random(),
+          speed: reduceMotion ? 0 : (0.00016 + Math.random() * 0.00022)
+        });
+      }
+    }
+
+    // Safety net: if a cluster node's fixed position still lands on the
+    // headline/copy despite the manual layout, nudge it clear at runtime.
+    function resolveQuietZone(textRect) {
+      pts.forEach(function (p, idx) {
+        if (!textRect) { p.qx = 0; p.qy = 0; return; }
+        var px = (p.bx / 100) * w;
+        var py = (p.by / 100) * h;
+        if (px > textRect.x0 && px < textRect.x1 && py > textRect.y0 && py < textRect.y1) {
+          var stagger = (idx % 5) * 34;
+          p.qy = (textRect.y1 - py) + 30 + stagger;
+          p.qx = (idx % 2 === 0 ? -1 : 1) * (16 + stagger * 0.4);
+        } else {
+          p.qx = 0; p.qy = 0;
+        }
+      });
+    }
+
     function resize() {
       var rect = wrap.getBoundingClientRect();
       w = rect.width; h = rect.height;
@@ -341,6 +430,8 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       mouse.targetX = w / 2; mouse.targetY = h / 2;
       mouse.x = mouse.targetX; mouse.y = mouse.targetY;
+      buildMesh();
+      resolveQuietZone(measureTextZone());
     }
 
     function place(t) {
@@ -361,8 +452,8 @@
         var driftX = reduceMotion ? 0 : Math.cos(t / 2800 + p.phase) * p.amp;
         var driftY = reduceMotion ? 0 : Math.sin(t / 3300 + p.phase) * p.amp;
 
-        var baseX = (p.bx / 100) * w + driftX;
-        var baseY = (p.by / 100) * h + driftY;
+        var baseX = (p.bx / 100) * w + driftX + (p.qx || 0);
+        var baseY = (p.by / 100) * h + driftY + (p.qy || 0);
 
         var influence = 0;
         if (!reduceMotion && mouse.strength > 0.01) {
@@ -388,10 +479,47 @@
         el.style.left = (parseFloat(el.getAttribute('data-lx')) / 100) * w + 'px';
         el.style.top = (parseFloat(el.getAttribute('data-ly')) / 100) * h + 'px';
       });
+
+      mesh.points.forEach(function (p) {
+        var dx = reduceMotion ? 0 : Math.cos(t / 4200 + p.phase) * p.amp;
+        var dy = reduceMotion ? 0 : Math.sin(t / 5000 + p.phase) * p.amp;
+        p.x = p.x0 + dx;
+        p.y = p.y0 + dy;
+      });
     }
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
+
+      // Dense ambient mesh, a quiet texture behind the meaningful graph.
+      mesh.edges.forEach(function (e) {
+        var a = mesh.points[e.a], b = mesh.points[e.b];
+        var alpha = 0.1 * (1 - e.d / mesh.maxDist);
+        if (alpha <= 0) return;
+        ctx.strokeStyle = 'rgba(220, 229, 218, ' + alpha.toFixed(3) + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      });
+      mesh.points.forEach(function (p) {
+        ctx.fillStyle = 'rgba(220, 229, 218, 0.4)';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      meshPulses.forEach(function (pulse) {
+        var t2 = pulse.progress;
+        if (t2 < 0 || t2 > 1) return;
+        var a = mesh.points[pulse.edge.a], b = mesh.points[pulse.edge.b];
+        var x = lerp(a.x, b.x, t2);
+        var y = lerp(a.y, b.y, t2);
+        ctx.beginPath();
+        ctx.arc(x, y, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(220, 229, 218, 0.55)';
+        ctx.fill();
+      });
 
       // Faint backbone between nearby cluster centers.
       for (var a = 0; a < centers.length; a++) {
@@ -467,6 +595,10 @@
     function advancePulses(dt) {
       if (reduceMotion) return;
       pulses.forEach(function (pulse) {
+        pulse.progress += pulse.speed * dt;
+        if (pulse.progress > 1.15) pulse.progress = -Math.random() * 0.4;
+      });
+      meshPulses.forEach(function (pulse) {
         pulse.progress += pulse.speed * dt;
         if (pulse.progress > 1.15) pulse.progress = -Math.random() * 0.4;
       });

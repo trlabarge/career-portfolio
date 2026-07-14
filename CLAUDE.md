@@ -84,36 +84,57 @@ punctuated by confident full-bleed color-field sections.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
-  - Tool-stack knowledge graph (`.stack`). JS builds the nodes from a cluster
-    spec (8 labeled clusters: AI, App builders, CRM & MOPs, Website builders,
-    SEO & paid, Product analytics, Dev & deploy, Design) positioned around
-    cluster centers on a dark sage field, drifting slowly with connective lines
-    on a `<canvas>`. Each cluster sets its own `rx`/`ry` radius (the AI cluster
-    is larger, 5 tools). Nodes with a mapped logo render as a white rounded
-    `.stack__node-chip` (image, `object-fit: contain`, `mix-blend-mode:
+  - Tool-stack knowledge graph (`.stack`). Full-bleed, frameless: the canvas
+    and node layer (`.stack__canvas-wrap`) are `position: absolute; inset: 0`
+    directly on the `.stack` section (a sibling of `.container`, not nested
+    inside it), so the graph spans the entire section behind the heading/copy,
+    not a bordered card. JS builds the nodes from a cluster spec (8 labeled
+    clusters: AI, App builders, CRM & MOPs, Website builders, SEO & paid,
+    Product analytics, Dev & deploy, Design) positioned around cluster centers,
+    manually laid out to clear the headline/copy in the top-left (the `.stack`
+    section does NOT vertically center its `.container`; keep it top-aligned,
+    since flex-centering moves the quiet zone and breaks the hand-tuned cluster
+    percentages). `resolveQuietZone()` in `constellation()` is a runtime safety
+    net that nudges any node whose fixed position still lands on the measured
+    `.section__head` bounding box, but the primary fix is correct manual
+    placement, not the nudge.
+    Nodes with a mapped logo render as a circular `.stack__node-chip` (84px,
+    `border-radius: 50%`, image `object-fit: contain` inside an inset square so
+    wide wordmark logos are not clipped by the circle, `mix-blend-mode:
     multiply` to erase any opaque light background) with a small caption below;
     tools with no logo file fall back to the original text pill
     (`.stack__node--text`), so partial logo sets degrade gracefully. One
     exception: `Bolt`'s source is a self-contained dark tile, so its chip skips
     the multiply blend (`no-blend` class) rather than muddying a dark logo
-    against a white card. `Claude Cowork` and `Claude Design` currently share
-    the generic Claude wordmark (`claude-generic.png`) since neither has a
-    dedicated mark yet.
+    against a white card. `Claude Design` currently uses the generic Claude
+    wordmark (`claude-generic.png`) pending a dedicated mark; `Claude Cowork`
+    has its own mark (`claude-cowork.png`).
+    A dense ambient mesh (`mesh.points`/`mesh.edges` in `constellation()`,
+    rebuilt on every `resize()`) is drawn first, behind the meaningful cluster
+    graph: 70-170 points scattered across the full panel (scaled to area,
+    avoiding the measured text zone), each connected to its 2 nearest
+    neighbors, very low opacity, with a handful of small ambient pulses
+    traveling the mesh edges. This is pure background texture echoing a dense
+    knowledge-graph look; the warmer gold cluster/node lines stay the visually
+    dominant, meaningful layer on top of it.
     Interaction: the panel tracks the pointer (`pointermove`/`pointerleave`
     scoped to the panel, not `window`) and lerps a mouse position; each node's
     `hoverInfluence` eases toward a proximity value derived from that position,
     which (a) nudges the node a few px toward the cursor, (b) brightens/thickens
     its connector line, and (c) draws a soft canvas glow behind it. Direct
     `:hover`/`:focus-visible` on a node also scales it up via CSS
-    (`transform: scale(1.16)`), independent of the proximity field, so the
+    (`transform: scale(1.14)`), independent of the proximity field, so the
     "logos grow a little" effect is guaranteed even without the ambient canvas
     layer. Ambient pulses travel along each node-to-cluster-center line
-    (`pulses` array in `constellation()`) for continuous life. Under
-    `prefers-reduced-motion`, drift/pull/pulses are disabled but the pointer
+    (`pulses` array) for continuous life. Under `prefers-reduced-motion`,
+    drift/pull/pulses (both cluster and mesh) are disabled but the pointer
     still triggers an instant (non-eased) redraw on move, since that is
     discrete user-driven feedback, not automatic motion.
     A grouped `.stack__fallback` list is the accessible/no-JS view and also
-    replaces the whole constellation on narrow screens (`max-width: 720px`).
+    replaces the whole graph on narrow screens (`max-width: 720px`), where
+    `.stack__canvas-wrap` reverts to `position: relative` (normal flow) so the
+    list contributes real height instead of sitting inside an absolutely
+    positioned, zero-height wrapper.
 
 ### Logo assets
 
@@ -139,13 +160,14 @@ punctuated by confident full-bleed color-field sections.
   tool maps to which processed file; a tool absent from that map automatically
   renders as a text pill, so adding a new logo is just adding one map entry
   plus dropping the processed PNG/SVG in `/assets/tools-logos/`.
-- Known gaps as of this writing: no logo yet for Replit, Pardot, or GitHub
-  (render as text pills); Claude Cowork and Claude Design share a generic
-  Claude wordmark pending dedicated marks. Several uploaded extras
-  (Conductor, Cursor, Zapier, BrightEdge, LinkedIn Ads, Make, PhantomBuster,
-  Solstice Sunglasses, Oncenter, PlanSwift, SmartBid, Implicit) are not wired
-  into any current section, kept in the raw folders for possible future use
-  (e.g. case study pages).
+- Known gaps as of this writing: `Claude Design` still uses the generic Claude
+  wordmark pending a dedicated mark. Several uploaded extras (Conductor,
+  Cursor, Zapier, BrightEdge, LinkedIn Ads, Make, PhantomBuster, Solstice
+  Sunglasses, Oncenter, PlanSwift, SmartBid, Implicit) are not wired into any
+  current section, kept in the raw folders for possible future use (e.g. case
+  study pages).
+- Pardot was removed from the CRM & MOPs cluster and the accessible fallback
+  list entirely (not kept as a text-pill placeholder) per explicit request.
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
   vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
   navigable, reduced-motion honored). Motion frames the proof, it never delays
