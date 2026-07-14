@@ -84,17 +84,68 @@ punctuated by confident full-bleed color-field sections.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
-  - Tool-stack constellation (`.stack`). JS builds the nodes from a cluster spec
-    (8 labeled clusters: AI, App builders, CRM & MOPs, Website builders, SEO &
-    paid, Product analytics, Dev & deploy, Design) positioned around cluster
-    centers on a dark sage field, drifting slowly with connective lines on a
-    `<canvas>` and hover highlight. Each cluster can set its own `rx`/`ry` radius
-    (the AI cluster is larger). A grouped `.stack__fallback` list is the
-    accessible/no-JS view and also replaces the constellation on narrow screens.
-    Reinforces command of the modern stack. FUTURE: the text pills are
-    placeholders for tool logos/images floating on an interconnected knowledge
-    graph, so keep the node/cluster model flexible enough to swap text for
-    images and grow the panel footprint as tools are added.
+  - Tool-stack knowledge graph (`.stack`). JS builds the nodes from a cluster
+    spec (8 labeled clusters: AI, App builders, CRM & MOPs, Website builders,
+    SEO & paid, Product analytics, Dev & deploy, Design) positioned around
+    cluster centers on a dark sage field, drifting slowly with connective lines
+    on a `<canvas>`. Each cluster sets its own `rx`/`ry` radius (the AI cluster
+    is larger, 5 tools). Nodes with a mapped logo render as a white rounded
+    `.stack__node-chip` (image, `object-fit: contain`, `mix-blend-mode:
+    multiply` to erase any opaque light background) with a small caption below;
+    tools with no logo file fall back to the original text pill
+    (`.stack__node--text`), so partial logo sets degrade gracefully. One
+    exception: `Bolt`'s source is a self-contained dark tile, so its chip skips
+    the multiply blend (`no-blend` class) rather than muddying a dark logo
+    against a white card. `Claude Cowork` and `Claude Design` currently share
+    the generic Claude wordmark (`claude-generic.png`) since neither has a
+    dedicated mark yet.
+    Interaction: the panel tracks the pointer (`pointermove`/`pointerleave`
+    scoped to the panel, not `window`) and lerps a mouse position; each node's
+    `hoverInfluence` eases toward a proximity value derived from that position,
+    which (a) nudges the node a few px toward the cursor, (b) brightens/thickens
+    its connector line, and (c) draws a soft canvas glow behind it. Direct
+    `:hover`/`:focus-visible` on a node also scales it up via CSS
+    (`transform: scale(1.16)`), independent of the proximity field, so the
+    "logos grow a little" effect is guaranteed even without the ambient canvas
+    layer. Ambient pulses travel along each node-to-cluster-center line
+    (`pulses` array in `constellation()`) for continuous life. Under
+    `prefers-reduced-motion`, drift/pull/pulses are disabled but the pointer
+    still triggers an instant (non-eased) redraw on move, since that is
+    discrete user-driven feedback, not automatic motion.
+    A grouped `.stack__fallback` list is the accessible/no-JS view and also
+    replaces the whole constellation on narrow screens (`max-width: 720px`).
+
+### Logo assets
+
+- `/assets/brand-logos/` and `/assets/tools-logos/` hold the raw files Tim
+  uploads (original filenames, sizes, and formats, left untouched for
+  provenance). `/assets/brand-logos/{puma,hugo-boss,constructconnect,cei,
+  rockport}.{svg,png}` and `/assets/tools-logos/<kebab-case-name>.{png,svg}`
+  are the **site-ready, processed** versions actually referenced by the site:
+  tightly cropped to their content bounding box, downscaled to a max dimension
+  of 440px, and normalized to PNG (except true source SVGs, copied as-is).
+  Regenerate a processed file by re-running the same trim-to-bbox +
+  downscale + PNG-export step against a replacement source file if one is
+  swapped in; there is no build step wired up for this, it was done manually
+  with Pillow during asset intake.
+- Brand strip (`.proof__logo img`) renders every logo in one unified tone via
+  `filter: grayscale(1) contrast(0.95) brightness(0.8)` plus
+  `mix-blend-mode: multiply` (hides any opaque white background against the
+  cream section) at a fixed 34px height, full color revealed on hover/focus.
+  Do not hand-recolor source files, the CSS treatment normalizes tone
+  uniformly regardless of source aspect ratio or background.
+- Tool nodes: see the interaction notes above. The `LOGOS` map inside
+  `constellation()` in `/js/main.js` is the single source of truth for which
+  tool maps to which processed file; a tool absent from that map automatically
+  renders as a text pill, so adding a new logo is just adding one map entry
+  plus dropping the processed PNG/SVG in `/assets/tools-logos/`.
+- Known gaps as of this writing: no logo yet for Replit, Pardot, or GitHub
+  (render as text pills); Claude Cowork and Claude Design share a generic
+  Claude wordmark pending dedicated marks. Several uploaded extras
+  (Conductor, Cursor, Zapier, BrightEdge, LinkedIn Ads, Make, PhantomBuster,
+  Solstice Sunglasses, Oncenter, PlanSwift, SmartBid, Implicit) are not wired
+  into any current section, kept in the raw folders for possible future use
+  (e.g. case study pages).
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
   vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
   navigable, reduced-motion honored). Motion frames the proof, it never delays

@@ -217,7 +217,7 @@
     });
   })();
 
-  /* --- Tool-stack constellation (clustered) ----------------------------- */
+  /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');
     if (!wrap) return;
@@ -226,16 +226,44 @@
     if (!canvas || !nodesHost) return;
     var ctx = canvas.getContext('2d');
 
+    var LOGO_BASE = '/assets/tools-logos/';
+    // Tools without a mapped file fall back to a plain text pill.
+    // Bolt ships as a dark self-contained tile, so it skips the multiply blend.
+    var LOGOS = {
+      'Claude Code': LOGO_BASE + 'claude-code.png',
+      'Claude Cowork': LOGO_BASE + 'claude-generic.png',
+      'Claude Design': LOGO_BASE + 'claude-generic.png',
+      'ChatGPT': LOGO_BASE + 'chatgpt.png',
+      'Codex': LOGO_BASE + 'codex.png',
+      'Lovable': LOGO_BASE + 'lovable.png',
+      'Bolt': { src: LOGO_BASE + 'bolt.png', noBlend: true },
+      'HubSpot': LOGO_BASE + 'hubspot.png',
+      'Salesforce': LOGO_BASE + 'salesforce.png',
+      'Marketo': LOGO_BASE + 'marketo.png',
+      'Webflow': LOGO_BASE + 'webflow-clean.png',
+      'Squarespace': LOGO_BASE + 'squarespace.png',
+      'WordPress': LOGO_BASE + 'wordpress.png',
+      'GA4': LOGO_BASE + 'ga4.png',
+      'Google Ads': LOGO_BASE + 'google-ads.png',
+      'SEM Rush': LOGO_BASE + 'semrush.png',
+      'PostHog': LOGO_BASE + 'posthog.png',
+      'Amplitude': LOGO_BASE + 'amplitude.svg',
+      'Vercel': LOGO_BASE + 'vercel.svg',
+      'Netlify': LOGO_BASE + 'netlify.svg',
+      'Canva': LOGO_BASE + 'canva.png',
+      'Figma': LOGO_BASE + 'figma.png'
+    };
+
     // Clusters: center in percent of the panel, plus the tools in each.
     var clusters = [
-      { label: 'AI', cx: 20, cy: 32, rx: 12, ry: 17, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
-      { label: 'App builders', cx: 47, cy: 17, tools: ['Lovable', 'Bolt', 'Replit'] },
-      { label: 'CRM & MOPs', cx: 78, cy: 20, tools: ['HubSpot', 'Salesforce', 'Marketo', 'Pardot'] },
-      { label: 'Website builders', cx: 55, cy: 49, rx: 9, ry: 12, tools: ['Webflow', 'Squarespace', 'WordPress'] },
-      { label: 'SEO & paid', cx: 85, cy: 58, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
-      { label: 'Product analytics', cx: 66, cy: 83, tools: ['PostHog', 'Amplitude'] },
-      { label: 'Dev & deploy', cx: 35, cy: 78, tools: ['GitHub', 'Vercel', 'Netlify'] },
-      { label: 'Design', cx: 11, cy: 63, tools: ['Canva', 'Figma'] }
+      { label: 'AI', cx: 19, cy: 30, rx: 15, ry: 20, tools: ['Claude Code', 'Claude Cowork', 'Claude Design', 'ChatGPT', 'Codex'] },
+      { label: 'App builders', cx: 47, cy: 15, rx: 11, ry: 12, tools: ['Lovable', 'Bolt', 'Replit'] },
+      { label: 'CRM & MOPs', cx: 79, cy: 19, rx: 12, ry: 14, tools: ['HubSpot', 'Salesforce', 'Marketo', 'Pardot'] },
+      { label: 'Website builders', cx: 54, cy: 48, rx: 12, ry: 13, tools: ['Webflow', 'Squarespace', 'WordPress'] },
+      { label: 'SEO & paid', cx: 87, cy: 57, rx: 11, ry: 13, tools: ['GA4', 'Google Ads', 'SEM Rush'] },
+      { label: 'Product analytics', cx: 68, cy: 84, rx: 10, ry: 11, tools: ['PostHog', 'Amplitude'] },
+      { label: 'Dev & deploy', cx: 33, cy: 80, rx: 11, ry: 12, tools: ['GitHub', 'Vercel', 'Netlify'] },
+      { label: 'Design', cx: 9, cy: 65, rx: 10, ry: 11, tools: ['Canva', 'Figma'] }
     ];
 
     var pts = [];
@@ -244,24 +272,36 @@
     clusters.forEach(function (c, ci) {
       centers.push({ x: 0, y: 0, bx: c.cx, by: c.cy });
 
-      // Cluster label
       var label = document.createElement('span');
       label.className = 'stack__group-label';
       label.textContent = c.label;
       var n = c.tools.length;
-      var rx = c.rx || (n >= 4 ? 9.5 : 7.5);
-      var ry = c.ry || (n >= 4 ? 14 : (n >= 3 ? 12.5 : 11));
+      var rx = c.rx;
+      var ry = c.ry;
 
       label.setAttribute('data-lx', c.cx);
-      label.setAttribute('data-ly', Math.max(4, c.cy - ry - 6));
+      label.setAttribute('data-ly', Math.max(4, c.cy - ry - 7));
       nodesHost.appendChild(label);
 
       c.tools.forEach(function (tool, k) {
+        var logo = LOGOS[tool];
         var el = document.createElement('span');
-        el.className = 'stack__node';
         el.setAttribute('role', 'listitem');
         el.tabIndex = 0;
-        el.textContent = tool;
+
+        if (logo) {
+          var src = typeof logo === 'string' ? logo : logo.src;
+          var noBlend = typeof logo === 'object' && logo.noBlend;
+          el.className = 'stack__node stack__node--logo';
+          el.innerHTML =
+            '<span class="stack__node-chip' + (noBlend ? ' no-blend' : '') + '">' +
+              '<img src="' + src + '" alt="' + tool + ' logo" loading="lazy" decoding="async">' +
+            '</span>' +
+            '<span class="stack__node-label">' + tool + '</span>';
+        } else {
+          el.className = 'stack__node stack__node--text';
+          el.textContent = tool;
+        }
         nodesHost.appendChild(el);
 
         var bx, by;
@@ -273,13 +313,14 @@
           bx = c.cx + Math.cos(ang) * rx;
           by = c.cy + Math.sin(ang) * ry;
         }
-        // Keep pills clear of the panel edges.
-        bx = Math.max(8, Math.min(90, bx));
-        by = Math.max(10, Math.min(92, by));
+        // Keep nodes clear of the panel edges.
+        bx = Math.max(8, Math.min(92, bx));
+        by = Math.max(9, Math.min(93, by));
         pts.push({
           el: el, cluster: ci, bx: bx, by: by,
           phase: Math.random() * Math.PI * 2,
-          amp: 4 + Math.random() * 4,
+          amp: 3 + Math.random() * 3,
+          hoverInfluence: 0,
           x: 0, y: 0
         });
       });
@@ -289,12 +330,17 @@
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = 0, h = 0;
 
+    var lerp = function (a, b, t) { return a + (b - a) * t; };
+    var mouse = { x: 0, y: 0, targetX: 0, targetY: 0, active: false, strength: 0 };
+
     function resize() {
       var rect = wrap.getBoundingClientRect();
       w = rect.width; h = rect.height;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      mouse.targetX = w / 2; mouse.targetY = h / 2;
+      mouse.x = mouse.targetX; mouse.y = mouse.targetY;
     }
 
     function place(t) {
@@ -302,14 +348,42 @@
         c.x = (c.bx / 100) * w;
         c.y = (c.by / 100) * h;
       });
+
+      if (!reduceMotion) {
+        mouse.x = lerp(mouse.x, mouse.targetX, 0.09);
+        mouse.y = lerp(mouse.y, mouse.targetY, 0.09);
+        mouse.strength = lerp(mouse.strength, mouse.active ? 1 : 0, 0.06);
+      }
+
+      var influenceRadius = Math.min(w, h) * 0.4;
+
       pts.forEach(function (p) {
-        var dx = reduceMotion ? 0 : Math.cos(t / 2800 + p.phase) * p.amp;
-        var dy = reduceMotion ? 0 : Math.sin(t / 3300 + p.phase) * p.amp;
-        p.x = (p.bx / 100) * w + dx;
-        p.y = (p.by / 100) * h + dy;
+        var driftX = reduceMotion ? 0 : Math.cos(t / 2800 + p.phase) * p.amp;
+        var driftY = reduceMotion ? 0 : Math.sin(t / 3300 + p.phase) * p.amp;
+
+        var baseX = (p.bx / 100) * w + driftX;
+        var baseY = (p.by / 100) * h + driftY;
+
+        var influence = 0;
+        if (!reduceMotion && mouse.strength > 0.01) {
+          var dx = mouse.x - baseX;
+          var dy = mouse.y - baseY;
+          var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          influence = mouse.strength * Math.max(0, 1 - dist / influenceRadius);
+          p.hoverInfluence = lerp(p.hoverInfluence, influence, 0.1);
+          var pull = p.hoverInfluence * p.hoverInfluence * 16;
+          baseX += (dx / dist) * pull;
+          baseY += (dy / dist) * pull;
+        } else {
+          p.hoverInfluence = lerp(p.hoverInfluence, 0, 0.1);
+        }
+
+        p.x = baseX; p.y = baseY;
         p.el.style.left = p.x + 'px';
         p.el.style.top = p.y + 'px';
+        p.el.style.setProperty('--hover-influence', p.hoverInfluence.toFixed(3));
       });
+
       labels.forEach(function (el) {
         el.style.left = (parseFloat(el.getAttribute('data-lx')) / 100) * w + 'px';
         el.style.top = (parseFloat(el.getAttribute('data-ly')) / 100) * h + 'px';
@@ -336,34 +410,77 @@
         }
       }
 
-      // Lines from each node to its cluster center.
+      // Lines from each node to its cluster center, brightening near the pointer.
       pts.forEach(function (p) {
         var c = centers[p.cluster];
-        ctx.strokeStyle = 'rgba(201, 160, 81, 0.32)';
-        ctx.lineWidth = 1;
+        var boost = p.hoverInfluence * 0.5;
+        ctx.strokeStyle = 'rgba(201, 160, 81, ' + (0.3 + boost).toFixed(3) + ')';
+        ctx.lineWidth = 1 + p.hoverInfluence * 1.4;
         ctx.beginPath();
         ctx.moveTo(c.x, c.y);
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
       });
 
-      // Cluster center dots + node dots.
+      // Traveling pulses along the node connector lines.
+      pulses.forEach(function (pulse) {
+        var p = pts[pulse.nodeIndex];
+        var c = centers[p.cluster];
+        var t = pulse.progress;
+        if (t < 0 || t > 1) return;
+        var x = lerp(c.x, p.x, t);
+        var y = lerp(c.y, p.y, t);
+        ctx.beginPath();
+        ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(232, 214, 168, 0.85)';
+        ctx.fill();
+      });
+
+      // Cluster center dots.
       centers.forEach(function (c) {
         ctx.fillStyle = 'rgba(220, 229, 218, 0.55)';
         ctx.beginPath();
         ctx.arc(c.x, c.y, 2, 0, Math.PI * 2);
         ctx.fill();
       });
+
+      // Soft glow behind each node, boosted near the pointer.
       pts.forEach(function (p) {
-        ctx.fillStyle = 'rgba(201, 160, 81, 0.9)';
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
-        ctx.fill();
+        var glowR = 20 + p.hoverInfluence * 26;
+        if (p.hoverInfluence > 0.02) {
+          var glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
+          glow.addColorStop(0, 'rgba(201, 160, 81, ' + (0.22 * p.hoverInfluence).toFixed(3) + ')');
+          glow.addColorStop(1, 'rgba(201, 160, 81, 0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
+          ctx.fill();
+        }
       });
     }
 
-    var running = false, raf = null;
-    function frame(t) { place(t); draw(); raf = window.requestAnimationFrame(frame); }
+    // Ambient pulses traveling from each cluster center out to a node.
+    var pulses = pts.map(function (_, i) {
+      return { nodeIndex: i, progress: Math.random(), speed: reduceMotion ? 0 : (0.00028 + Math.random() * 0.00035) };
+    });
+
+    function advancePulses(dt) {
+      if (reduceMotion) return;
+      pulses.forEach(function (pulse) {
+        pulse.progress += pulse.speed * dt;
+        if (pulse.progress > 1.15) pulse.progress = -Math.random() * 0.4;
+      });
+    }
+
+    var running = false, raf = null, lastT = 0;
+    function frame(t) {
+      var dt = lastT ? t - lastT : 16;
+      lastT = t;
+      place(t);
+      advancePulses(dt);
+      draw();
+      raf = window.requestAnimationFrame(frame);
+    }
     function start() {
       if (running) return;
       running = true;
@@ -371,6 +488,24 @@
       else raf = window.requestAnimationFrame(frame);
     }
     function stop() { running = false; if (raf) window.cancelAnimationFrame(raf); }
+
+    function updatePointer(clientX, clientY) {
+      var rect = wrap.getBoundingClientRect();
+      var x = clientX - rect.left;
+      var y = clientY - rect.top;
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        mouse.active = false;
+      } else {
+        mouse.targetX = x; mouse.targetY = y; mouse.active = true;
+        if (reduceMotion) { place(0); draw(); }
+      }
+    }
+
+    wrap.addEventListener('pointermove', function (e) { updatePointer(e.clientX, e.clientY); }, { passive: true });
+    wrap.addEventListener('pointerleave', function () {
+      mouse.active = false;
+      if (reduceMotion) { place(0); draw(); }
+    }, { passive: true });
 
     resize(); place(0); draw();
 

@@ -532,16 +532,26 @@ html:not(.js) .rotator__word:first-child {
 }
 
 .proof__logo {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--color-text-muted);
-  transition: color 0.2s ease, transform 0.2s var(--ease-out);
+  display: flex;
+  align-items: center;
+  height: 42px;
 }
 
-.proof__logo:hover {
-  color: var(--color-sage);
+.proof__logo img {
+  height: 34px;
+  max-width: 152px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) contrast(0.95) brightness(0.8);
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s var(--ease-out);
+}
+
+.proof__logo:hover img,
+.proof__logo:focus-within img {
+  opacity: 1;
+  filter: grayscale(0.1) contrast(1) brightness(1);
   transform: translateY(-2px);
 }
 
@@ -983,8 +993,9 @@ html:not(.js) .cap-item__desc {
   border-radius: var(--radius-lg);
   border: 1px solid rgba(220, 229, 218, 0.25);
   background: radial-gradient(120% 120% at 50% 0%, #46654e 0%, #37503f 100%);
-  min-height: 620px;
+  min-height: 760px;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .stack__canvas {
@@ -993,12 +1004,13 @@ html:not(.js) .cap-item__desc {
   height: 100%;
   position: absolute;
   inset: 0;
+  pointer-events: none;
 }
 
 .stack__nodes {
   position: relative;
   z-index: 2;
-  min-height: 620px;
+  min-height: 760px;
 }
 
 /* Cluster grouping labels (JS-generated, positioned absolutely) */
@@ -1059,8 +1071,76 @@ html:not(.js) .cap-item__desc {
 }
 
 .stack__node {
+  --hover-influence: 0;
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
+    scale(calc(1 + var(--hover-influence) * 0.12));
+  cursor: default;
+  transition: transform 0.2s var(--ease-out);
+  z-index: 3;
+}
+
+.stack__node:hover,
+.stack__node:focus-visible {
+  transform: translate(-50%, -50%) scale(1.16);
+  z-index: 6;
+  outline: none;
+}
+
+/* Logo chip nodes: an image tile with a small caption underneath. */
+.stack__node--logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stack__node-chip {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: var(--color-bg);
+  border: 1px solid rgba(220, 229, 218, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stack__node--logo:hover .stack__node-chip,
+.stack__node--logo:focus-visible .stack__node-chip {
+  border-color: var(--color-gold);
+  box-shadow: 0 16px 32px -14px rgba(0, 0, 0, 0.65);
+}
+
+.stack__node-chip img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.stack__node-chip.no-blend img {
+  mix-blend-mode: normal;
+}
+
+.stack__node-label {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-sage-tint);
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0.88;
+}
+
+/* Text-only fallback pill for tools with no logo asset yet. */
+.stack__node--text {
+  display: inline-block;
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 500;
@@ -1071,18 +1151,14 @@ html:not(.js) .cap-item__desc {
   padding: 0.5rem 1rem;
   white-space: nowrap;
   backdrop-filter: blur(2px);
-  transition: background-color 0.25s ease, border-color 0.25s ease,
-    transform 0.25s var(--ease-out), color 0.25s ease;
-  cursor: default;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.stack__node:hover,
-.stack__node:focus-visible {
+.stack__node--text:hover,
+.stack__node--text:focus-visible {
   background: var(--color-gold);
   border-color: var(--color-gold);
   color: var(--color-text);
-  transform: translate(-50%, -50%) scale(1.08);
-  outline: none;
 }
 
 .stack .section__head h2,
