@@ -1,7 +1,7 @@
 /* ==========================================================================
    Tim LaBarge — Career Portfolio
    Vanilla JS: nav toggle, scroll progress, reveal-on-scroll, metric counters,
-   rotating hero word, growth-curve draw, tool-stack constellation.
+   rotating hero word, tool-stack constellation.
    No libraries. All motion respects prefers-reduced-motion.
    ========================================================================== */
 (function () {
@@ -150,33 +150,6 @@
       });
     }, { threshold: 0.6 });
     els.forEach(function (el) { io.observe(el); });
-  })();
-
-  /* --- Growth curve draw ------------------------------------------------- */
-  (function growth() {
-    var box = document.querySelector('.growth');
-    if (!box) return;
-    var line = box.querySelector('.growth__line');
-    if (line) {
-      var len = line.getTotalLength();
-      box.style.setProperty('--len', Math.ceil(len));
-    }
-
-    function draw() { box.classList.add('is-drawn'); }
-
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      draw();
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          draw();
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.4 });
-    io.observe(box);
   })();
 
   /* --- Capabilities: clickable tabs + dynamic stage --------------------- */
