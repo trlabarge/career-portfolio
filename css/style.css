@@ -493,8 +493,10 @@ p {
   transform: translateY(-0.35em);
 }
 
-/* First word is visible by default so the headline reads correctly with no JS. */
-.rotator__word:first-child {
+/* With no JS, show only the first word so the headline reads correctly. With
+   JS the rotator controls visibility entirely (is-active / is-leaving), so this
+   must NOT force the first word visible or it stacks under the rotating word. */
+html:not(.js) .rotator__word:first-child {
   opacity: 1;
   transform: none;
 }
@@ -518,28 +520,78 @@ p {
   display: flex;
 }
 
+/* Full-bleed auto-scrolling track. The logo list is duplicated once in the
+   markup so translateX(-50%) loops seamlessly; the duplicate copy is
+   aria-hidden so screen readers only hear the real list once. */
+.proof__track {
+  width: 100%;
+  overflow: hidden;
+  margin-top: var(--space-sm);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
 .proof__logos {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: clamp(1.5rem, 5vw, 3.75rem);
   list-style: none;
-  margin: var(--space-sm) 0 0;
+  margin: 0;
   padding: 0;
+  width: max-content;
+  animation: proof-scroll 42s linear infinite;
+}
+
+.proof__track:hover .proof__logos,
+.proof__track:focus-within .proof__logos {
+  animation-play-state: paused;
+}
+
+@keyframes proof-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof__logos {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+
+  .proof__logo[aria-hidden='true'] {
+    display: none;
+  }
 }
 
 .proof__logo {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--color-text-muted);
-  transition: color 0.2s ease, transform 0.2s var(--ease-out);
+  display: flex;
+  align-items: center;
+  height: 42px;
 }
 
-.proof__logo:hover {
-  color: var(--color-sage);
+.proof__logo a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.proof__logo img {
+  height: 34px;
+  max-width: 152px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) contrast(0.95) brightness(0.8);
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s var(--ease-out);
+}
+
+.proof__logo:hover img,
+.proof__logo:focus-within img {
+  opacity: 1;
+  filter: grayscale(0.1) contrast(1) brightness(1);
   transform: translateY(-2px);
 }
 
@@ -597,6 +649,273 @@ p {
 .pillar p {
   margin-bottom: 0;
   color: var(--color-text);
+}
+
+/* Capabilities: clickable left list + dynamic right stage --------------- */
+.capabilities {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: var(--space-lg);
+  align-items: start;
+  margin-top: var(--space-lg);
+}
+
+.cap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cap-item {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 1.15rem 1.25rem 1.15rem 1.35rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background-color 0.22s ease, border-color 0.22s ease,
+    transform 0.22s var(--ease-out);
+  font-family: var(--font-body);
+}
+
+.cap-item:hover {
+  background: rgba(74, 107, 82, 0.06);
+}
+
+.cap-item.is-active {
+  background: var(--color-sage-tint);
+  border-left-color: var(--color-sage);
+}
+
+.cap-item__num {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  padding-top: 0.35rem;
+  letter-spacing: 0.05em;
+}
+
+.cap-item.is-active .cap-item__num {
+  color: var(--color-sage);
+}
+
+.cap-item__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+
+.cap-item.is-active .cap-item__title {
+  color: var(--color-sage-dark);
+}
+
+.cap-item__desc {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--ease-out), opacity 0.3s ease,
+    margin-top 0.35s var(--ease-out);
+}
+
+.cap-item.is-active .cap-item__desc {
+  max-height: 12rem;
+  opacity: 1;
+}
+
+/* When JS is off, show every description so nothing is hidden. */
+html:not(.js) .cap-item__desc {
+  max-height: none;
+  opacity: 1;
+}
+
+/* Right-hand dynamic stage */
+.cap-stage {
+  position: sticky;
+  top: 90px;
+  min-height: 360px;
+}
+
+.cap-panel {
+  animation: cap-fade 0.4s var(--ease-out);
+}
+
+.cap-panel[hidden] {
+  display: none;
+}
+
+@keyframes cap-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cap-demo {
+  background: linear-gradient(160% 120% at 20% 0%, #21311f 0%, #16210f 100%);
+  background: radial-gradient(130% 120% at 10% 0%, #22331f 0%, #172310 100%);
+  border: 1px solid rgba(74, 107, 82, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.7);
+}
+
+.cap-demo__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cap-demo__chip {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0f1a0c;
+  background: var(--color-gold);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+}
+
+.cap-demo__tag {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-sage-tint);
+}
+
+.cap-demo__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+/* Demand: channel bars */
+.cap-demo__channels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  align-items: end;
+  height: 170px;
+}
+
+.cap-chan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--color-sage-tint);
+}
+
+.cap-chan i {
+  display: block;
+  width: 100%;
+  height: var(--h, 40%);
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, var(--color-gold), var(--color-sage));
+}
+
+.cap-demo__out {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--color-sage-tint);
+  border-top: 1px dashed rgba(220, 229, 218, 0.35);
+  padding-top: 0.85rem;
+}
+
+.cap-demo__out strong {
+  font-size: 1.4rem;
+  color: var(--color-bg);
+}
+
+/* Content: search + sources */
+.cap-demo__search {
+  background: rgba(250, 249, 246, 0.06);
+  border: 1px solid rgba(220, 229, 218, 0.3);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  color: var(--color-bg);
+  font-size: 1.05rem;
+}
+
+.cap-demo__answer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cap-demo__src {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--color-bg);
+  background: rgba(74, 107, 82, 0.55);
+  border: 1px solid rgba(220, 229, 218, 0.35);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+}
+
+/* PLG: funnel bars */
+.cap-demo__funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cap-demo__funnel span {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  width: var(--w, 100%);
+  padding-left: 1rem;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--color-bg);
+  background: linear-gradient(90deg, var(--color-sage), var(--color-terracotta));
+}
+
+/* Leader: team nodes */
+.cap-demo__team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.cap-node {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--color-bg);
+  background: rgba(250, 249, 246, 0.08);
+  border: 1px solid rgba(220, 229, 218, 0.35);
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
 }
 
 /* Metrics + growth curve -------------------------------------------------- */
@@ -706,16 +1025,24 @@ p {
 .stack {
   position: relative;
   overflow: hidden;
+  min-height: 720px;
+  padding-block: var(--space-lg);
+  background: radial-gradient(140% 100% at 15% 0%, #4c6f54 0%, #35492f 55%, #2c3d28 100%);
 }
 
-.stack__canvas-wrap {
+.stack .container {
   position: relative;
-  margin-top: var(--space-lg);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(220, 229, 218, 0.25);
-  background: radial-gradient(120% 120% at 50% 0%, #46654e 0%, #37503f 100%);
-  min-height: 340px;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Full-bleed knowledge-graph backdrop, no frame, spans the entire section. */
+.stack__canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .stack__canvas {
@@ -724,39 +1051,166 @@ p {
   height: 100%;
   position: absolute;
   inset: 0;
+  pointer-events: none;
 }
 
 .stack__nodes {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Cluster grouping labels (JS-generated, positioned absolutely) */
+.stack__group-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d68e77;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Accessible / no-JS fallback: grouped clusters as text */
+.stack__fallback {
   position: relative;
   z-index: 2;
-  min-height: 340px;
+  list-style: none;
+  margin: 0;
+  padding: 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.1rem;
+  background: rgba(20, 32, 18, 0.35);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(3px);
+}
+
+.stack__fallback li {
+  color: var(--color-bg);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.stack__cluster-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.15rem;
+}
+
+/* With JS on wide screens, the animated constellation replaces the list. */
+.js .stack__canvas-wrap[data-constellation] .stack__fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .stack__node {
+  --hover-influence: 0;
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
+    scale(calc(1 + var(--hover-influence) * 0.12));
+  cursor: default;
+  transition: transform 0.2s var(--ease-out);
+  z-index: 3;
+}
+
+.stack__node:hover,
+.stack__node:focus-visible {
+  transform: translate(-50%, -50%) scale(1.14);
+  z-index: 6;
+  outline: none;
+}
+
+/* Logo chip nodes: a circular tile with a small caption underneath. Content
+   is not clipped to the circle (object-fit: contain inside an inset square)
+   so wide wordmark logos stay fully legible. */
+.stack__node--logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.stack__node-chip {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1px solid rgba(220, 229, 218, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 22px -14px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stack__node--logo:hover .stack__node-chip,
+.stack__node--logo:focus-visible .stack__node-chip {
+  border-color: var(--color-gold);
+  box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.7);
+}
+
+.stack__node-chip img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.stack__node-chip.no-blend img {
+  mix-blend-mode: normal;
+}
+
+.stack__node-label {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-sage-tint);
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+/* Text-only fallback pill for tools with no logo asset yet. */
+.stack__node--text {
+  display: inline-block;
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--color-bg);
-  background: rgba(250, 249, 246, 0.08);
+  background: rgba(250, 249, 246, 0.1);
   border: 1px solid rgba(220, 229, 218, 0.35);
   border-radius: 999px;
   padding: 0.5rem 1rem;
   white-space: nowrap;
   backdrop-filter: blur(2px);
-  transition: background-color 0.25s ease, border-color 0.25s ease,
-    transform 0.25s var(--ease-out), color 0.25s ease;
-  cursor: default;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.stack__node:hover,
-.stack__node:focus-visible {
+.stack__node--text:hover,
+.stack__node--text:focus-visible {
   background: var(--color-gold);
   border-color: var(--color-gold);
   color: var(--color-text);
-  transform: translate(-50%, -50%) scale(1.08);
-  outline: none;
 }
 
 .stack .section__head h2,
@@ -1033,6 +1487,54 @@ p {
   .work-grid,
   .metrics__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Capabilities + stack responsive ----------------------------------------- */
+@media (max-width: 860px) {
+  .capabilities {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .cap-stage {
+    position: static;
+    min-height: 0;
+  }
+
+  .cap-item__desc {
+    max-height: none;
+    opacity: 1;
+  }
+}
+
+/* On narrow screens the animated knowledge graph is cramped, so show the
+   clean grouped list instead, back in normal document flow. */
+@media (max-width: 720px) {
+  .js .stack__canvas-wrap[data-constellation] .stack__fallback {
+    position: relative;
+    width: auto;
+    height: auto;
+    padding: 1.5rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .stack__canvas-wrap[data-constellation] .stack__nodes,
+  .stack__canvas-wrap[data-constellation] .stack__canvas {
+    display: none;
+  }
+
+  .stack__canvas-wrap {
+    position: relative;
+    inset: auto;
+  }
+
+  .stack {
+    min-height: 0;
+    display: block;
   }
 }
 

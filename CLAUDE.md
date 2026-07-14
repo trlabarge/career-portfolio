@@ -58,8 +58,14 @@ punctuated by confident full-bleed color-field sections.
   Layered mountain-inspired flat SVG shapes sit behind the hero.
 - Motion patterns (all in `/js/main.js`, all gated by `prefers-reduced-motion`):
   - Kinetic hero. Headline words fade and rise in with a stagger on load. The
-    final word rotates through variants (execute, ship, build, lead). The real
-    word ships in the DOM so no-JS and crawlers read the true copy.
+    final word rotates through variants (execute, ship, lead, grow). The real
+    word (execute) ships in the DOM so no-JS and crawlers read the true copy.
+    Only `html:not(.js) .rotator__word:first-child` forces a word visible with
+    no JS. With JS the rotator owns visibility (is-active / is-leaving), so do
+    not add a plain `:first-child` visible rule or the anchor word stacks under
+    the rotating one.
+  - Layered rolling hills sit behind the hero (`.hero__backdrop` SVG), several
+    soft bezier bands in palette tones. No clouds.
   - Reveal on scroll. Any element with class `reveal` fades up when scrolled
     into view. Hiding is gated behind an `html.js` class (set by an inline head
     script) so content is never hidden when JS is off. Stagger via
@@ -68,12 +74,140 @@ punctuated by confident full-bleed color-field sections.
     `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
     is the initial text so no-JS still shows it.
   - Scroll-progress bar, injected at the top of `<body>` by JS.
+- Interactive capabilities section (`.capabilities`, the "Four things I bring"
+  block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
+  tab/tabpanel, arrow-key navigable). The active item highlights and its
+  description expands. The right `.cap-stage` swaps a dynamic demo panel per
+  item. The demo panels are branded PLACEHOLDERS for now (channel bars, a
+  search/answer mock, a funnel, team nodes) each tagged "Interactive demo
+  coming soon"; real animations land later.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
-  - Tool-stack constellation (`.stack`). Tool pills drift slowly on a dark sage
-    field with connective lines drawn on a `<canvas>`, lighting up on hover.
-    Reinforces command of the modern stack.
+  - Tool-stack knowledge graph (`.stack`). Full-bleed, frameless: the canvas
+    and node layer (`.stack__canvas-wrap`) are `position: absolute; inset: 0`
+    directly on the `.stack` section (a sibling of `.container`, not nested
+    inside it), so the graph spans the entire section behind the heading/copy,
+    not a bordered card. `.stack` is capped at `min-height: 720px` with
+    `padding-block: var(--space-lg)` (not the default `--space-xl`) so the
+    whole graph fits in one viewport without scrolling on common laptop
+    heights (verified at 1366x768 and up); do not let this section grow much
+    taller than that budget.
+    JS builds the nodes from a cluster spec of 8 explicit, non-overlapping
+    rectangular cells (`{label, x0, x1, y0, y1, cols, tools}` in percent of
+    the panel) that tile the space below the headline in two rows of four,
+    sized roughly to each cluster's tool count so the grid reads as
+    deliberate rather than scattered. Cluster cells start at `y0: 34`
+    (row 1) / `y0: 66` (row 2), reserving the top ~30% for the headline/copy.
+    Each cluster's own tools are laid out in a small sub-grid inside its own
+    cell (`cols` columns, wrapping to more rows as needed, last row
+    centered), and the cluster label sits directly above that sub-grid using
+    the SAME cell geometry, so label-to-cluster proximity is guaranteed by
+    construction, not by hand-tuned offsets. `resolveQuietZone()` in
+    `constellation()` is a runtime safety net that nudges any node whose
+    fixed position still lands on the measured `.section__head` bounding
+    box, but the primary fix is the cell layout itself, not the nudge. Do
+    not go back to circular/radial per-cluster placement (angle + radius
+    fan-out); it looked organic but produced uneven gaps and nodes drifting
+    into neighboring clusters or the headline as the cell sizes changed.
+    Group labels (`.stack__group-label`) are terracotta (`#d68e77`, a
+    lightened terracotta for contrast against the dark green field), not the
+    original sage-tint, since sage-tint on sage was getting lost.
+    Nodes with a mapped logo render as a circular `.stack__node-chip` (60px,
+    `border-radius: 50%`, image `object-fit: contain` inside an inset square
+    so wide wordmark logos are not clipped by the circle, `mix-blend-mode:
+    multiply` to erase any opaque light background) with a small caption
+    below; tools with no logo file fall back to the original text pill
+    (`.stack__node--text`), so partial logo sets degrade gracefully. The
+    `.no-blend` chip modifier exists for a self-contained dark-tile logo
+    (skips the multiply blend rather than muddying a dark logo against a
+    white card) but nothing currently uses it, since Bolt's current logo is
+    a plain wordmark; keep the escape hatch in CSS for the next dark-tile
+    upload.
+    A dense ambient mesh (`mesh.points`/`mesh.edges` in `constellation()`,
+    rebuilt on every `resize()`) is drawn first, behind the meaningful cluster
+    graph: 70-170 points scattered across the full panel (scaled to area,
+    avoiding the measured text zone), each connected to its 2 nearest
+    neighbors, very low opacity, with a handful of small ambient pulses
+    traveling the mesh edges. This is pure background texture echoing a dense
+    knowledge-graph look; the warmer gold cluster/node lines stay the visually
+    dominant, meaningful layer on top of it.
+    Interaction: the panel tracks the pointer (`pointermove`/`pointerleave`
+    scoped to the panel, not `window`) and lerps a mouse position; each node's
+    `hoverInfluence` eases toward a proximity value derived from that position,
+    which (a) nudges the node a few px toward the cursor, (b) brightens/thickens
+    its connector line, and (c) draws a soft canvas glow behind it. Direct
+    `:hover`/`:focus-visible` on a node also scales it up via CSS
+    (`transform: scale(1.14)`), independent of the proximity field, so the
+    "logos grow a little" effect is guaranteed even without the ambient canvas
+    layer. Ambient pulses travel along each node-to-cluster-center line
+    (`pulses` array) for continuous life. Under `prefers-reduced-motion`,
+    drift/pull/pulses (both cluster and mesh) are disabled but the pointer
+    still triggers an instant (non-eased) redraw on move, since that is
+    discrete user-driven feedback, not automatic motion.
+    A grouped `.stack__fallback` list is the accessible/no-JS view and also
+    replaces the whole graph on narrow screens (`max-width: 720px`), where
+    `.stack__canvas-wrap` reverts to `position: relative` (normal flow) so the
+    list contributes real height instead of sitting inside an absolutely
+    positioned, zero-height wrapper.
+
+### Logo assets
+
+- `/assets/brand-logos/` and `/assets/tools-logos/` hold the raw files Tim
+  uploads (original filenames, sizes, and formats, left untouched for
+  provenance). `/assets/brand-logos/<kebab-case-name>.{svg,png}` and
+  `/assets/tools-logos/<kebab-case-name>.{png,svg}` are the **site-ready,
+  processed** versions actually referenced by the site: tightly cropped to
+  their content bounding box, downscaled to a max dimension of 440px, and
+  normalized to PNG (except true source SVGs, copied as-is). Sources with a
+  fully opaque (non-transparent) background additionally get a near-white
+  pixel strip pass (`strip_near_white()`, tolerance ~14) so the file itself
+  has real alpha transparency, not just an opaque white/near-white fill.
+  This matters: the CSS monochrome treatment applies `brightness(0.8)`
+  before the multiply blend, which darkens an opaque white background to
+  visible gray (this caused the ConstructConnect/Rockport/On Center "gray
+  box" bug); real transparency sidesteps it entirely since filters never
+  touch alpha-0 pixels. Regenerate a processed file by re-running the same
+  trim-to-bbox + white-strip (if opaque) + downscale + PNG-export steps
+  against a replacement source; there is no build step wired up for this,
+  it was done manually with Pillow during asset intake.
+- Brand strip (`.proof`) is a full-bleed, seamlessly looping marquee, not a
+  static wrapped row: `.proof__track` (`overflow: hidden`, edge fade via
+  `mask-image`) contains one `.proof__logos` flex row holding the full logo
+  set TWICE back to back (the second copy is `aria-hidden="true"` on each
+  `<li>`, real alt text only on the first copy), animated via
+  `@keyframes proof-scroll` from `translateX(0)` to `translateX(-50%)` on a
+  `linear infinite` loop, so it repeats seamlessly with no snap. Pausable on
+  `:hover`/`:focus-within`. Under `prefers-reduced-motion` the animation is
+  removed, the duplicate copy is hidden (`display: none`), and the single
+  real copy wraps in a centered flex-wrap grid instead, same as before the
+  marquee existed. Each `.proof__logo img` renders in one unified tone via
+  `filter: grayscale(1) contrast(0.95) brightness(0.8)` plus
+  `mix-blend-mode: multiply`, full color revealed on hover/focus. Do not
+  hand-recolor source files, the CSS treatment normalizes tone uniformly
+  regardless of source aspect ratio or background (see the white-strip note
+  above for why the source file's transparency still matters).
+- Tool nodes: see the interaction notes above. The `LOGOS` map inside
+  `constellation()` in `/js/main.js` is the single source of truth for which
+  tool maps to which processed file; a tool absent from that map automatically
+  renders as a text pill, so adding a new logo is just adding one map entry
+  plus dropping the processed PNG/SVG in `/assets/tools-logos/`.
+- Known gaps as of this writing: several uploaded extras (Conductor, Cursor,
+  Zapier, BrightEdge, LinkedIn Ads, Make, PhantomBuster) are not wired into
+  any current section, kept in the raw folders for possible future use (e.g.
+  case study pages). The brand strip currently includes every uploaded brand
+  logo (Puma, Hugo Boss, ConstructConnect, CEI, Rockport, On Center,
+  PlanSwift, SmartBid, Implicit, Inkwell, Cole Haan), each linking out to the
+  brand's own site (`target="_blank" rel="noopener noreferrer"`, real `<a>`
+  only on the first (non-duplicate) copy of each logo so the marquee's
+  seamless-loop duplicate isn't a second identical tab stop). Solstice
+  Sunglasses was removed from the strip entirely per explicit request
+  (source file still in the raw folder
+  for provenance, just not referenced). If a future upload shouldn't be a
+  public "brands I've helped grow" logo, pull it from the marquee markup in
+  `index.html` rather than assuming it's excluded by default.
+- Pardot was removed from the CRM & MOPs cluster and the accessible fallback
+  list entirely (not kept as a text-pill placeholder) per explicit request.
 - Keep it flat (no skeuomorphic gloss), fast (CSS animations and lightweight
   vanilla JS, no libraries), and accessible (contrast on color fields, keyboard
   navigable, reduced-motion honored). Motion frames the proof, it never delays
