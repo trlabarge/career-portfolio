@@ -1270,7 +1270,7 @@ html:not(.js) .cap-item__desc {
   display: grid;
   grid-template-columns: minmax(180px, 240px) 1fr;
   gap: var(--space-lg);
-  align-items: start;
+  align-items: stretch;
 }
 
 .about-photo {
@@ -1279,7 +1279,6 @@ html:not(.js) .cap-item__desc {
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  aspect-ratio: 3 / 4;
   border: 1.5px dashed var(--color-sage);
   border-radius: var(--radius-lg);
   background-color: var(--color-sage-tint);
@@ -1360,15 +1359,21 @@ html:not(.js) .cap-item__desc {
 /* About page: How I Lead photo placeholder + heading -----------------------*/
 .lead-head-grid {
   display: grid;
-  grid-template-columns: minmax(170px, 220px) 1fr;
+  grid-template-columns: 1fr minmax(170px, 220px);
   gap: var(--space-lg);
-  align-items: center;
+  align-items: stretch;
   margin-bottom: var(--space-md);
+}
+
+.lead-photo {
+  display: flex;
+  flex-direction: column;
 }
 
 .lead-photo__stack {
   position: relative;
-  aspect-ratio: 3 / 4;
+  flex: 1;
+  min-height: 200px;
 }
 
 .lead-photo__panel {
@@ -1429,6 +1434,10 @@ html:not(.js) .cap-item__desc {
 }
 
 .card-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid--2x2 {
   grid-template-columns: repeat(2, 1fr);
 }
 
