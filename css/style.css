@@ -1803,26 +1803,39 @@ html:not(.js) .cap-item__desc {
   margin-top: 0;
 }
 
+/* Number sits on its own line above the heading. Setting them side by side
+   meant a two-line heading straddled the numeral with no shared alignment
+   edge, which read as a mistake. Stacked, both share a left edge and a
+   consistent vertical rhythm no matter how the heading wraps. */
 .step__head {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 .step__num {
-  flex: none;
+  display: block;
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-size: 0.95rem;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.18em;
   color: var(--color-gold);
+  margin-bottom: 0.7rem;
+}
+
+.step__num::after {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  background-color: var(--color-gold);
 }
 
 .step__head h3 {
   margin: 0;
-  max-width: 22ch;
+  max-width: 24ch;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.15;
 }
 
 .step__body {
@@ -1867,14 +1880,170 @@ html:not(.js) .cap-item__desc {
   margin: 0;
 }
 
-.figure-grid .figure img {
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: top center;
+.figure-grid .figure figcaption strong {
+  color: var(--color-text);
 }
 
-.figure-grid--3 .figure figcaption strong,
-.figure-grid--2 .figure figcaption strong {
+/* Screenshot frame.
+   These sources are archival captures at wildly different aspect ratios and
+   modest pixel dimensions. Cropping them to a shared aspect (object-fit:
+   cover) sliced headlines and forms in half, and stretching them past native
+   size made them mushy. So: a fixed-height stage, object-fit: contain, and a
+   browser chrome bar. Nothing is ever cropped, nothing is ever upscaled past
+   1x, and the ragged set reads as a deliberate collection of product shots. */
+.shot__frame {
+  border: 1px solid rgba(74, 107, 82, 0.18);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 20px 44px -30px rgba(43, 43, 43, 0.5);
+}
+
+.shot__bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding-inline: 0.7rem;
+  background-color: var(--color-cream);
+  border-bottom: 1px solid rgba(74, 107, 82, 0.14);
+}
+
+.shot__bar span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: rgba(43, 43, 43, 0.16);
+}
+
+.shot__stage {
+  height: var(--shot-h, 340px);
+  padding: 0.75rem;
+  background-color: #fff;
+}
+
+/* Fill the stage box and letterbox inside it. Sizing the image intrinsically
+   and relying on max-height: 100% does not constrain reliably, since the
+   percentage resolves against a track height the image itself is sizing. */
+.shot__stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Dense captures (the audit grid) are only legible at roughly 1:1, so this
+   variant drops the fixed stage and lets the image run at its natural size. */
+.shot--full .shot__stage {
+  height: auto;
+  padding: 0;
+}
+
+.shot--full .shot__stage img {
+  height: auto;
+  object-fit: fill;
+}
+
+.shot figcaption {
+  margin-top: 0.75rem;
+}
+
+.figure-grid--2 { --shot-h: 430px; }
+.figure-grid--3 { --shot-h: 360px; }
+
+/* Audit scorecard: the four-metric chain, as a diagram rather than a
+   screenshot of the spreadsheet it came from. */
+.chain {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+}
+
+.chain__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.chain__step {
+  position: relative;
+  padding: var(--space-sm);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.2);
+  border-radius: var(--radius);
+}
+
+/* Connector arrow between cards, drawn in the gap. */
+.chain__step + .chain__step::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(var(--space-md) * -1);
+  width: var(--space-md);
+  height: 2px;
+  background-color: rgba(74, 107, 82, 0.3);
+}
+
+.chain__step + .chain__step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.55rem;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid rgba(74, 107, 82, 0.45);
+  border-right: 2px solid rgba(74, 107, 82, 0.45);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.chain__step--final {
+  border-color: var(--color-terracotta);
+  border-width: 2px;
+}
+
+.chain__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-sage);
+  margin-bottom: 0.4rem;
+}
+
+.chain__step--final .chain__num {
+  color: var(--color-terracotta);
+}
+
+.chain__step b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+}
+
+.chain__step span:last-child {
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.chain__note {
+  margin: var(--space-md) 0 0;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.chain__note strong {
   color: var(--color-text);
 }
 
@@ -2471,9 +2640,22 @@ html:not(.js) .cap-item__desc {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .chart-grid,
-  .figure-grid--3 {
+  .chart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .figure-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chain__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Only the horizontal neighbours keep a connector once the chain wraps. */
+  .chain__step:nth-child(3)::before,
+  .chain__step:nth-child(3)::after {
+    display: none;
   }
 
   .variant-grid {
@@ -2513,8 +2695,20 @@ html:not(.js) .cap-item__desc {
   .readout,
   .result-list,
   .case-nav,
-  .figure-grid--2 {
+  .figure-grid--2,
+  .figure-grid--3,
+  .chain__list {
     grid-template-columns: 1fr;
+  }
+
+  .chain__step + .chain__step::before,
+  .chain__step + .chain__step::after {
+    display: none;
+  }
+
+  .figure-grid--2,
+  .figure-grid--3 {
+    --shot-h: 380px;
   }
 
   .variant-grid {
