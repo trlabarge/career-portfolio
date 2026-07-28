@@ -1805,13 +1805,15 @@ html:not(.js) .cap-item__desc {
   max-width: 16ch;
 }
 
-/* Client logo, linked to the company's own site. Sits above the eyebrow so
-   it reads as attribution rather than another nav-level link. */
+/* Client logo, linked to the company's own site. Lives inside the "Company"
+   meta cell in place of the plain company name, with a one-line description
+   underneath, rather than as a separate hero-level element. */
 .case-hero__brand {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: var(--space-md);
+  gap: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
   text-decoration: none;
   color: var(--color-text-muted);
   font-size: 0.86rem;
@@ -1834,6 +1836,12 @@ html:not(.js) .cap-item__desc {
   width: 14px;
   height: 14px;
   flex: none;
+}
+
+.case-meta__sub {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--color-text-muted);
 }
 
 .case-hero .lede {
