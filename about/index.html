@@ -69,13 +69,224 @@
   </header>
 
   <main id="main">
+    <!-- Pull quote opener (doubles as the page's H1) -->
+    <section class="section section--narrow quote-hero">
+      <div class="container">
+        <p class="quote-hero__mark reveal" aria-hidden="true">&ldquo;</p>
+        <h1 class="quote-hero__text reveal">The best marketing doesn&rsquo;t feel like marketing.</h1>
+      </div>
+    </section>
+
+    <!-- Why Marketing -->
     <section class="section section--narrow">
       <div class="container">
-        <h1 class="reveal">About Me</h1>
-        <span class="coming-soon reveal" style="--reveal-delay:120ms">Content coming soon</span>
-        <div class="resume-cta reveal" style="--reveal-delay:160ms">
-          <p>Want the short version first?</p>
+        <div class="section__head reveal">
+          <p class="eyebrow">Why marketing</p>
+          <h2>Building things that didn&rsquo;t exist yet.</h2>
+          <p class="lede">I&rsquo;ve spent my career building things that didn&rsquo;t exist yet, then figuring out how to get people to care. Turns out that&rsquo;s most of the job.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-photo reveal">
+            <svg class="about-photo__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" stroke-linejoin="round"/>
+              <circle cx="12" cy="13.5" r="3.25"/>
+            </svg>
+            <span class="about-photo__label">Photo coming soon</span>
+          </div>
+
+          <div class="hit-list">
+            <div class="hit-block reveal">
+              <p><strong>Made from nothing.</strong> I got into marketing because I like creating. I am driven by the process and the act of making something from nothing.</p>
+            </div>
+            <div class="hit-block reveal" style="--reveal-delay:80ms">
+              <p><strong>Then pipeline showed up.</strong> Somewhere in the last 15 years, a second personality showed up. Turns out it&rsquo;s one that cares about pipeline, ARR, and whether a campaign actually worked. The creative kid never left. He just got a day job in revenue.</p>
+            </div>
+            <div class="hit-block reveal" style="--reveal-delay:160ms">
+              <p><strong>The timeshare problem.</strong> Most marketing feels like being cornered at a party by someone selling a timeshare.</p>
+            </div>
+            <div class="hit-block reveal" style="--reveal-delay:240ms">
+              <p><strong>Good marketing hides.</strong> The good stuff doesn&rsquo;t feel like marketing at all. It&rsquo;s just useful, at the right moment, for the right person, often before they&rsquo;ve fully realized they needed it. Everything else is decoration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How I Lead -->
+    <section class="section section--tint">
+      <div class="container">
+        <div class="lead-head-grid">
+          <div class="section__head">
+            <p class="eyebrow">How I lead</p>
+            <h2>Player coach, literally.</h2>
+            <p class="lede">I&rsquo;m a player coach, and I mean that literally.</p>
+          </div>
+
+          <div class="lead-photo reveal">
+            <div class="lead-photo__stack">
+              <div class="lead-photo__panel lead-photo__panel--back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="m15 9-4 2-2 4 4-2Z"/>
+                </svg>
+                <span>Casual</span>
+              </div>
+              <div class="lead-photo__panel lead-photo__panel--front">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="8" width="18" height="11" rx="1.5"/>
+                  <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  <line x1="3" y1="13" x2="21" y2="13"/>
+                </svg>
+                <span>Business</span>
+              </div>
+            </div>
+            <p class="lead-photo__caption">Photos coming soon, strategy meets execution</p>
+          </div>
+        </div>
+
+        <div class="card-grid card-grid--4 card-grid--2x2">
+          <div class="icon-card reveal">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="8"/>
+              <circle cx="12" cy="12" r="3.2"/>
+            </svg>
+            <h3 class="icon-card__title">Close to the work.</h3>
+            <p class="icon-card__desc">Staying close to the actual work means I know what&rsquo;s working, what&rsquo;s quietly on fire, and what we&rsquo;re paying for that nobody uses.</p>
+          </div>
+          <div class="icon-card reveal" style="--reveal-delay:80ms">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="9" cy="12" r="6"/>
+              <circle cx="15" cy="12" r="6"/>
+            </svg>
+            <h3 class="icon-card__title">Hire well, then get out of the way.</h3>
+            <p class="icon-card__desc">I hire people I trust and then leave them alone, mostly. I&rsquo;ll teach, unblock, and occasionally rescue, but I don&rsquo;t hover. Hovering usually means you hired the wrong person, or don&rsquo;t trust the right one.</p>
+          </div>
+          <div class="icon-card reveal" style="--reveal-delay:160ms">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2"/>
+              <line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/>
+              <line x1="4" y1="17" x2="20" y2="17"/><circle cx="11" cy="17" r="2"/>
+            </svg>
+            <h3 class="icon-card__title">Pick the right tool.</h3>
+            <p class="icon-card__desc">The most useful skill right now, AI or no AI, is knowing what&rsquo;s worth building and picking the right tool for the job. I&rsquo;ve leaned on that to get a lot done with small teams, which is either efficient or a symptom of never having a big enough budget. Possibly both.</p>
+          </div>
+          <div class="icon-card reveal" style="--reveal-delay:240ms">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="18" r="2.4"/>
+              <line x1="7.8" y1="8.7" x2="10.4" y2="16"/><line x1="16.2" y1="8.7" x2="13.6" y2="16"/><line x1="8.4" y1="7" x2="15.6" y2="7"/>
+            </svg>
+            <h3 class="icon-card__title">Harmony over silos.</h3>
+            <p class="icon-card__desc">I also happen to like harmony, which sounds soft until you&rsquo;ve worked somewhere without it. Marketing operating in its own silo, disconnected from sales, product, and customer success, is a special kind of chaos. I&rsquo;d rather we all just talk to each other.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- A few highlights: animated stat strip -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">A few highlights</p>
+          <h2>The numbers, if you&rsquo;re skimming.</h2>
+        </div>
+
+        <div class="stat-strip">
+          <div class="stat-card reveal">
+            <p class="metric__value" data-count="2100" data-suffix="+">2,100+</p>
+            <p class="metric__label">Users on Implicit&rsquo;s PLG platform, a GTM motion I built from scratch.</p>
+          </div>
+          <div class="stat-card reveal" style="--reveal-delay:90ms">
+            <p class="stat-card__from">from $34.7M</p>
+            <p class="metric__value" data-count="47.4" data-decimals="1" data-prefix="$" data-suffix="M">$47.4M</p>
+            <p class="metric__label">CEI&rsquo;s Technology Solutions business, grown under my marketing leadership.</p>
+          </div>
+          <div class="stat-card reveal" style="--reveal-delay:180ms">
+            <p class="metric__value" data-count="5.5" data-decimals="1" data-prefix="$" data-suffix="M">$5.5M</p>
+            <p class="metric__label">Incremental ARR from a ConstructConnect PPC and conversion project.</p>
+          </div>
+          <div class="stat-card reveal" style="--reveal-delay:270ms">
+            <p class="metric__value" data-count="10" data-suffix="x">10x</p>
+            <p class="metric__label">Growth in CEI marketing pipeline, launched right as ChatGPT and GenAI exploded.</p>
+          </div>
+        </div>
+
+        <div class="highlight-list">
+          <div class="reveal">
+            <p><a href="https://www.implicit.cloud/" target="_blank" rel="noopener noreferrer" aria-label="Implicit (opens in a new tab)"><strong>Implicit.</strong></a> Led the full rebrand from Agolo to Implicit, building a new go-to-market motion, website, nurturing, and onboarding, the whole shebang. Grew qualified traffic 350 percent and helped land the company&rsquo;s first B2B deals and PLG upgrades.</p>
+          </div>
+          <div class="reveal" style="--reveal-delay:80ms">
+            <p><a href="https://cei.ai/" target="_blank" rel="noopener noreferrer" aria-label="CEI (opens in a new tab)"><strong>CEI.</strong></a> Built the AI go-to-market strategy right as ChatGPT et al took the world by storm, which felt a bit like refitting a plane mid flight. Generated millions in pipeline.</p>
+          </div>
+          <div class="reveal" style="--reveal-delay:160ms">
+            <p><a href="https://www.constructconnect.com/" target="_blank" rel="noopener noreferrer" aria-label="ConstructConnect (opens in a new tab)"><strong>ConstructConnect.</strong></a> Started as an individual contributor and worked my way up to Director leading acquisition and retention across all business units. Teamed up with Product to grow qualified leads 6.5x through smarter cross-sell and upsell targeting.</p>
+          </div>
+          <div class="reveal" style="--reveal-delay:240ms">
+            <p><strong>Before all that.</strong> I spent my early years deep in SEO and lead gen, growing leads 70 percent and organic traffic 40 percent, back when &ldquo;SEO&rdquo; still sounded like a made-up word to most people.</p>
+          </div>
+        </div>
+
+        <div class="resume-cta reveal">
+          <p>Full resume here, for anyone who wants the long version.</p>
           <a class="btn btn--ghost" href="/assets/resume.pdf">Download Resume</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Outside of Work + Education -->
+    <section class="section section--tint">
+      <div class="container">
+        <div class="card-grid card-grid--2">
+          <div class="icon-card reveal">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 18 9 8l4 6 2-3 6 7Z"/>
+            </svg>
+            <h3 class="icon-card__title">Outside of work</h3>
+            <p class="icon-card__desc">I write, build the occasional app or side project, cook more ambitiously than my family requests, and play and coach sports. I have four kids, which is its own leadership role and comes with considerably worse pay. I prefer mountains to beaches, for reasons I&rsquo;ve never fully understood myself, given that I&rsquo;ve lived in the Midwest for most of my life. In the evenings of fall and spring, you&rsquo;re likely to find me around a firepit with a glass of whiskey and some friends.</p>
+          </div>
+          <div class="icon-card reveal" style="--reveal-delay:90ms">
+            <svg class="icon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5 2 9.5 12 14l10-4.5Z"/>
+              <path d="M6 11.5V17c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5"/>
+              <path d="M21 9.5V15"/>
+            </svg>
+            <h3 class="icon-card__title">Education</h3>
+            <p class="icon-card__desc">BA, University of Notre Dame, where four years of Saturdays in the fall installed a permanent, mostly irrational fanhood for Notre Dame football. It is rarely rewarded, but for better or worse it also doesn&rsquo;t waver.</p>
+            <p class="icon-card__desc">MBA, Xavier University, where I learned that marketing only works when it happens in tandem with the rest of the organization.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What's Next -->
+    <section class="section section--terracotta">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow" style="color:#F2EFE7">What&rsquo;s next</p>
+          <h2>Still figuring things out, in real time.</h2>
+          <p class="lede" style="color:var(--color-bg)">I do my best work at companies still figuring things out in real time. Places building something new, comfortable with a little chaos, where marketing sits at the table with product, sales, and customer success instead of waiting for instructions from it. Bonus points for a mission worth getting out of bed for and a team that actually likes each other.</p>
+        </div>
+        <div class="cta-split reveal">
+          <div class="cta-card">
+            <svg class="cta-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 3h7l4 4v14H7Z"/>
+              <path d="M14 3v4h4"/>
+              <line x1="9.5" y1="12" x2="16" y2="12"/>
+              <line x1="9.5" y1="15" x2="16" y2="15"/>
+              <line x1="9.5" y1="18" x2="14" y2="18"/>
+            </svg>
+            <p>For the deep readers who want the drawn-out resume version of all this.</p>
+            <a class="btn btn--primary" href="/assets/resume.pdf">Download Resume</a>
+          </div>
+          <div class="cta-card cta-card--coffee">
+            <svg class="cta-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/>
+              <path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H17"/>
+              <path d="M8 4c-.5.8-.5 1.4 0 2M11.5 4c-.5.8-.5 1.4 0 2"/>
+            </svg>
+            <p>I&rsquo;m always happy to meet interesting people for coffee, in person or virtually.</p>
+            <a class="btn btn--ghost" href="/contact">Get In Touch</a>
+          </div>
         </div>
       </div>
     </section>
