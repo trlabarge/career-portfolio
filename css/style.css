@@ -211,6 +211,20 @@ p {
   color: var(--color-bg);
 }
 
+/* Available to screen readers, removed from the visual layout. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .skip-link {
   position: absolute;
   left: -999px;
@@ -1730,6 +1744,801 @@ html:not(.js) .cap-item__desc {
   font-size: 0.9rem;
   color: var(--color-sage-tint);
   margin: 0;
+}
+
+/* ==========================================================================
+   Case study pages
+   Shared template used by every study under /the-work/. Hero + meta, numbered
+   steps, figures, single-series charts, results field, stack row, prev/next.
+   ========================================================================== */
+
+/* Hero + metadata --------------------------------------------------------- */
+.case-hero {
+  padding-bottom: var(--space-lg);
+}
+
+.case-hero h1 {
+  max-width: 16ch;
+}
+
+.case-hero .lede {
+  max-width: 46ch;
+}
+
+.case-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 0;
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(74, 107, 82, 0.22);
+}
+
+.case-meta div {
+  margin: 0;
+}
+
+.case-meta dt {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+  margin-bottom: 0.35rem;
+}
+
+.case-meta dd {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--color-text-muted);
+}
+
+/* Numbered steps ---------------------------------------------------------- */
+.step {
+  margin-top: var(--space-xl);
+}
+
+.step:first-child {
+  margin-top: 0;
+}
+
+.step__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.step__num {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-gold);
+}
+
+.step__head h3 {
+  margin: 0;
+  max-width: 22ch;
+}
+
+.step__body {
+  max-width: 68ch;
+}
+
+.step__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Figures ----------------------------------------------------------------- */
+.figure {
+  margin: var(--space-lg) 0 0;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(74, 107, 82, 0.2);
+  border-radius: var(--radius);
+  background-color: #fff;
+}
+
+.figure figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.figure-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 0;
+}
+
+.figure-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.figure-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+.figure-grid .figure {
+  margin: 0;
+}
+
+.figure-grid .figure img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.figure-grid--3 .figure figcaption strong,
+.figure-grid--2 .figure figcaption strong {
+  color: var(--color-text);
+}
+
+/* Charts: shared shell ---------------------------------------------------- */
+.chart {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+}
+
+.chart__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.chart__note {
+  margin: 0 0 var(--space-md);
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+.chart__note:last-child {
+  margin: var(--space-sm) 0 0;
+}
+
+/* A note that captions the block above it rather than introducing one below. */
+.variant-grid + .chart__note,
+.readout + .chart__note,
+.figure-grid + .chart__note {
+  margin-top: var(--space-sm);
+}
+
+.chart-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 0;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+}
+
+.chart-grid .chart {
+  margin: 0;
+  height: 100%;
+}
+
+/* Charts: horizontal bars (one series, one hue, always direct-labeled) ----- */
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bar__label {
+  display: block;
+  font-size: 0.88rem;
+  margin-bottom: 0.3rem;
+}
+
+.bar__row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.bar__track {
+  flex: 1 1 auto;
+  height: 14px;
+  border-radius: 3px;
+  background-color: rgba(74, 107, 82, 0.12);
+  overflow: hidden;
+}
+
+.bar__fill {
+  display: block;
+  height: 100%;
+  width: var(--pct, 0%);
+  border-radius: 0 3px 3px 0;
+  background-color: var(--color-sage);
+  transform-origin: left center;
+}
+
+.bar__value {
+  flex: none;
+  min-width: 3.6rem;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.js .bar__fill {
+  transform: scaleX(0);
+  transition: transform 0.85s var(--ease-out);
+  transition-delay: var(--bar-delay, 0ms);
+}
+
+.js .reveal.is-visible .bar__fill {
+  transform: scaleX(1);
+}
+
+/* Charts: growth curve ---------------------------------------------------- */
+.growth {
+  position: relative;
+}
+
+/* Holds the plot and, on narrow screens, scrolls it sideways so 26 weekly
+   points stay legible instead of collapsing into a smear. */
+.growth__plot {
+  position: relative;
+}
+
+.growth__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.growth__grid line {
+  stroke: rgba(74, 107, 82, 0.16);
+  stroke-width: 1;
+}
+
+.growth__ylabels text,
+.growth__xlabels text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  fill: var(--color-text-muted);
+}
+
+.growth__band {
+  fill: rgba(201, 160, 81, 0.08);
+}
+
+.growth__area {
+  fill: rgba(74, 107, 82, 0.14);
+}
+
+.growth__line {
+  fill: none;
+  stroke: var(--color-sage);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.growth__marker {
+  stroke: var(--color-gold);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.growth__peak {
+  fill: var(--color-sage);
+  stroke: var(--color-cream);
+  stroke-width: 2;
+}
+
+.growth__peaklabel {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--color-text);
+}
+
+.growth__hits rect {
+  fill: transparent;
+}
+
+/* The line draws itself in when the chart scrolls into view. */
+.js .growth__line {
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 2600;
+}
+
+.js .reveal.is-visible .growth__line {
+  transition: stroke-dashoffset 1.9s var(--ease-out);
+  stroke-dashoffset: 0;
+}
+
+.js .growth__area,
+.js .growth__peak,
+.js .growth__peaklabel,
+.js .growth__marker,
+.js .growth__band {
+  opacity: 0;
+  transition: opacity 0.6s ease 1s;
+}
+
+.js .reveal.is-visible .growth__area,
+.js .reveal.is-visible .growth__peak,
+.js .reveal.is-visible .growth__peaklabel,
+.js .reveal.is-visible .growth__marker,
+.js .reveal.is-visible .growth__band {
+  opacity: 1;
+}
+
+/* Annotation sits over the chart, anchored to the late-April marker. */
+.growth__annotation {
+  position: absolute;
+  left: 63.5%;
+  top: 4%;
+  width: min(30%, 15rem);
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--color-gold);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+/* Only meaningful once the plot is a scroll container, so hidden by default. */
+.growth__hint {
+  display: none;
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.growth__annotation strong {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.growth__tip {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -125%);
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.growth__tip.is-on {
+  opacity: 1;
+}
+
+.growth__tip b {
+  font-family: var(--font-display);
+}
+
+.growth__cursor {
+  position: absolute;
+  z-index: 2;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background-color: var(--color-sage);
+  box-shadow: 0 0 0 2px var(--color-cream);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.growth__cursor.is-on {
+  opacity: 1;
+}
+
+/* Every chart ships its numbers as a real table too. */
+.chart__data {
+  margin-top: var(--space-sm);
+  font-size: 0.86rem;
+}
+
+.chart__data summary {
+  cursor: pointer;
+  color: var(--color-sage);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.chart__data table {
+  width: 100%;
+  margin-top: 0.75rem;
+  border-collapse: collapse;
+}
+
+.chart__data th,
+.chart__data td {
+  padding: 0.3rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(74, 107, 82, 0.14);
+}
+
+.chart__data td:last-child,
+.chart__data th:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Multivariate test grid -------------------------------------------------- */
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 0;
+}
+
+.variant {
+  margin: 0;
+}
+
+.variant__frame {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--color-bg);
+  overflow: hidden;
+}
+
+.variant__frame--cool {
+  background: linear-gradient(170deg, #3d5a63 0%, #24424f 100%);
+}
+
+.variant__frame--warm {
+  background: linear-gradient(170deg, #b9714f 0%, #8f4c33 100%);
+}
+
+.variant__logo {
+  height: 6px;
+  width: 42%;
+  border-radius: 3px;
+  background-color: rgba(250, 249, 246, 0.75);
+}
+
+.variant__headline {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.variant__headline em {
+  font-style: normal;
+  color: var(--color-gold);
+}
+
+.variant__form {
+  margin-top: auto;
+  background-color: rgba(250, 249, 246, 0.94);
+  border-radius: 2px;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.variant__form span {
+  display: block;
+  height: 5px;
+  border-radius: 1px;
+  background-color: rgba(43, 43, 43, 0.16);
+}
+
+/* Scoped so it wins over the generic field rule above. */
+.variant__form .variant__cta {
+  margin-top: 3px;
+  height: 9px;
+  border-radius: 1px;
+  background-color: #d97b2e;
+}
+
+/* The circled network stats that ran below the form on every live variant. */
+.variant__proof {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.3rem;
+  padding-top: 0.6rem;
+}
+
+.variant__proof b {
+  flex: 1 1 0;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(250, 249, 246, 0.55);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.variant figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.variant figcaption strong {
+  display: block;
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+/* Dashboard-style stat readout -------------------------------------------- */
+.readout {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin: 0;
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.18);
+  border-radius: var(--radius-lg);
+}
+
+.readout div {
+  margin: 0;
+}
+
+.readout dt {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 0.2rem;
+  order: 2;
+}
+
+.readout dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.readout div {
+  display: flex;
+  flex-direction: column;
+}
+
+.readout dd { order: 1; }
+
+.readout .readout--lift dd {
+  color: var(--color-sage);
+}
+
+/* Results on a full-bleed color field -------------------------------------- */
+.result-list {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.result-list li {
+  padding-top: var(--space-sm);
+  border-top: 2px solid rgba(250, 249, 246, 0.45);
+}
+
+.result-list .metric__value {
+  color: var(--color-bg);
+}
+
+.result-list .metric__label {
+  color: rgba(250, 249, 246, 0.86);
+  margin: 0;
+}
+
+/* Stack row --------------------------------------------------------------- */
+.stack-row {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.stack-row li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 6.75rem;
+}
+
+/* Wide wordmarks and square marks share one box, so a wordmark is not shrunk
+   to nothing just to fit a square. */
+.stack-row img {
+  width: 84px;
+  height: 42px;
+  object-fit: contain;
+  filter: grayscale(1) contrast(0.95) brightness(0.85);
+  mix-blend-mode: multiply;
+  transition: filter 0.25s ease;
+}
+
+.stack-row li:hover img {
+  filter: none;
+}
+
+/* Fallback tile for a tool with no logo file, same footprint as the images. */
+.stack-row__text {
+  width: 84px;
+  height: 42px;
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  background-color: var(--color-sage-tint);
+  color: var(--color-sage-dark);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.stack-row span {
+  font-size: 0.78rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* Prev / next case study --------------------------------------------------- */
+.case-nav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.case-nav__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: var(--space-md);
+  border: 1px solid rgba(74, 107, 82, 0.2);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.22s var(--ease-out), border-color 0.22s ease,
+    box-shadow 0.22s var(--ease-out);
+}
+
+.case-nav__link:hover,
+.case-nav__link:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--color-sage);
+  box-shadow: 0 20px 36px -22px rgba(43, 43, 43, 0.32);
+}
+
+.case-nav__link--next {
+  text-align: right;
+}
+
+.case-nav__dir {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+}
+
+.case-nav__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Case study responsive ---------------------------------------------------- */
+@media (max-width: 900px) {
+  .case-meta {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-grid,
+  .figure-grid--3 {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* The annotation would sit on top of the peak at this width, so it drops
+     below the plot and loses its absolute anchoring. */
+  .growth__annotation {
+    position: static;
+    width: auto;
+    margin-top: var(--space-sm);
+    border-left: 0;
+    border-top: 2px solid var(--color-gold);
+    padding: 0.6rem 0 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .growth__plot {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .growth__svg {
+    min-width: 620px;
+    overflow: hidden;
+  }
+
+  .growth__hint {
+    display: block;
+  }
+}
+
+@media (max-width: 620px) {
+  .case-meta,
+  .readout,
+  .result-list,
+  .case-nav,
+  .figure-grid--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* One per row, so cap the width rather than squash the aspect. A short
+     frame clipped the network-stat circles off the bottom. */
+  .variant__frame {
+    max-width: 300px;
+  }
+
+  .variant figcaption {
+    max-width: 300px;
+  }
+
+  .case-nav__link--next {
+    text-align: left;
+  }
+
+  .step__head {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
 }
 
 /* Mountain dividers ------------------------------------------------------- */

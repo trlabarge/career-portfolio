@@ -635,4 +635,69 @@
       start();
     }
   })();
+
+  /* --- Case study growth chart hover ------------------------------------- */
+  /* The chart itself is static SVG in the markup, so it renders with no JS and
+     is fully crawlable. This only adds the crosshair dot and tooltip. */
+  (function growthChart() {
+    var charts = document.querySelectorAll('[data-growth]');
+    if (!charts.length) return;
+
+    charts.forEach(function (root) {
+      var svg = root.querySelector('.growth__svg');
+      var hits = root.querySelectorAll('.growth__hits rect');
+      if (!svg || !hits.length) return;
+
+      /* Anchor to the plot wrapper, which is the scroll container on narrow
+         screens, so the tooltip travels with the chart. */
+      var frame = root.querySelector('.growth__plot') || root;
+
+      var tip = document.createElement('div');
+      tip.className = 'growth__tip';
+      tip.setAttribute('aria-hidden', 'true');
+      var cursor = document.createElement('div');
+      cursor.className = 'growth__cursor';
+      cursor.setAttribute('aria-hidden', 'true');
+      frame.appendChild(cursor);
+      frame.appendChild(tip);
+
+      var box = svg.viewBox.baseVal;
+
+      /* SVG user units to CSS pixels within the plot wrapper. */
+      function toPixels(ux, uy) {
+        var r = svg.getBoundingClientRect();
+        var frameRect = frame.getBoundingClientRect();
+        var scale = r.width / box.width;
+        return {
+          x: (r.left - frameRect.left) + frame.scrollLeft + ux * scale,
+          y: (r.top - frameRect.top) + frame.scrollTop + uy * scale
+        };
+      }
+
+      function show(rect) {
+        var p = toPixels(parseFloat(rect.dataset.x), parseFloat(rect.dataset.y));
+        cursor.style.left = p.x + 'px';
+        cursor.style.top = p.y + 'px';
+        tip.style.left = p.x + 'px';
+        tip.style.top = p.y + 'px';
+        tip.innerHTML = '<b>' + rect.dataset.value + ' signups</b><br>' +
+          rect.dataset.label;
+        cursor.classList.add('is-on');
+        tip.classList.add('is-on');
+      }
+
+      function hide() {
+        cursor.classList.remove('is-on');
+        tip.classList.remove('is-on');
+      }
+
+      hits.forEach(function (rect) {
+        rect.addEventListener('pointerenter', function () { show(rect); });
+        rect.addEventListener('pointermove', function () { show(rect); });
+      });
+
+      svg.addEventListener('pointerleave', hide);
+      window.addEventListener('resize', hide, { passive: true });
+    });
+  })();
 })();
