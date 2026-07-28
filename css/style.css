@@ -1807,35 +1807,31 @@ html:not(.js) .cap-item__desc {
 
 /* Client logo, linked to the company's own site. Lives inside the "Company"
    meta cell in place of the plain company name, with a one-line description
-   underneath, rather than as a separate hero-level element. */
+   underneath, rather than as a separate hero-level element. Logo-only, no
+   visible label, so the accessible name comes from aria-label on the <a>. */
 .case-hero__brand {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.5rem;
-  margin-bottom: 0.5rem;
-  text-decoration: none;
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
-  transition: color 0.2s ease;
+  display: inline-block;
+  margin-bottom: 0.7rem;
+  line-height: 0;
+  border-radius: var(--radius);
+  transition: opacity 0.2s ease;
 }
 
 .case-hero__brand:hover,
 .case-hero__brand:focus-visible {
-  color: var(--color-sage-dark);
+  opacity: 0.72;
+}
+
+.case-hero__brand:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 4px;
 }
 
 .case-hero__brand img {
-  height: 26px;
+  height: 40px;
   width: auto;
-  max-width: 140px;
+  max-width: 220px;
   object-fit: contain;
-}
-
-.case-hero__brand svg {
-  width: 14px;
-  height: 14px;
-  flex: none;
 }
 
 .case-meta__sub {
