@@ -152,6 +152,171 @@
     els.forEach(function (el) { io.observe(el); });
   })();
 
+  /* --- About page: player/coach illustration pair ------------------------ */
+  /* Two jobs, both skipped under reduced motion (the stylesheet's base rules
+     then apply: both images stacked in normal flow, fully visible, static).
+     1. layout() sizes and positions the transparent-background artwork once
+        per viewport size, NOT on every scroll tick, so it never moves while
+        the user scrolls. The coach and player images are the same size but
+        NOT stacked at the same top offset: the coach starts level with the
+        "Player coach, literally." heading, the player starts lower, level
+        with the first card row, so the two figures' heads land in visibly
+        different places. That stagger, combined with delaying the fade
+        (see updateMix below), is what keeps the cross-fade from reading as
+        a double exposure, since the two are rarely both at full opacity in
+        the same place at the same time. .pc-frame itself is just an
+        overflow:hidden bounding box sized to the union of the two images
+        (relative to the <section>, its positioned ancestor, since
+        .player-coach__media itself stays position: static in the enhanced
+        view), flush against the section's right edge. Each image's own
+        width/height is derived from a shared target height using the source
+        art's 4:5 aspect ratio (so neither resizes relative to the other
+        mid-fade), clamped so neither overlaps the copy column, which is why
+        it doesn't always reach the full target on narrower wide-viewport
+        widths (901-1200px or so).
+     2. update() writes --pc-mix (0 = coach, 1 = player) on .player-coach as
+        the now-static images scroll through the viewport, driving the CSS
+        cross-fade. This runs on scroll; layout() does not. */
+  (function playerCoach() {
+    var section = document.querySelector('[data-player-coach]');
+    if (!section || reduceMotion) return;
+
+    var body = section.querySelector('.player-coach__body');
+    var frame = section.querySelector('.pc-frame');
+    var coachImg = section.querySelector('.pc-frame__img--coach');
+    var playerImg = section.querySelector('.pc-frame__img--player');
+    var heading = section.querySelector('.section__head h2');
+    var cards = section.querySelectorAll('.card-grid > .icon-card');
+    if (!body || !frame || !coachImg || !playerImg || !heading || cards.length < 4) return;
+
+    var wideQuery = window.matchMedia('(min-width: 901px)');
+    var scrollTicking = false;
+    var MAX_WIDTH = 680; // keeps the art tethered near the copy on ultra-wide screens
+    var EDGE_GAP = 32; // breathing room between the copy column and the art
+
+    function clamp01(n) {
+      return n < 0 ? 0 : n > 1 ? 1 : n;
+    }
+
+    function layout() {
+      if (!wideQuery.matches) {
+        frame.style.cssText = '';
+        coachImg.style.cssText = '';
+        playerImg.style.cssText = '';
+        return;
+      }
+
+      var sectionRect = section.getBoundingClientRect();
+      var bodyRect = body.getBoundingClientRect();
+      var headRect = heading.getBoundingClientRect();
+      var row1Rect = cards[0].getBoundingClientRect();
+
+      // Cards 2 and 3 (0-indexed) are the second row of the 2x2 grid. Rows
+      // can differ slightly in height depending on copy length, so use the
+      // taller of the two as the row's true bottom edge.
+      var row2Top = cards[2].getBoundingClientRect().top;
+      var row2Bottom = row2Top;
+      for (var i = 2; i < cards.length; i++) {
+        var cardRect = cards[i].getBoundingClientRect();
+        if (cardRect.bottom > row2Bottom) row2Bottom = cardRect.bottom;
+      }
+      var targetBottom = row2Top + (row2Bottom - row2Top) * 0.7;
+
+      var coachTop = headRect.top - sectionRect.top;
+      var playerTop = row1Rect.top - sectionRect.top;
+      var desiredHeight = targetBottom - headRect.top;
+      if (desiredHeight < 120) {
+        frame.style.cssText = '';
+        coachImg.style.cssText = '';
+        playerImg.style.cssText = '';
+        return;
+      }
+
+      // Source art is 960x1200 (4:5). Both images share this size so the
+      // fade never reads as a resize, only a cross-fade. The frame sits
+      // flush against the section's right edge (a full-bleed sibling of
+      // .container, matching the tool-stack section's pattern), so it can
+      // borrow width the copy column doesn't have, up to where it would
+      // start overlapping the copy or looking disconnected from it on very
+      // wide screens.
+      var availableWidth = sectionRect.right - bodyRect.right - EDGE_GAP;
+      var desiredWidth = desiredHeight * (960 / 1200);
+      var width = Math.max(Math.min(desiredWidth, availableWidth, MAX_WIDTH), 0);
+      var height = width / (960 / 1200);
+
+      // .pc-frame bounds both images (it's what clips the cross-fade's
+      // scale/drift transform so it never creates horizontal overflow at
+      // the section's edge), so it has to span from the higher image's top
+      // to the lower image's bottom.
+      var frameTop = Math.min(coachTop, playerTop);
+      var frameBottom = Math.max(coachTop + height, playerTop + height);
+
+      frame.style.top = frameTop + 'px';
+      frame.style.height = (frameBottom - frameTop) + 'px';
+      frame.style.width = width + 'px';
+
+      coachImg.style.top = (coachTop - frameTop) + 'px';
+      coachImg.style.width = width + 'px';
+      coachImg.style.height = height + 'px';
+
+      playerImg.style.top = (playerTop - frameTop) + 'px';
+      playerImg.style.width = width + 'px';
+      playerImg.style.height = height + 'px';
+    }
+
+    function updateMix() {
+      scrollTicking = false;
+      if (!wideQuery.matches) return;
+
+      var rect = frame.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+
+      // Standard "progress through the viewport" formula: 0 when the frame's
+      // top is just entering at the bottom edge, 1 when its bottom has just
+      // left at the top edge. Since the frame no longer moves on its own
+      // (layout() only repositions it on resize), this is driven purely by
+      // page scroll.
+      var raw = clamp01((vh - rect.top) / (vh + rect.height));
+
+      // Hold on the coach for a while (the two figures are already staggered
+      // vertically by layout() above, but delaying the hand-off on top of
+      // that keeps them from both reading at full strength in the same
+      // place at the same time), then transition, then hold on the player.
+      // The frame is roughly one viewport tall, so raw ~0.5 is the point
+      // where it's most fully on screen (top around y=0); the transition is
+      // kept centered before that, not after, so the player's head (which
+      // sits below the coach's, see layout() above) is still on screen by
+      // the time it's fully faded in, not already scrolled past the top.
+      var mix = clamp01((raw - 0.25) / 0.3);
+      mix = mix * mix * (3 - 2 * mix); // smoothstep
+      section.style.setProperty('--pc-mix', mix.toFixed(4));
+    }
+
+    function requestMix() {
+      if (!scrollTicking) {
+        window.requestAnimationFrame(updateMix);
+        scrollTicking = true;
+      }
+    }
+
+    function requestLayout() {
+      layout();
+      updateMix();
+    }
+
+    window.addEventListener('scroll', requestMix, { passive: true });
+    window.addEventListener('resize', requestLayout);
+    window.addEventListener('load', requestLayout);
+    if (wideQuery.addEventListener) {
+      wideQuery.addEventListener('change', requestLayout);
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(requestLayout);
+    }
+
+    requestLayout();
+  })();
+
   /* --- Capabilities: clickable tabs + dynamic stage --------------------- */
   (function capabilities() {
     var list = document.querySelector('.cap-list');

@@ -1370,70 +1370,114 @@ html:not(.js) .cap-item__desc {
   color: var(--color-terracotta);
 }
 
-/* About page: How I Lead photo placeholder + heading -----------------------*/
-.lead-head-grid {
-  display: grid;
-  grid-template-columns: 1fr minmax(170px, 220px);
-  gap: var(--space-lg);
-  align-items: stretch;
-  margin-bottom: var(--space-md);
-}
+/* About page: How I Lead, player/coach illustration pair -------------------
+   The images have a transparent background (paper keyed out in processing,
+   see CLAUDE.md) so they read as drawn straight onto the section's sage
+   field rather than sitting in a separate photo frame. They cross-fade from
+   coach to player as the section scrolls, driven by the --pc-mix custom
+   property that /js/main.js writes on .player-coach (the <section> itself,
+   0 = coach, 1 = player).
 
-.lead-photo {
-  display: flex;
-  flex-direction: column;
-}
+   The base rules below are the no-JS and reduced-motion view: .player-coach
+   __media is a normal block, styled to match .container's own width and
+   padding so it lines up with the rest of the page, holding both images side
+   by side in normal flow, both fully visible, no absolute positioning, no
+   scroll coupling.
 
-.lead-photo__stack {
+   The scroll-linked treatment is layered on top inside a `.js` +
+   `prefers-reduced-motion: no-preference` + wide-viewport query, so it can
+   never strand the player image at opacity 0. There, .player-coach__media
+   is a full-bleed sibling of .container (not nested inside it, same pattern
+   as .stack) so the frame can borrow width beyond the container's
+   max-width. .pc-frame becomes position: absolute against the <section>
+   (.player-coach__media itself stays position: static and collapses to zero
+   height, only .pc-frame is positioned, skipping straight to the section as
+   its containing block) and does not move on scroll: playerCoach() in
+   main.js sizes and positions it once (and on resize) so it spans from the
+   "Player coach, literally." heading down through most of the second card
+   row, flush against the section's right edge, clamped so it never overlaps
+   the copy column. Only --pc-mix changes as the page scrolls. */
+.player-coach {
   position: relative;
-  flex: 1;
-  min-height: 200px;
 }
 
-.lead-photo__panel {
-  position: absolute;
-  width: 86%;
-  height: 86%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  border: 1.5px dashed var(--color-sage);
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg);
-  color: var(--color-sage-dark);
+.player-coach__body {
+  max-width: 640px;
 }
 
-.lead-photo__panel svg {
-  width: 1.9rem;
-  height: 1.9rem;
-  opacity: 0.7;
+.player-coach__media {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 2.75rem);
 }
 
-.lead-photo__panel span {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
+.pc-frame {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+  margin: 0;
 }
 
-.lead-photo__panel--back {
-  top: 0;
-  left: 0;
-  opacity: 0.7;
+.pc-frame__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
 }
 
-.lead-photo__panel--front {
-  bottom: 0;
-  right: 0;
-  box-shadow: 0 14px 26px -16px rgba(43, 43, 43, 0.35);
-}
+@media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+  .js .player-coach {
+    --pc-mix: 0;
+  }
 
-.lead-photo__caption {
-  margin: var(--space-xs) 0 0;
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-  text-align: center;
+  .js .player-coach__media {
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  /* Sized and positioned entirely by playerCoach() in main.js, which writes
+     top/height/width inline once measurements are available; the values
+     here are just a sane starting point before that first measurement. */
+  .js .pc-frame {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 300px;
+    width: 240px;
+    /* The cross-fade's small scale/drift on the two images (below) can push
+       a couple of percent past this box; clip it so it never creates
+       horizontal overflow at the section's right edge. */
+    overflow: hidden;
+  }
+
+  /* top/width/height are set per image by playerCoach() in main.js, since
+     the coach and player no longer share one top offset (see the comment
+     above playerCoach() for why); these are just a sane starting point
+     before that first measurement lands. Both stay right-anchored so they
+     line up with .pc-frame's own right-flush edge. */
+  .js .pc-frame__img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-position: 50% 0%;
+    will-change: opacity, transform;
+  }
+
+  .js .pc-frame__img--coach {
+    opacity: calc(1 - var(--pc-mix));
+    transform: translateY(calc(var(--pc-mix) * -2%)) scale(calc(1 + var(--pc-mix) * 0.04));
+  }
+
+  .js .pc-frame__img--player {
+    opacity: var(--pc-mix);
+    transform: translateY(calc((1 - var(--pc-mix)) * 2%)) scale(calc(1.04 - var(--pc-mix) * 0.04));
+  }
 }
 
 /* About page: reusable icon card grid (How I Lead, Outside/Education) ----- */
@@ -3555,13 +3599,11 @@ html:not(.js) .cap-item__desc {
   .cta-split,
   .work-grid,
   .about-grid,
-  .lead-head-grid,
   .card-grid--2 {
     grid-template-columns: 1fr;
   }
 
-  .about-photo,
-  .lead-photo__stack {
+  .about-photo {
     aspect-ratio: 16 / 9;
     max-width: 320px;
     margin-inline: auto;
@@ -3582,6 +3624,23 @@ html:not(.js) .cap-item__desc {
   .card-grid--4,
   .card-grid--5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Player/coach pair: below the enhanced-view breakpoint the section is just
+   .container (body) followed by .player-coach__media in normal flow, so no
+   layout override is needed to stack them, only a narrower cap on the media
+   block so the pair reads better side by side until phone width. */
+@media (max-width: 900px) {
+  .player-coach__media {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 521px) {
+  .pc-frame {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
   }
 }
 

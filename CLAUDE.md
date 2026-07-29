@@ -150,6 +150,76 @@ punctuated by confident full-bleed color-field sections.
     `.stack__canvas-wrap` reverts to `position: relative` (normal flow) so the
     list contributes real height instead of sitting inside an absolutely
     positioned, zero-height wrapper.
+- Player/coach illustration pair (`.player-coach`, the "Player coach,
+  literally." section on `/about`, class lives on the `<section>` itself
+  alongside `data-player-coach`). An ink and watercolor coach and player
+  (`/assets/about/`), background keyed to transparent in processing (see
+  Illustration assets below) so they read as drawn straight onto the
+  section's sage field rather than sitting in a photo card. They cross-fade
+  from coach to player as the section scrolls, driven by a single `--pc-mix`
+  custom property (0 = coach, 1 = player) that `playerCoach()` in
+  `/js/main.js` writes on the section; CSS does the rest, an opacity
+  cross-fade plus a small opposed translate/scale drift on the two stacked
+  `<img>` elements inside `.pc-frame`.
+  The base stylesheet rules are the no-JS AND reduced-motion view:
+  `.player-coach__body` (head + 2x2 card grid) sits inside `.container` as
+  normal; `.player-coach__media` is a sibling block styled to match
+  `.container`'s own max-width/padding so it lines up with the page, holding
+  both images side by side in normal flow at full opacity, no positioning
+  tricks, no scroll coupling.
+  The enhanced treatment lives inside a single `.js` +
+  `prefers-reduced-motion: no-preference` + `min-width: 901px` query, so it
+  can never strand the player image at opacity 0. There,
+  `.player-coach__media` becomes a **full-bleed sibling of `.container`**
+  (same pattern as `.stack`), letting `.pc-frame` borrow width beyond the
+  container's max-width. `.pc-frame` is `position: absolute`, right-flush
+  against the `<section>` itself (`.player-coach__media` stays
+  `position: static` and collapses to zero height in this view; `.pc-frame`
+  skips straight past it to the section as its containing block). It does
+  NOT move on scroll: `playerCoach()`'s `layout()` measures the "Player
+  coach, literally." heading and the second row of the card grid ONCE per
+  viewport size (resize/fonts-ready/load, never on a scroll tick) and writes
+  explicit top/height/width inline so the art spans from the heading down
+  through ~70% of that second row. Width is derived from height via the
+  source art's 4:5 aspect ratio (no cropping), then clamped to
+  `sectionRect.right - bodyRect.right - EDGE_GAP` (so it never overlaps the
+  copy column) and to `MAX_WIDTH` (680px, so it doesn't drift away from the
+  copy on ultra-wide screens). This means the pair does not always reach the
+  full 70%-into-row-2 target at the narrow end of the enhanced range
+  (901-1150px or so), since there simply isn't enough spare width there to
+  stay uncropped; that's an accepted responsive trade-off, not a bug to
+  chase. `updateMix()` (a separate function, runs every scroll tick) then
+  reads the now-static frame's own `getBoundingClientRect()` each scroll and
+  maps standard "progress through the viewport"
+  (`(vh - rect.top) / (vh + rect.height)`) through a hold/smoothstep remap
+  to `--pc-mix`. `.pc-frame` has `overflow: hidden`: the cross-fade's
+  scale/drift transform can push the invisible (opacity 0) image a couple of
+  percent past the frame's own box, and since it's flush against the
+  section's true right edge that was enough to add a horizontal scrollbar
+  before the `overflow: hidden` was added, worth remembering if the drift
+  amounts ever change. Do not add `reveal` to `.player-coach__media`.
+
+### Illustration assets
+
+- `/assets/about/player-coach-coach.webp` and `player-coach-player.webp` are
+  the About page illustrations, processed from the uploaded originals (which
+  had an opaque off-white/cream paper background, RGB roughly `(240, 234,
+  221)`) by: downscaling to a 1200px max dimension, keying the paper out to
+  alpha transparency, and encoding RGBA WebP at quality 88 (960x1200, ~225KB
+  each; bigger than the older opaque encode because alpha compresses worse,
+  still small enough not to matter). The key-out is distance-from-background
+  in RGB space with a soft smoothstep ramp (roughly `low=12, high=50`, sampled
+  per image from the median of a border strip, not a fixed constant, since
+  the two source paper tones differ slightly), not a hard-edge cutout. That
+  softness is a feature, not a compromise: it lets faint watercolor washes
+  near the paper's own tone fade out gradually exactly like they would on
+  real paper, so the art reads as drawn straight onto whatever page
+  background sits behind it (see the player/coach section above) rather than
+  looking cut out. Re-run the same distance-based key-out (not a plain white
+  strip like the logo pipeline below) if these are ever replaced from new
+  source art. There is no raw/processed split for these the way there is for
+  logos, since they arrived as chat attachments rather than through the
+  normal upload intake, only the single processed file in `/assets/about/`.
 
 ### Logo assets
 
