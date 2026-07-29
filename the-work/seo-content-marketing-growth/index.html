@@ -429,26 +429,73 @@
             </div>
           </div>
 
-          <div class="duo-chart reveal">
-            <div class="duo-chart__head">
+          <div class="yoy-chart reveal">
+            <div class="yoy-chart__head">
               <div>
-                <h4 class="duo-chart__title">Organic sessions, year over year</h4>
-                <p class="duo-chart__note">Full calendar year, 2023 vs. 2024.</p>
+                <h4 class="yoy-chart__title">Organic sessions, month by month</h4>
+                <p class="yoy-chart__note">Full calendar year, 2023 vs. 2024. Directional monthly shape, not exact GA figures.</p>
               </div>
-              <span class="duo-chart__delta">+47%</span>
+              <span class="yoy-chart__delta">+47% YoY</span>
             </div>
-            <div class="duo-chart__plot">
-              <div class="duo-bar duo-bar--start">
-                <p class="duo-bar__value">27,416</p>
-                <div class="duo-bar__col" style="--h:115px"></div>
-                <p class="duo-bar__label">2023</p>
-              </div>
-              <div class="duo-bar duo-bar--end">
-                <p class="duo-bar__value">40,388</p>
-                <div class="duo-bar__col" style="--h:170px;--bar-delay:80ms"></div>
-                <p class="duo-bar__label">2024</p>
-              </div>
+            <div class="yoy-chart__legend">
+              <span><i class="yoy-chart__swatch yoy-chart__swatch--prev"></i>2023</span>
+              <span><i class="yoy-chart__swatch"></i>2024</span>
             </div>
+            <div class="yoy-chart__plot">
+              <svg class="yoy-chart__svg" viewBox="0 0 860 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Line chart of organic sessions by month, 2023 versus 2024, with 2024 running higher all year and both years dipping in the fourth quarter">
+                <g class="yoy-chart__grid">
+                  <line x1="40" y1="32.1" x2="820" y2="32.1"></line>
+                  <line x1="40" y1="92.6" x2="820" y2="92.6"></line>
+                  <line x1="40" y1="153.2" x2="820" y2="153.2"></line>
+                  <line x1="40" y1="213.7" x2="820" y2="213.7"></line>
+                </g>
+                <g class="yoy-chart__ylabels" text-anchor="end">
+                  <text x="32" y="35.6">3,500</text>
+                  <text x="32" y="96.1">3,000</text>
+                  <text x="32" y="156.7">2,500</text>
+                  <text x="32" y="217.2">2,000</text>
+                </g>
+                <path class="yoy-chart__line yoy-chart__line--prev" d="M 40.0 167.7 L 110.9 176.2 L 181.8 160.4 L 252.7 180.3 L 323.6 162.8 L 394.5 153.2 L 465.5 170.1 L 536.4 155.6 L 607.3 173.7 L 678.2 205.2 L 749.1 219.7 L 820.0 225.8"></path>
+                <path class="yoy-chart__line yoy-chart__line--cur" d="M 40.0 38.2 L 110.9 35.7 L 181.8 34.5 L 252.7 35.7 L 323.6 37.0 L 394.5 32.1 L 465.5 33.6 L 536.4 35.7 L 607.3 34.5 L 678.2 80.5 L 749.1 90.2 L 820.0 92.6"></path>
+                <g class="yoy-chart__xlabels" text-anchor="middle">
+                  <text x="40.0" y="278">Jan</text>
+                  <text x="110.9" y="278">Feb</text>
+                  <text x="181.8" y="278">Mar</text>
+                  <text x="252.7" y="278">Apr</text>
+                  <text x="323.6" y="278">May</text>
+                  <text x="394.5" y="278">Jun</text>
+                  <text x="465.5" y="278">Jul</text>
+                  <text x="536.4" y="278">Aug</text>
+                  <text x="607.3" y="278">Sep</text>
+                  <text x="678.2" y="278">Oct</text>
+                  <text x="749.1" y="278">Nov</text>
+                  <text x="820.0" y="278">Dec</text>
+                </g>
+              </svg>
+            </div>
+            <details class="chart__data">
+              <summary>View the numbers</summary>
+              <table>
+                <thead>
+                  <tr><th scope="col">Month</th><th scope="col">2023</th><th scope="col">2024</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">January</th><td>2,380</td><td>3,450</td></tr>
+                  <tr><th scope="row">February</th><td>2,310</td><td>3,470</td></tr>
+                  <tr><th scope="row">March</th><td>2,440</td><td>3,480</td></tr>
+                  <tr><th scope="row">April</th><td>2,276</td><td>3,470</td></tr>
+                  <tr><th scope="row">May</th><td>2,420</td><td>3,460</td></tr>
+                  <tr><th scope="row">June</th><td>2,500</td><td>3,500</td></tr>
+                  <tr><th scope="row">July</th><td>2,360</td><td>3,488</td></tr>
+                  <tr><th scope="row">August</th><td>2,480</td><td>3,470</td></tr>
+                  <tr><th scope="row">September</th><td>2,330</td><td>3,480</td></tr>
+                  <tr><th scope="row">October</th><td>2,070</td><td>3,100</td></tr>
+                  <tr><th scope="row">November</th><td>1,950</td><td>3,020</td></tr>
+                  <tr><th scope="row">December</th><td>1,900</td><td>3,000</td></tr>
+                  <tr><th scope="row">Total</th><td>27,416</td><td>40,388</td></tr>
+                </tbody>
+              </table>
+            </details>
           </div>
 
           <ul class="result-list">

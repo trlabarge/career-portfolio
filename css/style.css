@@ -2535,6 +2535,137 @@ html:not(.js) .cap-item__desc {
   }
 }
 
+/* Charts: year-over-year line comparison ----------------------------------- */
+/* Same metric, two calendar years: one hue (sage), two lightness/weight
+   steps rather than two categorical colors, since this is a magnitude
+   comparison of one series over time, not two different things. */
+.yoy-chart {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+}
+
+.yoy-chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.yoy-chart__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.yoy-chart__note {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+.yoy-chart__delta {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-terracotta);
+  background-color: rgba(168, 101, 79, 0.12);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  white-space: nowrap;
+}
+
+.yoy-chart__legend {
+  display: flex;
+  gap: var(--space-md);
+  margin: var(--space-sm) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.yoy-chart__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.yoy-chart__swatch {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+  background-color: var(--yoy-swatch, var(--color-sage));
+}
+
+.yoy-chart__legend .yoy-chart__swatch--prev {
+  --yoy-swatch: #86a98d;
+}
+
+.yoy-chart__plot {
+  margin-top: var(--space-lg);
+}
+
+.yoy-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.yoy-chart__grid line {
+  stroke: rgba(74, 107, 82, 0.16);
+  stroke-width: 1;
+}
+
+.yoy-chart__ylabels text,
+.yoy-chart__xlabels text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  fill: var(--color-text-muted);
+}
+
+.yoy-chart__line {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.yoy-chart__line--prev {
+  stroke: #86a98d;
+  stroke-width: 2;
+}
+
+.yoy-chart__line--cur {
+  stroke: var(--color-sage);
+  stroke-width: 3;
+}
+
+/* Both lines draw themselves in when the chart scrolls into view, the
+   current year drawing in just behind the prior year for a sense of one
+   overtaking the other. */
+.js .yoy-chart__line {
+  stroke-dasharray: 1300;
+  stroke-dashoffset: 1300;
+}
+
+.js .reveal.is-visible .yoy-chart__line--prev {
+  transition: stroke-dashoffset 1.5s var(--ease-out);
+  stroke-dashoffset: 0;
+}
+
+.js .reveal.is-visible .yoy-chart__line--cur {
+  transition: stroke-dashoffset 1.5s var(--ease-out) 0.25s;
+  stroke-dashoffset: 0;
+}
+
 /* Charts: growth curve ---------------------------------------------------- */
 .growth {
   position: relative;
