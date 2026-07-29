@@ -150,6 +150,40 @@ punctuated by confident full-bleed color-field sections.
     `.stack__canvas-wrap` reverts to `position: relative` (normal flow) so the
     list contributes real height instead of sitting inside an absolutely
     positioned, zero-height wrapper.
+- Player/coach scroll cross-fade (`.player-coach`, the "Player coach,
+  literally." section on `/about`). Two columns. Copy plus the 2x2 icon-card
+  grid on the left, an illustration pair on the right (`.pc-frame`, an ink and
+  watercolor coach and a player, in `/assets/about/`). The media column
+  stretches to the full row height and `.pc-frame` is `position: sticky`
+  inside it, so the pair fills the right side of the section and stays pinned
+  while the cards scroll past. `playerCoach()` in `/js/main.js` writes a
+  single `--pc-mix` custom property on `.player-coach` (0 = coach, 1 = player)
+  and CSS does all the visual work: opacity cross-fade plus a small opposed
+  translate/scale drift on the two stacked `<img>` elements.
+  Progress is measured from the section top sitting 35% down the viewport to
+  the section bottom rising back to about the same place, then remapped
+  through `(raw - 0.28) / 0.44` and a smoothstep. Do not go back to driving it
+  off the sticky travel alone (`rect.height - frame.offsetHeight`); the copy
+  column is only ~260px taller than the frame, so that finished the whole
+  hand-off before the section had even settled on screen.
+  The base stylesheet rules are the no-JS AND reduced-motion view: both images
+  stacked in normal flow at full opacity, no sticky. The scroll-linked
+  treatment is layered on top inside a single
+  `.js` + `prefers-reduced-motion: no-preference` + `min-width: 901px` query,
+  so it can never strand the player image at opacity 0. Keep it that way
+  rather than adding reduced-motion overrides on top of the enhanced rules.
+  Below 901px the columns stack and the pair sits side by side (single column
+  again under 521px). Do not add `reveal` to `.player-coach__media`; an
+  `overflow`/transform wrapper there would break the sticky pin.
+
+### Illustration assets
+
+- `/assets/about/player-coach-coach.webp` and
+  `player-coach-player.webp` are the About page illustrations, processed from
+  the uploaded originals by downscaling to a 1200px max dimension and encoding
+  WebP at quality 84 (960x1200, ~120KB each). WebP rather than the PNG used
+  for logos, since these are full-bleed artwork where PNG would be ~10x the
+  bytes for no visible gain.
 
 ### Logo assets
 

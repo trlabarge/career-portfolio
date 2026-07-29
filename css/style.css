@@ -1370,70 +1370,111 @@ html:not(.js) .cap-item__desc {
   color: var(--color-terracotta);
 }
 
-/* About page: How I Lead photo placeholder + heading -----------------------*/
-.lead-head-grid {
+/* About page: How I Lead, player/coach illustration pair -------------------
+   Two columns. Copy and the 2x2 card grid on the left, the illustration pair
+   filling the full height of the section on the right. The images cross-fade
+   from coach to player as the section scrolls, driven by the --pc-mix custom
+   property that /js/main.js writes on .player-coach (0 = coach, 1 = player).
+
+   The base rules below are the no-JS and reduced-motion view: both images
+   render side by side in normal flow, both fully visible, no sticky, no
+   scroll coupling. The scroll-linked treatment is layered on top inside a
+   `.js` + `prefers-reduced-motion: no-preference` + wide-viewport query, so
+   it can never strand the player image at opacity 0. */
+.player-coach {
   display: grid;
-  grid-template-columns: 1fr minmax(170px, 220px);
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
   gap: var(--space-lg);
-  align-items: stretch;
-  margin-bottom: var(--space-md);
 }
 
-.lead-photo {
-  display: flex;
-  flex-direction: column;
+.player-coach__body,
+.player-coach__media {
+  min-width: 0;
 }
 
-.lead-photo__stack {
-  position: relative;
-  flex: 1;
-  min-height: 200px;
+.pc-frame {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+  margin: 0;
 }
 
-.lead-photo__panel {
-  position: absolute;
-  width: 86%;
-  height: 86%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  border: 1.5px dashed var(--color-sage);
+.pc-frame__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 32%;
   border-radius: var(--radius-lg);
   background-color: var(--color-bg);
-  color: var(--color-sage-dark);
 }
 
-.lead-photo__panel svg {
-  width: 1.9rem;
-  height: 1.9rem;
-  opacity: 0.7;
-}
-
-.lead-photo__panel span {
+.pc-frame__caption {
+  grid-column: 1 / -1;
+  margin-top: var(--space-xs);
   font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.lead-photo__panel--back {
-  top: 0;
-  left: 0;
-  opacity: 0.7;
-}
-
-.lead-photo__panel--front {
-  bottom: 0;
-  right: 0;
-  box-shadow: 0 14px 26px -16px rgba(43, 43, 43, 0.35);
-}
-
-.lead-photo__caption {
-  margin: var(--space-xs) 0 0;
   font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--color-text-muted);
   text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+  .js .player-coach {
+    --pc-mix: 0;
+  }
+
+  /* The media column stretches to the full row height, so the sticky frame
+     inside it stays pinned for the whole scroll through the section. */
+  .js .player-coach__media {
+    position: relative;
+    height: 100%;
+  }
+
+  .js .pc-frame {
+    display: block;
+    position: sticky;
+    top: 5.25rem;
+    height: clamp(380px, 74vh, 760px);
+    overflow: hidden;
+    border: 1px solid rgba(74, 107, 82, 0.16);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    box-shadow: 0 26px 50px -34px rgba(43, 43, 43, 0.5);
+  }
+
+  .js .pc-frame__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0;
+    object-position: 50% 26%;
+    will-change: opacity, transform;
+  }
+
+  .js .pc-frame__img--coach {
+    opacity: calc(1 - var(--pc-mix));
+    transform: translateY(calc(var(--pc-mix) * -2%)) scale(calc(1 + var(--pc-mix) * 0.04));
+  }
+
+  .js .pc-frame__img--player {
+    opacity: var(--pc-mix);
+    transform: translateY(calc((1 - var(--pc-mix)) * 2%)) scale(calc(1.04 - var(--pc-mix) * 0.04));
+  }
+
+  .js .pc-frame__caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 2.75rem 1rem 0.9rem;
+    background-image: linear-gradient(to top, rgba(250, 249, 246, 0.96), rgba(250, 249, 246, 0));
+  }
 }
 
 /* About page: reusable icon card grid (How I Lead, Outside/Education) ----- */
@@ -3555,13 +3596,11 @@ html:not(.js) .cap-item__desc {
   .cta-split,
   .work-grid,
   .about-grid,
-  .lead-head-grid,
   .card-grid--2 {
     grid-template-columns: 1fr;
   }
 
-  .about-photo,
-  .lead-photo__stack {
+  .about-photo {
     aspect-ratio: 16 / 9;
     max-width: 320px;
     margin-inline: auto;
@@ -3582,6 +3621,26 @@ html:not(.js) .cap-item__desc {
   .card-grid--4,
   .card-grid--5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Player/coach pair: stack the copy above the images. The media column is
+   full width there, so the pair reads better side by side until phone width. */
+@media (max-width: 900px) {
+  .player-coach {
+    grid-template-columns: 1fr;
+  }
+
+  .player-coach__media {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 521px) {
+  .pc-frame {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
   }
 }
 

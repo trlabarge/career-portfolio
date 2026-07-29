@@ -152,6 +152,64 @@
     els.forEach(function (el) { io.observe(el); });
   })();
 
+  /* --- About page: player/coach scroll-linked cross-fade ----------------- */
+  /* Writes --pc-mix (0 = coach, 1 = player) on .player-coach as the section
+     scrolls past. All the visual work is CSS; this only reports progress.
+     Under reduced motion we bail out entirely, which leaves the stylesheet's
+     base rules in place (both images side by side, both visible). */
+  (function playerCoach() {
+    var grid = document.querySelector('[data-player-coach]');
+    if (!grid || reduceMotion) return;
+
+    var frame = grid.querySelector('.pc-frame');
+    if (!frame) return;
+
+    var ticking = false;
+
+    function clamp01(n) {
+      return n < 0 ? 0 : n > 1 ? 1 : n;
+    }
+
+    function stickyOffset() {
+      var top = parseFloat(window.getComputedStyle(frame).top);
+      return isNaN(top) ? 0 : top;
+    }
+
+    function update() {
+      ticking = false;
+      var rect = grid.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+
+      // Progress runs from the section top sitting a third of the way down
+      // the viewport to the section bottom rising back to about the same
+      // place, so the hand-off lands while the section actually fills the
+      // screen and the frame is pinned. Driving it off the pinned travel
+      // alone finishes the fade before the section is even settled, since
+      // the copy column is only a little taller than the frame.
+      var startTop = vh * 0.35;
+      var endTop = Math.min(stickyOffset(), vh * 0.65 - rect.height);
+      var range = Math.max(startTop - endTop, vh * 0.4);
+      var raw = clamp01((startTop - rect.top) / range);
+
+      // Hold on the coach at the top and the player at the bottom, and spend
+      // the middle of the range on the hand-off so neither end looks washed.
+      var mix = clamp01((raw - 0.28) / 0.44);
+      mix = mix * mix * (3 - 2 * mix); // smoothstep
+      grid.style.setProperty('--pc-mix', mix.toFixed(4));
+    }
+
+    function request() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    update();
+  })();
+
   /* --- Capabilities: clickable tabs + dynamic stage --------------------- */
   (function capabilities() {
     var list = document.querySelector('.cap-list');
