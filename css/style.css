@@ -1455,6 +1455,10 @@ html:not(.js) .cap-item__desc {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.card-grid--5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 .icon-card {
   background-color: var(--color-bg);
   border: 1px solid rgba(74, 107, 82, 0.16);
@@ -2133,6 +2137,10 @@ html:not(.js) .cap-item__desc {
   background-color: var(--color-cream);
   border: 1px solid rgba(74, 107, 82, 0.16);
   border-radius: var(--radius-lg);
+  /* Self-contained ink: this card sits on a light surface regardless of the
+     section wrapping it (including .section--terracotta, which sets an
+     off-white ambient color that would otherwise go near-invisible here). */
+  color: var(--color-text);
 }
 
 .chart__title {
@@ -2141,6 +2149,7 @@ html:not(.js) .cap-item__desc {
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 
 .chart__note {
@@ -2173,6 +2182,184 @@ html:not(.js) .cap-item__desc {
   height: 100%;
 }
 
+/* Keyword ranking proof: grouped cards, big position number, no bar-chart
+   semantics since a single point-in-time rank isn't a magnitude. */
+.rank-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.rank-group__title {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.rank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-sm);
+}
+
+.rank-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+}
+
+.rank-card__pos {
+  flex: none;
+  min-width: 2.9rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-sage);
+}
+
+.rank-card__pos--top {
+  color: var(--color-terracotta);
+}
+
+.rank-card__kw {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Keyword ranking proof, rich variant: a mocked-up Google result card, not a
+   screenshot. Deliberately borrows real Google chrome (the link blue, the
+   breadcrumb gray, the pill-shaped search field) since the whole point is
+   "this is recognizably a Google result", the one place on the site an
+   external product's own color language is used instead of the palette. */
+.serp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.serp-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+}
+
+.serp-card__badge {
+  position: absolute;
+  top: -12px;
+  right: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--color-bg);
+  background-color: var(--color-sage);
+  border-radius: 999px;
+  padding: 0.32rem 0.75rem;
+  box-shadow: 0 6px 14px -7px rgba(43, 43, 43, 0.45);
+}
+
+.serp-card__badge--top {
+  background-color: var(--color-terracotta);
+}
+
+.serp-card__query {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.14);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+
+.serp-card__query svg {
+  width: 15px;
+  height: 15px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.serp-card__result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.serp-card__result-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.15rem;
+}
+
+.serp-card__favicon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 3px;
+  box-shadow: 0 0 0 1px rgba(43, 43, 43, 0.08);
+  flex-shrink: 0;
+}
+
+.serp-card__site {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #202124;
+  line-height: 1.2;
+}
+
+.serp-card__url {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #4d5156;
+  line-height: 1.2;
+}
+
+.serp-card__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.32;
+  color: #1558d6;
+}
+
+.serp-card__desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #474c50;
+}
+
+.serp-card__also {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.serp-card__also strong {
+  font-family: var(--font-display);
+  color: var(--color-terracotta);
+}
+
 /* Charts: horizontal bars (one series, one hue, always direct-labeled) ----- */
 .bars {
   list-style: none;
@@ -2187,6 +2374,7 @@ html:not(.js) .cap-item__desc {
   display: block;
   font-size: 0.88rem;
   margin-bottom: 0.3rem;
+  color: var(--color-text);
 }
 
 .bar__row {
@@ -2220,6 +2408,7 @@ html:not(.js) .cap-item__desc {
   font-size: 0.95rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  color: var(--color-text);
 }
 
 .js .bar__fill {
@@ -2230,6 +2419,251 @@ html:not(.js) .cap-item__desc {
 
 .js .reveal.is-visible .bar__fill {
   transform: scaleX(1);
+}
+
+/* Charts: paired vertical bars (one metric, two points in time) ----------- */
+/* For a before/after comparison a vertical pair reads faster than a
+   horizontal bar pair, and putting the value directly above each column
+   (rather than at the end of a fill) means the number is never rendered in
+   a color meant for the bar itself. Self-contained ink throughout, same
+   reasoning as .chart above. */
+.duo-chart {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+}
+
+.duo-chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.duo-chart__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.duo-chart__note {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+.duo-chart__delta {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-terracotta);
+  background-color: rgba(168, 101, 79, 0.12);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  white-space: nowrap;
+}
+
+.duo-chart__plot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+.duo-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+}
+
+.duo-bar__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.duo-bar__col {
+  width: 100%;
+  height: var(--h, 20px);
+  min-height: 4px;
+  border-radius: 8px 8px 3px 3px;
+  background-color: var(--color-sage-tint);
+  transform-origin: bottom center;
+}
+
+.duo-bar--end .duo-bar__col {
+  background-color: var(--color-sage);
+}
+
+.duo-bar__label {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.js .duo-bar__col {
+  transform: scaleY(0);
+  transition: transform 0.85s var(--ease-out);
+  transition-delay: var(--bar-delay, 0ms);
+}
+
+.js .reveal.is-visible .duo-bar__col {
+  transform: scaleY(1);
+}
+
+@media (max-width: 480px) {
+  .duo-chart__plot {
+    gap: var(--space-lg);
+  }
+
+  .duo-bar {
+    width: 84px;
+  }
+}
+
+/* Charts: year-over-year line comparison ----------------------------------- */
+/* Same metric, two calendar years: one hue (sage), two lightness/weight
+   steps rather than two categorical colors, since this is a magnitude
+   comparison of one series over time, not two different things. */
+.yoy-chart {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+}
+
+.yoy-chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.yoy-chart__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.yoy-chart__note {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+.yoy-chart__delta {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--color-terracotta);
+  background-color: rgba(168, 101, 79, 0.12);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  white-space: nowrap;
+}
+
+.yoy-chart__legend {
+  display: flex;
+  gap: var(--space-md);
+  margin: var(--space-sm) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.yoy-chart__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.yoy-chart__swatch {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+  background-color: var(--yoy-swatch, var(--color-sage));
+}
+
+.yoy-chart__legend .yoy-chart__swatch--prev {
+  --yoy-swatch: #86a98d;
+}
+
+.yoy-chart__plot {
+  margin-top: var(--space-lg);
+}
+
+.yoy-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.yoy-chart__grid line {
+  stroke: rgba(74, 107, 82, 0.16);
+  stroke-width: 1;
+}
+
+.yoy-chart__ylabels text,
+.yoy-chart__xlabels text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  fill: var(--color-text-muted);
+}
+
+.yoy-chart__line {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.yoy-chart__line--prev {
+  stroke: #86a98d;
+  stroke-width: 2;
+}
+
+.yoy-chart__line--cur {
+  stroke: var(--color-sage);
+  stroke-width: 3;
+}
+
+/* Both lines draw themselves in when the chart scrolls into view, the
+   current year drawing in just behind the prior year for a sense of one
+   overtaking the other. */
+.js .yoy-chart__line {
+  stroke-dasharray: 1300;
+  stroke-dashoffset: 1300;
+}
+
+.js .reveal.is-visible .yoy-chart__line--prev {
+  transition: stroke-dashoffset 1.5s var(--ease-out);
+  stroke-dashoffset: 0;
+}
+
+.js .reveal.is-visible .yoy-chart__line--cur {
+  transition: stroke-dashoffset 1.5s var(--ease-out) 0.25s;
+  stroke-dashoffset: 0;
 }
 
 /* Charts: growth curve ---------------------------------------------------- */
@@ -2424,8 +2858,11 @@ html:not(.js) .cap-item__desc {
   border-bottom: 1px solid rgba(74, 107, 82, 0.14);
 }
 
-.chart__data td:last-child,
-.chart__data th:last-child {
+/* Every data column right-aligns, whether the table has one number per row
+   (last-child) or several (Month / 2023 / 2024 / YoY growth): any header
+   after the first is a numeric column too, so it right-aligns to match. */
+.chart__data td,
+.chart__data thead th:not(:first-child) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -3112,7 +3549,8 @@ html:not(.js) .cap-item__desc {
     margin-inline: auto;
   }
 
-  .card-grid--4 {
+  .card-grid--4,
+  .card-grid--5 {
     grid-template-columns: 1fr;
   }
 
@@ -3123,8 +3561,15 @@ html:not(.js) .cap-item__desc {
 
 @media (max-width: 900px) and (min-width: 721px) {
   .stat-strip,
-  .card-grid--4 {
+  .card-grid--4,
+  .card-grid--5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1080px) and (min-width: 901px) {
+  .card-grid--5 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

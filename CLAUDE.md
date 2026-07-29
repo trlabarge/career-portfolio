@@ -248,9 +248,10 @@ differs.
 
 - `/` — Homepage (fully built).
 - `/about` — About Me (placeholder scaffold).
-- `/the-work` — Case study index (built, links to four case studies).
-- `/the-work/constructconnect-conversion-optimization` — placeholder.
-- `/the-work/seo-content-marketing-growth` — placeholder.
+- `/the-work` — Case study index (built, links to five case studies).
+- `/the-work/constructconnect-conversion-optimization` — fully built.
+- `/the-work/implicit-plg-gtm` — fully built.
+- `/the-work/seo-content-marketing-growth` — fully built.
 - `/the-work/ai-productization-gtm` — placeholder.
 - `/the-work/cei-brand-refresh` — placeholder.
 - `/fractional-cmo` — placeholder scaffold.
@@ -265,4 +266,4 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - `/assets/resume.pdf` — placeholder PDF, swap for the real resume.
 - LinkedIn URL `linkedin.com/in/timlabarge` — confirm the real handle.
 - Proof-strip brand logos are text labels. Real logo files to come.
-- Case study bodies are stubs. Copy still to be written.
+- AI Productization Go-To-Market and CEI Brand Refresh case study bodies are still stubs. Copy to be written.
