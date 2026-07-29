@@ -2858,8 +2858,11 @@ html:not(.js) .cap-item__desc {
   border-bottom: 1px solid rgba(74, 107, 82, 0.14);
 }
 
-.chart__data td:last-child,
-.chart__data th:last-child {
+/* Every data column right-aligns, whether the table has one number per row
+   (last-child) or several (Month / 2023 / 2024 / YoY growth): any header
+   after the first is a numeric column too, so it right-aligns to match. */
+.chart__data td,
+.chart__data thead th:not(:first-child) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
