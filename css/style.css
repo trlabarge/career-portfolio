@@ -1455,6 +1455,10 @@ html:not(.js) .cap-item__desc {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.card-grid--5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 .icon-card {
   background-color: var(--color-bg);
   border: 1px solid rgba(74, 107, 82, 0.16);
@@ -2171,6 +2175,57 @@ html:not(.js) .cap-item__desc {
 .chart-grid .chart {
   margin: 0;
   height: 100%;
+}
+
+/* Keyword ranking proof: grouped cards, big position number, no bar-chart
+   semantics since a single point-in-time rank isn't a magnitude. */
+.rank-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.rank-group__title {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.rank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-sm);
+}
+
+.rank-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.16);
+  border-radius: var(--radius-lg);
+}
+
+.rank-card__pos {
+  flex: none;
+  min-width: 2.9rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-sage);
+}
+
+.rank-card__pos--top {
+  color: var(--color-terracotta);
+}
+
+.rank-card__kw {
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 /* Charts: horizontal bars (one series, one hue, always direct-labeled) ----- */
@@ -3112,7 +3167,8 @@ html:not(.js) .cap-item__desc {
     margin-inline: auto;
   }
 
-  .card-grid--4 {
+  .card-grid--4,
+  .card-grid--5 {
     grid-template-columns: 1fr;
   }
 
@@ -3123,8 +3179,15 @@ html:not(.js) .cap-item__desc {
 
 @media (max-width: 900px) and (min-width: 721px) {
   .stat-strip,
-  .card-grid--4 {
+  .card-grid--4,
+  .card-grid--5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1080px) and (min-width: 901px) {
+  .card-grid--5 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
