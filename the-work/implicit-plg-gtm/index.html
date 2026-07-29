@@ -323,15 +323,83 @@
               </div>
             </div>
 
-            <div class="channel-fade reveal" style="--reveal-delay:120ms">
-              <div class="channel-fade__frame">
-                <div class="channel-fade__slide is-active">
-                  <div class="channel-fade__placeholder">
-                    <span>Visuals coming soon</span>
-                    <p class="chart__note" style="margin:0">Paid creative, the targeting change, a Reddit thread, and the signup dashboard will rotate through here once uploaded.</p>
+            <div class="chart reveal" style="--reveal-delay:120ms">
+              <h3 class="chart__title">Where the 2,100 signups came from</h3>
+              <p class="chart__note">Share of all signups by channel, full six-month program.</p>
+
+              <div class="stackbar" role="img" aria-label="Stacked bar showing share of signups by channel: search engine paid 27 percent, LLMs 23 percent, search engine organic 22 percent, Reddit 13 percent, LinkedIn 7 percent, referral 6 percent, other social media 2 percent.">
+                <div class="stackbar__frame">
+                  <div class="stackbar__bar" aria-hidden="true">
+                    <div class="stackbar__seg stackbar__seg--1" style="--val:27">
+                      <span class="stackbar__seg-label">
+                        <span class="stackbar__seg-name">Search engine, paid</span>
+                        <span class="stackbar__seg-value">27%</span>
+                      </span>
+                    </div>
+                    <div class="stackbar__seg stackbar__seg--2" style="--val:23">
+                      <span class="stackbar__seg-label">
+                        <span class="stackbar__seg-name">LLMs</span>
+                        <span class="stackbar__seg-value">23%</span>
+                      </span>
+                    </div>
+                    <div class="stackbar__seg stackbar__seg--3" style="--val:22">
+                      <span class="stackbar__seg-label">
+                        <span class="stackbar__seg-name">Search engine, organic</span>
+                        <span class="stackbar__seg-value">22%</span>
+                      </span>
+                    </div>
+                    <div class="stackbar__seg stackbar__seg--4" style="--val:13">
+                      <span class="stackbar__seg-label">
+                        <span class="stackbar__seg-name">Reddit</span>
+                        <span class="stackbar__seg-value">13%</span>
+                      </span>
+                    </div>
+                    <div class="stackbar__seg stackbar__seg--5" style="--val:7"></div>
+                    <div class="stackbar__seg stackbar__seg--6" style="--val:6"></div>
+                    <div class="stackbar__seg stackbar__seg--7" style="--val:2"></div>
+                  </div>
+                  <div class="stackbar__callouts" aria-hidden="true">
+                    <div class="stackbar__callout" style="top:87%">
+                      <span class="stackbar__callout-line"></span>
+                      <span class="stackbar__callout-label">LinkedIn <b>7%</b></span>
+                    </div>
+                    <div class="stackbar__callout" style="top:93.5%">
+                      <span class="stackbar__callout-line"></span>
+                      <span class="stackbar__callout-label">Referral <b>6%</b></span>
+                    </div>
+                    <div class="stackbar__callout" style="top:97%">
+                      <span class="stackbar__callout-line"></span>
+                      <span class="stackbar__callout-label">Other social media <b>2%</b></span>
+                    </div>
                   </div>
                 </div>
+                <ul class="stackbar__legend" aria-hidden="true">
+                  <li><span class="stackbar__legend-swatch stackbar__seg--5"></span>LinkedIn <b>7%</b></li>
+                  <li><span class="stackbar__legend-swatch stackbar__seg--6"></span>Referral <b>6%</b></li>
+                  <li><span class="stackbar__legend-swatch stackbar__seg--7"></span>Other social media <b>2%</b></li>
+                </ul>
               </div>
+
+              <p class="chart__note">Search, paid and organic combined, accounts for 49 percent. LLM answer engines are the single largest channel outside search, ahead of Reddit.</p>
+              <details class="chart__data">
+                <summary>View the data</summary>
+                <table>
+                  <caption class="visually-hidden">Signups by channel, share and raw count, out of 2,100 total</caption>
+                  <thead>
+                    <tr><th scope="col">Channel</th><th scope="col">Share</th><th scope="col">Signups</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">Search engine, paid</th><td>27%</td><td>567</td></tr>
+                    <tr><th scope="row">LLMs</th><td>23%</td><td>483</td></tr>
+                    <tr><th scope="row">Search engine, organic</th><td>22%</td><td>462</td></tr>
+                    <tr><th scope="row">Reddit</th><td>13%</td><td>273</td></tr>
+                    <tr><th scope="row">LinkedIn</th><td>7%</td><td>147</td></tr>
+                    <tr><th scope="row">Referral</th><td>6%</td><td>126</td></tr>
+                    <tr><th scope="row">Other social media</th><td>2%</td><td>42</td></tr>
+                    <tr><th scope="row">Total</th><td>100%</td><td>2,100</td></tr>
+                  </tbody>
+                </table>
+              </details>
             </div>
           </div>
         </div>
