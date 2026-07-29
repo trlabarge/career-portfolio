@@ -2731,7 +2731,7 @@ html:not(.js) .cap-item__desc {
   letter-spacing: -0.01em;
 }
 
-/* "The decision" two-column layout: prose left, crossfading proof right. */
+/* "The decision" two-column layout: prose left, attribution chart right. */
 .decision-grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
@@ -2743,103 +2743,10 @@ html:not(.js) .cap-item__desc {
   margin-top: 0;
 }
 
-/* Crossfading stack of channel assets. Slides are absolutely stacked frames;
-   the first ships with .is-active in the markup so no-JS and reduced-motion
-   both show a real, correct image with no flash. JS only advances the
-   rotation and fades between slides. */
-.channel-fade {
+.decision-grid .chart {
   position: sticky;
   top: calc(var(--space-lg) + 60px);
-}
-
-.channel-fade__frame {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(74, 107, 82, 0.18);
-  background-color: var(--color-cream);
-  overflow: hidden;
-  box-shadow: 0 20px 44px -30px rgba(43, 43, 43, 0.5);
-}
-
-.channel-fade__slide {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  transition: opacity 0.9s var(--ease-out);
-}
-
-.channel-fade__slide.is-active {
-  opacity: 1;
-}
-
-.channel-fade__slide img {
-  flex: 1 1 auto;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-}
-
-.channel-fade__tag {
-  position: absolute;
-  left: var(--space-sm);
-  top: var(--space-sm);
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  background-color: rgba(43, 43, 43, 0.72);
-  color: var(--color-bg);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* Placeholder state, same visual language as the capabilities section's
-   "Interactive demo coming soon" chip, until real assets are wired in. */
-.channel-fade__placeholder {
-  display: grid;
-  place-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  height: 100%;
-  padding: var(--space-md);
-  text-align: center;
-  background-color: var(--color-cream);
-}
-
-.channel-fade__placeholder span {
-  display: inline-block;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  background-color: var(--color-sage-tint);
-  color: var(--color-sage-dark);
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.channel-fade__dots {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-top: var(--space-sm);
-}
-
-.channel-fade__dots span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: rgba(74, 107, 82, 0.25);
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.channel-fade__dots span.is-active {
-  background-color: var(--color-sage);
-  transform: scale(1.3);
+  margin-top: 0;
 }
 
 @media (max-width: 900px) {
@@ -2847,7 +2754,7 @@ html:not(.js) .cap-item__desc {
     grid-template-columns: 1fr;
   }
 
-  .channel-fade {
+  .decision-grid .chart {
     position: static;
     order: -1;
   }
