@@ -152,62 +152,131 @@
     els.forEach(function (el) { io.observe(el); });
   })();
 
-  /* --- About page: player/coach scroll-linked cross-fade ----------------- */
-  /* Writes --pc-mix (0 = coach, 1 = player) on .player-coach as the section
-     scrolls past. All the visual work is CSS; this only reports progress.
-     Under reduced motion we bail out entirely, which leaves the stylesheet's
-     base rules in place (both images side by side, both visible). */
+  /* --- About page: player/coach illustration pair ------------------------ */
+  /* Two jobs, both skipped under reduced motion (the stylesheet's base rules
+     then apply: both images stacked in normal flow, fully visible, static).
+     1. layout() sizes and positions the transparent-background .pc-frame
+        once per viewport size, NOT on every scroll tick, so it never moves
+        while the user scrolls. It measures the "Player coach, literally."
+        heading and the second row of the card grid, then sets the frame's
+        top/height/width inline (relative to the <section>, its positioned
+        ancestor, since .player-coach__media itself stays position: static
+        in the enhanced view) so the artwork spans from the heading down
+        through about 70% of that second row, flush against the section's
+        right edge. Width is derived from that height using the source art's
+        4:5 aspect ratio, then clamped so the frame never overlaps the copy
+        column, which is why it doesn't always reach the full target on
+        narrower wide-viewport widths (901-1200px or so).
+     2. update() writes --pc-mix (0 = coach, 1 = player) on .player-coach as
+        the now-static frame scrolls through the viewport, driving the CSS
+        cross-fade. This runs on scroll; layout() does not. */
   (function playerCoach() {
-    var grid = document.querySelector('[data-player-coach]');
-    if (!grid || reduceMotion) return;
+    var section = document.querySelector('[data-player-coach]');
+    if (!section || reduceMotion) return;
 
-    var frame = grid.querySelector('.pc-frame');
-    if (!frame) return;
+    var body = section.querySelector('.player-coach__body');
+    var frame = section.querySelector('.pc-frame');
+    var heading = section.querySelector('.section__head h2');
+    var cards = section.querySelectorAll('.card-grid > .icon-card');
+    if (!body || !frame || !heading || cards.length < 4) return;
 
-    var ticking = false;
+    var wideQuery = window.matchMedia('(min-width: 901px)');
+    var scrollTicking = false;
+    var MAX_WIDTH = 680; // keeps the art tethered near the copy on ultra-wide screens
+    var EDGE_GAP = 32; // breathing room between the copy column and the art
 
     function clamp01(n) {
       return n < 0 ? 0 : n > 1 ? 1 : n;
     }
 
-    function stickyOffset() {
-      var top = parseFloat(window.getComputedStyle(frame).top);
-      return isNaN(top) ? 0 : top;
+    function layout() {
+      if (!wideQuery.matches) {
+        frame.style.cssText = '';
+        return;
+      }
+
+      var sectionRect = section.getBoundingClientRect();
+      var bodyRect = body.getBoundingClientRect();
+      var headRect = heading.getBoundingClientRect();
+
+      // Cards 2 and 3 (0-indexed) are the second row of the 2x2 grid. Rows
+      // can differ slightly in height depending on copy length, so use the
+      // taller of the two as the row's true bottom edge.
+      var row2Top = cards[2].getBoundingClientRect().top;
+      var row2Bottom = row2Top;
+      for (var i = 2; i < cards.length; i++) {
+        var cardRect = cards[i].getBoundingClientRect();
+        if (cardRect.bottom > row2Bottom) row2Bottom = cardRect.bottom;
+      }
+      var targetBottom = row2Top + (row2Bottom - row2Top) * 0.7;
+
+      var top = headRect.top - sectionRect.top;
+      var desiredHeight = targetBottom - headRect.top;
+      if (desiredHeight < 120) {
+        frame.style.cssText = '';
+        return;
+      }
+
+      // Source art is 960x1200 (4:5). Deriving width from height keeps the
+      // frame filling exactly, no cropping. The frame sits flush against the
+      // section's right edge (a full-bleed sibling of .container, matching
+      // the tool-stack section's pattern), so it can borrow width the copy
+      // column doesn't have, up to where it would start overlapping the
+      // copy or looking disconnected from it on very wide screens.
+      var availableWidth = sectionRect.right - bodyRect.right - EDGE_GAP;
+      var desiredWidth = desiredHeight * (960 / 1200);
+      var width = Math.max(Math.min(desiredWidth, availableWidth, MAX_WIDTH), 0);
+      var height = width / (960 / 1200);
+
+      frame.style.top = top + 'px';
+      frame.style.height = height + 'px';
+      frame.style.width = width + 'px';
     }
 
-    function update() {
-      ticking = false;
-      var rect = grid.getBoundingClientRect();
+    function updateMix() {
+      scrollTicking = false;
+      if (!wideQuery.matches) return;
+
+      var rect = frame.getBoundingClientRect();
       var vh = window.innerHeight || 1;
 
-      // Progress runs from the section top sitting a third of the way down
-      // the viewport to the section bottom rising back to about the same
-      // place, so the hand-off lands while the section actually fills the
-      // screen and the frame is pinned. Driving it off the pinned travel
-      // alone finishes the fade before the section is even settled, since
-      // the copy column is only a little taller than the frame.
-      var startTop = vh * 0.35;
-      var endTop = Math.min(stickyOffset(), vh * 0.65 - rect.height);
-      var range = Math.max(startTop - endTop, vh * 0.4);
-      var raw = clamp01((startTop - rect.top) / range);
+      // Standard "progress through the viewport" formula: 0 when the frame's
+      // top is just entering at the bottom edge, 1 when its bottom has just
+      // left at the top edge. Since the frame no longer moves on its own
+      // (layout() only repositions it on resize), this is driven purely by
+      // page scroll.
+      var raw = clamp01((vh - rect.top) / (vh + rect.height));
 
-      // Hold on the coach at the top and the player at the bottom, and spend
-      // the middle of the range on the hand-off so neither end looks washed.
-      var mix = clamp01((raw - 0.28) / 0.44);
+      // Hold briefly on the coach and on the player, spend the middle of the
+      // scroll on the hand-off.
+      var mix = clamp01((raw - 0.15) / 0.7);
       mix = mix * mix * (3 - 2 * mix); // smoothstep
-      grid.style.setProperty('--pc-mix', mix.toFixed(4));
+      section.style.setProperty('--pc-mix', mix.toFixed(4));
     }
 
-    function request() {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
+    function requestMix() {
+      if (!scrollTicking) {
+        window.requestAnimationFrame(updateMix);
+        scrollTicking = true;
       }
     }
 
-    window.addEventListener('scroll', request, { passive: true });
-    window.addEventListener('resize', request);
-    update();
+    function requestLayout() {
+      layout();
+      updateMix();
+    }
+
+    window.addEventListener('scroll', requestMix, { passive: true });
+    window.addEventListener('resize', requestLayout);
+    window.addEventListener('load', requestLayout);
+    if (wideQuery.addEventListener) {
+      wideQuery.addEventListener('change', requestLayout);
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(requestLayout);
+    }
+
+    requestLayout();
   })();
 
   /* --- Capabilities: clickable tabs + dynamic stage --------------------- */

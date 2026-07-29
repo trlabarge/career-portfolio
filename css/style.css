@@ -1371,25 +1371,44 @@ html:not(.js) .cap-item__desc {
 }
 
 /* About page: How I Lead, player/coach illustration pair -------------------
-   Two columns. Copy and the 2x2 card grid on the left, the illustration pair
-   filling the full height of the section on the right. The images cross-fade
-   from coach to player as the section scrolls, driven by the --pc-mix custom
-   property that /js/main.js writes on .player-coach (0 = coach, 1 = player).
+   The images have a transparent background (paper keyed out in processing,
+   see CLAUDE.md) so they read as drawn straight onto the section's sage
+   field rather than sitting in a separate photo frame. They cross-fade from
+   coach to player as the section scrolls, driven by the --pc-mix custom
+   property that /js/main.js writes on .player-coach (the <section> itself,
+   0 = coach, 1 = player).
 
-   The base rules below are the no-JS and reduced-motion view: both images
-   render side by side in normal flow, both fully visible, no sticky, no
-   scroll coupling. The scroll-linked treatment is layered on top inside a
-   `.js` + `prefers-reduced-motion: no-preference` + wide-viewport query, so
-   it can never strand the player image at opacity 0. */
+   The base rules below are the no-JS and reduced-motion view: .player-coach
+   __media is a normal block, styled to match .container's own width and
+   padding so it lines up with the rest of the page, holding both images side
+   by side in normal flow, both fully visible, no absolute positioning, no
+   scroll coupling.
+
+   The scroll-linked treatment is layered on top inside a `.js` +
+   `prefers-reduced-motion: no-preference` + wide-viewport query, so it can
+   never strand the player image at opacity 0. There, .player-coach__media
+   is a full-bleed sibling of .container (not nested inside it, same pattern
+   as .stack) so the frame can borrow width beyond the container's
+   max-width. .pc-frame becomes position: absolute against the <section>
+   (.player-coach__media itself stays position: static and collapses to zero
+   height, only .pc-frame is positioned, skipping straight to the section as
+   its containing block) and does not move on scroll: playerCoach() in
+   main.js sizes and positions it once (and on resize) so it spans from the
+   "Player coach, literally." heading down through most of the second card
+   row, flush against the section's right edge, clamped so it never overlaps
+   the copy column. Only --pc-mix changes as the page scrolls. */
 .player-coach {
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-  gap: var(--space-lg);
+  position: relative;
 }
 
-.player-coach__body,
+.player-coach__body {
+  max-width: 640px;
+}
+
 .player-coach__media {
-  min-width: 0;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 2.75rem);
 }
 
 .pc-frame {
@@ -1404,21 +1423,7 @@ html:not(.js) .cap-item__desc {
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: 50% 32%;
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg);
-}
-
-.pc-frame__caption {
-  grid-column: 1 / -1;
-  margin-top: var(--space-xs);
-  font-family: var(--font-display);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--color-text-muted);
-  text-align: center;
+  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
@@ -1426,23 +1431,26 @@ html:not(.js) .cap-item__desc {
     --pc-mix: 0;
   }
 
-  /* The media column stretches to the full row height, so the sticky frame
-     inside it stays pinned for the whole scroll through the section. */
   .js .player-coach__media {
-    position: relative;
-    height: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
   }
 
+  /* Sized and positioned entirely by playerCoach() in main.js, which writes
+     top/height/width inline once measurements are available; the values
+     here are just a sane starting point before that first measurement. */
   .js .pc-frame {
     display: block;
-    position: sticky;
-    top: 5.25rem;
-    height: clamp(380px, 74vh, 760px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 300px;
+    width: 240px;
+    /* The cross-fade's small scale/drift on the two images (below) can push
+       a couple of percent past this box; clip it so it never creates
+       horizontal overflow at the section's right edge. */
     overflow: hidden;
-    border: 1px solid rgba(74, 107, 82, 0.16);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-bg);
-    box-shadow: 0 26px 50px -34px rgba(43, 43, 43, 0.5);
   }
 
   .js .pc-frame__img {
@@ -1451,8 +1459,7 @@ html:not(.js) .cap-item__desc {
     width: 100%;
     height: 100%;
     aspect-ratio: auto;
-    border-radius: 0;
-    object-position: 50% 26%;
+    object-position: 50% 0%;
     will-change: opacity, transform;
   }
 
@@ -1464,16 +1471,6 @@ html:not(.js) .cap-item__desc {
   .js .pc-frame__img--player {
     opacity: var(--pc-mix);
     transform: translateY(calc((1 - var(--pc-mix)) * 2%)) scale(calc(1.04 - var(--pc-mix) * 0.04));
-  }
-
-  .js .pc-frame__caption {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: 0;
-    padding: 2.75rem 1rem 0.9rem;
-    background-image: linear-gradient(to top, rgba(250, 249, 246, 0.96), rgba(250, 249, 246, 0));
   }
 }
 
@@ -3624,16 +3621,13 @@ html:not(.js) .cap-item__desc {
   }
 }
 
-/* Player/coach pair: stack the copy above the images. The media column is
-   full width there, so the pair reads better side by side until phone width. */
+/* Player/coach pair: below the enhanced-view breakpoint the section is just
+   .container (body) followed by .player-coach__media in normal flow, so no
+   layout override is needed to stack them, only a narrower cap on the media
+   block so the pair reads better side by side until phone width. */
 @media (max-width: 900px) {
-  .player-coach {
-    grid-template-columns: 1fr;
-  }
-
   .player-coach__media {
     max-width: 620px;
-    margin-inline: auto;
   }
 }
 
