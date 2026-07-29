@@ -1453,9 +1453,15 @@ html:not(.js) .cap-item__desc {
     overflow: hidden;
   }
 
+  /* top/width/height are set per image by playerCoach() in main.js, since
+     the coach and player no longer share one top offset (see the comment
+     above playerCoach() for why); these are just a sane starting point
+     before that first measurement lands. Both stay right-anchored so they
+     line up with .pc-frame's own right-flush edge. */
   .js .pc-frame__img {
     position: absolute;
-    inset: 0;
+    right: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     aspect-ratio: auto;

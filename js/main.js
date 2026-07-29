@@ -155,20 +155,27 @@
   /* --- About page: player/coach illustration pair ------------------------ */
   /* Two jobs, both skipped under reduced motion (the stylesheet's base rules
      then apply: both images stacked in normal flow, fully visible, static).
-     1. layout() sizes and positions the transparent-background .pc-frame
-        once per viewport size, NOT on every scroll tick, so it never moves
-        while the user scrolls. It measures the "Player coach, literally."
-        heading and the second row of the card grid, then sets the frame's
-        top/height/width inline (relative to the <section>, its positioned
-        ancestor, since .player-coach__media itself stays position: static
-        in the enhanced view) so the artwork spans from the heading down
-        through about 70% of that second row, flush against the section's
-        right edge. Width is derived from that height using the source art's
-        4:5 aspect ratio, then clamped so the frame never overlaps the copy
-        column, which is why it doesn't always reach the full target on
-        narrower wide-viewport widths (901-1200px or so).
+     1. layout() sizes and positions the transparent-background artwork once
+        per viewport size, NOT on every scroll tick, so it never moves while
+        the user scrolls. The coach and player images are the same size but
+        NOT stacked at the same top offset: the coach starts level with the
+        "Player coach, literally." heading, the player starts lower, level
+        with the first card row, so the two figures' heads land in visibly
+        different places. That stagger, combined with delaying the fade
+        (see updateMix below), is what keeps the cross-fade from reading as
+        a double exposure, since the two are rarely both at full opacity in
+        the same place at the same time. .pc-frame itself is just an
+        overflow:hidden bounding box sized to the union of the two images
+        (relative to the <section>, its positioned ancestor, since
+        .player-coach__media itself stays position: static in the enhanced
+        view), flush against the section's right edge. Each image's own
+        width/height is derived from a shared target height using the source
+        art's 4:5 aspect ratio (so neither resizes relative to the other
+        mid-fade), clamped so neither overlaps the copy column, which is why
+        it doesn't always reach the full target on narrower wide-viewport
+        widths (901-1200px or so).
      2. update() writes --pc-mix (0 = coach, 1 = player) on .player-coach as
-        the now-static frame scrolls through the viewport, driving the CSS
+        the now-static images scroll through the viewport, driving the CSS
         cross-fade. This runs on scroll; layout() does not. */
   (function playerCoach() {
     var section = document.querySelector('[data-player-coach]');
@@ -176,9 +183,11 @@
 
     var body = section.querySelector('.player-coach__body');
     var frame = section.querySelector('.pc-frame');
+    var coachImg = section.querySelector('.pc-frame__img--coach');
+    var playerImg = section.querySelector('.pc-frame__img--player');
     var heading = section.querySelector('.section__head h2');
     var cards = section.querySelectorAll('.card-grid > .icon-card');
-    if (!body || !frame || !heading || cards.length < 4) return;
+    if (!body || !frame || !coachImg || !playerImg || !heading || cards.length < 4) return;
 
     var wideQuery = window.matchMedia('(min-width: 901px)');
     var scrollTicking = false;
@@ -192,12 +201,15 @@
     function layout() {
       if (!wideQuery.matches) {
         frame.style.cssText = '';
+        coachImg.style.cssText = '';
+        playerImg.style.cssText = '';
         return;
       }
 
       var sectionRect = section.getBoundingClientRect();
       var bodyRect = body.getBoundingClientRect();
       var headRect = heading.getBoundingClientRect();
+      var row1Rect = cards[0].getBoundingClientRect();
 
       // Cards 2 and 3 (0-indexed) are the second row of the 2x2 grid. Rows
       // can differ slightly in height depending on copy length, so use the
@@ -210,27 +222,46 @@
       }
       var targetBottom = row2Top + (row2Bottom - row2Top) * 0.7;
 
-      var top = headRect.top - sectionRect.top;
+      var coachTop = headRect.top - sectionRect.top;
+      var playerTop = row1Rect.top - sectionRect.top;
       var desiredHeight = targetBottom - headRect.top;
       if (desiredHeight < 120) {
         frame.style.cssText = '';
+        coachImg.style.cssText = '';
+        playerImg.style.cssText = '';
         return;
       }
 
-      // Source art is 960x1200 (4:5). Deriving width from height keeps the
-      // frame filling exactly, no cropping. The frame sits flush against the
-      // section's right edge (a full-bleed sibling of .container, matching
-      // the tool-stack section's pattern), so it can borrow width the copy
-      // column doesn't have, up to where it would start overlapping the
-      // copy or looking disconnected from it on very wide screens.
+      // Source art is 960x1200 (4:5). Both images share this size so the
+      // fade never reads as a resize, only a cross-fade. The frame sits
+      // flush against the section's right edge (a full-bleed sibling of
+      // .container, matching the tool-stack section's pattern), so it can
+      // borrow width the copy column doesn't have, up to where it would
+      // start overlapping the copy or looking disconnected from it on very
+      // wide screens.
       var availableWidth = sectionRect.right - bodyRect.right - EDGE_GAP;
       var desiredWidth = desiredHeight * (960 / 1200);
       var width = Math.max(Math.min(desiredWidth, availableWidth, MAX_WIDTH), 0);
       var height = width / (960 / 1200);
 
-      frame.style.top = top + 'px';
-      frame.style.height = height + 'px';
+      // .pc-frame bounds both images (it's what clips the cross-fade's
+      // scale/drift transform so it never creates horizontal overflow at
+      // the section's edge), so it has to span from the higher image's top
+      // to the lower image's bottom.
+      var frameTop = Math.min(coachTop, playerTop);
+      var frameBottom = Math.max(coachTop + height, playerTop + height);
+
+      frame.style.top = frameTop + 'px';
+      frame.style.height = (frameBottom - frameTop) + 'px';
       frame.style.width = width + 'px';
+
+      coachImg.style.top = (coachTop - frameTop) + 'px';
+      coachImg.style.width = width + 'px';
+      coachImg.style.height = height + 'px';
+
+      playerImg.style.top = (playerTop - frameTop) + 'px';
+      playerImg.style.width = width + 'px';
+      playerImg.style.height = height + 'px';
     }
 
     function updateMix() {
@@ -247,9 +278,16 @@
       // page scroll.
       var raw = clamp01((vh - rect.top) / (vh + rect.height));
 
-      // Hold briefly on the coach and on the player, spend the middle of the
-      // scroll on the hand-off.
-      var mix = clamp01((raw - 0.15) / 0.7);
+      // Hold on the coach for a while (the two figures are already staggered
+      // vertically by layout() above, but delaying the hand-off on top of
+      // that keeps them from both reading at full strength in the same
+      // place at the same time), then transition, then hold on the player.
+      // The frame is roughly one viewport tall, so raw ~0.5 is the point
+      // where it's most fully on screen (top around y=0); the transition is
+      // kept centered before that, not after, so the player's head (which
+      // sits below the coach's, see layout() above) is still on screen by
+      // the time it's fully faded in, not already scrolled past the top.
+      var mix = clamp01((raw - 0.25) / 0.3);
       mix = mix * mix * (3 - 2 * mix); // smoothstep
       section.style.setProperty('--pc-mix', mix.toFixed(4));
     }
