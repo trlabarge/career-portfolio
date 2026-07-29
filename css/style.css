@@ -2430,6 +2430,186 @@ html:not(.js) .cap-item__desc {
   font-variant-numeric: tabular-nums;
 }
 
+/* Vertical stacked bar (part-to-whole share of a fixed total) -------------- */
+/* One hue, seven monotone lightness steps, largest share darkest. Generated
+   and validated as an ORDINAL ramp (not categorical): fixed hue 151.5°
+   matching --color-sage, OKLCH L stepped 0.70 -> 0.32, chroma 0.055 to match
+   sage's own chroma. Passes lightness-monotone, adjacent-DeltaL >= 0.06, and
+   light-end contrast >= 2:1 against the card surface (validate_palette.js
+   --ordinal). Do not hand-tweak these hexes without re-running that check. */
+.stackbar {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.stackbar__frame {
+  position: relative;
+  width: 150px;
+}
+
+.stackbar__bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 150px;
+  height: 420px;
+}
+
+.stackbar__seg {
+  flex: var(--val) 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 0.4rem;
+}
+
+.stackbar__seg:first-child {
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+}
+
+.stackbar__seg:last-child {
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+.stackbar__seg--1 { background-color: #1B3B24; }
+.stackbar__seg--2 { background-color: #2C4C34; }
+.stackbar__seg--3 { background-color: #3D5D45; }
+.stackbar__seg--4 { background-color: #4E6F56; }
+.stackbar__seg--5 { background-color: #608268; }
+.stackbar__seg--6 { background-color: #73957B; }
+.stackbar__seg--7 { background-color: #86A98D; }
+
+/* Inline label: only the four largest segments have room for one. Always
+   light text, since all four fall dark enough that light text is the only
+   option clearing 4.5:1 (verified per-segment, not assumed). */
+.stackbar__seg-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  color: var(--color-bg);
+  line-height: 1.15;
+}
+
+.stackbar__seg-name {
+  font-size: 0.74rem;
+}
+
+.stackbar__seg-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* The three smallest segments (<=7%) have no room for inline text, so their
+   label sits outside the bar, tied to its segment's vertical center by a
+   short leader line. Position is a plain percentage of the bar's height,
+   matching each segment's true center in the 0-100 stack (the 2px gaps are
+   a few px total and don't shift these enough to matter). */
+/* left + top only, height matches the bar. Width is deliberately auto: setting
+   a right edge too would zero out the box (100% - 100% - 0), leaving the
+   labels overflowing an invisible zero-width container with nothing to
+   reserve their space in the page's normal flow. */
+.stackbar__callouts {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+}
+
+.stackbar__callout {
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.stackbar__callout-line {
+  width: 14px;
+  height: 1px;
+  background-color: rgba(74, 107, 82, 0.4);
+  flex: none;
+}
+
+.stackbar__callout-label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.stackbar__callout-label b {
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+/* Plain legend for the three smallest segments, shown only below ~620px in
+   place of the leader-line callouts. At a shorter mobile bar height those
+   three anchor points (87 / 93.5 / 97%) sit too close together in absolute
+   pixels for wrapped multi-line labels to avoid overlapping each other, and
+   there's no shorter label text that fixes that. A plain key is the honest
+   fallback once a segment is too small to point a line at legibly. */
+.stackbar__legend {
+  display: none;
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+}
+
+.stackbar__legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.stackbar__legend li + li {
+  margin-top: 0.35rem;
+}
+
+.stackbar__legend b {
+  font-family: var(--font-display);
+  color: var(--color-text);
+}
+
+.stackbar__legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* The chart card's own padding eats into the width budget this needs, so a
+   narrower bar keeps the figure inside a phone-width card. */
+@media (max-width: 620px) {
+  .stackbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stackbar__frame,
+  .stackbar__bar {
+    width: 112px;
+  }
+
+  .stackbar__bar {
+    height: 340px;
+  }
+
+  .stackbar__callouts {
+    display: none;
+  }
+
+  .stackbar__legend {
+    display: block;
+  }
+}
+
 /* Multivariate test grid -------------------------------------------------- */
 .variant-grid {
   display: grid;
