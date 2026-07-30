@@ -319,6 +319,11 @@ Components added for this page, both in `/css/style.css`:
   the whole point of the diagram. `.path__step--final` takes the terracotta
   accent. Under 860px it collapses to one column and the connectors rotate
   into the vertical gap, so the arrows keep pointing at the next step.
+- `.step > .shot` and `.step > .shot-pair` get `margin-top: var(--space-lg)`.
+  `.shot` deliberately zeroes its own margin so a parent grid's gap can own
+  the spacing (that is how the Agolo `.posrow` layout uses it), but stacked
+  straight inside a `.step` there is no such grid, so the captures collided
+  with each other and with the copy above them.
 - `.figure--plain` with `.figure__art`. The default `.figure img` treatment
   (white card, border, `width: 100%`) boxes a transparent logo and makes it
   read as a screenshot of a logo. This variant drops the frame, caps the art

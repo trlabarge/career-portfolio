@@ -3835,6 +3835,15 @@ html:not(.js) .cap-item__desc {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+/* .shot zeroes its own margin so a parent grid's gap can own the spacing.
+   Stacked directly inside a step there is no such grid, so captures collide
+   with each other and with the copy above them. Give them the same top
+   rhythm .figure already carries. */
+.step > .shot,
+.step > .shot-pair {
+  margin-top: var(--space-lg);
+}
+
 /* Positioning progression -------------------------------------------------- */
 /* Alternating rows, one per version of the site. The headline of each version
    is quoted verbatim as the primary evidence and the capture backs it up. */
