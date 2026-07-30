@@ -452,24 +452,49 @@ differs.
   magnets, and a closing section that states plainly that the primary goal is
   a full-time VP or Head of Marketing seat. Keep that section if the page is
   ever rewritten, since without it a recruiter cannot tell what Tim wants.
-  Nearly every section reuses an existing component: `.icon-card` grids for
-  the fit situations and the FAQ block, `.stat-strip` (the same four numbers
-  as `/about`), `.scope-grid` for what he takes on versus what is ruled out,
+  Most sections reuse an existing component: an `.icon-card` grid for the fit
+  situations, `.scope-grid` for what he takes on versus what is ruled out,
   `.path` for the three-step engagement shape, and `.work-grid` re-headlined
-  by the problem each case study started with rather than by its metric. The
-  one addition is `.icon-card__when`, the set-off symptom list at the bottom
-  of each "When it makes sense" card, introduced by a small uppercase
-  "Sometimes this happens when:" label against a gold left rule. It uses
-  `margin-top: auto` so the callouts pin to the bottom of each card and line
-  up across a row even when the descriptions above them differ in length.
-  That label is the one sanctioned exception to the no-colons-in-body-copy
-  rule, requested explicitly by Tim, so do not "fix" it. The fifth card sits
-  alone in the left column of the two-column grid, which is intended; do not
-  span it full width, since the resulting line measure is far too long for
-  the card's text. Carries both `Person` (with `makesOffer`) and
-  `FAQPage` JSON-LD; the `FAQPage` entries must be kept in sync by hand with
-  the four `.icon-card` questions in the "The details" section, since nothing
-  generates one from the other.
+  by the problem each case study started with rather than by its metric.
+  There is deliberately NO `.stat-strip` here. The four numbers it used to
+  carry appear on the homepage and `/about` already, and the case studies are
+  linked from this page, so the block was removed as redundant on Tim's
+  instruction. The honesty line it used to carry ("results from full-time
+  roles, which is where most of this was earned") moved into the intro of the
+  "The proof" section and must survive any rewrite, since the page has no
+  fractional-specific evidence. Sections alternate plain / tint down the page;
+  removing the stat strip is what set the current order, so re-check the
+  rhythm if a section is ever added or dropped.
+  Three components were added for this page:
+  - `.icon-card__when`, the set-off symptom list at the bottom of each "When
+    it makes sense" card, introduced by a small uppercase "Sometimes this
+    happens when:" label against a gold left rule. It uses `margin-top: auto`
+    so the callouts pin to the bottom of each card and line up across a row
+    even when the descriptions above them differ in length. That label is the
+    one sanctioned exception to the no-colons-in-body-copy rule, requested
+    explicitly by Tim, so do not "fix" it.
+  - `.icon-card--invite`, the sage-tinted sixth card that closes the same
+    grid ("Have a marketing problem that isn't on this list?"). It exists to
+    make the grid three even rows AND to catch problems the five specific
+    cards miss, so do not drop it to get back to five.
+  - `.faq`, a native `<details>`/`<summary>` disclosure list, which replaced
+    the icon-card grid that used to hold the same four questions. Native
+    elements were chosen so it stays keyboard operable and fully readable
+    with no JS. The open/close slide rides on `::details-content` with
+    `interpolate-size: allow-keywords`; engines without support drop those
+    rules and get an instant toggle, which is a fine fallback, so do not
+    replace this with a JS accordion.
+  The `.path` section animates via `[data-path-progress]` on the `<ol>`,
+  handled by `pathProgress()` in `/js/main.js`. It adds `is-lit` to each step
+  in turn (260ms apart) once the list is in view, fading the card up and
+  drawing that step's incoming connector. The attribute is what opts in, so
+  the CEI case study's static path is untouched. The hidden state is gated
+  behind `html.js`, and the stacked layout under 860px flips the connector
+  draw from `scaleX` to `scaleY` since the rule runs vertically there.
+  Carries both `Person` (with `makesOffer`) and `FAQPage` JSON-LD; the
+  `FAQPage` question names must be kept in sync by hand with the four
+  `.faq__q` summaries, since nothing generates one from the other, and Google
+  expects the marked-up text to match what is visible.
 - `/contact` — email, LinkedIn, resume download.
 
 Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
@@ -491,13 +516,14 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - The Agolo to Implicit case study has no deal size, sales cycle, or win rate
   data, since none was available. It leads on qualified leads per quarter
   instead. If those numbers surface later they belong in the results section.
-- The Fractional CMO page's "Ruled out" column is drafted, not dictated. Tim
+- The Fractional CMO page's "Ruled out" column is only partly dictated. Tim
   specified what he takes on (demand gen, PLG, content strategy, GTM
-  strategy, competitive analysis, branding, messaging and positioning, CRO)
-  and did not specify exclusions, so the three ruled-out items were inferred
-  from things he did say (he prefers cash over equity, he is one person
-  rather than an agency, and the Agolo rebrand was positioning-led). Confirm
-  or replace them with his own.
+  strategy, competitive analysis, branding, messaging and positioning, CRO),
+  and later added one exclusion in his own words, that he will not be the
+  person running someone's social media or paid ad campaigns day to day. The
+  other three items were inferred from things he did say (he prefers cash
+  over equity, he is one person rather than an agency, and the Agolo rebrand
+  was positioning-led) and are still worth confirming or replacing.
 - The Fractional CMO page carries no fractional-specific client evidence. Tim
   has done consulting and freelance marketing work many times, though not
   under the "Fractional CMO" label, and no named client, metric, or

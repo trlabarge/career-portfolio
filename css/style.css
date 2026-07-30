@@ -1569,6 +1569,104 @@ html:not(.js) .cap-item__desc {
   color: var(--color-sage-dark);
 }
 
+/* The catch-all card that closes a grid of specific situations. Tinted so it
+   reads as an invitation rather than a sixth symptom, since it is the only
+   card in the set that describes no particular problem. */
+.icon-card--invite {
+  background-color: var(--color-sage-tint);
+  border-color: var(--color-sage);
+}
+
+/* FAQ disclosure list ------------------------------------------------------ */
+/* Native details/summary, so it is keyboard operable and fully readable with
+   no JS at all. The open/close easing rides on ::details-content, which older
+   engines simply drop, leaving an instant toggle rather than a broken one.
+   interpolate-size is what lets block-size animate to auto; without support
+   the panel still opens, just without the slide. */
+.faq {
+  margin-top: var(--space-lg);
+  border-top: 1px solid rgba(74, 107, 82, 0.22);
+  interpolate-size: allow-keywords;
+}
+
+.faq__item {
+  border-bottom: 1px solid rgba(74, 107, 82, 0.22);
+}
+
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+/* Safari still needs the vendor pseudo-element to drop the disclosure arrow. */
+.faq__q::-webkit-details-marker {
+  display: none;
+}
+
+.faq__q:hover,
+.faq__item[open] > .faq__q {
+  color: var(--color-sage);
+}
+
+.faq__q:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Chevron, rotated to point down when the panel is open. */
+.faq__q::after {
+  content: '';
+  flex: none;
+  width: 0.62rem;
+  height: 0.62rem;
+  margin-right: 0.2rem;
+  border-right: 2px solid var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+  transform: translateY(-25%) rotate(-45deg);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.faq__item[open] > .faq__q::after {
+  transform: translateY(-25%) rotate(45deg);
+}
+
+.faq__a {
+  padding-bottom: var(--space-sm);
+  max-width: 68ch;
+  color: var(--color-text-muted);
+}
+
+.faq__a p {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .faq__item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: block-size 0.3s var(--ease-out), opacity 0.3s ease,
+      content-visibility 0.3s allow-discrete;
+    transition-behavior: allow-discrete;
+  }
+
+  .faq__item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
 /* Small row of tool logos naming what actually ran in that channel. Sits
    between the title and the description, so it reads as a caption on the
    heading rather than decoration on the paragraph. */
@@ -2290,6 +2388,44 @@ html:not(.js) .cap-item__desc {
 .path__step--final {
   border-color: var(--color-terracotta);
   border-width: 2px;
+}
+
+/* Sequenced progression, opted into with [data-path-progress] so the CEI case
+   study's static path is unaffected. JS adds .is-lit to each step in turn once
+   the list is in view, which fades the card up and draws its incoming
+   connector. Everything is gated behind html.js, so with no JS the steps are
+   simply visible, same as the static version. */
+html.js .path[data-path-progress] .path__step {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s var(--ease-out);
+}
+
+html.js .path[data-path-progress] .path__step.is-lit {
+  opacity: 1;
+  transform: none;
+}
+
+/* The connector belongs to the step it points into, so it draws as that step
+   arrives. transform-origin follows the arrow direction, left to right on the
+   three-column layout and top to bottom once stacked. */
+html.js .path[data-path-progress] .path__step + .path__step::before {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-out) 0.12s;
+}
+
+html.js .path[data-path-progress] .path__step.is-lit::before {
+  transform: scaleX(1);
+}
+
+html.js .path[data-path-progress] .path__step + .path__step::after {
+  opacity: 0;
+  transition: opacity 0.3s ease 0.42s;
+}
+
+html.js .path[data-path-progress] .path__step.is-lit::after {
+  opacity: 1;
 }
 
 .path__stamp {
@@ -4163,6 +4299,18 @@ html:not(.js) .cap-item__desc {
     transform: translateX(-50%) rotate(135deg);
   }
 
+  /* Stacked, the connector runs top to bottom, so the draw has to scale on
+     the other axis. Without this the 2px-wide rule would animate its width
+     and never appear to grow. */
+  html.js .path[data-path-progress] .path__step + .path__step::before {
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+
+  html.js .path[data-path-progress] .path__step.is-lit::before {
+    transform: scaleY(1);
+  }
+
   .qphases {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -4339,5 +4487,22 @@ html:not(.js) .rebrand-film__video {
   .rotator__word.is-active {
     opacity: 1;
     transform: none;
+  }
+
+  /* The engagement path resolves to its finished state. JS also lights every
+     step immediately here, so this is a second guarantee rather than the
+     mechanism. transform: none rather than a scale keeps it correct in both
+     the three-column and the stacked orientation. */
+  html.js .path[data-path-progress] .path__step {
+    opacity: 1;
+    transform: none;
+  }
+
+  html.js .path[data-path-progress] .path__step + .path__step::before {
+    transform: none;
+  }
+
+  html.js .path[data-path-progress] .path__step + .path__step::after {
+    opacity: 1;
   }
 }
