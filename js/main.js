@@ -809,13 +809,17 @@
     if (!charts.length) return;
 
     charts.forEach(function (root) {
-      var svg = root.querySelector('.growth__svg');
-      var hits = root.querySelectorAll('.growth__hits rect');
+      var svg = root.querySelector('.growth__svg, .qbars__svg');
+      var hits = root.querySelectorAll('.growth__hits rect, .qbars__hits rect');
       if (!svg || !hits.length) return;
 
       /* Anchor to the plot wrapper, which is the scroll container on narrow
          screens, so the tooltip travels with the chart. */
-      var frame = root.querySelector('.growth__plot') || root;
+      var frame = root.querySelector('.growth__plot, .qbars__plot') || root;
+
+      /* Each chart names its own unit so the tooltip is not hardcoded to the
+         signup chart it was first written for. */
+      var unit = root.dataset.unit || 'signups';
 
       var tip = document.createElement('div');
       tip.className = 'growth__tip';
@@ -845,7 +849,7 @@
         cursor.style.top = p.y + 'px';
         tip.style.left = p.x + 'px';
         tip.style.top = p.y + 'px';
-        tip.innerHTML = '<b>' + rect.dataset.value + ' signups</b><br>' +
+        tip.innerHTML = '<b>' + rect.dataset.value + ' ' + unit + '</b><br>' +
           rect.dataset.label;
         cursor.classList.add('is-on');
         tip.classList.add('is-on');
