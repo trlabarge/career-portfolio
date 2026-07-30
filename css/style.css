@@ -2014,6 +2014,31 @@ html:not(.js) .cap-item__desc {
   color: var(--color-text-muted);
 }
 
+/* Logo lockups arrive as transparent PNGs with no background of their own.
+   The default figure treatment boxes them in a white card with a border,
+   which reads as a screenshot of a logo. This variant drops the frame and
+   centers the art on whatever field the section is using. */
+/* Held to the same measure as .step__body so the art centers on the copy
+   column instead of drifting into the empty right half of the container. */
+.figure--plain {
+  max-width: 68ch;
+}
+
+.figure--plain .figure__art {
+  width: auto;
+  max-width: min(100%, 420px);
+  margin-inline: auto;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.figure--plain figcaption {
+  max-width: 52ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
 .figure-grid {
   display: grid;
   gap: var(--space-md);
@@ -2192,6 +2217,116 @@ html:not(.js) .cap-item__desc {
 
 .chain__note strong {
   color: var(--color-text);
+}
+
+/* Engagement path: the published three-step route into an offering, each
+   step carrying its real duration. Rebuilt as markup rather than shipping
+   the client's own slide artwork, so it lives in this site's palette and
+   stays legible at any width. Same connector construction as .chain. */
+.path {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.path__step {
+  position: relative;
+  padding: var(--space-md);
+  background-color: var(--color-cream);
+  border: 1px solid rgba(74, 107, 82, 0.2);
+  border-radius: var(--radius-lg);
+}
+
+.path__step + .path__step::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(var(--space-md) * -1);
+  width: var(--space-md);
+  height: 2px;
+  background-color: rgba(74, 107, 82, 0.3);
+}
+
+.path__step + .path__step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.55rem;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid rgba(74, 107, 82, 0.45);
+  border-right: 2px solid rgba(74, 107, 82, 0.45);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.path__step--final {
+  border-color: var(--color-terracotta);
+  border-width: 2px;
+}
+
+.path__stamp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  margin: 0 0 0.7rem;
+}
+
+.path__num {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+}
+
+.path__step--final .path__num {
+  color: var(--color-terracotta);
+}
+
+/* The duration is the whole point of the diagram, so it gets the pill and
+   the only solid color fill in the component. */
+.path__dur {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  padding: 0.24rem 0.6rem;
+  border-radius: 999px;
+  background-color: var(--color-sage);
+  color: var(--color-bg);
+}
+
+.path__step--final .path__dur {
+  background-color: var(--color-terracotta);
+}
+
+.path__step b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.4rem;
+}
+
+.path__note {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.path__caption {
+  margin: var(--space-sm) 0 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
 }
 
 /* Charts: shared shell ---------------------------------------------------- */
@@ -3973,6 +4108,25 @@ html:not(.js) .cap-item__desc {
   .scope-grid,
   .shot-pair {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked, the horizontal connectors point nowhere, so they rotate to sit
+     in the vertical gap between steps. */
+  .path {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .path__step + .path__step::before {
+    top: calc(var(--space-md) * -1);
+    left: 50%;
+    width: 2px;
+    height: var(--space-md);
+  }
+
+  .path__step + .path__step::after {
+    top: -0.55rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(135deg);
   }
 
   .qphases {
