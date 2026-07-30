@@ -3584,9 +3584,11 @@ html:not(.js) .cap-item__desc {
 .rebrand-film__video {
   display: block;
   width: 100%;
-  max-width: 940px;
+  max-width: 660px;
   height: auto;
-  margin: 0 auto;
+  /* Generous top margin so the clip reads as its own beat rather than being
+     crowded by the paragraph above it. */
+  margin: var(--space-lg) auto 0;
   border-radius: var(--radius-lg);
 }
 
@@ -3596,7 +3598,7 @@ html:not(.js) .cap-item__desc {
   align-items: center;
   justify-content: center;
   gap: clamp(1.5rem, 5vw, 4rem);
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .filmstrip__mark img {
@@ -3699,9 +3701,11 @@ html:not(.js) .cap-item__desc {
 /* Positioning progression -------------------------------------------------- */
 /* Alternating rows, one per version of the site. The headline of each version
    is quoted verbatim as the primary evidence and the capture backs it up. */
+/* Each row is a whole version of the positioning, so they need clear air
+   between them or the three read as one continuous block. */
 .posline {
   display: grid;
-  gap: var(--space-lg);
+  gap: var(--space-2xl);
 }
 
 .posrow {
@@ -3977,6 +3981,12 @@ html:not(.js) .cap-item__desc {
 
   .posrow:nth-child(even) .posrow__copy {
     order: 0;
+  }
+
+  /* Stacked rows are already visually separated by the capture, so the full
+     desktop gap becomes dead scrolling here. */
+  .posline {
+    gap: var(--space-xl);
   }
 
   .scope-grid,

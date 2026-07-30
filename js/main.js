@@ -869,4 +869,42 @@
       window.addEventListener('resize', hide, { passive: true });
     });
   })();
+
+  /* --- Play-once-in-view video -------------------------------------------- */
+  /* Used by the rebrand transition on the Agolo/Implicit case study. The clip
+     opens on the old wordmark and resolves to the new one, so it only reads
+     correctly from the first frame. Autoplay would burn the transition while
+     the section is still offscreen, so playback waits for the element to be
+     visible and then runs once. CSS hides the video entirely under
+     prefers-reduced-motion, where the static wordmark pair carries the story,
+     but the guard is repeated here so playback is never even requested. */
+  (function playInView() {
+    var vids = document.querySelectorAll('video[data-play-in-view]');
+    if (!vids.length) return;
+
+    var reduced = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    if (!('IntersectionObserver' in window)) {
+      /* No observer support, so fall back to playing on load rather than
+         leaving the poster frame sitting there forever. */
+      vids.forEach(function (v) { v.play().catch(function () {}); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var v = entry.target;
+        io.unobserve(v);
+        v.currentTime = 0;
+        /* A rejected play() promise (autoplay policy, decode failure) leaves
+           the poster showing, which is a fine resting state. */
+        v.play().catch(function () {});
+      });
+    }, { threshold: 0.4 });
+
+    vids.forEach(function (v) { io.observe(v); });
+  })();
 })();
