@@ -221,6 +221,64 @@ punctuated by confident full-bleed color-field sections.
   logos, since they arrived as chat attachments rather than through the
   normal upload intake, only the single processed file in `/assets/about/`.
 
+### Case study assets: the Agolo to Implicit rebrand
+
+Same raw/processed split as the logos. `/assets/agolo-implicit-rebrand-logos/`
+and `/assets/agolo-implicit-rebrand-webpages/` hold the untouched uploads
+(original filenames and sizes, kept for provenance, not referenced by any
+page). Everything the site actually loads lives in
+`/assets/case-studies/agolo-implicit/`.
+
+- Rebrand transition video. The source is a 10s 1920x1080 H.264 file, roughly
+  19MB, which is far too heavy to ship. Processed with a static ffmpeg from
+  the `imageio-ffmpeg` pip package (there is no system ffmpeg in this
+  environment and `apt-get` cannot reach a mirror, so install that package
+  first if the video is ever re-encoded). Trimmed to 0.7s through 9.3s, which
+  drops dead white frames at both ends while keeping the white-to-white seam
+  so the loop is invisible. Scaled to 1280x720 and encoded twice, H.264 at
+  CRF 30 with `+faststart` and VP9 at CRF 38, landing at roughly 290KB each.
+  The poster is a single frame at 6.8s (the Implicit logo, fully resolved)
+  encoded as WebP.
+- Page captures. The uploaded screenshots are full-page, 5,000 to 13,000px
+  tall and up to 11MB. Each is cropped to its hero region at a per-image
+  fraction of the capture width (tuned by hand, since the useful region ends
+  in a different place on every page), downscaled to 1400px wide, and encoded
+  as WebP at quality 80. All seven land under 135KB. Regenerate by re-running
+  the same crop-fraction, resize, and encode against a replacement capture.
+- Wordmarks. `agolo-wordmark.svg` and `implicit-wordmark.svg` are straight
+  copies of the source SVGs, no processing. Both are dark-on-light, which is
+  what the page needs. There is a light-on-dark Implicit variant in the raw
+  folder if a dark section ever needs it.
+
+Components built for this page, all in `/css/style.css`:
+
+- `.rebrand-film` with `.filmstrip`. The `<video>` is `aria-hidden` and
+  decorative. The real before/after evidence is the static wordmark pair
+  underneath it, which is why the video is hidden entirely under both
+  `prefers-reduced-motion` and `html:not(.js)` while the filmstrip always
+  renders. Do not make the filmstrip conditional on either.
+- `.qbars`, the quarterly column chart. Columns rather than a line because
+  the series spans 1 to 1,133 and a linear line flattens the first five
+  quarters into the baseline, losing the step changes that are the point.
+  The Q4 2024 (Agolo) column is deliberately a neutral gray and the Q2 2026
+  column is the page's single terracotta accent. The 1-lead column is
+  floored at 2.5px so it reads as a visible sliver rather than nothing.
+  Static SVG in the markup, so it renders and is crawlable with no JS.
+- `.shot`, a framed page capture with fake browser chrome. Images are clipped
+  to `max-height: 340px` with `object-position: top`, so the headline being
+  evidenced is always what stays visible.
+- `.posline` / `.posrow`, the alternating version-by-version progression. The
+  verbatim site headline from each version is the primary evidence and is
+  marked up as `.posrow__headline`.
+- `.scope-grid`, committed-to versus ruled-out. Both check and slash marks
+  are `clip-path` polygons, no icon font or image.
+
+The growth-chart hover handler in `/js/main.js` is shared between the line
+chart and the column chart. It matches `.growth__svg, .qbars__svg` and reads
+`data-unit` off the `[data-growth]` root for the tooltip label, defaulting to
+"signups" for the original chart. Add `data-unit` to any new chart rather
+than hardcoding a noun.
+
 ### Logo assets
 
 - `/assets/brand-logos/` and `/assets/tools-logos/` hold the raw files Tim
@@ -245,7 +303,11 @@ punctuated by confident full-bleed color-field sections.
   static wrapped row: `.proof__track` (`overflow: hidden`, edge fade via
   `mask-image`) contains one `.proof__logos` flex row holding the full logo
   set TWICE back to back (the second copy is `aria-hidden="true"` on each
-  `<li>`, real alt text only on the first copy), animated via
+  `<li>`, real alt text only on the first copy). The duplicate copy's links
+  still carry a real `href` and `target="_blank"` so a logo stays clickable
+  once the marquee has scrolled past the first copy, just with
+  `tabindex="-1"` so it never becomes a second keyboard tab stop for the
+  same brand. Animated via
   `@keyframes proof-scroll` from `translateX(0)` to `translateX(-50%)` on a
   `linear infinite` loop, so it repeats seamlessly with no snap. Pausable on
   `:hover`/`:focus-within`. Under `prefers-reduced-motion` the animation is
@@ -323,7 +385,10 @@ differs.
 - `/the-work/implicit-plg-gtm` — fully built.
 - `/the-work/seo-content-marketing-growth` — fully built.
 - `/the-work/ai-productization-gtm` — placeholder.
-- `/the-work/cei-brand-refresh` — placeholder.
+- `/the-work/agolo-implicit-repositioning` — fully built. Replaced the
+  `/the-work/cei-brand-refresh` placeholder, which was deleted rather than
+  kept, since Agolo to Implicit is the stronger brand and positioning story
+  and the site only needs one. Nothing links to the CEI URL any more.
 - `/fractional-cmo` — placeholder scaffold.
 - `/contact` — email, LinkedIn, resume download.
 
@@ -336,4 +401,7 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - `/assets/resume.pdf` — placeholder PDF, swap for the real resume.
 - LinkedIn URL `linkedin.com/in/timlabarge` — confirm the real handle.
 - Proof-strip brand logos are text labels. Real logo files to come.
-- AI Productization Go-To-Market and CEI Brand Refresh case study bodies are still stubs. Copy to be written.
+- AI Productization Go-To-Market case study body is still a stub. Copy to be written.
+- The Agolo to Implicit case study has no deal size, sales cycle, or win rate
+  data, since none was available. It leads on qualified leads per quarter
+  instead. If those numbers surface later they belong in the results section.

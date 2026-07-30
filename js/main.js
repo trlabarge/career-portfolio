@@ -809,13 +809,17 @@
     if (!charts.length) return;
 
     charts.forEach(function (root) {
-      var svg = root.querySelector('.growth__svg');
-      var hits = root.querySelectorAll('.growth__hits rect');
+      var svg = root.querySelector('.growth__svg, .qbars__svg');
+      var hits = root.querySelectorAll('.growth__hits rect, .qbars__hits rect');
       if (!svg || !hits.length) return;
 
       /* Anchor to the plot wrapper, which is the scroll container on narrow
          screens, so the tooltip travels with the chart. */
-      var frame = root.querySelector('.growth__plot') || root;
+      var frame = root.querySelector('.growth__plot, .qbars__plot') || root;
+
+      /* Each chart names its own unit so the tooltip is not hardcoded to the
+         signup chart it was first written for. */
+      var unit = root.dataset.unit || 'signups';
 
       var tip = document.createElement('div');
       tip.className = 'growth__tip';
@@ -845,7 +849,7 @@
         cursor.style.top = p.y + 'px';
         tip.style.left = p.x + 'px';
         tip.style.top = p.y + 'px';
-        tip.innerHTML = '<b>' + rect.dataset.value + ' signups</b><br>' +
+        tip.innerHTML = '<b>' + rect.dataset.value + ' ' + unit + '</b><br>' +
           rect.dataset.label;
         cursor.classList.add('is-on');
         tip.classList.add('is-on');
@@ -864,5 +868,43 @@
       svg.addEventListener('pointerleave', hide);
       window.addEventListener('resize', hide, { passive: true });
     });
+  })();
+
+  /* --- Play-once-in-view video -------------------------------------------- */
+  /* Used by the rebrand transition on the Agolo/Implicit case study. The clip
+     opens on the old wordmark and resolves to the new one, so it only reads
+     correctly from the first frame. Autoplay would burn the transition while
+     the section is still offscreen, so playback waits for the element to be
+     visible and then runs once. CSS hides the video entirely under
+     prefers-reduced-motion, where the static wordmark pair carries the story,
+     but the guard is repeated here so playback is never even requested. */
+  (function playInView() {
+    var vids = document.querySelectorAll('video[data-play-in-view]');
+    if (!vids.length) return;
+
+    var reduced = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    if (!('IntersectionObserver' in window)) {
+      /* No observer support, so fall back to playing on load rather than
+         leaving the poster frame sitting there forever. */
+      vids.forEach(function (v) { v.play().catch(function () {}); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var v = entry.target;
+        io.unobserve(v);
+        v.currentTime = 0;
+        /* A rejected play() promise (autoplay policy, decode failure) leaves
+           the poster showing, which is a fine resting state. */
+        v.play().catch(function () {});
+      });
+    }, { threshold: 0.4 });
+
+    vids.forEach(function (v) { io.observe(v); });
   })();
 })();
