@@ -303,7 +303,11 @@ than hardcoding a noun.
   static wrapped row: `.proof__track` (`overflow: hidden`, edge fade via
   `mask-image`) contains one `.proof__logos` flex row holding the full logo
   set TWICE back to back (the second copy is `aria-hidden="true"` on each
-  `<li>`, real alt text only on the first copy), animated via
+  `<li>`, real alt text only on the first copy). The duplicate copy's links
+  still carry a real `href` and `target="_blank"` so a logo stays clickable
+  once the marquee has scrolled past the first copy, just with
+  `tabindex="-1"` so it never becomes a second keyboard tab stop for the
+  same brand. Animated via
   `@keyframes proof-scroll` from `translateX(0)` to `translateX(-50%)` on a
   `linear infinite` loop, so it repeats seamlessly with no snap. Pausable on
   `:hover`/`:focus-within`. Under `prefers-reduced-motion` the animation is

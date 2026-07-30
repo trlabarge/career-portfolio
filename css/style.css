@@ -536,7 +536,9 @@ html:not(.js) .rotator__word:first-child {
 
 /* Full-bleed auto-scrolling track. The logo list is duplicated once in the
    markup so translateX(-50%) loops seamlessly; the duplicate copy is
-   aria-hidden so screen readers only hear the real list once. */
+   aria-hidden so screen readers only hear the real list once. Its links
+   still have a real href, just tabindex="-1", so a logo stays clickable by
+   mouse or touch once the marquee has scrolled the first copy out of view. */
 .proof__track {
   width: 100%;
   overflow: hidden;
