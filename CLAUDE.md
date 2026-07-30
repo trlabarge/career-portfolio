@@ -279,6 +279,58 @@ chart and the column chart. It matches `.growth__svg, .qbars__svg` and reads
 "signups" for the original chart. Add `data-unit` to any new chart rather
 than hardcoding a noun.
 
+### Case study assets: CEI Clairvoyance (AI productization)
+
+Same raw/processed split again. `/assets/case-studies/CEI-Clairvoyance-case-study/`
+holds the untouched uploads (original filenames, kept for provenance, not
+referenced by any page), including `old-case-study-webpage.png`, a 10MB
+full-page capture of the AI productization case study from Tim's previous
+site that the current page is rewritten from. Everything the site loads lives
+in `/assets/case-studies/cei-clairvoyance/`.
+
+- Page captures. `Clairvoyance-Foundation-Assistants.webp` and
+  `Clairvoyance-Chat-Clair.webp` are 1500px-wide full-page captures. Each is
+  cropped to its top 900px (hero plus the first section below it), resized to
+  1400 wide, and encoded WebP at quality 80, landing at 1400x840 and under
+  80KB. That crop height is uniform across both, unlike the Agolo set where
+  each capture needed its own hand-tuned fraction.
+- Homepage. The upload is `AI+Homepage+Content-gif.gif`, an 85-frame
+  annotated walkthrough at 1200x600. Only frame 0 is shipped, as
+  `cei-homepage-ai.webp`. Frame 0 carries the static white arrow pointing at
+  the AI Innovation menu, which is useful annotation. Later frames add a
+  hand-drawn marker squiggle that reads as slideware next to the clean
+  captures, so do not swap in a later frame.
+- Practice lockup. `clairvoyance-lockup.png` is the CEI Clairvoyance mark
+  from `/assets/brand-logos/CEI Clairvoyance Mark (1).png`, trimmed to its
+  alpha bounding box and resized to 760px wide. It already had real
+  transparency, so it skipped the near-white strip pass the brand logos need.
+- The engagement-path diagram (`Clairvoyance-Offering.webp`, the three-step
+  workshop / proof of value / steady state artwork) is deliberately NOT
+  shipped. It is CEI's own red-and-navy slide art and would fight the sage
+  and terracotta page. It is rebuilt as markup in the `.path` component
+  instead. Re-derive from that source file if the steps or durations change.
+
+Components added for this page, both in `/css/style.css`:
+
+- `.path`, the three-step engagement route. A three-column grid of
+  `.path__step` cards reusing `.chain`'s connector construction (a 2px rule
+  plus a rotated-square arrowhead drawn in the gap). The duration pill
+  (`.path__dur`) carries the only solid color fill, since the durations are
+  the whole point of the diagram. `.path__step--final` takes the terracotta
+  accent. Under 860px it collapses to one column and the connectors rotate
+  into the vertical gap, so the arrows keep pointing at the next step.
+- `.step > .shot` and `.step > .shot-pair` get `margin-top: var(--space-lg)`.
+  `.shot` deliberately zeroes its own margin so a parent grid's gap can own
+  the spacing (that is how the Agolo `.posrow` layout uses it), but stacked
+  straight inside a `.step` there is no such grid, so the captures collided
+  with each other and with the copy above them.
+- `.figure--plain` with `.figure__art`. The default `.figure img` treatment
+  (white card, border, `width: 100%`) boxes a transparent logo and makes it
+  read as a screenshot of a logo. This variant drops the frame, caps the art
+  at 420px, and holds the figure to the same 68ch measure as `.step__body`
+  so it centers on the copy column instead of drifting into the empty right
+  half of the container.
+
 ### Logo assets
 
 - `/assets/brand-logos/` and `/assets/tools-logos/` hold the raw files Tim
@@ -384,7 +436,11 @@ differs.
 - `/the-work/constructconnect-conversion-optimization` — fully built.
 - `/the-work/implicit-plg-gtm` — fully built.
 - `/the-work/seo-content-marketing-growth` — fully built.
-- `/the-work/ai-productization-gtm` — placeholder.
+- `/the-work/ai-productization-gtm` — fully built. CEI Clairvoyance, the AI
+  practice productization and go-to-market. The second CEI study on the site,
+  so it deliberately owns the AI keyword numbers (73 / 18 / 10) while
+  `/the-work/seo-content-marketing-growth` owns the sitewide search numbers
+  (810 / 205 / 47%), and the two cross-link rather than repeat each other.
 - `/the-work/agolo-implicit-repositioning` — fully built. Replaced the
   `/the-work/cei-brand-refresh` placeholder, which was deleted rather than
   kept, since Agolo to Implicit is the stronger brand and positioning story
@@ -401,7 +457,13 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - `/assets/resume.pdf` — placeholder PDF, swap for the real resume.
 - LinkedIn URL `linkedin.com/in/timlabarge` — confirm the real handle.
 - Proof-strip brand logos are text labels. Real logo files to come.
-- AI Productization Go-To-Market case study body is still a stub. Copy to be written.
+- The CEI Clairvoyance case study has no closed-won revenue, deal count, or
+  workshop/proof-of-value engagement counts, since none was available. It
+  leads on the $1MM+ pipeline number instead. The recruiting lift is written
+  qualitatively for the same reason, on Tim's explicit instruction, so do not
+  invent a figure for it. The seven AI pages are named in the copy but only
+  `https://cei.ai/` is linked, since the deep URLs could not be verified (the
+  live site refuses automated requests).
 - The Agolo to Implicit case study has no deal size, sales cycle, or win rate
   data, since none was available. It leads on qualified leads per quarter
   instead. If those numbers surface later they belong in the results section.
