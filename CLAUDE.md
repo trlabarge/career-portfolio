@@ -452,12 +452,21 @@ differs.
   magnets, and a closing section that states plainly that the primary goal is
   a full-time VP or Head of Marketing seat. Keep that section if the page is
   ever rewritten, since without it a recruiter cannot tell what Tim wants.
-  Every section reuses an existing component, so the page added no new CSS:
-  `.icon-card` grids for the fit situations and the FAQ block, `.stat-strip`
-  (the same four numbers as `/about`), `.scope-grid` for what he takes on
-  versus what is ruled out, `.path` for the three-step engagement shape, and
-  `.work-grid` re-headlined by the problem each case study started with
-  rather than by its metric. Carries both `Person` (with `makesOffer`) and
+  Nearly every section reuses an existing component: `.icon-card` grids for
+  the fit situations and the FAQ block, `.stat-strip` (the same four numbers
+  as `/about`), `.scope-grid` for what he takes on versus what is ruled out,
+  `.path` for the three-step engagement shape, and `.work-grid` re-headlined
+  by the problem each case study started with rather than by its metric. The
+  one addition is `.icon-card__when`, the set-off symptom list at the bottom
+  of each "When it makes sense" card, introduced by a small uppercase
+  "Sometimes this happens when:" label against a gold left rule. It uses
+  `margin-top: auto` so the callouts pin to the bottom of each card and line
+  up across a row even when the descriptions above them differ in length.
+  That label is the one sanctioned exception to the no-colons-in-body-copy
+  rule, requested explicitly by Tim, so do not "fix" it. The fifth card sits
+  alone in the left column of the two-column grid, which is intended; do not
+  span it full width, since the resulting line measure is far too long for
+  the card's text. Carries both `Person` (with `makesOffer`) and
   `FAQPage` JSON-LD; the `FAQPage` entries must be kept in sync by hand with
   the four `.icon-card` questions in the "The details" section, since nothing
   generates one from the other.

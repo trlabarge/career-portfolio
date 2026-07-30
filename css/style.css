@@ -1544,6 +1544,31 @@ html:not(.js) .cap-item__desc {
   font-size: 0.98rem;
 }
 
+/* Set-off symptom list inside an icon card, introduced by a "Sometimes this
+   happens when:" label. The symptoms are the part a reader self-identifies
+   with, so they are pulled out of the description instead of run into it.
+   margin-top: auto pins the block to the bottom of the card, so the callouts
+   line up across a row even when the descriptions above differ in length. */
+.icon-card__when {
+  margin: auto 0 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--color-gold);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.icon-card__when b {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-sage-dark);
+}
+
 /* Small row of tool logos naming what actually ran in that channel. Sits
    between the title and the description, so it reads as a caption on the
    heading rather than decoration on the paragraph. */
