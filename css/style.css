@@ -1583,14 +1583,28 @@ html:not(.js) .cap-item__desc {
    engines simply drop, leaving an instant toggle rather than a broken one.
    interpolate-size is what lets block-size animate to auto; without support
    the panel still opens, just without the slide. */
+/* Laid out as a 2x2 of cards rather than a stacked list. align-items: start
+   is what keeps an opened panel from stretching its row partner to match. */
 .faq {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-md);
   margin-top: var(--space-lg);
-  border-top: 1px solid rgba(74, 107, 82, 0.22);
   interpolate-size: allow-keywords;
 }
 
 .faq__item {
-  border-bottom: 1px solid rgba(74, 107, 82, 0.22);
+  padding: 0 var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid rgba(74, 107, 82, 0.22);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s ease;
+}
+
+.faq__item:hover,
+.faq__item[open] {
+  border-color: var(--color-sage);
 }
 
 .faq__q {
@@ -1643,8 +1657,8 @@ html:not(.js) .cap-item__desc {
 
 .faq__a {
   padding-bottom: var(--space-sm);
-  max-width: 68ch;
   color: var(--color-text-muted);
+  font-size: 0.96rem;
 }
 
 .faq__a p {
@@ -2427,6 +2441,65 @@ html.js .path[data-path-progress] .path__step + .path__step::after {
 html.js .path[data-path-progress] .path__step.is-lit::after {
   opacity: 1;
 }
+
+/* Ambient sweep. A soft gold highlight travels card, connector, card,
+   connector, card and then rests, so the route keeps reading left to right
+   after the entrance has finished. Every element shares one 5.4s cycle and
+   is offset by --glow-i * 0.45s, so the wave stays permanently in phase
+   regardless of when each step was lit. The animation is applied whether or
+   not JS ran, since a static path glowing is fine; the global reduced-motion
+   block collapses all animation to a single 0.001ms pass, which removes it. */
+/* A thin ring carries the sweep, since a pure halo is close to invisible
+   against a cream card on a cream field. The blurred shadow underneath just
+   gives the ring some depth. */
+@keyframes path-glow-card {
+  0%, 16%, 100% {
+    box-shadow: 0 0 0 0 rgba(201, 160, 81, 0), 0 0 0 0 rgba(201, 160, 81, 0);
+  }
+  7% {
+    box-shadow: 0 0 0 2px rgba(201, 160, 81, 0.55),
+      0 6px 24px -4px rgba(201, 160, 81, 0.45);
+  }
+}
+
+@keyframes path-glow-line {
+  0%, 16%, 100% {
+    background-color: rgba(74, 107, 82, 0.3);
+  }
+  7% {
+    background-color: rgba(201, 160, 81, 0.85);
+  }
+}
+
+@keyframes path-glow-arrow {
+  0%, 16%, 100% {
+    border-color: rgba(74, 107, 82, 0.45);
+  }
+  7% {
+    border-color: rgba(201, 160, 81, 0.9);
+  }
+}
+
+.path[data-path-progress] .path__step {
+  animation: path-glow-card 5.4s ease-in-out infinite;
+  animation-delay: calc(var(--glow-i, 0) * 0.45s);
+}
+
+.path[data-path-progress] .path__step + .path__step::before {
+  animation: path-glow-line 5.4s ease-in-out infinite;
+  animation-delay: calc((var(--glow-i, 0) - 1) * 0.45s);
+}
+
+.path[data-path-progress] .path__step + .path__step::after {
+  animation: path-glow-arrow 5.4s ease-in-out infinite;
+  animation-delay: calc((var(--glow-i, 0) - 0.8) * 0.45s);
+}
+
+/* The connector into a step fires one beat before the step itself, so the
+   order along the route is card, line, card, line, card. */
+.path[data-path-progress] .path__step:nth-child(1) { --glow-i: 0; }
+.path[data-path-progress] .path__step:nth-child(2) { --glow-i: 2; }
+.path[data-path-progress] .path__step:nth-child(3) { --glow-i: 4; }
 
 .path__stamp {
   display: flex;
@@ -4096,10 +4169,27 @@ html.js .path[data-path-progress] .path__step.is-lit::after {
 }
 
 .scope__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 600;
   margin: 0 0 0.9rem;
+}
+
+/* Column icons, echoing the per-item check and slash markers below them so
+   each column reads as committed or rejected before any of it is read. */
+.scope__icon {
+  flex: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--color-sage);
+}
+
+.scope__icon--out {
+  color: var(--color-text-muted);
+  opacity: 0.75;
 }
 
 .scope__list {
@@ -4365,6 +4455,7 @@ html:not(.js) .rebrand-film__video {
   .cta-split,
   .work-grid,
   .about-grid,
+  .faq,
   .card-grid--2 {
     grid-template-columns: 1fr;
   }

@@ -477,13 +477,17 @@ differs.
     grid ("Have a marketing problem that isn't on this list?"). It exists to
     make the grid three even rows AND to catch problems the five specific
     cards miss, so do not drop it to get back to five.
-  - `.faq`, a native `<details>`/`<summary>` disclosure list, which replaced
-    the icon-card grid that used to hold the same four questions. Native
-    elements were chosen so it stays keyboard operable and fully readable
-    with no JS. The open/close slide rides on `::details-content` with
-    `interpolate-size: allow-keywords`; engines without support drop those
-    rules and get an instant toggle, which is a fine fallback, so do not
-    replace this with a JS accordion.
+  - `.faq`, native `<details>`/`<summary>` disclosures laid out as a 2x2 grid
+    of cards (one column under 720px). Native elements were chosen so it
+    stays keyboard operable and fully readable with no JS. The open/close
+    slide rides on `::details-content` with `interpolate-size:
+    allow-keywords`; engines without support drop those rules and get an
+    instant toggle, which is a fine fallback, so do not replace this with a
+    JS accordion. `align-items: start` on the grid is load-bearing. Without
+    it, opening one card stretches its row partner to match, which looks
+    like a rendering bug.
+  - `.scope__icon`, the circled check and circled diagonal slash beside the
+    two `.scope__title` headings, echoing the per-item markers below them.
   The `.path` section animates via `[data-path-progress]` on the `<ol>`,
   handled by `pathProgress()` in `/js/main.js`. It adds `is-lit` to each step
   in turn (260ms apart) once the list is in view, fading the card up and
@@ -491,6 +495,17 @@ differs.
   the CEI case study's static path is untouched. The hidden state is gated
   behind `html.js`, and the stacked layout under 860px flips the connector
   draw from `scaleX` to `scaleY` since the rule runs vertically there.
+  On top of that one-time entrance, an ambient gold sweep runs forever
+  (`path-glow-card` / `path-glow-line` / `path-glow-arrow`), travelling card,
+  connector, card, connector, card. All five elements share one 5.4s cycle
+  and are offset by `--glow-i * 0.45s`, where `--glow-i` is set per step by
+  `:nth-child`, so the wave stays in phase no matter when each step was lit.
+  Do not gate the sweep on `.is-lit`; starting each element's animation at a
+  different moment is what would knock the phase out. The card keyframe uses
+  a 2px ring plus a blurred halo rather than a halo alone, since a pure halo
+  is close to invisible with a cream card on a cream field. The global
+  reduced-motion block collapses all animation to a single 0.001ms pass,
+  which removes the sweep with no page-specific rule needed.
   Carries both `Person` (with `makesOffer`) and `FAQPage` JSON-LD; the
   `FAQPage` question names must be kept in sync by hand with the four
   `.faq__q` summaries, since nothing generates one from the other, and Google
