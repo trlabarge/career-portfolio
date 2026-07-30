@@ -445,7 +445,22 @@ differs.
   `/the-work/cei-brand-refresh` placeholder, which was deleted rather than
   kept, since Agolo to Implicit is the stronger brand and positioning story
   and the site only needs one. Nothing links to the CEI URL any more.
-- `/fractional-cmo` — placeholder scaffold.
+- `/fractional-cmo` — fully built. The page's job is qualification, not
+  conversion, since the site is a career portfolio first and the fractional
+  work is explicitly secondary. That posture drives everything on it. No
+  published rate, no packaged tiers, no scheduler embed, no gated lead
+  magnets, and a closing section that states plainly that the primary goal is
+  a full-time VP or Head of Marketing seat. Keep that section if the page is
+  ever rewritten, since without it a recruiter cannot tell what Tim wants.
+  Every section reuses an existing component, so the page added no new CSS:
+  `.icon-card` grids for the fit situations and the FAQ block, `.stat-strip`
+  (the same four numbers as `/about`), `.scope-grid` for what he takes on
+  versus what is ruled out, `.path` for the three-step engagement shape, and
+  `.work-grid` re-headlined by the problem each case study started with
+  rather than by its metric. Carries both `Person` (with `makesOffer`) and
+  `FAQPage` JSON-LD; the `FAQPage` entries must be kept in sync by hand with
+  the four `.icon-card` questions in the "The details" section, since nothing
+  generates one from the other.
 - `/contact` — email, LinkedIn, resume download.
 
 Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
@@ -467,3 +482,18 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - The Agolo to Implicit case study has no deal size, sales cycle, or win rate
   data, since none was available. It leads on qualified leads per quarter
   instead. If those numbers surface later they belong in the results section.
+- The Fractional CMO page's "Ruled out" column is drafted, not dictated. Tim
+  specified what he takes on (demand gen, PLG, content strategy, GTM
+  strategy, competitive analysis, branding, messaging and positioning, CRO)
+  and did not specify exclusions, so the three ruled-out items were inferred
+  from things he did say (he prefers cash over equity, he is one person
+  rather than an agency, and the Agolo rebrand was positioning-led). Confirm
+  or replace them with his own.
+- The Fractional CMO page carries no fractional-specific client evidence. Tim
+  has done consulting and freelance marketing work many times, though not
+  under the "Fractional CMO" label, and no named client, metric, or
+  testimonial from that work was available. The page therefore leans entirely
+  on full-time-role results and says so in the evidence section rather than
+  implying a fractional track record. It reuses the Jake Nelson-Dooley quote
+  from the homepage. A testimonial from someone who actually bought advisory
+  work would be the single highest-value addition to the page.
