@@ -519,6 +519,12 @@ Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.
 ## Known placeholders to replace later
 
 - Proof-strip brand logos are text labels. Real logo files to come.
+- The About page's "Why marketing" section had a dashed-border "Photo coming
+  soon" placeholder next to the hit-list, removed on 2026-07-31 since the site
+  is now live and an empty placeholder read worse than no photo. `.about-grid`
+  is single-column now. When a real photo exists, re-add an image column
+  (the removed `.about-photo` treatment is gone from `/css/style.css`, not
+  just hidden, so this needs a fresh layout rather than an unhide).
 - The CEI Clairvoyance case study has no closed-won revenue, deal count, or
   workshop/proof-of-value engagement counts, since none was available. It
   leads on the $1MM+ pipeline number instead. The recruiting lift is written
