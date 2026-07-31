@@ -870,6 +870,41 @@
     });
   })();
 
+  /* --- Engagement path: light the steps in sequence ------------------------ */
+  /* Used by the Fractional CMO page. Each step fades up and draws its incoming
+     connector in turn, so the three-step route reads as a progression rather
+     than three cards that happen to sit in a row. CSS gates the hidden state
+     behind html.js, so with no JS the steps render as the plain static path. */
+  (function pathProgress() {
+    var paths = document.querySelectorAll('[data-path-progress]');
+    if (!paths.length) return;
+
+    function steps(path) {
+      return Array.prototype.slice.call(path.querySelectorAll('.path__step'));
+    }
+
+    function lightAll(path) {
+      steps(path).forEach(function (step) { step.classList.add('is-lit'); });
+    }
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(paths, lightAll);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        steps(entry.target).forEach(function (step, i) {
+          setTimeout(function () { step.classList.add('is-lit'); }, i * 260);
+        });
+      });
+    }, { threshold: 0.3, rootMargin: '0px 0px -5% 0px' });
+
+    Array.prototype.forEach.call(paths, function (p) { io.observe(p); });
+  })();
+
   /* --- Play-once-in-view video -------------------------------------------- */
   /* Used by the rebrand transition on the Agolo/Implicit case study. The clip
      opens on the old wordmark and resolves to the new one, so it only reads

@@ -445,7 +445,71 @@ differs.
   `/the-work/cei-brand-refresh` placeholder, which was deleted rather than
   kept, since Agolo to Implicit is the stronger brand and positioning story
   and the site only needs one. Nothing links to the CEI URL any more.
-- `/fractional-cmo` — placeholder scaffold.
+- `/fractional-cmo` — fully built. The page's job is qualification, not
+  conversion, since the site is a career portfolio first and the fractional
+  work is explicitly secondary. That posture drives everything on it. No
+  published rate, no packaged tiers, no scheduler embed, no gated lead
+  magnets, and a closing section that states plainly that the primary goal is
+  a full-time VP or Head of Marketing seat. Keep that section if the page is
+  ever rewritten, since without it a recruiter cannot tell what Tim wants.
+  Most sections reuse an existing component: an `.icon-card` grid for the fit
+  situations, `.scope-grid` for what he takes on versus what is ruled out,
+  `.path` for the three-step engagement shape, and `.work-grid` re-headlined
+  by the problem each case study started with rather than by its metric.
+  There is deliberately NO `.stat-strip` here. The four numbers it used to
+  carry appear on the homepage and `/about` already, and the case studies are
+  linked from this page, so the block was removed as redundant on Tim's
+  instruction. The honesty line it used to carry ("results from full-time
+  roles, which is where most of this was earned") moved into the intro of the
+  "The proof" section and must survive any rewrite, since the page has no
+  fractional-specific evidence. Sections alternate plain / tint down the page;
+  removing the stat strip is what set the current order, so re-check the
+  rhythm if a section is ever added or dropped.
+  Three components were added for this page:
+  - `.icon-card__when`, the set-off symptom list at the bottom of each "When
+    it makes sense" card, introduced by a small uppercase "Sometimes this
+    happens when:" label against a gold left rule. It uses `margin-top: auto`
+    so the callouts pin to the bottom of each card and line up across a row
+    even when the descriptions above them differ in length. That label is the
+    one sanctioned exception to the no-colons-in-body-copy rule, requested
+    explicitly by Tim, so do not "fix" it.
+  - `.icon-card--invite`, the sage-tinted sixth card that closes the same
+    grid ("Have a marketing problem that isn't on this list?"). It exists to
+    make the grid three even rows AND to catch problems the five specific
+    cards miss, so do not drop it to get back to five.
+  - `.faq`, native `<details>`/`<summary>` disclosures laid out as a 2x2 grid
+    of cards (one column under 720px). Native elements were chosen so it
+    stays keyboard operable and fully readable with no JS. The open/close
+    slide rides on `::details-content` with `interpolate-size:
+    allow-keywords`; engines without support drop those rules and get an
+    instant toggle, which is a fine fallback, so do not replace this with a
+    JS accordion. `align-items: start` on the grid is load-bearing. Without
+    it, opening one card stretches its row partner to match, which looks
+    like a rendering bug.
+  - `.scope__icon`, the circled check and circled diagonal slash beside the
+    two `.scope__title` headings, echoing the per-item markers below them.
+  The `.path` section animates via `[data-path-progress]` on the `<ol>`,
+  handled by `pathProgress()` in `/js/main.js`. It adds `is-lit` to each step
+  in turn (260ms apart) once the list is in view, fading the card up and
+  drawing that step's incoming connector. The attribute is what opts in, so
+  the CEI case study's static path is untouched. The hidden state is gated
+  behind `html.js`, and the stacked layout under 860px flips the connector
+  draw from `scaleX` to `scaleY` since the rule runs vertically there.
+  On top of that one-time entrance, an ambient gold sweep runs forever
+  (`path-glow-card` / `path-glow-line` / `path-glow-arrow`), travelling card,
+  connector, card, connector, card. All five elements share one 5.4s cycle
+  and are offset by `--glow-i * 0.45s`, where `--glow-i` is set per step by
+  `:nth-child`, so the wave stays in phase no matter when each step was lit.
+  Do not gate the sweep on `.is-lit`; starting each element's animation at a
+  different moment is what would knock the phase out. The card keyframe uses
+  a 2px ring plus a blurred halo rather than a halo alone, since a pure halo
+  is close to invisible with a cream card on a cream field. The global
+  reduced-motion block collapses all animation to a single 0.001ms pass,
+  which removes the sweep with no page-specific rule needed.
+  Carries both `Person` (with `makesOffer`) and `FAQPage` JSON-LD; the
+  `FAQPage` question names must be kept in sync by hand with the four
+  `.faq__q` summaries, since nothing generates one from the other, and Google
+  expects the marked-up text to match what is visible.
 - `/contact` — email, LinkedIn, resume download.
 
 Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
@@ -467,3 +531,19 @@ Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
 - The Agolo to Implicit case study has no deal size, sales cycle, or win rate
   data, since none was available. It leads on qualified leads per quarter
   instead. If those numbers surface later they belong in the results section.
+- The Fractional CMO page's "Ruled out" column is only partly dictated. Tim
+  specified what he takes on (demand gen, PLG, content strategy, GTM
+  strategy, competitive analysis, branding, messaging and positioning, CRO),
+  and later added one exclusion in his own words, that he will not be the
+  person running someone's social media or paid ad campaigns day to day. The
+  other three items were inferred from things he did say (he prefers cash
+  over equity, he is one person rather than an agency, and the Agolo rebrand
+  was positioning-led) and are still worth confirming or replacing.
+- The Fractional CMO page carries no fractional-specific client evidence. Tim
+  has done consulting and freelance marketing work many times, though not
+  under the "Fractional CMO" label, and no named client, metric, or
+  testimonial from that work was available. The page therefore leans entirely
+  on full-time-role results and says so in the evidence section rather than
+  implying a fractional track record. It reuses the Jake Nelson-Dooley quote
+  from the homepage. A testimonial from someone who actually bought advisory
+  work would be the single highest-value addition to the page.
