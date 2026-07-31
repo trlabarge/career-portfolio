@@ -514,12 +514,10 @@ differs.
 
 Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
 Resume download button appears on About, The Work index, Fractional CMO, Contact.
-Resume file is a placeholder at `/assets/resume.pdf` until the real one lands.
+Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.pdf, added 2026-07-31).
 
 ## Known placeholders to replace later
 
-- `/assets/resume.pdf` — placeholder PDF, swap for the real resume.
-- LinkedIn URL `linkedin.com/in/timlabarge` — confirm the real handle.
 - Proof-strip brand logos are text labels. Real logo files to come.
 - The CEI Clairvoyance case study has no closed-won revenue, deal count, or
   workshop/proof-of-value engagement counts, since none was available. It
