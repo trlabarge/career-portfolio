@@ -1,0 +1,6 @@
+# Timbot source material. These files are the grounding corpus and evaluation
+# set for the chatbot. They contain employment detail, unpublished context, and
+# do-not-answer rules that should never be fetchable at timlabarge.com/timbot/.
+# When the chat API function is built, it bundles what it needs via the Vercel
+# `includeFiles` config rather than by being served as a static asset.
+timbot/
