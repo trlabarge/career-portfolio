@@ -78,9 +78,57 @@ punctuated by confident full-bleed color-field sections.
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. The demo panels are branded PLACEHOLDERS for now (channel bars, a
-  search/answer mock, a funnel, team nodes) each tagged "Interactive demo
-  coming soon"; real animations land later.
+  item. Panel 01 (Demand that compounds) is a real interactive demo, see
+  below. Panels 02 to 04 are still branded PLACEHOLDERS (a search/answer
+  mock, a funnel, team nodes) each tagged "Interactive demo coming soon";
+  real animations land later. `.cap-demo` and `.cap-stage` are both pinned to
+  `min-height: 400px` so switching tabs never jumps the sticky stage, which
+  means panel 01 sets the floor for all four.
+  - Demand-compounding chart (`.dstack`, inside panel 01, `data-demand-stack`
+    on the `.cap-demo`). A stacked area chart of four channels over eight
+    quarters. Paid comes online in Q1 and stays near flat, SEO in Q2, content
+    in Q3, community in Q5, each stacking on the ones already running, so
+    stack order bottom to top is also the order they start. The model gives
+    the combined total a synergy multiplier that grows with the number of
+    live channels and with elapsed time (`SYN_K` 0.09 per extra channel at
+    full ramp), so the top of the stack pulls away from a dashed line showing
+    the same channels run in isolation. The hatched wedge between the two is
+    the compounding lift, reaching +27% at Q8, and it is the entire point of
+    the visual. The y axis is fixed at 200 index units rather than fit to the
+    data, so toggling a channel visibly shrinks the chart instead of silently
+    rescaling the axis.
+    The numbers are an illustrative model, not Tim's results, which is why
+    the panel's chip reads "Illustrative model" (using
+    `.cap-demo__chip--quiet`, an outline variant of the loud gold chip) and
+    the units are an index rather than dollars. Do not relabel them as
+    pipeline dollars or attribute them to a client.
+    The final-state paths ship as static SVG in `index.html`, so the chart
+    renders and is crawlable with no JS. They were generated from the same
+    model as `demandStack()` in `/js/main.js`, which redraws them on init, so
+    the two agree by construction. If the model constants change, regenerate
+    the markup rather than hand-editing path data. Easiest way is to load the
+    page and copy the `d` attributes back out of the DOM.
+    `demandStack()` adds three things on top of the static chart. A
+    left-to-right reveal wipe (a `<rect>` inside `clipPath#dstack-clip`),
+    near-linear easing so the sweep reads as time passing and the
+    acceleration the viewer sees belongs to the curve. A readout that counts
+    through the quarters as the wipe passes them, landing on the Q8 numbers.
+    And legend toggles (`.dstack__key`, `aria-pressed`) that recompute the
+    model and tween between the old and new curves. The last live channel
+    cannot be switched off, since an empty chart reads as a broken panel.
+    Hovering or focusing a key isolates that band (`.is-isolating` on
+    `.dstack`, `.is-focus` on the area); the click handler re-runs `isolate()`
+    afterwards, otherwise turning a channel off leaves the chart dimmed
+    around a band that no longer exists.
+    Curves are Catmull-Rom converted to cubic beziers with control-point y
+    clamped to its own segment. Without that clamp a curve overshoots into
+    the band stacked below it and shows a sliver of the wrong color.
+    The wedge fill and the isolation line are off-white, not gold. Gold
+    disappeared against the gold content band and the terracotta community
+    band underneath, which is what the first pass got wrong.
+    Under `prefers-reduced-motion` the wipe and the toggle tween are both
+    skipped, but the toggles still work and redraw instantly, same reasoning
+    as the constellation's pointer handling.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.

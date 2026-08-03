@@ -355,6 +355,266 @@
     });
   })();
 
+  /* --- Demand that compounds: layered channel stack --------------------- */
+  /* Four channels come online in turn and stack on each other over eight
+     quarters. The model gives the combined total a synergy multiplier that
+     grows with the number of live channels and with time, so the top of the
+     stack pulls away from the dashed "same channels in isolation" line and
+     the hatched wedge between them widens. That wedge is the whole point of
+     the section, so turning a channel off shrinks every other band too.
+
+     The final-state paths ship in the markup (generated from this same
+     model), which is what renders with no JS. This adds the left-to-right
+     reveal wipe, the readout that counts through the quarters as the wipe
+     passes them, and the legend toggles. */
+  (function demandStack() {
+    var root = document.querySelector('[data-demand-stack]');
+    if (!root) return;
+    var stack = root.querySelector('.dstack');
+    var wipe = root.querySelector('.dstack__wipe');
+    var wedge = root.querySelector('.dstack__wedge');
+    var isoPath = root.querySelector('.dstack__iso');
+    var keys = Array.prototype.slice.call(root.querySelectorAll('.dstack__key'));
+    if (!stack || !wipe || !wedge || !isoPath || !keys.length) return;
+
+    var out = {
+      total: root.querySelector('[data-role="total"]'),
+      iso: root.querySelector('[data-role="iso"]'),
+      lift: root.querySelector('[data-role="lift"]')
+    };
+    if (!out.total || !out.iso || !out.lift) return;
+
+    /* Bottom to top of the stack, in the order each channel comes online. */
+    var CHANNELS = [
+      { key: 'paid', base: [12, 14, 15, 16, 16, 17, 17, 18] },
+      { key: 'seo', base: [0, 3, 7, 13, 21, 30, 40, 51] },
+      { key: 'content', base: [0, 0, 4, 9, 16, 25, 35, 46] },
+      { key: 'community', base: [0, 0, 0, 0, 5, 11, 19, 29] }
+    ];
+    var QUARTERS = 8;
+    var SYN_K = 0.09;   /* lift per extra live channel, at full ramp */
+    var Y_MAX = 200;    /* fixed, so toggling a channel never rescales the axis */
+    var VIEW_W = 538;
+    var X0 = 10, X1 = 528, Y_TOP = 12, Y_BASE = 190;
+
+    var areas = CHANNELS.map(function (c) {
+      return root.querySelector('.dstack__area[data-ch="' + c.key + '"]');
+    });
+    if (areas.indexOf(null) > -1) return;
+
+    var enabled = CHANNELS.map(function () { return true; });
+
+    /* --- model --- */
+    function compute(on) {
+      var bounds = [], iso = [], i, t;
+      for (i = 0; i <= CHANNELS.length; i++) bounds.push([]);
+      for (t = 0; t < QUARTERS; t++) {
+        var live = 0;
+        for (i = 0; i < CHANNELS.length; i++) {
+          if (on[i] && CHANNELS[i].base[t] > 0) live++;
+        }
+        var syn = live < 2 ? 1
+          : 1 + SYN_K * (live - 1) * (0.4 + 0.6 * (t / (QUARTERS - 1)));
+        var raw = 0, run = 0;
+        bounds[0][t] = 0;
+        for (i = 0; i < CHANNELS.length; i++) {
+          var v = on[i] ? CHANNELS[i].base[t] : 0;
+          raw += v;
+          run += v * syn;
+          bounds[i + 1][t] = run;
+        }
+        iso[t] = raw;
+      }
+      return { bounds: bounds, iso: iso };
+    }
+
+    function blend(a, b, e) {
+      var res = { bounds: [], iso: [] }, i, t;
+      for (i = 0; i < a.bounds.length; i++) {
+        res.bounds[i] = [];
+        for (t = 0; t < QUARTERS; t++) {
+          res.bounds[i][t] = a.bounds[i][t] + (b.bounds[i][t] - a.bounds[i][t]) * e;
+        }
+      }
+      for (t = 0; t < QUARTERS; t++) {
+        res.iso[t] = a.iso[t] + (b.iso[t] - a.iso[t]) * e;
+      }
+      return res;
+    }
+
+    /* --- geometry --- */
+    function xAt(t) { return X0 + t * (X1 - X0) / (QUARTERS - 1); }
+    function yAt(v) { return Y_BASE - (v / Y_MAX) * (Y_BASE - Y_TOP); }
+    function r1(v) { return Math.round(v * 10) / 10; }
+
+    function pts(series) {
+      var o = [], t;
+      for (t = 0; t < QUARTERS; t++) o.push([xAt(t), yAt(series[t])]);
+      return o;
+    }
+
+    /* Catmull-Rom to cubic bezier. Control-point y is clamped to its own
+       segment so a curve can never overshoot into the band stacked below it,
+       which would show as a sliver of the wrong color. */
+    function smooth(p) {
+      var d = 'M' + r1(p[0][0]) + ' ' + r1(p[0][1]);
+      for (var i = 0; i < p.length - 1; i++) {
+        var p0 = p[Math.max(i - 1, 0)];
+        var p1 = p[i];
+        var p2 = p[i + 1];
+        var p3 = p[Math.min(i + 2, p.length - 1)];
+        var lo = Math.min(p1[1], p2[1]);
+        var hi = Math.max(p1[1], p2[1]);
+        var c1y = Math.min(hi, Math.max(lo, p1[1] + (p2[1] - p0[1]) / 6));
+        var c2y = Math.min(hi, Math.max(lo, p2[1] - (p3[1] - p1[1]) / 6));
+        d += ' C' + r1(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + r1(c1y) +
+          ' ' + r1(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + r1(c2y) +
+          ' ' + r1(p2[0]) + ' ' + r1(p2[1]);
+      }
+      return d;
+    }
+
+    function closed(upper, lower) {
+      return smooth(pts(upper)) + ' L' + smooth(pts(lower).reverse()).slice(1) + ' Z';
+    }
+
+    function draw(m) {
+      var top = m.bounds[CHANNELS.length];
+      areas.forEach(function (el, i) {
+        el.setAttribute('d', closed(m.bounds[i + 1], m.bounds[i]));
+      });
+      wedge.setAttribute('d', closed(top, m.iso));
+      isoPath.setAttribute('d', smooth(pts(m.iso)));
+    }
+
+    /* --- readout --- */
+    function valueAt(series, q) {
+      var i = Math.max(0, Math.min(Math.floor(q), QUARTERS - 1));
+      var j = Math.min(i + 1, QUARTERS - 1);
+      return series[i] + (series[j] - series[i]) * (q - i);
+    }
+
+    function readout(m, q) {
+      var total = valueAt(m.bounds[CHANNELS.length], q);
+      var raw = valueAt(m.iso, q);
+      out.total.textContent = Math.round(total).toLocaleString('en-US');
+      out.iso.textContent = Math.round(raw).toLocaleString('en-US');
+      out.lift.textContent = '+' +
+        Math.round(raw > 0 ? (total / raw - 1) * 100 : 0) + '%';
+    }
+
+    var current = compute(enabled);
+    var tweenId = 0;
+
+    function retarget() {
+      var target = compute(enabled);
+      if (reduceMotion) {
+        current = target;
+        draw(current);
+        readout(current, QUARTERS - 1);
+        return;
+      }
+      var from = current;
+      var start = null;
+      window.cancelAnimationFrame(tweenId);
+      tweenId = window.requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / 420, 1);
+        current = blend(from, target, 1 - Math.pow(1 - p, 3));
+        draw(current);
+        readout(current, QUARTERS - 1);
+        if (p < 1) tweenId = window.requestAnimationFrame(step);
+      });
+    }
+
+    /* --- entrance wipe --- */
+    var wiping = false;
+
+    function endWipe() {
+      wiping = false;
+      wipe.setAttribute('width', String(VIEW_W));
+      readout(current, QUARTERS - 1);
+    }
+
+    function playWipe() {
+      if (wiping) return;
+      wiping = true;
+      var start = null;
+      var step = (X1 - X0) / (QUARTERS - 1);
+      wipe.setAttribute('width', '0');
+      readout(current, 0);
+      window.requestAnimationFrame(function frame(ts) {
+        if (!wiping) return;
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / 1900, 1);
+        /* Near-linear (easeOutSine) rather than a strong ease, so the sweep
+           reads as time passing at a steady rate and the acceleration the
+           viewer sees belongs to the curve, not to the animation. */
+        var x = VIEW_W * Math.sin(p * Math.PI / 2);
+        wipe.setAttribute('width', String(r1(x)));
+        readout(current, Math.max(0, Math.min(QUARTERS - 1, (x - X0) / step)));
+        if (p < 1) window.requestAnimationFrame(frame);
+        else endWipe();
+      });
+    }
+
+    /* --- legend --- */
+    keys.forEach(function (btn) {
+      var idx = -1;
+      CHANNELS.forEach(function (c, i) { if (c.key === btn.dataset.ch) idx = i; });
+      if (idx < 0) return;
+
+      function isolate(on) {
+        var live = on && enabled[idx];
+        stack.classList.toggle('is-isolating', live);
+        areas[idx].classList.toggle('is-focus', live);
+      }
+
+      btn.addEventListener('click', function () {
+        /* Emptying the chart entirely reads as a broken panel, so the last
+           live channel stays on. */
+        var live = enabled.filter(Boolean).length;
+        if (enabled[idx] && live === 1) return;
+        enabled[idx] = !enabled[idx];
+        btn.classList.toggle('is-on', enabled[idx]);
+        btn.setAttribute('aria-pressed', String(enabled[idx]));
+        if (wiping) endWipe();
+        retarget();
+        /* The pointer is still on the key, so re-resolve the isolate state.
+           Without this, turning a channel off leaves the whole chart dimmed
+           around a band that no longer exists. */
+        isolate(true);
+      });
+
+      btn.addEventListener('pointerenter', function () { isolate(true); });
+      btn.addEventListener('pointerleave', function () { isolate(false); });
+      btn.addEventListener('focus', function () { isolate(true); });
+      btn.addEventListener('blur', function () { isolate(false); });
+    });
+
+    draw(current);
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      endWipe();
+      return;
+    }
+
+    /* Collapse the wipe now rather than when the observer fires, otherwise
+       the finished chart shows for the scroll distance between the reveal
+       threshold and the wipe threshold and then snaps back to empty. */
+    wipe.setAttribute('width', '0');
+    readout(current, 0);
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        playWipe();
+      });
+    }, { threshold: 0.35 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');
