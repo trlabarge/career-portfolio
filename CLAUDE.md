@@ -78,17 +78,20 @@ punctuated by confident full-bleed color-field sections.
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. Panels 01 to 03 are real interactive demos, see below. Panel 04 is
-  still a branded PLACEHOLDER (team nodes) tagged "Interactive demo coming
-  soon"; a real animation lands later. Above 861px, where `.cap-stage` is
+  item. All four panels are real interactive demos, see below. Above 861px,
+  where `.cap-stage` is
   sticky, `.cap-demo` and `.cap-stage` are pinned to the height of the
-  tallest panel so switching tabs cannot shift the page. Two steps, 530px
+  tallest panel so switching tabs cannot shift the page. Two steps, 535px
   from 1024px up and 590px between 861px and 1023px, since panels 02 and 03
   wrap taller in the narrow half of that range. Below 861px the stage is
   static and panels size to their own content, where uneven heights cost
   nothing. Re-measure both numbers if a panel's content grows. Panel 01 now
   carries noticeable slack under its readout as a result, which is the
   accepted cost of panel 03's longer verdict copy.
+  Each panel deliberately moves in a different interaction register. Legend
+  toggles on 01, surface tabs on 02, a radio board on 03, a continuous
+  slider on 04. Four of the same control would read as a template, so keep
+  a new panel out of a register already in use.
   Panels 02 to 04 carry the `hidden` attribute in the markup and only the
   tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
   back to `display: block`. Without that rule the entire right-hand stage is
@@ -249,6 +252,34 @@ punctuated by confident full-bleed color-field sections.
     Under `prefers-reduced-motion` the cycle never starts and the marker
     jumps rather than slides, which the global reduced-motion block already
     handles by collapsing transition-duration.
+  - Player-coach allocation (`.pcoach`, inside panel 04,
+    `data-player-coach-mix` on the `.cap-demo`). "A leader people want to
+    work for" is a claim only other people can make, so this panel renders
+    the operating model behind it rather than asserting it. It is not proof
+    and is not meant to read as proof. See the known gap below.
+    One native range input for team size, 1 to 12. The hands-on share is
+    `FLOOR + (100 - FLOOR) / size^1.2` with `FLOOR` 22, so it falls steeply
+    as the first hires land and then flattens onto a floor it never leaves.
+    Four work items hand off at sizes 2, 4, 6 and 8 (`data-at`), and three
+    carry `data-anchor` instead and stay hands on at every size. The whole
+    argument is that neither the fill nor the anchors reach zero. A leader
+    who claims to stay close to the work and then shows a chart bottoming
+    out has disproved themselves, so do not let this bottom out.
+    The work items and the model are Tim's own framing from the About page's
+    "Player coach, literally." section, drafted here and open to his edits.
+    They are illustrative, which is why the chip reads "Illustrative model"
+    like the other three panels.
+    On reveal the slider sweeps once from 1 to 12 and stops. It does not
+    loop, unlike panels 02 and 03, since a control that keeps moving on its
+    own is one the user has to fight to grab. Any input sets `manual` and
+    the sweep never runs again.
+    The control is a native range styled almost entirely by `accent-color`,
+    so keyboard behaviour comes for free and the panel stays readable with
+    no JS. Nothing recomputes the split without JS though, and a native
+    range would still drag, so `html:not(.js)` disables it, same fix as the
+    radios on panel 03.
+    Under `prefers-reduced-motion` the sweep never runs and the panel opens
+    at the full team size, already resolved. Dragging still works.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
@@ -685,6 +716,18 @@ Resume download button appears on About, The Work index, Fractional CMO, Contact
 Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.pdf, added 2026-07-31).
 
 ## Known placeholders to replace later
+
+- Homepage capability panel 04 ("A leader people want to work for") has no
+  third-party evidence. The panel shows Tim's operating model, which is
+  self-asserted by nature. The only real evidence on the site is the Jake
+  Nelson-Dooley quote, already used in the homepage testimonial section and
+  on the Fractional CMO page, so it was deliberately not used a third time
+  inside the panel. Tim has confirmed he can supply more testimonials, names
+  of people who grew under him, and the real team sizes he has led. Any one
+  of those would materially improve this panel. Real team sizes would also
+  replace the generic 1 to 12 slider range. A short wall of quotes from
+  former reports would be strictly stronger than the current demo and should
+  replace or sit beside it once the material exists.
 
 - Proof-strip brand logos are text labels. Real logo files to come.
 - The About page's "Why marketing" section had a dashed-border "Photo coming
