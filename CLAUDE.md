@@ -78,9 +78,218 @@ punctuated by confident full-bleed color-field sections.
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. The demo panels are branded PLACEHOLDERS for now (channel bars, a
-  search/answer mock, a funnel, team nodes) each tagged "Interactive demo
-  coming soon"; real animations land later.
+  item. All four panels are real interactive demos, see below. Above 861px,
+  where `.cap-stage` is
+  sticky, `.cap-demo` and `.cap-stage` are pinned to the height of the
+  tallest panel so switching tabs cannot shift the page. Two steps, 535px
+  from 1024px up and 590px between 861px and 1023px, since panels 02 and 03
+  wrap taller in the narrow half of that range. Below 861px the stage is
+  static and panels size to their own content, where uneven heights cost
+  nothing. Re-measure both numbers if a panel's content grows. Panel 01 now
+  carries noticeable slack under its readout as a result, which is the
+  accepted cost of panel 03's longer verdict copy.
+  Each panel deliberately moves in a different interaction register. Legend
+  toggles on 01, surface tabs on 02, a radio board on 03, a continuous
+  slider on 04. Four of the same control would read as a template, so keep
+  a new panel out of a register already in use.
+  Panels 02 to 04 carry the `hidden` attribute in the markup and only the
+  tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
+  back to `display: block`. Without that rule the entire right-hand stage is
+  unreachable with no JS. Do not remove it.
+  - Demand-compounding chart (`.dstack`, inside panel 01, `data-demand-stack`
+    on the `.cap-demo`). A stacked area chart of four channels over eight
+    quarters. Paid comes online in Q1 and stays near flat, SEO in Q2, content
+    in Q3, community in Q5, each stacking on the ones already running, so
+    stack order bottom to top is also the order they start. The model gives
+    the combined total a synergy multiplier that grows with the number of
+    live channels and with elapsed time (`SYN_K` 0.09 per extra channel at
+    full ramp), so the top of the stack pulls away from a dashed line showing
+    the same channels run in isolation. The hatched wedge between the two is
+    the compounding lift, reaching +27% at Q8, and it is the entire point of
+    the visual. The y axis is fixed at 200 index units rather than fit to the
+    data, so toggling a channel visibly shrinks the chart instead of silently
+    rescaling the axis.
+    The numbers are an illustrative model, not Tim's results, which is why
+    the panel's chip reads "Illustrative model" (using
+    `.cap-demo__chip--quiet`, an outline variant of the loud gold chip) and
+    the units are an index rather than dollars. Do not relabel them as
+    pipeline dollars or attribute them to a client.
+    The final-state paths ship as static SVG in `index.html`, so the chart
+    renders and is crawlable with no JS. They were generated from the same
+    model as `demandStack()` in `/js/main.js`, which redraws them on init, so
+    the two agree by construction. If the model constants change, regenerate
+    the markup rather than hand-editing path data. Easiest way is to load the
+    page and copy the `d` attributes back out of the DOM.
+    `demandStack()` adds three things on top of the static chart. A
+    left-to-right reveal wipe (a `<rect>` inside `clipPath#dstack-clip`),
+    near-linear easing so the sweep reads as time passing and the
+    acceleration the viewer sees belongs to the curve. A readout that counts
+    through the quarters as the wipe passes them, landing on the Q8 numbers.
+    And legend toggles (`.dstack__key`, `aria-pressed`) that recompute the
+    model and tween between the old and new curves. The last live channel
+    cannot be switched off, since an empty chart reads as a broken panel.
+    Hovering or focusing a key isolates that band (`.is-isolating` on
+    `.dstack`, `.is-focus` on the area); the click handler re-runs `isolate()`
+    afterwards, otherwise turning a channel off leaves the chart dimmed
+    around a band that no longer exists.
+    Curves are Catmull-Rom converted to cubic beziers with control-point y
+    clamped to its own segment. Without that clamp a curve overshoots into
+    the band stacked below it and shows a sliver of the wrong color.
+    The wedge fill and the isolation line are off-white, not gold. Gold
+    disappeared against the gold content band and the terracotta community
+    band underneath, which is what the first pass got wrong.
+    Under `prefers-reduced-motion` the wipe and the toggle tween are both
+    skipped, but the toggles still work and redraw instantly, same reasoning
+    as the constellation's pointer handling.
+  - One question, four surfaces (`.qsurf`, inside panel 02,
+    `data-query-surfaces` on the `.cap-demo`). The claim is that buyers look
+    in several places and phrase the question differently in each, so the
+    demo is a surface switcher rather than a chart. Keep it that way. Four
+    panels in four registers reads as a system, four charts reads as a
+    template.
+    Four tabs, Google organic / Google paid / ChatGPT / Reddit, each with its
+    own query phrased the way that surface is actually used (short keywords
+    for search, a full sentence for the chat, a "reddit" suffixed query for
+    the thread) and its own result format. Implicit surfaces on all four.
+    That set is not arbitrary. They are Implicit's four largest channels and
+    each panel's stat is the real share from
+    `/the-work/implicit-plg-gtm`, paid 27%, LLMs 23%, organic 22%, Reddit
+    13%, 85% of the 2,100 signups between them. Keep those in sync with the
+    case study if it is ever restated, and keep the attribution inside the
+    sentence ("of Implicit signups"), since the panel is chipped
+    "Illustrative model" for the rendered results and the numbers are the one
+    part that is not illustrative.
+    Nothing on this panel invents a third party. Every result the demo is not
+    claiming is a grey `.qsurf__ghost` placeholder rather than a made up
+    competitor, there are no usernames, and no words are put in anyone's
+    mouth. The Reddit panel describes a thread ("Implicit comes up in the
+    replies") instead of quoting a comment. Hold that line if this is ever
+    extended.
+    Every `.qsurf__panel` shares one grid cell (`grid-area: 1 / 1`), so the
+    stage is always as tall as the tallest surface at any width and
+    switching can never resize the demo. That replaces guessing a
+    min-height, so do not swap it back for one. The panels also carry the
+    `hidden` attribute, so `html:not(.js) .qsurf__panel[hidden]` forces them
+    back into flow, same fix as `.cap-panel[hidden]` one level up.
+    `querySurfaces()` reveals the placeholder rows first and the branded
+    result last regardless of DOM order (`data-step` marks a revealing
+    element, `data-step="hit"` marks the payoff), then lights the brand
+    highlight, then counts the share up. It auto-advances every 5.2s, and
+    any click or arrow key sets `manual` and stops the carousel for good,
+    since cycling underneath someone who just picked a surface is what makes
+    an auto-advancing panel annoying.
+    `stop()` snaps the panel back to its resolved state rather than leaving
+    the sequence wherever it had reached. Without that, a demo that scrolled
+    out mid reveal was stranded blank with the share reading 0%.
+    The panel is hidden until its tab is selected, and a hidden element does
+    not intersect, so one IntersectionObserver starts and stops it for both
+    scrolling away and tab switching. `querySurfaces()` therefore needs no
+    coupling to `capabilities()`.
+    The demo advances on a loop, so there is deliberately NO `aria-live`
+    anywhere in it. A `visually-hidden` paragraph describes the whole thing
+    instead, and the tablist covers the part a user actually drives.
+    Under `prefers-reduced-motion` the auto-advance never starts and the
+    sequence never staggers. One surface shows fully resolved and the tabs
+    still switch instantly.
+  - Right-lever decision board (`.lever`, inside panel 03, `data-plg-lever`
+    on the `.cap-demo`). The claim on this panel is judgment, that knowing
+    which motion fits is the skill. The placeholder it replaced was a PLG
+    funnel, which argued the opposite by presenting PLG as the answer. Do not
+    go back to a funnel here.
+    The panel deliberately carries no `.cap-demo__tag`. "Right lever" was
+    removed on Tim's instruction as saying nothing the board does not
+    already say.
+    The preset chips sit under the label "When I've used these models:",
+    which is what turns them from a UI affordance into evidence, since each
+    is a real engagement. That colon is a sanctioned exception to the
+    no-colons rule, same as `.icon-card__when`, and was requested directly.
+    Four mechanism questions score a motion from 0 (pure sales-led) to 100
+    (pure product-led). Single-player value 34, buying it 28, the category
+    20, expansion 18. Those four came from Tim directly, replacing an earlier
+    set built on deal size and buying committee, which are proxies rather
+    than causes. Single-player value is the precondition and a procurement
+    gate is a hard blocker, which is why those two carry most of the weight.
+    All 16 combinations produce distinct scores spread across five verdict
+    bands.
+    Each verdict names the motion and explains when it applies, in that
+    order ("This is a hybrid approach. Self-serve is a real front door
+    and..."). An earlier pass was too clipped and assumed the reader already
+    had the vocabulary, so keep the descriptive register if these are
+    rewritten. All five are parallel in shape and length on purpose, which
+    also keeps the block from resizing between bands.
+    The verdict must be able to rule PLG out. The bottom band ends "Forcing
+    PLG here burns a year and produces signups that never buy." A board that
+    can only ever recommend PLG proves nothing, so keep that refusal if the
+    copy is reworked.
+    `.lever__verdict` reserves `min-height: 168px`, measured as the tallest
+    verdict across all 16 combinations in the width range where the stage is
+    sticky. Without it, switching bands changes the panel height and jolts
+    the sticky stage on every toggle.
+    Three presets snap the board to real engagements and land at 100, 54 and
+    0. Implicit is product-led, ConstructConnect is both motions at once
+    (in-product surfaces feeding a sales team, PQLs up 6.5x, revenue still
+    closing as contracts), CEI Clairvoyance is sales-led. Those
+    configurations are derived from the case studies, so re-check them if a
+    study is restated. ConstructConnect is what stops the panel reading as a
+    false binary, since the middle is where most companies actually sit.
+    Only an exact match on all four inputs names an engagement. Move one
+    toggle off a preset and `.lever__match` empties, so a half-changed board
+    never claims to be a real client.
+    The inputs are native radios, so keyboard behaviour and no-JS
+    readability come for free. Nothing recomputes the verdict without JS
+    though, and native radios would still flip, so `html:not(.js)` disables
+    the controls and hides the presets, leaving a static readout of the
+    default engagement rather than a board contradicting its own verdict.
+    `--at` on `.lever__marker` is a unitless 0 to 100, and the CSS travels it
+    between 7px and width minus 7px so the marker stays fully inside the
+    track at both extremes. A plain percentage offset half-clipped it at 0
+    and 100.
+    On reveal the board auto-cycles the three presets every 3s. Any radio
+    change or preset click sets `manual`, stops the cycle for good, and only
+    then adds `aria-live="polite"` to the verdict. Marking it live from the
+    start would make a screen reader announce every step of the automatic
+    cycle, same reasoning as the no-`aria-live` decision on panel 02.
+    Under `prefers-reduced-motion` the cycle never starts and the marker
+    jumps rather than slides, which the global reduced-motion block already
+    handles by collapsing transition-duration.
+  - Player-coach allocation (`.pcoach`, inside panel 04,
+    `data-player-coach-mix` on the `.cap-demo`). "A leader people want to
+    work for" is a claim only other people can make, so this panel renders
+    the operating model behind it rather than asserting it. It is not proof
+    and is not meant to read as proof. See the known gap below.
+    One native range input for team size, 1 to 12. Its `step` is 0.01 rather
+    than 1, so the thumb and the bar travel smoothly instead of snapping
+    between twelve slots. The readout rounds to whole people and
+    `aria-valuetext` announces them, and a `keydown` handler moves arrow keys
+    to the next whole integer, since a hundredth-of-a-person step would
+    otherwise make the control unusable from the keyboard.
+    The meter is labelled Player at one end and Coach at the other, so the
+    bar reads as a spectrum between the two roles. The panel carries no
+    `.cap-demo__tag`; "Player coach" was removed from the top right on Tim's
+    instruction and became those two end labels instead.
+    The hands-on share is
+    `FLOOR + (100 - FLOOR) / size^1.2` with `FLOOR` 22, so it falls steeply
+    as the first hires land and then flattens onto a floor it never leaves.
+    Four work items hand off at sizes 2, 4, 6 and 8 (`data-at`), and three
+    carry `data-anchor` instead and stay hands on at every size. The whole
+    argument is that neither the fill nor the anchors reach zero. A leader
+    who claims to stay close to the work and then shows a chart bottoming
+    out has disproved themselves, so do not let this bottom out.
+    The work items and the model are Tim's own framing from the About page's
+    "Player coach, literally." section, drafted here and open to his edits.
+    They are illustrative, which is why the chip reads "Illustrative model"
+    like the other three panels.
+    On reveal the slider sweeps once from 1 to 12 and stops. It does not
+    loop, unlike panels 02 and 03, since a control that keeps moving on its
+    own is one the user has to fight to grab. Any input sets `manual` and
+    the sweep never runs again.
+    The control is a native range styled almost entirely by `accent-color`,
+    so keyboard behaviour comes for free and the panel stays readable with
+    no JS. Nothing recomputes the split without JS though, and a native
+    range would still drag, so `html:not(.js)` disables it, same fix as the
+    radios on panel 03.
+    Under `prefers-reduced-motion` the sweep never runs and the panel opens
+    at the full team size, already resolved. Dragging still works.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
@@ -517,6 +726,18 @@ Resume download button appears on About, The Work index, Fractional CMO, Contact
 Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.pdf, added 2026-07-31).
 
 ## Known placeholders to replace later
+
+- Homepage capability panel 04 ("A leader people want to work for") has no
+  third-party evidence. The panel shows Tim's operating model, which is
+  self-asserted by nature. The only real evidence on the site is the Jake
+  Nelson-Dooley quote, already used in the homepage testimonial section and
+  on the Fractional CMO page, so it was deliberately not used a third time
+  inside the panel. Tim has confirmed he can supply more testimonials, names
+  of people who grew under him, and the real team sizes he has led. Any one
+  of those would materially improve this panel. Real team sizes would also
+  replace the generic 1 to 12 slider range. A short wall of quotes from
+  former reports would be strictly stronger than the current demo and should
+  replace or sit beside it once the material exists.
 
 - Proof-strip brand logos are text labels. Real logo files to come.
 - The About page's "Why marketing" section had a dashed-border "Photo coming

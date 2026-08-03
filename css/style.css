@@ -763,7 +763,6 @@ html:not(.js) .cap-item__desc {
 .cap-stage {
   position: sticky;
   top: 90px;
-  min-height: 360px;
 }
 
 .cap-panel {
@@ -772,6 +771,17 @@ html:not(.js) .cap-item__desc {
 
 .cap-panel[hidden] {
   display: none;
+}
+
+/* Panels 2 to 4 ship with the hidden attribute and only the tablist ever
+   clears it, so with no JS the entire right-hand stage was unreachable.
+   Show them all instead, matching how every .cap-item__desc opens up. */
+html:not(.js) .cap-panel[hidden] {
+  display: block;
+}
+
+html:not(.js) .cap-panel + .cap-panel {
+  margin-top: var(--space-sm);
 }
 
 @keyframes cap-fade {
@@ -785,7 +795,6 @@ html:not(.js) .cap-item__desc {
   border: 1px solid rgba(74, 107, 82, 0.5);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  min-height: 360px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -811,6 +820,14 @@ html:not(.js) .cap-item__desc {
   border-radius: 999px;
 }
 
+/* For a panel whose demo is real, where the loud gold "coming soon" chip
+   would overstate what the label is saying. */
+.cap-demo__chip--quiet {
+  background: transparent;
+  color: var(--color-gold);
+  border: 1px solid rgba(201, 160, 81, 0.55);
+}
+
 .cap-demo__tag {
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -826,112 +843,888 @@ html:not(.js) .cap-item__desc {
   gap: 1.25rem;
 }
 
-/* Demand: channel bars */
-.cap-demo__channels {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  align-items: end;
-  height: 170px;
-}
-
-.cap-chan {
+/* Demand: layered channel stack ------------------------------------------
+   Four channels stack bottom to top in the order they come online (paid,
+   SEO, content, community). The dashed line is the same four channels run
+   in isolation, and the hatched wedge between that line and the top of the
+   stack is the compounding lift. Static SVG ships in the markup, so the
+   chart renders and is crawlable with no JS; demandStack() in /js/main.js
+   adds the reveal wipe and the channel toggles on top of it. */
+.dstack {
+  --ch-paid: #4f7057;
+  --ch-seo: #86ad8e;
+  --ch-content: #c9a051;
+  --ch-community: #d68e77;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.6rem;
-  height: 100%;
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  color: var(--color-sage-tint);
+  gap: 0.9rem;
 }
 
-.cap-chan i {
+.dstack__svg {
   display: block;
   width: 100%;
-  height: var(--h, 40%);
-  border-radius: 6px 6px 0 0;
-  background: linear-gradient(180deg, var(--color-gold), var(--color-sage));
+  height: auto;
 }
 
-.cap-demo__out {
+.dstack__axis {
+  stroke: rgba(220, 229, 218, 0.28);
+  stroke-width: 1;
+}
+
+.dstack__area {
+  stroke: rgba(23, 35, 16, 0.5);
+  stroke-width: 1;
+  transition: opacity 0.25s ease;
+}
+
+.dstack__area[data-ch='paid'] { fill: var(--ch-paid); }
+.dstack__area[data-ch='seo'] { fill: var(--ch-seo); }
+.dstack__area[data-ch='content'] { fill: var(--ch-content); }
+.dstack__area[data-ch='community'] { fill: var(--ch-community); }
+
+.dstack__wedge {
+  fill: url(#dstack-hatch);
+  stroke: none;
+  transition: opacity 0.25s ease;
+}
+
+/* The wedge washes over the colored bands, so both it and the line that
+   bounds it are off-white. A gold treatment disappeared against the gold
+   content band and the terracotta community band underneath. */
+.dstack__iso {
+  fill: none;
+  stroke: var(--color-bg);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  stroke-linecap: round;
+  opacity: 0.8;
+  transition: opacity 0.25s ease;
+}
+
+.dstack__ticks text {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  fill: rgba(220, 229, 218, 0.65);
+}
+
+/* Hovering or focusing a legend key isolates that band. */
+.dstack.is-isolating .dstack__area,
+.dstack.is-isolating .dstack__wedge,
+.dstack.is-isolating .dstack__iso {
+  opacity: 0.2;
+}
+
+.dstack.is-isolating .dstack__area.is-focus {
+  opacity: 1;
+}
+
+.dstack__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.45rem;
+}
+
+.dstack__key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: rgba(220, 229, 218, 0.62);
+  background: rgba(250, 249, 246, 0.04);
+  border: 1px solid rgba(220, 229, 218, 0.18);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem 0.3rem 0.55rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.dstack__key.is-on {
+  color: var(--color-bg);
+  background: rgba(250, 249, 246, 0.1);
+  border-color: rgba(220, 229, 218, 0.4);
+}
+
+.dstack__key:hover {
+  border-color: var(--color-gold);
+}
+
+.dstack__swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.dstack__key[data-ch='paid'] .dstack__swatch { background: var(--ch-paid); }
+.dstack__key[data-ch='seo'] .dstack__swatch { background: var(--ch-seo); }
+.dstack__key[data-ch='content'] .dstack__swatch { background: var(--ch-content); }
+.dstack__key[data-ch='community'] .dstack__swatch { background: var(--ch-community); }
+
+/* An off channel keeps its color as an outline, so the key still reads as
+   that channel rather than as a dead chip. */
+.dstack__key:not(.is-on) .dstack__swatch {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(220, 229, 218, 0.45);
+}
+
+.dstack__hint {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.6);
+  margin-left: 0.15rem;
+}
+
+/* The toggles do nothing without JS, so the keys become a plain legend. */
+html:not(.js) .dstack__key {
+  cursor: default;
+}
+
+html:not(.js) .dstack__hint {
+  display: none;
+}
+
+.dstack__readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.8rem;
+}
+
+.dstack__stat {
+  margin: 0;
   display: flex;
   flex-direction: column;
+  gap: 0.15rem;
   font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: var(--color-sage-tint);
-  border-top: 1px dashed rgba(220, 229, 218, 0.35);
-  padding-top: 0.85rem;
 }
 
-.cap-demo__out strong {
-  font-size: 1.4rem;
+.dstack__stat-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.dstack__stat b {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--color-bg);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Content: search + sources */
-.cap-demo__search {
+.dstack__stat--lift b {
+  color: var(--color-gold);
+}
+
+/* Both markers restate what the chart draws, so they track the SVG: a dashed
+   off-white rule for the isolation line, a hatched wash for the wedge. */
+.dstack__stat--iso .dstack__stat-label::before {
+  content: '';
+  width: 15px;
+  border-top: 2px dashed var(--color-bg);
+  opacity: 0.8;
+}
+
+.dstack__stat--lift .dstack__stat-label::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background:
+    repeating-linear-gradient(45deg, rgba(250, 249, 246, 0.55) 0 1.5px,
+      transparent 1.5px 5px),
+    rgba(250, 249, 246, 0.17);
+  border: 1px solid rgba(250, 249, 246, 0.4);
+}
+
+/* Content: one question, four surfaces --------------------------------------
+   The claim is that buyers look in several places and phrase the question
+   differently in each, so the demo is a surface switcher rather than a
+   chart. Each panel renders that surface's own result format and the brand
+   surfaces in all four. Everything the demo does not assert is drawn as a
+   grey placeholder row, so no competitor, username, or quote is invented.
+   querySurfaces() in /js/main.js runs the reveal and the auto-advance. */
+.qsurf {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.qsurf__keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.qsurf__key {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: rgba(220, 229, 218, 0.62);
+  background: rgba(250, 249, 246, 0.04);
+  border: 1px solid rgba(220, 229, 218, 0.18);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.qsurf__key:hover {
+  border-color: var(--color-gold);
+}
+
+.qsurf__key.is-on {
+  color: #16210f;
+  background: var(--color-sage-tint);
+  border-color: var(--color-sage-tint);
+}
+
+/* Every panel shares one grid cell, so the stage is always as tall as the
+   tallest surface at any width and switching can never resize the demo.
+   Same reasoning as the capability stage itself, no min-height to guess. */
+.js .qsurf__stage {
+  display: grid;
+}
+
+.js .qsurf__panel {
+  grid-area: 1 / 1;
+}
+
+.js .qsurf__panel[hidden] {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.js .qsurf__panel:not([hidden]) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+/* Surfaces 2 to 4 ship with the hidden attribute and only the tablist ever
+   clears it, so with no JS they have to be forced back into flow. Same
+   reasoning as html:not(.js) .cap-panel[hidden] above. */
+html:not(.js) .qsurf__panel[hidden] {
+  display: block;
+}
+
+/* With no JS every panel shows in normal flow, so each needs separating. */
+html:not(.js) .qsurf__panel + .qsurf__panel {
+  margin-top: var(--space-sm);
+  border-top: 1px dashed rgba(220, 229, 218, 0.25);
+  padding-top: var(--space-sm);
+}
+
+.qsurf__q {
+  margin: 0 0 0.7rem;
   background: rgba(250, 249, 246, 0.06);
   border: 1px solid rgba(220, 229, 218, 0.3);
   border-radius: 8px;
-  padding: 0.9rem 1.1rem;
+  padding: 0.6rem 0.8rem;
   color: var(--color-bg);
-  font-size: 1.05rem;
+  font-size: 0.93rem;
+  line-height: 1.5;
 }
 
-.cap-demo__answer {
+.qsurf__out {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.6rem;
 }
 
-.cap-demo__src {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  color: var(--color-bg);
-  background: rgba(74, 107, 82, 0.55);
-  border: 1px solid rgba(220, 229, 218, 0.35);
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-}
-
-/* PLG: funnel bars */
-.cap-demo__funnel {
+/* Anything the demo is not claiming renders as a placeholder rather than as
+   an invented competitor result. */
+.qsurf__ghost {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.3rem;
 }
 
-.cap-demo__funnel span {
+.qsurf__ghost i {
+  display: block;
+  width: var(--w, 70%);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(220, 229, 218, 0.13);
+}
+
+.qsurf__ghost i:first-child {
+  height: 5px;
+  background: rgba(220, 229, 218, 0.2);
+}
+
+.qsurf__hit {
+  border-left: 2px solid var(--color-gold);
+  padding-left: 0.7rem;
+}
+
+.qsurf__url {
   display: flex;
   align-items: center;
-  height: 44px;
-  width: var(--w, 100%);
-  padding-left: 1rem;
-  border-radius: 6px;
+  gap: 0.4rem;
+  margin: 0 0 0.15rem;
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--color-bg);
-  background: linear-gradient(90deg, var(--color-sage), var(--color-terracotta));
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: rgba(220, 229, 218, 0.68);
 }
 
-/* Leader: team nodes */
-.cap-demo__team {
+.qsurf__badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #16210f;
+  background: var(--color-sage-tint);
+  border-radius: 3px;
+  padding: 0.1rem 0.3rem;
+}
+
+.qsurf__title {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: 0.97rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-bg);
+}
+
+.qsurf__snip {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.72);
+}
+
+.qsurf__answer {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(220, 229, 218, 0.82);
+}
+
+.qsurf__cites-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.qsurf__cites {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.cap-node {
+.qsurf__cite {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.76rem;
   color: var(--color-bg);
   background: rgba(250, 249, 246, 0.08);
-  border: 1px solid rgba(220, 229, 218, 0.35);
+  border: 1px solid rgba(220, 229, 218, 0.3);
   border-radius: 999px;
-  padding: 0.6rem 1.1rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.qsurf__cite--ghost {
+  border-color: rgba(220, 229, 218, 0.14);
+  background: rgba(250, 249, 246, 0.03);
+  padding: 0.25rem 0.5rem;
+}
+
+.qsurf__cite--ghost i {
+  display: block;
+  width: var(--w, 50px);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(220, 229, 218, 0.16);
+}
+
+/* The payoff. The wash grows from the left like a marker stroke, which is
+   why it rides on background-size rather than opacity. */
+.qsurf__brand {
+  background-image: linear-gradient(rgba(201, 160, 81, 0.45),
+    rgba(201, 160, 81, 0.45));
+  background-repeat: no-repeat;
+  background-size: var(--lit, 0%) 100%;
+  border-radius: 3px;
+  padding: 0.05em 0.14em;
+  margin: 0 -0.14em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: var(--color-bg);
+  transition: background-size 0.4s var(--ease-out);
+}
+
+.qsurf__hit.is-lit .qsurf__brand,
+.qsurf__cite.is-lit .qsurf__brand,
+html:not(.js) .qsurf__brand {
+  --lit: 100%;
+}
+
+.qsurf__stat {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  color: rgba(220, 229, 218, 0.72);
+}
+
+.qsurf__stat b {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.qsurf__foot {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.62);
+}
+
+.qsurf__foot a {
+  color: var(--color-sage-tint);
+  text-decoration-color: var(--color-gold);
+}
+
+.qsurf__foot a:hover {
+  color: var(--color-bg);
+}
+
+/* Result rows and citations fade up in sequence as the surface resolves. */
+.js .qsurf [data-step] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.34s ease, transform 0.34s var(--ease-out);
+}
+
+.js .qsurf [data-step].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* PLG: the right-lever decision board -------------------------------------
+   The claim on this panel is judgment, that knowing which motion fits is the
+   skill. A funnel would argue the opposite by presenting PLG as the answer,
+   so this is a decision board instead. Four mechanism questions, a verdict
+   marker that slides between sales-led and product-led, and three presets
+   that snap the board to real engagements at both poles and the middle.
+   plgLever() in /js/main.js owns the scoring; the radios are native so the
+   board stays keyboard operable and readable with no JS. */
+.lever {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.lever__presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* The one sanctioned colon, same exception as .icon-card__when. The label
+   is what turns the presets from a UI affordance into evidence, since each
+   one is a real engagement rather than a demo setting. */
+.lever__presets-label {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.lever__preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.lever__preset {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  color: rgba(220, 229, 218, 0.62);
+  background: rgba(250, 249, 246, 0.04);
+  border: 1px solid rgba(220, 229, 218, 0.18);
+  border-radius: 999px;
+  padding: 0.24rem 0.65rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.lever__preset:hover {
+  border-color: var(--color-gold);
+}
+
+.lever__preset.is-on {
+  color: #16210f;
+  background: var(--color-sage-tint);
+  border-color: var(--color-sage-tint);
+}
+
+.lever__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lever__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 272px);
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lever__ask {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  color: var(--color-bg);
+}
+
+/* Native radios so the board keeps free keyboard behaviour and stays usable
+   with no JS. The input is only visually replaced by its label, never
+   removed from the tab order. */
+/* Both options share the row's control column evenly, so all four controls
+   are the same width and their edges line up down the board. */
+.lever__opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(250, 249, 246, 0.05);
+  border: 1px solid rgba(220, 229, 218, 0.16);
+  border-radius: 999px;
+}
+
+.lever__opts input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.lever__opts label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-align: center;
+  color: rgba(220, 229, 218, 0.62);
+  border-radius: 999px;
+  padding: 0.24rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.lever__opts label:hover {
+  color: var(--color-bg);
+}
+
+.lever__opts input:checked + label {
+  color: #16210f;
+  background: var(--color-sage-tint);
+}
+
+.lever__opts input:focus-visible + label {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 1px;
+}
+
+/* Nothing recomputes the verdict with no JS, and native radios would still
+   flip, leaving the board showing a configuration its verdict contradicts.
+   So the board becomes a static readout of the default engagement instead,
+   and the presets, which do nothing without JS, come out entirely. */
+html:not(.js) .lever__opts {
+  pointer-events: none;
+}
+
+html:not(.js) .lever__presets {
+  display: none;
+}
+
+.lever__meter {
+  margin-top: 0.3rem;
+}
+
+.lever__ends {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.6);
+  margin-bottom: 0.35rem;
+}
+
+.lever__track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(214, 142, 119, 0.55),
+    rgba(220, 229, 218, 0.25) 50%, rgba(201, 160, 81, 0.75));
+}
+
+.lever__marker {
+  position: absolute;
+  top: 50%;
+  /* --at is a unitless 0 to 100. Travelling between 7px and width minus 7px
+     keeps the whole marker inside the track at both extremes, which a plain
+     percentage left offset does not. */
+  left: calc(7px + (100% - 14px) * var(--at, 50) / 100);
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  box-shadow: 0 0 0 3px rgba(23, 35, 16, 0.85);
+  transition: left 0.55s var(--ease-out);
+}
+
+/* Reserved so switching bands never changes the panel height and jolts the
+   sticky stage. Sized to the tallest verdict measured across all 16
+   combinations in the width range where the stage is actually sticky. */
+.lever__verdict {
+  margin-top: 0.15rem;
+  min-height: 168px;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.6rem;
+}
+
+.lever__call {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-gold);
+}
+
+.lever__why {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.75);
+}
+
+.lever__match {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.62);
+}
+
+/* Nothing is claimed unless the board exactly matches a real engagement. */
+.lever__match:empty {
+  display: none;
+}
+
+.lever__match a {
+  color: var(--color-sage-tint);
+  text-decoration-color: var(--color-gold);
+}
+
+.lever__match a:hover {
+  color: var(--color-bg);
+}
+
+@media (max-width: 560px) {
+  .lever__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+/* Leader: the player-coach allocation ------------------------------------
+   The headline is a claim only other people can make, so this panel renders
+   the operating model behind it rather than asserting it. One slider for
+   team size redistributes the work between doing it and coaching it. The
+   argument is that the hands-on share never reaches zero, so the anchored
+   items stay hands on at every size. Do not let the fill bottom out at 0.
+   The control is a native range input, so keyboard behaviour and no-JS
+   readability come for free, same reasoning as the radios on panel 03. */
+.pcoach {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.pcoach__control {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+}
+
+.pcoach__label {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.pcoach__size {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-bg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* accent-color does the heavy lifting, so the slider stays a native control
+   rather than a pile of vendor pseudo-element overrides. */
+.pcoach__slider {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+  accent-color: var(--color-gold);
+  cursor: pointer;
+}
+
+.pcoach__slider:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Nothing recomputes the split with no JS, and a native range would still
+   drag, so the panel becomes a static readout instead of a control that
+   contradicts its own numbers. */
+html:not(.js) .pcoach__slider {
+  pointer-events: none;
+}
+
+.pcoach__meter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Player at one end, coach at the other, so the bar reads as a spectrum
+   between the two roles rather than as a single filled quantity. */
+.pcoach__end {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+}
+
+.pcoach__end-name {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.pcoach__end b {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-gold);
+}
+
+/* The coach share is the remainder, so it takes the track's own tone rather
+   than competing with the gold fill. */
+.pcoach__end:last-child b {
+  color: var(--color-sage-tint);
+}
+
+.pcoach__track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(74, 107, 82, 0.55);
+  overflow: hidden;
+}
+
+.pcoach__fill {
+  display: block;
+  height: 100%;
+  width: var(--w, 50%);
+  border-radius: 999px;
+  background: var(--color-gold);
+  transition: width 0.4s var(--ease-out);
+}
+
+.pcoach__work {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pcoach__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.28rem 0.6rem 0.28rem 0.55rem;
+  border-left: 2px solid var(--color-gold);
+  border-radius: 0 4px 4px 0;
+  background: rgba(201, 160, 81, 0.1);
+  font-size: 0.84rem;
+  color: var(--color-bg);
+  transition: border-color 0.35s ease, background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.pcoach__item.is-team {
+  border-left-color: rgba(220, 229, 218, 0.4);
+  background: rgba(250, 249, 246, 0.04);
+  color: rgba(220, 229, 218, 0.7);
+}
+
+.pcoach__owner {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-gold);
+  transition: color 0.35s ease;
+}
+
+.pcoach__item.is-team .pcoach__owner {
+  color: rgba(220, 229, 218, 0.6);
+}
+
+.pcoach__note {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.65);
 }
 
 /* Featured work card stats ------------------------------------------------- */
@@ -4470,6 +5263,26 @@ html:not(.js) .rebrand-film__video {
 @media (max-width: 1080px) and (min-width: 901px) {
   .card-grid--5 {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Above this breakpoint the stage is sticky, so every panel is pinned to the
+   height of the tallest one and switching tabs cannot shift the page. Two
+   steps because panels 02 and 03 wrap taller in the narrow half of the
+   range. Below it the stage is static and panels size to their own content,
+   where uneven heights cost nothing. Re-measure both numbers if a panel's
+   content grows. */
+@media (min-width: 861px) {
+  .cap-demo,
+  .cap-stage {
+    min-height: 535px;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1023px) {
+  .cap-demo,
+  .cap-stage {
+    min-height: 590px;
   }
 }
 

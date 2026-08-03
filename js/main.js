@@ -355,6 +355,752 @@
     });
   })();
 
+  /* --- Demand that compounds: layered channel stack --------------------- */
+  /* Four channels come online in turn and stack on each other over eight
+     quarters. The model gives the combined total a synergy multiplier that
+     grows with the number of live channels and with time, so the top of the
+     stack pulls away from the dashed "same channels in isolation" line and
+     the hatched wedge between them widens. That wedge is the whole point of
+     the section, so turning a channel off shrinks every other band too.
+
+     The final-state paths ship in the markup (generated from this same
+     model), which is what renders with no JS. This adds the left-to-right
+     reveal wipe, the readout that counts through the quarters as the wipe
+     passes them, and the legend toggles. */
+  (function demandStack() {
+    var root = document.querySelector('[data-demand-stack]');
+    if (!root) return;
+    var stack = root.querySelector('.dstack');
+    var wipe = root.querySelector('.dstack__wipe');
+    var wedge = root.querySelector('.dstack__wedge');
+    var isoPath = root.querySelector('.dstack__iso');
+    var keys = Array.prototype.slice.call(root.querySelectorAll('.dstack__key'));
+    if (!stack || !wipe || !wedge || !isoPath || !keys.length) return;
+
+    var out = {
+      total: root.querySelector('[data-role="total"]'),
+      iso: root.querySelector('[data-role="iso"]'),
+      lift: root.querySelector('[data-role="lift"]')
+    };
+    if (!out.total || !out.iso || !out.lift) return;
+
+    /* Bottom to top of the stack, in the order each channel comes online. */
+    var CHANNELS = [
+      { key: 'paid', base: [12, 14, 15, 16, 16, 17, 17, 18] },
+      { key: 'seo', base: [0, 3, 7, 13, 21, 30, 40, 51] },
+      { key: 'content', base: [0, 0, 4, 9, 16, 25, 35, 46] },
+      { key: 'community', base: [0, 0, 0, 0, 5, 11, 19, 29] }
+    ];
+    var QUARTERS = 8;
+    var SYN_K = 0.09;   /* lift per extra live channel, at full ramp */
+    var Y_MAX = 200;    /* fixed, so toggling a channel never rescales the axis */
+    var VIEW_W = 538;
+    var X0 = 10, X1 = 528, Y_TOP = 12, Y_BASE = 190;
+
+    var areas = CHANNELS.map(function (c) {
+      return root.querySelector('.dstack__area[data-ch="' + c.key + '"]');
+    });
+    if (areas.indexOf(null) > -1) return;
+
+    var enabled = CHANNELS.map(function () { return true; });
+
+    /* --- model --- */
+    function compute(on) {
+      var bounds = [], iso = [], i, t;
+      for (i = 0; i <= CHANNELS.length; i++) bounds.push([]);
+      for (t = 0; t < QUARTERS; t++) {
+        var live = 0;
+        for (i = 0; i < CHANNELS.length; i++) {
+          if (on[i] && CHANNELS[i].base[t] > 0) live++;
+        }
+        var syn = live < 2 ? 1
+          : 1 + SYN_K * (live - 1) * (0.4 + 0.6 * (t / (QUARTERS - 1)));
+        var raw = 0, run = 0;
+        bounds[0][t] = 0;
+        for (i = 0; i < CHANNELS.length; i++) {
+          var v = on[i] ? CHANNELS[i].base[t] : 0;
+          raw += v;
+          run += v * syn;
+          bounds[i + 1][t] = run;
+        }
+        iso[t] = raw;
+      }
+      return { bounds: bounds, iso: iso };
+    }
+
+    function blend(a, b, e) {
+      var res = { bounds: [], iso: [] }, i, t;
+      for (i = 0; i < a.bounds.length; i++) {
+        res.bounds[i] = [];
+        for (t = 0; t < QUARTERS; t++) {
+          res.bounds[i][t] = a.bounds[i][t] + (b.bounds[i][t] - a.bounds[i][t]) * e;
+        }
+      }
+      for (t = 0; t < QUARTERS; t++) {
+        res.iso[t] = a.iso[t] + (b.iso[t] - a.iso[t]) * e;
+      }
+      return res;
+    }
+
+    /* --- geometry --- */
+    function xAt(t) { return X0 + t * (X1 - X0) / (QUARTERS - 1); }
+    function yAt(v) { return Y_BASE - (v / Y_MAX) * (Y_BASE - Y_TOP); }
+    function r1(v) { return Math.round(v * 10) / 10; }
+
+    function pts(series) {
+      var o = [], t;
+      for (t = 0; t < QUARTERS; t++) o.push([xAt(t), yAt(series[t])]);
+      return o;
+    }
+
+    /* Catmull-Rom to cubic bezier. Control-point y is clamped to its own
+       segment so a curve can never overshoot into the band stacked below it,
+       which would show as a sliver of the wrong color. */
+    function smooth(p) {
+      var d = 'M' + r1(p[0][0]) + ' ' + r1(p[0][1]);
+      for (var i = 0; i < p.length - 1; i++) {
+        var p0 = p[Math.max(i - 1, 0)];
+        var p1 = p[i];
+        var p2 = p[i + 1];
+        var p3 = p[Math.min(i + 2, p.length - 1)];
+        var lo = Math.min(p1[1], p2[1]);
+        var hi = Math.max(p1[1], p2[1]);
+        var c1y = Math.min(hi, Math.max(lo, p1[1] + (p2[1] - p0[1]) / 6));
+        var c2y = Math.min(hi, Math.max(lo, p2[1] - (p3[1] - p1[1]) / 6));
+        d += ' C' + r1(p1[0] + (p2[0] - p0[0]) / 6) + ' ' + r1(c1y) +
+          ' ' + r1(p2[0] - (p3[0] - p1[0]) / 6) + ' ' + r1(c2y) +
+          ' ' + r1(p2[0]) + ' ' + r1(p2[1]);
+      }
+      return d;
+    }
+
+    function closed(upper, lower) {
+      return smooth(pts(upper)) + ' L' + smooth(pts(lower).reverse()).slice(1) + ' Z';
+    }
+
+    function draw(m) {
+      var top = m.bounds[CHANNELS.length];
+      areas.forEach(function (el, i) {
+        el.setAttribute('d', closed(m.bounds[i + 1], m.bounds[i]));
+      });
+      wedge.setAttribute('d', closed(top, m.iso));
+      isoPath.setAttribute('d', smooth(pts(m.iso)));
+    }
+
+    /* --- readout --- */
+    function valueAt(series, q) {
+      var i = Math.max(0, Math.min(Math.floor(q), QUARTERS - 1));
+      var j = Math.min(i + 1, QUARTERS - 1);
+      return series[i] + (series[j] - series[i]) * (q - i);
+    }
+
+    function readout(m, q) {
+      var total = valueAt(m.bounds[CHANNELS.length], q);
+      var raw = valueAt(m.iso, q);
+      out.total.textContent = Math.round(total).toLocaleString('en-US');
+      out.iso.textContent = Math.round(raw).toLocaleString('en-US');
+      out.lift.textContent = '+' +
+        Math.round(raw > 0 ? (total / raw - 1) * 100 : 0) + '%';
+    }
+
+    var current = compute(enabled);
+    var tweenId = 0;
+
+    function retarget() {
+      var target = compute(enabled);
+      if (reduceMotion) {
+        current = target;
+        draw(current);
+        readout(current, QUARTERS - 1);
+        return;
+      }
+      var from = current;
+      var start = null;
+      window.cancelAnimationFrame(tweenId);
+      tweenId = window.requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / 420, 1);
+        current = blend(from, target, 1 - Math.pow(1 - p, 3));
+        draw(current);
+        readout(current, QUARTERS - 1);
+        if (p < 1) tweenId = window.requestAnimationFrame(step);
+      });
+    }
+
+    /* --- entrance wipe --- */
+    var wiping = false;
+
+    function endWipe() {
+      wiping = false;
+      wipe.setAttribute('width', String(VIEW_W));
+      readout(current, QUARTERS - 1);
+    }
+
+    function playWipe() {
+      if (wiping) return;
+      wiping = true;
+      var start = null;
+      var step = (X1 - X0) / (QUARTERS - 1);
+      wipe.setAttribute('width', '0');
+      readout(current, 0);
+      window.requestAnimationFrame(function frame(ts) {
+        if (!wiping) return;
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / 1900, 1);
+        /* Near-linear (easeOutSine) rather than a strong ease, so the sweep
+           reads as time passing at a steady rate and the acceleration the
+           viewer sees belongs to the curve, not to the animation. */
+        var x = VIEW_W * Math.sin(p * Math.PI / 2);
+        wipe.setAttribute('width', String(r1(x)));
+        readout(current, Math.max(0, Math.min(QUARTERS - 1, (x - X0) / step)));
+        if (p < 1) window.requestAnimationFrame(frame);
+        else endWipe();
+      });
+    }
+
+    /* --- legend --- */
+    keys.forEach(function (btn) {
+      var idx = -1;
+      CHANNELS.forEach(function (c, i) { if (c.key === btn.dataset.ch) idx = i; });
+      if (idx < 0) return;
+
+      function isolate(on) {
+        var live = on && enabled[idx];
+        stack.classList.toggle('is-isolating', live);
+        areas[idx].classList.toggle('is-focus', live);
+      }
+
+      btn.addEventListener('click', function () {
+        /* Emptying the chart entirely reads as a broken panel, so the last
+           live channel stays on. */
+        var live = enabled.filter(Boolean).length;
+        if (enabled[idx] && live === 1) return;
+        enabled[idx] = !enabled[idx];
+        btn.classList.toggle('is-on', enabled[idx]);
+        btn.setAttribute('aria-pressed', String(enabled[idx]));
+        if (wiping) endWipe();
+        retarget();
+        /* The pointer is still on the key, so re-resolve the isolate state.
+           Without this, turning a channel off leaves the whole chart dimmed
+           around a band that no longer exists. */
+        isolate(true);
+      });
+
+      btn.addEventListener('pointerenter', function () { isolate(true); });
+      btn.addEventListener('pointerleave', function () { isolate(false); });
+      btn.addEventListener('focus', function () { isolate(true); });
+      btn.addEventListener('blur', function () { isolate(false); });
+    });
+
+    draw(current);
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      endWipe();
+      return;
+    }
+
+    /* Collapse the wipe now rather than when the observer fires, otherwise
+       the finished chart shows for the scroll distance between the reveal
+       threshold and the wipe threshold and then snaps back to empty. */
+    wipe.setAttribute('width', '0');
+    readout(current, 0);
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        playWipe();
+      });
+    }, { threshold: 0.35 });
+    io.observe(root);
+  })();
+
+  /* --- Content built for how people search now: one question, four surfaces */
+  /* The same buying question gets asked in four places, phrased the way each
+     place is actually used, and the brand surfaces in all four. Switching
+     surface re-runs the reveal, so the results resolve in sequence and the
+     brand highlight lands last.
+
+     Everything the demo does not claim is a grey placeholder row in the
+     markup, so nothing here fabricates a competitor, a username, or a quote.
+
+     The panel is hidden until its tab is selected, and a hidden element does
+     not intersect, so one IntersectionObserver covers both scrolling away
+     and switching capability tabs with no coupling to capabilities(). */
+  (function querySurfaces() {
+    var root = document.querySelector('[data-query-surfaces]');
+    if (!root) return;
+
+    function all(sel, scope) {
+      return Array.prototype.slice.call((scope || root).querySelectorAll(sel));
+    }
+
+    var keys = all('.qsurf__key');
+    var panels = all('.qsurf__panel');
+    if (keys.length !== panels.length || !keys.length) return;
+
+    var DWELL = 5200;
+    var idx = 0;
+    var timers = [];
+    var advanceId = 0;
+    var running = false;
+    var manual = false;   /* a click or arrow key hands control to the user */
+
+    function later(fn, ms) { timers.push(window.setTimeout(fn, ms)); }
+
+    function clearSteps() {
+      timers.forEach(function (id) { window.clearTimeout(id); });
+      timers = [];
+    }
+
+    function countUp(el) {
+      var target = parseInt(el.getAttribute('data-share'), 10);
+      if (isNaN(target)) return;
+      if (reduceMotion) { el.textContent = target + '%'; return; }
+      var start = null;
+      var duration = 700;
+      window.requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + '%';
+        if (p < 1) window.requestAnimationFrame(step);
+      });
+    }
+
+    /* Placeholder rows land first and the branded result lands last, no
+       matter where it sits in the markup, so the surface reads as resolving
+       around the thing the panel is actually about. */
+    function reveal(panel, instant) {
+      clearSteps();
+      var steps = all('[data-step]', panel);
+      var hits = all('[data-step="hit"]', panel);
+      var ghosts = steps.filter(function (el) { return hits.indexOf(el) < 0; });
+      var stat = panel.querySelector('[data-share]');
+
+      steps.forEach(function (el) { el.classList.remove('is-in'); });
+      hits.forEach(function (el) { el.classList.remove('is-lit'); });
+
+      if (instant) {
+        steps.forEach(function (el) { el.classList.add('is-in'); });
+        hits.forEach(function (el) { el.classList.add('is-lit'); });
+        if (stat) stat.textContent = stat.getAttribute('data-share') + '%';
+        return;
+      }
+
+      if (stat) stat.textContent = '0%';
+      ghosts.forEach(function (el, n) {
+        later(function () { el.classList.add('is-in'); }, 240 + n * 120);
+      });
+      var after = 240 + ghosts.length * 120 + 180;
+      hits.forEach(function (el, n) {
+        later(function () { el.classList.add('is-in'); }, after + n * 120);
+        later(function () { el.classList.add('is-lit'); }, after + n * 120 + 240);
+      });
+      if (stat) later(function () { countUp(stat); }, after + hits.length * 120 + 320);
+    }
+
+    function activate(i, focus) {
+      idx = i;
+      keys.forEach(function (k, n) {
+        var on = n === i;
+        k.classList.toggle('is-on', on);
+        k.setAttribute('aria-selected', String(on));
+        k.tabIndex = on ? 0 : -1;
+        if (on && focus) k.focus();
+      });
+      panels.forEach(function (p, n) { p.hidden = n !== i; });
+      reveal(panels[i], reduceMotion);
+    }
+
+    function scheduleAdvance() {
+      window.clearTimeout(advanceId);
+      if (manual || reduceMotion) return;
+      advanceId = window.setTimeout(function () {
+        if (!running) return;
+        activate((idx + 1) % panels.length);
+        scheduleAdvance();
+      }, DWELL);
+    }
+
+    function start() {
+      if (running || reduceMotion) return;
+      running = true;
+      reveal(panels[idx], false);
+      scheduleAdvance();
+    }
+
+    function stop() {
+      running = false;
+      clearSteps();
+      window.clearTimeout(advanceId);
+      /* Snap to the resolved surface rather than leaving whatever the
+         sequence had reached. Clearing the pending steps mid reveal would
+         otherwise strand the panel blank, with the share reading 0%, until
+         something happened to bring it back into view. */
+      reveal(panels[idx], true);
+    }
+
+    /* Any deliberate choice stops the carousel for good. Cycling underneath
+       someone who just picked a surface is the thing that makes an
+       auto-advancing panel annoying. */
+    function takeOver(i, focus) {
+      manual = true;
+      window.clearTimeout(advanceId);
+      activate(i, focus);
+    }
+
+    keys.forEach(function (k, i) {
+      k.addEventListener('click', function () { takeOver(i, false); });
+    });
+
+    root.querySelector('.qsurf__keys').addEventListener('keydown', function (e) {
+      var here = keys.indexOf(document.activeElement);
+      if (here < 0) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault(); takeOver((here + 1) % keys.length, true);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); takeOver((here - 1 + keys.length) % keys.length, true);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); takeOver(0, true);
+      } else if (e.key === 'End') {
+        e.preventDefault(); takeOver(keys.length - 1, true);
+      }
+    });
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      reveal(panels[idx], true);
+      return;
+    }
+
+    /* Clear the shipped end state now, so the sequence always starts from
+       nothing rather than flashing the resolved panel first. */
+    all('[data-step]').forEach(function (el) { el.classList.remove('is-in'); });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start();
+        else stop();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
+  /* --- PLG or sales-led: the right-lever decision board ------------------ */
+  /* This panel's claim is judgment, so the demo is a decision board rather
+     than a funnel. A funnel would present PLG as the answer, which argues
+     against the copy. Four mechanism questions score a motion from 0 (pure
+     sales-led) to 100 (pure product-led), and the verdict has to be able to
+     rule PLG out, otherwise the demo proves nothing.
+
+     Three presets snap the board to real engagements, which land at 100, 54
+     and 0. Those configurations come from the case studies, so keep them in
+     sync if a study is ever restated. */
+  (function plgLever() {
+    var root = document.querySelector('[data-plg-lever]');
+    if (!root) return;
+
+    function all(sel, scope) {
+      return Array.prototype.slice.call((scope || root).querySelectorAll(sel));
+    }
+
+    var radios = all('.lever__opts input');
+    var presetBtns = all('.lever__preset');
+    var marker = root.querySelector('.lever__marker');
+    var out = {
+      call: root.querySelector('[data-role="call"]'),
+      why: root.querySelector('[data-role="why"]'),
+      match: root.querySelector('[data-role="match"]')
+    };
+    if (!radios.length || !marker || !out.call || !out.why || !out.match) return;
+
+    /* Single-player value is the precondition and a procurement gate is a
+       hard blocker, so those two carry most of the weight. */
+    var WEIGHTS = { single: 34, buy: 28, cat: 20, exp: 18 };
+
+    /* Each verdict says what the motion actually is and when it applies.
+       The earlier copy was too clipped and assumed the reader already knew
+       the vocabulary. */
+    /* Each verdict names the motion and says when it applies. The earlier
+       copy was too clipped and assumed the reader already had the
+       vocabulary. All five are deliberately parallel in shape and length,
+       which is also what keeps the block from resizing between bands. */
+    var BANDS = [
+      { min: 82, call: 'Product-led.',
+        why: 'This is a true product-led motion. People find the product, try it, and start paying without talking to sales. It works when someone gets real value alone on day one and can expense it without a procurement review.' },
+      { min: 60, call: 'Product-led, with a sales assist.',
+        why: 'This is product-led growth with a sales assist. Self-serve brings people in and proves the value, and a small sales team works the accounts big enough to be worth the time.' },
+      { min: 38, call: 'Run both.',
+        why: 'This is a hybrid approach. Self-serve is a real front door and people can start on their own, while the revenue still closes through a sales process with contracts and negotiation.' },
+      { min: 18, call: 'Sales-led, with a trial up front.',
+        why: 'This is a sales-led motion with a trial up front. The trial earns attention and sorts serious buyers from browsers, and a salesperson does the closing when someone else has to approve the spend.' },
+      { min: 0, call: 'Sales-led.',
+        why: 'This is a true sales-led B2B motion. Demand generation builds the pipeline and salespeople work deals through evaluation, procurement, and a contract. Forcing PLG here burns a year and produces signups that never buy.' }
+    ];
+
+    var PRESETS = {
+      implicit: {
+        set: { single: 'plg', buy: 'plg', cat: 'plg', exp: 'plg' },
+        match: 'That\u2019s <a href="/the-work/implicit-plg-gtm">Implicit</a>. 2,100 signups in six months, from zero.'
+      },
+      constructconnect: {
+        set: { single: 'plg', buy: 'sales', cat: 'plg', exp: 'sales' },
+        match: 'That\u2019s <a href="/the-work/constructconnect-conversion-optimization">ConstructConnect</a>. In-product surfaces feeding a sales team, and $5.5MM+ in ARR.'
+      },
+      cei: {
+        set: { single: 'sales', buy: 'sales', cat: 'sales', exp: 'sales' },
+        match: 'That\u2019s <a href="/the-work/ai-productization-gtm">CEI Clairvoyance</a>. Sold through workshops and proof of value, $1MM+ in pipeline.'
+      }
+    };
+
+    var PRESET_ORDER = ['implicit', 'constructconnect', 'cei'];
+    var DWELL = 3000;
+    var cycleId = 0;
+    var running = false;
+    var manual = false;
+    var at = 0;
+
+    function reading() {
+      var state = {};
+      radios.forEach(function (r) {
+        if (r.checked) state[r.dataset.input] = r.value;
+      });
+      return state;
+    }
+
+    function score(state) {
+      var total = 0;
+      Object.keys(WEIGHTS).forEach(function (k) {
+        if (state[k] === 'plg') total += WEIGHTS[k];
+      });
+      return total;
+    }
+
+    function matching(state) {
+      var found = null;
+      PRESET_ORDER.forEach(function (name) {
+        var want = PRESETS[name].set;
+        var same = Object.keys(want).every(function (k) {
+          return state[k] === want[k];
+        });
+        if (same) found = name;
+      });
+      return found;
+    }
+
+    function render() {
+      var state = reading();
+      var value = score(state);
+      var band = BANDS[0];
+      for (var i = 0; i < BANDS.length; i++) {
+        if (value >= BANDS[i].min) { band = BANDS[i]; break; }
+      }
+      marker.style.setProperty('--at', String(value));
+      out.call.textContent = band.call;
+      out.why.textContent = band.why;
+
+      var preset = matching(state);
+      /* Only an exact match names an engagement. A board the user has half
+         moved off a preset must not claim to be that engagement. */
+      out.match.innerHTML = preset ? PRESETS[preset].match : '';
+      presetBtns.forEach(function (b) {
+        b.classList.toggle('is-on', b.dataset.preset === preset);
+      });
+    }
+
+    function apply(name) {
+      var want = PRESETS[name].set;
+      radios.forEach(function (r) {
+        r.checked = r.value === want[r.dataset.input];
+      });
+      render();
+    }
+
+    function scheduleCycle() {
+      window.clearTimeout(cycleId);
+      if (manual || reduceMotion) return;
+      cycleId = window.setTimeout(function () {
+        if (!running) return;
+        at = (at + 1) % PRESET_ORDER.length;
+        apply(PRESET_ORDER[at]);
+        scheduleCycle();
+      }, DWELL);
+    }
+
+    function start() {
+      if (running || reduceMotion) return;
+      running = true;
+      scheduleCycle();
+    }
+
+    function stop() {
+      running = false;
+      window.clearTimeout(cycleId);
+    }
+
+    /* Any deliberate change hands the board over for good, and only then does
+       the verdict start announcing itself. Marking it live from the start
+       would make a screen reader read every step of the automatic cycle. */
+    function takeOver() {
+      manual = true;
+      window.clearTimeout(cycleId);
+      out.call.setAttribute('aria-live', 'polite');
+    }
+
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () { takeOver(); render(); });
+    });
+
+    presetBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        takeOver();
+        apply(b.dataset.preset);
+      });
+    });
+
+    render();
+
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start();
+        else stop();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
+  /* --- A leader people want to work for: the player-coach allocation ----- */
+  /* The headline is a claim only other people can make, so this panel shows
+     the operating model behind it instead of asserting it. One slider for
+     team size redistributes the work between doing it and coaching it.
+
+     The whole argument sits in FLOOR. The hands-on share falls steeply as
+     the first hires land and then flattens onto a floor it never leaves, and
+     three work items never hand off at any team size. A leader who claims to
+     stay close to the work and then shows a chart reaching zero has
+     disproved themselves, so do not let this bottom out. */
+  (function playerCoachMix() {
+    var root = document.querySelector('[data-player-coach-mix]');
+    if (!root) return;
+
+    function all(sel) {
+      return Array.prototype.slice.call(root.querySelectorAll(sel));
+    }
+
+    var slider = root.querySelector('.pcoach__slider');
+    var fill = root.querySelector('.pcoach__fill');
+    var items = all('.pcoach__item');
+    var out = {
+      size: root.querySelector('[data-role="size"]'),
+      pct: root.querySelector('[data-role="pct"]'),
+      coach: root.querySelector('[data-role="coach"]')
+    };
+    if (!slider || !fill || !items.length) return;
+    if (!out.size || !out.pct || !out.coach) return;
+
+    var FLOOR = 22;   /* the share that never hands off, whatever the size */
+    var MAX = parseInt(slider.max, 10) || 12;
+    var MIN = parseInt(slider.min, 10) || 1;
+
+    function handsOn(size) {
+      return Math.round(FLOOR + (100 - FLOOR) / Math.pow(size, 1.2));
+    }
+
+    function clamp(v) { return Math.max(MIN, Math.min(MAX, v)); }
+
+    /* size is continuous so the thumb and the bar travel smoothly, while
+       the readout and the announced value stay whole people. */
+    function render(size) {
+      var pct = handsOn(size);
+      var whole = Math.round(size);
+      out.size.textContent = String(whole);
+      out.pct.textContent = pct + '%';
+      out.coach.textContent = (100 - pct) + '%';
+      slider.setAttribute('aria-valuetext', whole + (whole === 1 ? ' person' : ' people'));
+      fill.style.setProperty('--w', pct + '%');
+      items.forEach(function (li) {
+        /* An anchored item has no data-at, so it can never flip. */
+        var at = parseInt(li.getAttribute('data-at'), 10);
+        li.classList.toggle('is-team', !isNaN(at) && size >= at);
+        var owner = li.querySelector('[data-role="owner"]');
+        if (owner) {
+          owner.textContent = li.classList.contains('is-team') ? 'The team' : 'Me';
+        }
+      });
+    }
+
+    var manual = false;
+    var sweepId = 0;
+
+    function stopSweep() {
+      window.cancelAnimationFrame(sweepId);
+      sweepId = 0;
+    }
+
+    /* One sweep from a team of one up to the full size, so the redistribution
+       plays out as the team grows. It does not loop, since a control that
+       keeps moving on its own is one the user has to fight to grab. */
+    function sweep() {
+      if (manual || reduceMotion) return;
+      stopSweep();
+      var start = null;
+      var duration = 2200;
+      slider.value = String(MIN);
+      render(MIN);
+      sweepId = window.requestAnimationFrame(function step(ts) {
+        if (manual) return;
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        var size = MIN + (MAX - MIN) * eased;
+        slider.value = String(size);
+        render(size);
+        if (p < 1) sweepId = window.requestAnimationFrame(step);
+        else stopSweep();
+      });
+    }
+
+    slider.addEventListener('input', function () {
+      manual = true;
+      stopSweep();
+      render(parseFloat(slider.value));
+    });
+
+    /* The fine step is there for smooth dragging, so arrow keys would crawl
+       across the range one hundredth of a person at a time. Keyboard moves
+       whole people instead, stepping to the next integer rather than adding
+       one to a fractional position. */
+    slider.addEventListener('keydown', function (e) {
+      var now = parseFloat(slider.value);
+      var next;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = Math.floor(now) + 1;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = Math.ceil(now) - 1;
+      else if (e.key === 'PageUp') next = Math.floor(now) + 3;
+      else if (e.key === 'PageDown') next = Math.ceil(now) - 3;
+      else if (e.key === 'Home') next = MIN;
+      else if (e.key === 'End') next = MAX;
+      else return;
+      e.preventDefault();
+      manual = true;
+      stopSweep();
+      slider.value = String(clamp(next));
+      render(parseFloat(slider.value));
+    });
+
+    render(parseFloat(slider.value));
+
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) sweep();
+        else stopSweep();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

@@ -158,7 +158,7 @@
               <span class="cap-item__num">01</span>
               <span class="cap-item__text">
                 <span class="cap-item__title">Demand that compounds.</span>
-                <span class="cap-item__desc">SEO, paid, and community channels are built to work together. I've grown organic traffic 2x and driven millions in pipeline by relying on a combination of channels to carry the team.</span>
+                <span class="cap-item__desc">SEO, paid, content, and community channels are built to work together. I've grown organic traffic 2x and driven millions in pipeline by relying on a combination of channels to carry the team.</span>
               </span>
             </button>
             <button class="cap-item" role="tab" aria-selected="false" tabindex="-1" id="cap-tab-2" aria-controls="cap-panel-2" data-cap="2">
@@ -186,56 +186,238 @@
 
           <div class="cap-stage">
             <div class="cap-panel is-active" role="tabpanel" id="cap-panel-1" aria-labelledby="cap-tab-1" tabindex="0">
-              <div class="cap-demo cap-demo--demand">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Demand engine</span></div>
+              <div class="cap-demo cap-demo--demand" data-demand-stack>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Demand engine</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__channels">
-                    <span class="cap-chan"><i style="--h:38%"></i>SEO</span>
-                    <span class="cap-chan"><i style="--h:64%"></i>Paid</span>
-                    <span class="cap-chan"><i style="--h:52%"></i>Content</span>
-                    <span class="cap-chan"><i style="--h:78%"></i>Community</span>
+                  <div class="dstack">
+                    <svg class="dstack__svg" viewBox="0 0 538 212" role="img" aria-labelledby="dstack-title dstack-desc">
+                      <title id="dstack-title">Four demand channels layered over eight quarters</title>
+                      <desc id="dstack-desc">Paid starts in quarter one, SEO in quarter two, content in quarter three, and community in quarter five. Each channel stacks on top of the ones already running. The dashed line is what the same four channels would produce in isolation, and the shaded wedge above it is the compounding lift, which reaches 27 percent by quarter eight.</desc>
+                      <defs>
+                        <clipPath id="dstack-clip"><rect class="dstack__wipe" x="0" y="0" width="538" height="212"></rect></clipPath>
+                        <pattern id="dstack-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                          <rect width="8" height="8" fill="#FAF9F6" opacity="0.17"></rect>
+                          <line x1="0" y1="0" x2="0" y2="8" stroke="#FAF9F6" stroke-width="2.2" opacity="0.36"></line>
+                        </pattern>
+                      </defs>
+                      <line class="dstack__axis" x1="10" y1="190" x2="528" y2="190"></line>
+                      <g clip-path="url(#dstack-clip)">
+                        <g class="dstack__areas">
+                          <path class="dstack__area" data-ch="paid" d="M10 179.3 C22.3 178.9 59.3 177.7 84 177 C108.7 176.3 133.3 175.8 158 175.3 C182.7 174.8 207.3 174.5 232 174.1 C256.7 173.7 281.3 173.3 306 172.9 C330.7 172.5 355.3 171.8 380 171.5 C404.7 171.2 429.3 171.4 454 171.1 C478.7 170.8 515.7 169.9 528 169.7 L528 190 C515.7 190 478.7 190 454 190 C429.3 190 404.7 190 380 190 C355.3 190 330.7 190 306 190 C281.3 190 256.7 190 232 190 C207.3 190 182.7 190 158 190 C133.3 190 108.7 190 84 190 C59.3 190 22.3 190 10 190 Z"></path>
+                          <path class="dstack__area" data-ch="seo" d="M10 179.3 C22.3 178.5 59.3 176 84 174.2 C108.7 172.4 133.3 170.6 158 168.4 C182.7 166.2 207.3 164.1 232 161.1 C256.7 158.1 281.3 154.2 306 150.5 C330.7 146.7 355.3 142.8 380 138.8 C404.7 134.9 429.3 131.2 454 126.7 C478.7 122.3 515.7 114.5 528 112 L528 169.7 C515.7 169.9 478.7 170.8 454 171.1 C429.3 171.4 404.7 171.2 380 171.5 C355.3 171.8 330.7 172.5 306 172.9 C281.3 173.3 256.7 173.7 232 174.1 C207.3 174.5 182.7 174.8 158 175.3 C133.3 175.8 108.7 176.3 84 177 C59.3 177.7 22.3 178.9 10 179.3 Z"></path>
+                          <path class="dstack__area" data-ch="content" d="M10 179.3 C22.3 178.5 59.3 176.7 84 174.2 C108.7 171.7 133.3 168.2 158 164.5 C182.7 160.8 207.3 157.4 232 152.2 C256.7 147 281.3 140.1 306 133.4 C330.7 126.6 355.3 119.2 380 111.6 C404.7 104 429.3 96.5 454 87.9 C478.7 79.3 515.7 64.7 528 60 L528 112 C515.7 114.5 478.7 122.3 454 126.7 C429.3 131.2 404.7 134.9 380 138.8 C355.3 142.8 330.7 146.7 306 150.5 C281.3 154.2 256.7 158.1 232 161.1 C207.3 164.1 182.7 166.2 158 168.4 C133.3 170.6 108.7 172.4 84 174.2 C59.3 176 22.3 178.5 10 179.3 Z"></path>
+                          <path class="dstack__area" data-ch="community" d="M10 179.3 C22.3 178.5 59.3 176.7 84 174.2 C108.7 171.7 133.3 168.2 158 164.5 C182.7 160.8 207.3 158.3 232 152.2 C256.7 146.1 281.3 136.8 306 128 C330.7 119.3 355.3 109.8 380 99.6 C404.7 89.4 429.3 78.9 454 66.8 C478.7 54.8 515.7 33.8 528 27.2 L528 60 C515.7 64.7 478.7 79.3 454 87.9 C429.3 96.5 404.7 104 380 111.6 C355.3 119.2 330.7 126.6 306 133.4 C281.3 140.1 256.7 147 232 152.2 C207.3 157.4 182.7 160.8 158 164.5 C133.3 168.2 108.7 171.7 84 174.2 C59.3 176.7 22.3 178.5 10 179.3 Z"></path>
+                        </g>
+                        <path class="dstack__wedge" d="M10 179.3 C22.3 178.5 59.3 176.7 84 174.2 C108.7 171.7 133.3 168.2 158 164.5 C182.7 160.8 207.3 158.3 232 152.2 C256.7 146.1 281.3 136.8 306 128 C330.7 119.3 355.3 109.8 380 99.6 C404.7 89.4 429.3 78.9 454 66.8 C478.7 54.8 515.7 33.8 528 27.2 L528 61.8 C515.7 66.7 478.7 82.2 454 91.2 C429.3 100.3 404.7 108.3 380 116.1 C355.3 124 330.7 131.7 306 138.4 C281.3 145.1 256.7 151.4 232 156.2 C207.3 160.9 182.7 163.7 158 166.9 C133.3 170 108.7 172.8 84 174.9 C59.3 176.9 22.3 178.6 10 179.3 Z"></path>
+                        <path class="dstack__iso" d="M10 179.3 C22.3 178.6 59.3 176.9 84 174.9 C108.7 172.8 133.3 170 158 166.9 C182.7 163.7 207.3 160.9 232 156.2 C256.7 151.4 281.3 145.1 306 138.4 C330.7 131.7 355.3 124 380 116.1 C404.7 108.3 429.3 100.3 454 91.2 C478.7 82.2 515.7 66.7 528 61.8"></path>
+                        <g class="dstack__ticks" aria-hidden="true">
+                          <text x="10" y="206" text-anchor="start">Q1</text>
+                          <text x="84" y="206" text-anchor="middle">Q2</text>
+                          <text x="158" y="206" text-anchor="middle">Q3</text>
+                          <text x="232" y="206" text-anchor="middle">Q4</text>
+                          <text x="306" y="206" text-anchor="middle">Q5</text>
+                          <text x="380" y="206" text-anchor="middle">Q6</text>
+                          <text x="454" y="206" text-anchor="middle">Q7</text>
+                          <text x="528" y="206" text-anchor="end">Q8</text>
+                        </g>
+                      </g>
+                    </svg>
+
+                    <ul class="dstack__legend">
+                      <li><button type="button" class="dstack__key is-on" data-ch="paid" aria-pressed="true"><span class="dstack__swatch"></span>Paid</button></li>
+                      <li><button type="button" class="dstack__key is-on" data-ch="seo" aria-pressed="true"><span class="dstack__swatch"></span>SEO</button></li>
+                      <li><button type="button" class="dstack__key is-on" data-ch="content" aria-pressed="true"><span class="dstack__swatch"></span>Content</button></li>
+                      <li><button type="button" class="dstack__key is-on" data-ch="community" aria-pressed="true"><span class="dstack__swatch"></span>Community</button></li>
+                      <li class="dstack__hint">Turn one off</li>
+                    </ul>
+
+                    <div class="dstack__readout" aria-live="polite">
+                      <p class="dstack__stat"><span class="dstack__stat-label">Together</span><b data-role="total">183</b></p>
+                      <p class="dstack__stat dstack__stat--iso"><span class="dstack__stat-label">In isolation</span><b data-role="iso">144</b></p>
+                      <p class="dstack__stat dstack__stat--lift"><span class="dstack__stat-label">Compounding lift</span><b data-role="lift">+27%</b></p>
+                    </div>
                   </div>
-                  <div class="cap-demo__out">Pipeline<strong>compounding</strong></div>
                 </div>
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-2" aria-labelledby="cap-tab-2" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--content">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Found everywhere</span></div>
+              <div class="cap-demo cap-demo--content" data-query-surfaces>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Getting found</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__search">How do I reset a locked-out customer's MFA?</div>
-                  <div class="cap-demo__answer">
-                    <span class="cap-demo__src">Google</span>
-                    <span class="cap-demo__src">ChatGPT</span>
-                    <span class="cap-demo__src">Perplexity</span>
-                    <span class="cap-demo__src">Claude</span>
+                  <div class="qsurf">
+                    <p class="visually-hidden">One buying question, asked the way people actually ask it on four different surfaces. Organic search, paid search, an LLM chat, and a Reddit thread. Implicit surfaces on all four. The share of signups each surface drove is from the Implicit case study.</p>
+
+                    <div class="qsurf__keys" role="tablist" aria-label="Where the question gets asked">
+                      <button type="button" class="qsurf__key is-on" role="tab" aria-selected="true" id="qs-tab-organic" aria-controls="qs-panel-organic" data-surf="organic">Google organic</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-paid" aria-controls="qs-panel-paid" data-surf="paid">Google paid</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-chatgpt" aria-controls="qs-panel-chatgpt" data-surf="chatgpt">ChatGPT</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-reddit" aria-controls="qs-panel-reddit" data-surf="reddit">Reddit</button>
+                    </div>
+
+                    <div class="qsurf__stage">
+                      <div class="qsurf__panel is-on" role="tabpanel" id="qs-panel-organic" aria-labelledby="qs-tab-organic" tabindex="0">
+                        <p class="qsurf__q">ai knowledge base for support teams</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:34%"></i><i style="--w:78%"></i><i style="--w:92%"></i></div>
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url"><span class="qsurf__brand">implicit.cloud</span></p>
+                            <p class="qsurf__title">Your AI Knowledge Engine for Maintenance and Support</p>
+                            <p class="qsurf__snip">Give an agent an answer they can trace back to a source, so the same question stops coming back.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:29%"></i><i style="--w:66%"></i><i style="--w:84%"></i></div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="22">22%</b> of Implicit signups came from organic search.</p>
+                      </div>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-paid" aria-labelledby="qs-tab-paid" tabindex="0" hidden>
+                        <p class="qsurf__q">zendesk ai knowledge base</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url"><span class="qsurf__badge">Sponsored</span><span class="qsurf__brand">implicit.cloud</span></p>
+                            <p class="qsurf__title">AI Knowledge Base for Zendesk</p>
+                            <p class="qsurf__snip">Answers your agents can trust, drawn from the knowledge your team already wrote.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:31%"></i><i style="--w:72%"></i><i style="--w:88%"></i></div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:27%"></i><i style="--w:63%"></i><i style="--w:80%"></i></div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="27">27%</b> of Implicit signups came from paid search.</p>
+                      </div>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-chatgpt" aria-labelledby="qs-tab-chatgpt" tabindex="0" hidden>
+                        <p class="qsurf__q">our support agents keep re-answering the same product questions, what actually fixes that</p>
+                        <div class="qsurf__out">
+                          <p class="qsurf__answer" data-step>Most teams solve this with a retrieval layer over the knowledge they already have, so an agent gets a sourced answer instead of another search box. The tools worth shortlisting cite where every answer came from.</p>
+                          <p class="qsurf__cites-label" data-step>Sources</p>
+                          <div class="qsurf__cites">
+                            <span class="qsurf__cite qsurf__cite--ghost" data-step aria-hidden="true"><i style="--w:58px"></i></span>
+                            <span class="qsurf__cite" data-step="hit"><span class="qsurf__brand">implicit.cloud</span></span>
+                            <span class="qsurf__cite qsurf__cite--ghost" data-step aria-hidden="true"><i style="--w:44px"></i></span>
+                          </div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="23">23%</b> of Implicit signups came from LLM answer engines.</p>
+                      </div>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-reddit" aria-labelledby="qs-tab-reddit" tabindex="0" hidden>
+                        <p class="qsurf__q">ai knowledge base for support reddit</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:33%"></i><i style="--w:70%"></i><i style="--w:86%"></i></div>
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url">reddit.com &rsaquo; r/CustomerSuccess</p>
+                            <p class="qsurf__title">Anyone using AI for internal support docs?</p>
+                            <p class="qsurf__snip"><span class="qsurf__brand">Implicit</span> comes up in the replies as one of the options.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:30%"></i><i style="--w:75%"></i><i style="--w:61%"></i></div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="13">13%</b> of Implicit signups came from Reddit.</p>
+                      </div>
+                    </div>
+
+                    <p class="qsurf__foot">Same buying question, asked four ways. <a href="/the-work/implicit-plg-gtm">See the Implicit case study</a></p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-3" aria-labelledby="cap-tab-3" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--plg">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Right lever</span></div>
+              <div class="cap-demo cap-demo--plg" data-plg-lever>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__funnel">
-                    <span style="--w:100%">Signups</span>
-                    <span style="--w:72%">Activated</span>
-                    <span style="--w:44%">Paid</span>
-                    <span style="--w:26%">Expanded</span>
+                  <div class="lever">
+                    <p class="visually-hidden">Four questions that decide whether a product-led motion can carry growth or whether it needs a sales-led one. Whether the product is useful to one person on day one, whether it can be bought on a card, whether buyers already know the category, and whether one user pulls in a team. Set to Implicit the answer is product-led, set to ConstructConnect it is both motions at once, and set to CEI Clairvoyance it is sales-led.</p>
+
+                    <div class="lever__presets">
+                      <span class="lever__presets-label">When I&rsquo;ve used these models:</span>
+                      <div class="lever__preset-row">
+                        <button type="button" class="lever__preset is-on" data-preset="implicit">Implicit</button>
+                        <button type="button" class="lever__preset" data-preset="constructconnect">ConstructConnect</button>
+                        <button type="button" class="lever__preset" data-preset="cei">CEI</button>
+                      </div>
+                    </div>
+
+                    <div class="lever__rows">
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-single-ask">Single-player value</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-single-ask">
+                          <input type="radio" id="lv-single-plg" name="lv-single" data-input="single" value="plg" checked>
+                          <label for="lv-single-plg">Day one</label>
+                          <input type="radio" id="lv-single-sales" name="lv-single" data-input="single" value="sales">
+                          <label for="lv-single-sales">Needs a team</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-buy-ask">Buying it</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-buy-ask">
+                          <input type="radio" id="lv-buy-plg" name="lv-buy" data-input="buy" value="plg" checked>
+                          <label for="lv-buy-plg">On a card</label>
+                          <input type="radio" id="lv-buy-sales" name="lv-buy" data-input="buy" value="sales">
+                          <label for="lv-buy-sales">Security review</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-cat-ask">The category</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-cat-ask">
+                          <input type="radio" id="lv-cat-plg" name="lv-cat" data-input="cat" value="plg" checked>
+                          <label for="lv-cat-plg">Already known</label>
+                          <input type="radio" id="lv-cat-sales" name="lv-cat" data-input="cat" value="sales">
+                          <label for="lv-cat-sales">Needs explaining</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-exp-ask">Expansion</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-exp-ask">
+                          <input type="radio" id="lv-exp-plg" name="lv-exp" data-input="exp" value="plg" checked>
+                          <label for="lv-exp-plg">Pulls in a team</label>
+                          <input type="radio" id="lv-exp-sales" name="lv-exp" data-input="exp" value="sales">
+                          <label for="lv-exp-sales">Seat by seat</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="lever__meter">
+                      <div class="lever__ends"><span>Sales-led</span><span>Product-led</span></div>
+                      <div class="lever__track"><i class="lever__marker" style="--at:100"></i></div>
+                    </div>
+
+                    <div class="lever__verdict">
+                      <p class="lever__call" data-role="call">Product-led.</p>
+                      <p class="lever__why" data-role="why">This is a true product-led motion. People find the product, try it, and start paying without talking to sales. It works when someone gets real value alone on day one and can expense it without a procurement review.</p>
+                      <p class="lever__match" data-role="match">That&rsquo;s <a href="/the-work/implicit-plg-gtm">Implicit</a>. 2,100 signups in six months, from zero.</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-4" aria-labelledby="cap-tab-4" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--leader">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Team that ships</span></div>
+              <div class="cap-demo cap-demo--leader" data-player-coach-mix>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__team">
-                    <span class="cap-node">Demand</span>
-                    <span class="cap-node">Content</span>
-                    <span class="cap-node">Ops</span>
-                    <span class="cap-node">Design</span>
-                    <span class="cap-node">Product</span>
+                  <div class="pcoach">
+                    <p class="visually-hidden">How the work splits between playing and coaching as a marketing team grows from one person to twelve. Copy, pages, campaigns, and reporting hand off as there are people to hand them to. Reading the numbers, picking what is worth building, and positioning stay hands on at every team size, so the player share falls but never reaches zero.</p>
+
+                    <div class="pcoach__control">
+                      <label class="pcoach__label" for="pc-team">Team size</label>
+                      <output class="pcoach__size" for="pc-team" data-role="size">12</output>
+                      <input class="pcoach__slider" type="range" id="pc-team" min="1" max="12" step="0.01" value="12" aria-valuetext="12 people">
+                    </div>
+
+                    <div class="pcoach__meter">
+                      <div class="pcoach__meter-head">
+                        <span class="pcoach__end"><span class="pcoach__end-name">Player</span><b data-role="pct">26%</b></span>
+                        <span class="pcoach__end"><span class="pcoach__end-name">Coach</span><b data-role="coach">74%</b></span>
+                      </div>
+                      <div class="pcoach__track"><i class="pcoach__fill" style="--w:26%"></i></div>
+                    </div>
+
+                    <ul class="pcoach__work">
+                      <li class="pcoach__item is-team" data-at="2">Writing the copy<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="4">Building the pages<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="6">Running the campaigns<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="8">The reporting stack<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item" data-anchor>Reading the numbers myself<span class="pcoach__owner" data-role="owner">Me</span></li>
+                      <li class="pcoach__item" data-anchor>Picking what&rsquo;s worth building<span class="pcoach__owner" data-role="owner">Me</span></li>
+                      <li class="pcoach__item" data-anchor>Positioning and the story<span class="pcoach__owner" data-role="owner">Me</span></li>
+                    </ul>
+
+                    <p class="pcoach__note">The player share falls as the team grows and never reaches zero. Staying close to the work is how you know what&rsquo;s working and what isn&rsquo;t.</p>
                   </div>
                 </div>
               </div>
