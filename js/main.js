@@ -817,17 +817,24 @@
        hard blocker, so those two carry most of the weight. */
     var WEIGHTS = { single: 34, buy: 28, cat: 20, exp: 18 };
 
+    /* Each verdict says what the motion actually is and when it applies.
+       The earlier copy was too clipped and assumed the reader already knew
+       the vocabulary. */
+    /* Each verdict names the motion and says when it applies. The earlier
+       copy was too clipped and assumed the reader already had the
+       vocabulary. All five are deliberately parallel in shape and length,
+       which is also what keeps the block from resizing between bands. */
     var BANDS = [
       { min: 82, call: 'Product-led.',
-        why: 'People can reach value and get started without talking to anyone, so let them.' },
+        why: 'This is a true product-led motion. People find the product, try it, and start paying without talking to sales. It works when someone gets real value alone on day one and can expense it without a procurement review.' },
       { min: 60, call: 'Product-led, with a sales assist.',
-        why: 'Self-serve carries the top of the funnel. Humans show up for the accounts worth a human.' },
+        why: 'This is product-led growth with a sales assist. Self-serve brings people in and proves the value, and a small sales team works the accounts big enough to be worth the time.' },
       { min: 38, call: 'Run both.',
-        why: 'Self-serve is a real front door here and the revenue still closes through a sales process. Two motions cost more than one, so staff it honestly.' },
-      { min: 18, call: 'Sales-led, with a self-serve front door.',
-        why: 'A trial earns attention. Closing the deal is still a human job.' },
+        why: 'This is a hybrid approach. Self-serve is a real front door and people can start on their own, while the revenue still closes through a sales process with contracts and negotiation.' },
+      { min: 18, call: 'Sales-led, with a trial up front.',
+        why: 'This is a sales-led motion with a trial up front. The trial earns attention and sorts serious buyers from browsers, and a salesperson does the closing when someone else has to approve the spend.' },
       { min: 0, call: 'Sales-led.',
-        why: 'PLG here burns a year and produces signups that never buy. Run demand gen.' }
+        why: 'This is a true sales-led B2B motion. Demand generation builds the pipeline and salespeople work deals through evaluation, procurement, and a contract. Forcing PLG here burns a year and produces signups that never buy.' }
     ];
 
     var PRESETS = {

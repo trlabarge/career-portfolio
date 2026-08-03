@@ -763,7 +763,6 @@ html:not(.js) .cap-item__desc {
 .cap-stage {
   position: sticky;
   top: 90px;
-  min-height: 460px;
 }
 
 .cap-panel {
@@ -796,10 +795,6 @@ html:not(.js) .cap-panel + .cap-panel {
   border: 1px solid rgba(74, 107, 82, 0.5);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  /* Sized to the tallest panel, currently the query-match demo at ~458px,
-     and applied to every panel so switching tabs cannot jump the sticky
-     stage. Re-measure if a panel's content grows. */
-  min-height: 460px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -1344,23 +1339,30 @@ html:not(.js) .qsurf__brand {
 .lever {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.6rem;
 }
 
 .lever__presets {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: 0.35rem;
 }
 
+/* The one sanctioned colon, same exception as .icon-card__when. The label
+   is what turns the presets from a UI affordance into evidence, since each
+   one is a real engagement rather than a demo setting. */
 .lever__presets-label {
   font-family: var(--font-display);
-  font-size: 0.64rem;
+  font-size: 0.66rem;
   text-transform: uppercase;
   letter-spacing: 0.11em;
-  color: rgba(220, 229, 218, 0.6);
-  margin-right: 0.15rem;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.lever__preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 .lever__preset {
@@ -1389,7 +1391,7 @@ html:not(.js) .qsurf__brand {
 .lever__rows {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
 .lever__row {
@@ -1505,10 +1507,14 @@ html:not(.js) .lever__presets {
   transition: left 0.55s var(--ease-out);
 }
 
+/* Reserved so switching bands never changes the panel height and jolts the
+   sticky stage. Sized to the tallest verdict measured across all 16
+   combinations in the width range where the stage is actually sticky. */
 .lever__verdict {
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
+  min-height: 168px;
   border-top: 1px dashed rgba(220, 229, 218, 0.3);
-  padding-top: 0.65rem;
+  padding-top: 0.6rem;
 }
 
 .lever__call {
@@ -5110,6 +5116,26 @@ html:not(.js) .rebrand-film__video {
 @media (max-width: 1080px) and (min-width: 901px) {
   .card-grid--5 {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Above this breakpoint the stage is sticky, so every panel is pinned to the
+   height of the tallest one and switching tabs cannot shift the page. Two
+   steps because panels 02 and 03 wrap taller in the narrow half of the
+   range. Below it the stage is static and panels size to their own content,
+   where uneven heights cost nothing. Re-measure both numbers if a panel's
+   content grows. */
+@media (min-width: 861px) {
+  .cap-demo,
+  .cap-stage {
+    min-height: 530px;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1023px) {
+  .cap-demo,
+  .cap-stage {
+    min-height: 590px;
   }
 }
 

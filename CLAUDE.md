@@ -80,10 +80,15 @@ punctuated by confident full-bleed color-field sections.
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
   item. Panels 01 to 03 are real interactive demos, see below. Panel 04 is
   still a branded PLACEHOLDER (team nodes) tagged "Interactive demo coming
-  soon"; a real animation lands later. `.cap-demo`
-  and `.cap-stage` are both pinned to `min-height: 460px`, sized to the
-  tallest panel (currently 02) so switching tabs never jumps the sticky
-  stage. Re-measure and update that number if a panel's content grows.
+  soon"; a real animation lands later. Above 861px, where `.cap-stage` is
+  sticky, `.cap-demo` and `.cap-stage` are pinned to the height of the
+  tallest panel so switching tabs cannot shift the page. Two steps, 530px
+  from 1024px up and 590px between 861px and 1023px, since panels 02 and 03
+  wrap taller in the narrow half of that range. Below 861px the stage is
+  static and panels size to their own content, where uneven heights cost
+  nothing. Re-measure both numbers if a panel's content grows. Panel 01 now
+  carries noticeable slack under its readout as a result, which is the
+  accepted cost of panel 03's longer verdict copy.
   Panels 02 to 04 carry the `hidden` attribute in the markup and only the
   tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
   back to `display: block`. Without that rule the entire right-hand stage is
@@ -188,6 +193,13 @@ punctuated by confident full-bleed color-field sections.
     which motion fits is the skill. The placeholder it replaced was a PLG
     funnel, which argued the opposite by presenting PLG as the answer. Do not
     go back to a funnel here.
+    The panel deliberately carries no `.cap-demo__tag`. "Right lever" was
+    removed on Tim's instruction as saying nothing the board does not
+    already say.
+    The preset chips sit under the label "When I've used these models:",
+    which is what turns them from a UI affordance into evidence, since each
+    is a real engagement. That colon is a sanctioned exception to the
+    no-colons rule, same as `.icon-card__when`, and was requested directly.
     Four mechanism questions score a motion from 0 (pure sales-led) to 100
     (pure product-led). Single-player value 34, buying it 28, the category
     20, expansion 18. Those four came from Tim directly, replacing an earlier
@@ -196,10 +208,20 @@ punctuated by confident full-bleed color-field sections.
     gate is a hard blocker, which is why those two carry most of the weight.
     All 16 combinations produce distinct scores spread across five verdict
     bands.
-    The verdict must be able to rule PLG out. The bottom band reads "PLG here
-    burns a year and produces signups that never buy. Run demand gen." A
-    board that can only ever recommend PLG proves nothing, so keep that
-    refusal if the copy is reworked.
+    Each verdict names the motion and explains when it applies, in that
+    order ("This is a hybrid approach. Self-serve is a real front door
+    and..."). An earlier pass was too clipped and assumed the reader already
+    had the vocabulary, so keep the descriptive register if these are
+    rewritten. All five are parallel in shape and length on purpose, which
+    also keeps the block from resizing between bands.
+    The verdict must be able to rule PLG out. The bottom band ends "Forcing
+    PLG here burns a year and produces signups that never buy." A board that
+    can only ever recommend PLG proves nothing, so keep that refusal if the
+    copy is reworked.
+    `.lever__verdict` reserves `min-height: 168px`, measured as the tallest
+    verdict across all 16 combinations in the width range where the stage is
+    sticky. Without it, switching bands changes the panel height and jolts
+    the sticky stage on every toggle.
     Three presets snap the board to real engagements and land at 100, 54 and
     0. Implicit is product-led, ConstructConnect is both motions at once
     (in-product surfaces feeding a sales team, PQLs up 6.5x, revenue still
