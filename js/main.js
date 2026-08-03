@@ -615,169 +615,166 @@
     io.observe(root);
   })();
 
-  /* --- Content built for how people search now: query to page match ------ */
-  /* A buyer question rotates above the same product described two ways. The
-     words the question and the page share light up in sequence, then each
-     retrieval surface resolves. Vendor language carries no [data-w] words at
-     all, so nothing can ever match it and no surface returns it, which is
-     the argument rather than a scripted outcome.
+  /* --- Content built for how people search now: one question, four surfaces */
+  /* The same buying question gets asked in four places, phrased the way each
+     place is actually used, and the brand surfaces in all four. Switching
+     surface re-runs the reveal, so the results resolve in sequence and the
+     brand highlight lands last.
+
+     Everything the demo does not claim is a grey placeholder row in the
+     markup, so nothing here fabricates a competitor, a username, or a quote.
 
      The panel is hidden until its tab is selected, and a hidden element does
      not intersect, so one IntersectionObserver covers both scrolling away
-     and switching tabs without this needing to know about capabilities(). */
-  (function queryMatch() {
-    var root = document.querySelector('[data-query-match]');
+     and switching capability tabs with no coupling to capabilities(). */
+  (function querySurfaces() {
+    var root = document.querySelector('[data-query-surfaces]');
     if (!root) return;
 
     function all(sel, scope) {
       return Array.prototype.slice.call((scope || root).querySelectorAll(sel));
     }
 
-    var questions = all('.qmatch__q');
-    var copies = all('.qmatch__copy');
-    var modeBtns = all('.qmatch__mode');
-    var surfaces = all('.qmatch__surface');
-    var hits = root.querySelector('[data-role="hits"]');
-    var note = root.querySelector('[data-role="note"]');
-    if (!questions.length || !copies.length || !surfaces.length) return;
-    if (!modeBtns.length || !hits || !note) return;
+    var keys = all('.qsurf__key');
+    var panels = all('.qsurf__panel');
+    if (keys.length !== panels.length || !keys.length) return;
 
-    var NOTES = {
-      buyer: 'Every surface retrieves on the words the question was asked in.',
-      vendor: 'Vendor language still ranks for vendor language. The buyer never types it.'
-    };
-
-    var CYCLE = 4400;
-    var mode = 'buyer';
-    var qi = 0;
+    var DWELL = 5200;
+    var idx = 0;
     var timers = [];
     var advanceId = 0;
     var running = false;
+    var manual = false;   /* a click or arrow key hands control to the user */
 
     function later(fn, ms) { timers.push(window.setTimeout(fn, ms)); }
 
-    function clearEffects() {
+    function clearSteps() {
       timers.forEach(function (id) { window.clearTimeout(id); });
       timers = [];
     }
 
-    function darken() {
-      all('[data-w]').forEach(function (w) { w.classList.remove('is-lit'); });
-      surfaces.forEach(function (s) { s.classList.remove('is-cited'); });
-      hits.textContent = '0';
-    }
-
-    function showQuestion(i) {
-      qi = i;
-      questions.forEach(function (q, n) { q.classList.toggle('is-on', n === i); });
-    }
-
-    function showMode(next) {
-      mode = next;
-      copies.forEach(function (c) {
-        c.classList.toggle('is-on', c.dataset.mode === next);
+    function countUp(el) {
+      var target = parseInt(el.getAttribute('data-share'), 10);
+      if (isNaN(target)) return;
+      if (reduceMotion) { el.textContent = target + '%'; return; }
+      var start = null;
+      var duration = 700;
+      window.requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + '%';
+        if (p < 1) window.requestAnimationFrame(step);
       });
-      modeBtns.forEach(function (b) {
-        var on = b.dataset.mode === next;
-        b.classList.toggle('is-on', on);
-        b.setAttribute('aria-pressed', String(on));
-      });
-      note.textContent = NOTES[next] || '';
     }
 
-    function activeCopy() {
-      var found = copies.filter(function (c) { return c.dataset.mode === mode; });
-      return found[0] || copies[0];
-    }
+    /* Placeholder rows land first and the branded result lands last, no
+       matter where it sits in the markup, so the surface reads as resolving
+       around the thing the panel is actually about. */
+    function reveal(panel, instant) {
+      clearSteps();
+      var steps = all('[data-step]', panel);
+      var hits = all('[data-step="hit"]', panel);
+      var ghosts = steps.filter(function (el) { return hits.indexOf(el) < 0; });
+      var stat = panel.querySelector('[data-share]');
 
-    function play(instant) {
-      clearEffects();
-      darken();
-
-      var q = questions[qi];
-      var keys = (q.getAttribute('data-hits') || '').split(',');
-      var asked = all('[data-w]', q);
-      var shared = all('[data-w]', activeCopy()).filter(function (w) {
-        return keys.indexOf(w.dataset.w) > -1;
-      });
-      var matched = shared.length > 0;
+      steps.forEach(function (el) { el.classList.remove('is-in'); });
+      hits.forEach(function (el) { el.classList.remove('is-lit'); });
 
       if (instant) {
-        asked.concat(shared).forEach(function (w) { w.classList.add('is-lit'); });
-        surfaces.forEach(function (s) { s.classList.toggle('is-cited', matched); });
-        hits.textContent = String(matched ? surfaces.length : 0);
+        steps.forEach(function (el) { el.classList.add('is-in'); });
+        hits.forEach(function (el) { el.classList.add('is-lit'); });
+        if (stat) stat.textContent = stat.getAttribute('data-share') + '%';
         return;
       }
 
-      asked.forEach(function (w, n) {
-        later(function () { w.classList.add('is-lit'); }, 260 + n * 110);
+      if (stat) stat.textContent = '0%';
+      ghosts.forEach(function (el, n) {
+        later(function () { el.classList.add('is-in'); }, 240 + n * 120);
       });
-      shared.forEach(function (w, n) {
-        later(function () { w.classList.add('is-lit'); }, 640 + n * 110);
+      var after = 240 + ghosts.length * 120 + 180;
+      hits.forEach(function (el, n) {
+        later(function () { el.classList.add('is-in'); }, after + n * 120);
+        later(function () { el.classList.add('is-lit'); }, after + n * 120 + 240);
       });
+      if (stat) later(function () { countUp(stat); }, after + hits.length * 120 + 320);
+    }
 
-      /* Surfaces resolve after the last word has landed, so the causality
-         reads in the right order. A miss has nothing to stagger, so the
-         chips simply stay dark. */
-      if (!matched) return;
-      var base = 640 + shared.length * 110 + 260;
-      surfaces.forEach(function (s, n) {
-        later(function () {
-          s.classList.add('is-cited');
-          hits.textContent = String(n + 1);
-        }, base + n * 140);
+    function activate(i, focus) {
+      idx = i;
+      keys.forEach(function (k, n) {
+        var on = n === i;
+        k.classList.toggle('is-on', on);
+        k.setAttribute('aria-selected', String(on));
+        k.tabIndex = on ? 0 : -1;
+        if (on && focus) k.focus();
       });
+      panels.forEach(function (p, n) { p.hidden = n !== i; });
+      reveal(panels[i], reduceMotion);
     }
 
     function scheduleAdvance() {
       window.clearTimeout(advanceId);
+      if (manual || reduceMotion) return;
       advanceId = window.setTimeout(function () {
         if (!running) return;
-        showQuestion((qi + 1) % questions.length);
-        play(false);
+        activate((idx + 1) % panels.length);
         scheduleAdvance();
-      }, CYCLE);
+      }, DWELL);
     }
 
     function start() {
       if (running || reduceMotion) return;
       running = true;
-      play(false);
+      reveal(panels[idx], false);
       scheduleAdvance();
     }
 
     function stop() {
       running = false;
-      clearEffects();
+      clearSteps();
       window.clearTimeout(advanceId);
+      /* Snap to the resolved surface rather than leaving whatever the
+         sequence had reached. Clearing the pending steps mid reveal would
+         otherwise strand the panel blank, with the share reading 0%, until
+         something happened to bring it back into view. */
+      reveal(panels[idx], true);
     }
 
-    /* Toggling restarts the dwell, so the change gets a full cycle to be
-       read rather than however much of one happened to be left. */
-    modeBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (btn.dataset.mode === mode) return;
-        showMode(btn.dataset.mode);
-        if (running) {
-          play(false);
-          scheduleAdvance();
-        } else {
-          play(true);
-        }
-      });
+    /* Any deliberate choice stops the carousel for good. Cycling underneath
+       someone who just picked a surface is the thing that makes an
+       auto-advancing panel annoying. */
+    function takeOver(i, focus) {
+      manual = true;
+      window.clearTimeout(advanceId);
+      activate(i, focus);
+    }
+
+    keys.forEach(function (k, i) {
+      k.addEventListener('click', function () { takeOver(i, false); });
     });
 
-    showMode(mode);
-    showQuestion(0);
+    root.querySelector('.qsurf__keys').addEventListener('keydown', function (e) {
+      var here = keys.indexOf(document.activeElement);
+      if (here < 0) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault(); takeOver((here + 1) % keys.length, true);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); takeOver((here - 1 + keys.length) % keys.length, true);
+      } else if (e.key === 'Home') {
+        e.preventDefault(); takeOver(0, true);
+      } else if (e.key === 'End') {
+        e.preventDefault(); takeOver(keys.length - 1, true);
+      }
+    });
 
     if (reduceMotion || !('IntersectionObserver' in window)) {
-      play(true);
+      reveal(panels[idx], true);
       return;
     }
 
     /* Clear the shipped end state now, so the sequence always starts from
-       nothing rather than flashing the finished panel first. */
-    darken();
+       nothing rather than flashing the resolved panel first. */
+    all('[data-step]').forEach(function (el) { el.classList.remove('is-in'); });
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {

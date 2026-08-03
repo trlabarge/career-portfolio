@@ -133,53 +133,56 @@ punctuated by confident full-bleed color-field sections.
     Under `prefers-reduced-motion` the wipe and the toggle tween are both
     skipped, but the toggles still work and redraw instantly, same reasoning
     as the constellation's pointer handling.
-  - Query-to-page language match (`.qmatch`, inside panel 02,
-    `data-query-match` on the `.cap-demo`). The claim being made is that
-    retrieval runs on the buyer's vocabulary, so this demo is typographic
-    rather than a chart. Keep it that way. Four panels in four registers
-    reads as a system, four charts reads as a template.
-    A buyer question rotates above the same product described two ways. The
-    words the question and the page share light up in sequence like a
-    highlighter, then each of five retrieval surfaces resolves, then the
-    readout counts them. The `Our words` / `Buyer's words` toggle is the
-    argument. Vendor language carries no `[data-w]` spans at all, so nothing
-    can ever match it and the readout falls to 0 of 5. That outcome is
-    produced by the markup rather than scripted, which is the point, so do
-    not add a fake partial match to soften it. The honest caveat lives in the
-    note instead, that vendor language still ranks for vendor language and
-    the buyer never types it.
-    Matching is literal, not semantic. Each `.qmatch__q` declares
-    `data-hits="key,key"` and both the question and the buyer copy mark the
-    same keys with `data-w`. JS lights every `[data-w]` in the active
-    question, plus the `[data-w]` in the page copy whose key is in that
-    question's hit list. Adding a question means adding its keys to both
-    sides, and the shared vocabulary has to be real, since the highlight is
-    showing the reader literal word overlap.
-    The example is deliberately generic (a data observability product) and
-    chipped "Illustrative model". It is not Agolo, CEI, or Implicit, even
-    though the Agolo to Implicit study has the same before/after in real
-    published language. Tim chose the generic version so the panel reads as
-    a capability rather than a case study recap. There is no client metric
-    on this panel for the same reason.
-    Both the question list and the two page copies stack in a single CSS
-    grid cell (`grid-area: 1 / 1`), so each block is always as tall as its
-    tallest member at any width and the rotation and the toggle can never
-    resize the panel. That replaces guessing a min-height, so do not swap it
-    back for one. `visibility` (not just opacity) keeps inactive copies out
-    of the accessibility tree, delayed on the way out so the fade still runs.
+  - One question, four surfaces (`.qsurf`, inside panel 02,
+    `data-query-surfaces` on the `.cap-demo`). The claim is that buyers look
+    in several places and phrase the question differently in each, so the
+    demo is a surface switcher rather than a chart. Keep it that way. Four
+    panels in four registers reads as a system, four charts reads as a
+    template.
+    Four tabs, Google organic / Google paid / ChatGPT / Reddit, each with its
+    own query phrased the way that surface is actually used (short keywords
+    for search, a full sentence for the chat, a "reddit" suffixed query for
+    the thread) and its own result format. Implicit surfaces on all four.
+    That set is not arbitrary. They are Implicit's four largest channels and
+    each panel's stat is the real share from
+    `/the-work/implicit-plg-gtm`, paid 27%, LLMs 23%, organic 22%, Reddit
+    13%, 85% of the 2,100 signups between them. Keep those in sync with the
+    case study if it is ever restated, and keep the attribution inside the
+    sentence ("of Implicit signups"), since the panel is chipped
+    "Illustrative model" for the rendered results and the numbers are the one
+    part that is not illustrative.
+    Nothing on this panel invents a third party. Every result the demo is not
+    claiming is a grey `.qsurf__ghost` placeholder rather than a made up
+    competitor, there are no usernames, and no words are put in anyone's
+    mouth. The Reddit panel describes a thread ("Implicit comes up in the
+    replies") instead of quoting a comment. Hold that line if this is ever
+    extended.
+    Every `.qsurf__panel` shares one grid cell (`grid-area: 1 / 1`), so the
+    stage is always as tall as the tallest surface at any width and
+    switching can never resize the demo. That replaces guessing a
+    min-height, so do not swap it back for one. The panels also carry the
+    `hidden` attribute, so `html:not(.js) .qsurf__panel[hidden]` forces them
+    back into flow, same fix as `.cap-panel[hidden]` one level up.
+    `querySurfaces()` reveals the placeholder rows first and the branded
+    result last regardless of DOM order (`data-step` marks a revealing
+    element, `data-step="hit"` marks the payoff), then lights the brand
+    highlight, then counts the share up. It auto-advances every 5.2s, and
+    any click or arrow key sets `manual` and stops the carousel for good,
+    since cycling underneath someone who just picked a surface is what makes
+    an auto-advancing panel annoying.
+    `stop()` snaps the panel back to its resolved state rather than leaving
+    the sequence wherever it had reached. Without that, a demo that scrolled
+    out mid reveal was stranded blank with the share reading 0%.
     The panel is hidden until its tab is selected, and a hidden element does
-    not intersect, so one IntersectionObserver starts and stops the rotation
-    for both scrolling away and tab switching. `queryMatch()` therefore needs
-    no coupling to `capabilities()`. The advance timer is deliberately held
-    separately from the effect timers, since `play()` clears the effect
-    timers and would otherwise kill the loop whenever the mode is toggled.
-    The rotation runs on a loop, so there is deliberately NO `aria-live` on
-    the readout. It would fire every few seconds forever. A `visually-hidden`
-    paragraph describes the whole demo instead, and the toggle's
-    `aria-pressed` covers the part a user actually drives.
-    Under `prefers-reduced-motion` the loop never starts. One question shows
-    with its matches already lit and the surfaces resolved, and the toggle
-    still works instantly.
+    not intersect, so one IntersectionObserver starts and stops it for both
+    scrolling away and tab switching. `querySurfaces()` therefore needs no
+    coupling to `capabilities()`.
+    The demo advances on a loop, so there is deliberately NO `aria-live`
+    anywhere in it. A `visually-hidden` paragraph describes the whole thing
+    instead, and the tablist covers the part a user actually drives.
+    Under `prefers-reduced-motion` the auto-advance never starts and the
+    sequence never staggers. One surface shows fully resolved and the tabs
+    still switch instantly.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.

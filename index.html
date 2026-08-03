@@ -241,46 +241,78 @@
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-2" aria-labelledby="cap-tab-2" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--content" data-query-match>
+              <div class="cap-demo cap-demo--content" data-query-surfaces>
                 <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Getting found</span></div>
                 <div class="cap-demo__body">
-                  <div class="qmatch">
-                    <p class="visually-hidden">An illustration of the same product described two ways. Written in vendor language, a data observability page shares no words with any question its buyers actually ask, so no search or answer engine retrieves it. Written in the buyer's own language, every question overlaps the page and all five surfaces return it.</p>
+                  <div class="qsurf">
+                    <p class="visually-hidden">One buying question, asked the way people actually ask it on four different surfaces. Organic search, paid search, an LLM chat, and a Reddit thread. Implicit surfaces on all four. The share of signups each surface drove is from the Implicit case study.</p>
 
-                    <div class="qmatch__block">
-                      <span class="qmatch__label">Buyer asks</span>
-                      <ul class="qmatch__query">
-                        <li class="qmatch__q is-on" data-hits="dashboard,numbers">why does my <span data-w="dashboard">dashboard</span> show different <span data-w="numbers">numbers</span> than the source system</li>
-                        <li class="qmatch__q" data-hits="upstream,job,broke,report">how do I find which <span data-w="upstream">upstream</span> <span data-w="job">job</span> <span data-w="broke">broke</span> a <span data-w="report">report</span></li>
-                        <li class="qmatch__q" data-hits="dashboard,numbers,upstream"><span data-w="dashboard">dashboard</span> showing wrong <span data-w="numbers">numbers</span> after an <span data-w="upstream">upstream</span> change</li>
-                        <li class="qmatch__q" data-hits="ceo,broke,report">alert me before the <span data-w="ceo">CEO</span> sees a <span data-w="broke">broken</span> <span data-w="report">report</span></li>
-                        <li class="qmatch__q" data-hits="job,dashboard">who owns the <span data-w="job">job</span> that feeds this <span data-w="dashboard">dashboard</span></li>
-                      </ul>
+                    <div class="qsurf__keys" role="tablist" aria-label="Where the question gets asked">
+                      <button type="button" class="qsurf__key is-on" role="tab" aria-selected="true" id="qs-tab-organic" aria-controls="qs-panel-organic" data-surf="organic">Google organic</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-paid" aria-controls="qs-panel-paid" data-surf="paid">Google paid</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-chatgpt" aria-controls="qs-panel-chatgpt" data-surf="chatgpt">ChatGPT</button>
+                      <button type="button" class="qsurf__key" role="tab" aria-selected="false" tabindex="-1" id="qs-tab-reddit" aria-controls="qs-panel-reddit" data-surf="reddit">Reddit</button>
                     </div>
 
-                    <div class="qmatch__block">
-                      <div class="qmatch__head">
-                        <span class="qmatch__label">What the page says</span>
-                        <div class="qmatch__modes" role="group" aria-label="Page language">
-                          <button type="button" class="qmatch__mode" data-mode="vendor" aria-pressed="false">Our words</button>
-                          <button type="button" class="qmatch__mode is-on" data-mode="buyer" aria-pressed="true">Buyer&rsquo;s words</button>
+                    <div class="qsurf__stage">
+                      <div class="qsurf__panel is-on" role="tabpanel" id="qs-panel-organic" aria-labelledby="qs-tab-organic" tabindex="0">
+                        <p class="qsurf__q">ai knowledge base for support teams</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:34%"></i><i style="--w:78%"></i><i style="--w:92%"></i></div>
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url"><span class="qsurf__brand">implicit.cloud</span></p>
+                            <p class="qsurf__title">Your AI Knowledge Engine for Maintenance and Support</p>
+                            <p class="qsurf__snip">Give an agent an answer they can trace back to a source, so the same question stops coming back.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:29%"></i><i style="--w:66%"></i><i style="--w:84%"></i></div>
                         </div>
+                        <p class="qsurf__stat"><b data-share="22">22%</b> of Implicit signups came from organic search.</p>
                       </div>
-                      <div class="qmatch__copies">
-                        <p class="qmatch__copy" data-mode="vendor" data-label="Our words">Unified observability for the modern data stack, with column-level lineage and ML-driven anomaly detection.</p>
-                        <p class="qmatch__copy is-on" data-mode="buyer" data-label="Buyer&rsquo;s words">When a <span data-w="dashboard">dashboard</span> shows the wrong <span data-w="numbers">numbers</span>, we tell you which <span data-w="upstream">upstream</span> <span data-w="job">job</span> <span data-w="broke">broke</span> it, before your <span data-w="ceo">CEO</span> opens the <span data-w="report">report</span>.</p>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-paid" aria-labelledby="qs-tab-paid" tabindex="0" hidden>
+                        <p class="qsurf__q">zendesk ai knowledge base</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url"><span class="qsurf__badge">Sponsored</span><span class="qsurf__brand">implicit.cloud</span></p>
+                            <p class="qsurf__title">AI Knowledge Base for Zendesk</p>
+                            <p class="qsurf__snip">Answers your agents can trust, drawn from the knowledge your team already wrote.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:31%"></i><i style="--w:72%"></i><i style="--w:88%"></i></div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:27%"></i><i style="--w:63%"></i><i style="--w:80%"></i></div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="27">27%</b> of Implicit signups came from paid search.</p>
+                      </div>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-chatgpt" aria-labelledby="qs-tab-chatgpt" tabindex="0" hidden>
+                        <p class="qsurf__q">our support agents keep re-answering the same product questions, what actually fixes that</p>
+                        <div class="qsurf__out">
+                          <p class="qsurf__answer" data-step>Most teams solve this with a retrieval layer over the knowledge they already have, so an agent gets a sourced answer instead of another search box. The tools worth shortlisting cite where every answer came from.</p>
+                          <p class="qsurf__cites-label" data-step>Sources</p>
+                          <div class="qsurf__cites">
+                            <span class="qsurf__cite qsurf__cite--ghost" data-step aria-hidden="true"><i style="--w:58px"></i></span>
+                            <span class="qsurf__cite" data-step="hit"><span class="qsurf__brand">implicit.cloud</span></span>
+                            <span class="qsurf__cite qsurf__cite--ghost" data-step aria-hidden="true"><i style="--w:44px"></i></span>
+                          </div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="23">23%</b> of Implicit signups came from LLM answer engines.</p>
+                      </div>
+
+                      <div class="qsurf__panel" role="tabpanel" id="qs-panel-reddit" aria-labelledby="qs-tab-reddit" tabindex="0" hidden>
+                        <p class="qsurf__q">ai knowledge base for support reddit</p>
+                        <div class="qsurf__out">
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:33%"></i><i style="--w:70%"></i><i style="--w:86%"></i></div>
+                          <div class="qsurf__hit" data-step="hit">
+                            <p class="qsurf__url">reddit.com &rsaquo; r/CustomerSuccess</p>
+                            <p class="qsurf__title">Anyone using AI for internal support docs?</p>
+                            <p class="qsurf__snip"><span class="qsurf__brand">Implicit</span> comes up in the replies as one of the options.</p>
+                          </div>
+                          <div class="qsurf__ghost" data-step aria-hidden="true"><i style="--w:30%"></i><i style="--w:75%"></i><i style="--w:61%"></i></div>
+                        </div>
+                        <p class="qsurf__stat"><b data-share="13">13%</b> of Implicit signups came from Reddit.</p>
                       </div>
                     </div>
 
-                    <ul class="qmatch__surfaces">
-                      <li class="qmatch__surface is-cited">Organic search</li>
-                      <li class="qmatch__surface is-cited">AI Overviews</li>
-                      <li class="qmatch__surface is-cited">ChatGPT</li>
-                      <li class="qmatch__surface is-cited">Perplexity</li>
-                      <li class="qmatch__surface is-cited">Claude</li>
-                    </ul>
-
-                    <p class="qmatch__readout">Surfaced in <b data-role="hits">5</b> of 5<span class="qmatch__note" data-role="note">Every surface retrieves on the words the question was asked in.</span></p>
+                    <p class="qsurf__foot">Same buying question, asked four ways. <a href="/the-work/implicit-plg-gtm">See the Implicit case study</a></p>
                   </div>
                 </div>
               </div>

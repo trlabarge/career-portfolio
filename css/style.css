@@ -1056,35 +1056,222 @@ html:not(.js) .dstack__hint {
   border: 1px solid rgba(250, 249, 246, 0.4);
 }
 
-/* Content: query-to-page language match ----------------------------------
-   The argument is that retrieval runs on the buyer's vocabulary, so the
-   demo is typographic rather than a chart. A rotating buyer question sits
-   above the same product described two ways, and the words the question and
-   the page share light up like a highlighter. Vendor language shares
-   nothing with any of the questions, so nothing lights and no surface
-   returns it. queryMatch() in /js/main.js runs the sequence; the markup
-   alone is the readable static version. */
-.qmatch {
+/* Content: one question, four surfaces --------------------------------------
+   The claim is that buyers look in several places and phrase the question
+   differently in each, so the demo is a surface switcher rather than a
+   chart. Each panel renders that surface's own result format and the brand
+   surfaces in all four. Everything the demo does not assert is drawn as a
+   grey placeholder row, so no competitor, username, or quote is invented.
+   querySurfaces() in /js/main.js runs the reveal and the auto-advance. */
+.qsurf {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.8rem;
 }
 
-.qmatch__label {
-  display: block;
+.qsurf__keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.qsurf__key {
   font-family: var(--font-display);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
+  color: rgba(220, 229, 218, 0.62);
+  background: rgba(250, 249, 246, 0.04);
+  border: 1px solid rgba(220, 229, 218, 0.18);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.qsurf__key:hover {
+  border-color: var(--color-gold);
+}
+
+.qsurf__key.is-on {
+  color: #16210f;
+  background: var(--color-sage-tint);
+  border-color: var(--color-sage-tint);
+}
+
+/* Every panel shares one grid cell, so the stage is always as tall as the
+   tallest surface at any width and switching can never resize the demo.
+   Same reasoning as the capability stage itself, no min-height to guess. */
+.js .qsurf__stage {
+  display: grid;
+}
+
+.js .qsurf__panel {
+  grid-area: 1 / 1;
+}
+
+.js .qsurf__panel[hidden] {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.js .qsurf__panel:not([hidden]) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+/* Surfaces 2 to 4 ship with the hidden attribute and only the tablist ever
+   clears it, so with no JS they have to be forced back into flow. Same
+   reasoning as html:not(.js) .cap-panel[hidden] above. */
+html:not(.js) .qsurf__panel[hidden] {
+  display: block;
+}
+
+/* With no JS every panel shows in normal flow, so each needs separating. */
+html:not(.js) .qsurf__panel + .qsurf__panel {
+  margin-top: var(--space-sm);
+  border-top: 1px dashed rgba(220, 229, 218, 0.25);
+  padding-top: var(--space-sm);
+}
+
+.qsurf__q {
+  margin: 0 0 0.7rem;
+  background: rgba(250, 249, 246, 0.06);
+  border: 1px solid rgba(220, 229, 218, 0.3);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  color: var(--color-bg);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.qsurf__out {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Anything the demo is not claiming renders as a placeholder rather than as
+   an invented competitor result. */
+.qsurf__ghost {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.qsurf__ghost i {
+  display: block;
+  width: var(--w, 70%);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(220, 229, 218, 0.13);
+}
+
+.qsurf__ghost i:first-child {
+  height: 5px;
+  background: rgba(220, 229, 218, 0.2);
+}
+
+.qsurf__hit {
+  border-left: 2px solid var(--color-gold);
+  padding-left: 0.7rem;
+}
+
+.qsurf__url {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.15rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: rgba(220, 229, 218, 0.68);
+}
+
+.qsurf__badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #16210f;
+  background: var(--color-sage-tint);
+  border-radius: 3px;
+  padding: 0.1rem 0.3rem;
+}
+
+.qsurf__title {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: 0.97rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-bg);
+}
+
+.qsurf__snip {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.72);
+}
+
+.qsurf__answer {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(220, 229, 218, 0.82);
+}
+
+.qsurf__cites-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.64rem;
   text-transform: uppercase;
   letter-spacing: 0.11em;
   color: rgba(220, 229, 218, 0.68);
-  margin-bottom: 0.4rem;
 }
 
-/* The matched words. The wash grows from the left like a marker stroke,
-   which is why it rides on background-size rather than opacity. */
-[data-w] {
-  background-image: linear-gradient(rgba(201, 160, 81, 0.42),
-    rgba(201, 160, 81, 0.42));
+.qsurf__cites {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.qsurf__cite {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  color: var(--color-bg);
+  background: rgba(250, 249, 246, 0.08);
+  border: 1px solid rgba(220, 229, 218, 0.3);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
+.qsurf__cite--ghost {
+  border-color: rgba(220, 229, 218, 0.14);
+  background: rgba(250, 249, 246, 0.03);
+  padding: 0.25rem 0.5rem;
+}
+
+.qsurf__cite--ghost i {
+  display: block;
+  width: var(--w, 50px);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(220, 229, 218, 0.16);
+}
+
+/* The payoff. The wash grows from the left like a marker stroke, which is
+   why it rides on background-size rather than opacity. */
+.qsurf__brand {
+  background-image: linear-gradient(rgba(201, 160, 81, 0.45),
+    rgba(201, 160, 81, 0.45));
   background-repeat: no-repeat;
   background-size: var(--lit, 0%) 100%;
   border-radius: 3px;
@@ -1092,214 +1279,58 @@ html:not(.js) .dstack__hint {
   margin: 0 -0.14em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  transition: background-size 0.34s var(--ease-out), color 0.34s ease;
+  color: var(--color-bg);
+  transition: background-size 0.4s var(--ease-out);
 }
 
-/* A lit word also brightens to full off-white, so the match lands as a
-   change in the text itself and not only as a wash behind it. */
-[data-w].is-lit,
-html:not(.js) [data-w] {
+.qsurf__hit.is-lit .qsurf__brand,
+.qsurf__cite.is-lit .qsurf__brand,
+html:not(.js) .qsurf__brand {
   --lit: 100%;
-  color: var(--color-bg);
 }
 
-.qmatch__query {
-  list-style: none;
-  margin: 0;
-  padding: 0.75rem 0.9rem;
-  background: rgba(250, 249, 246, 0.06);
-  border: 1px solid rgba(220, 229, 218, 0.3);
-  border-radius: 8px;
-}
-
-.qmatch__q {
-  color: var(--color-bg);
-  font-size: 0.97rem;
-  line-height: 1.5;
-}
-
-/* Stacking every question in one grid cell means the box is always as tall
-   as the longest one, at any width, so the rotation never jolts the layout
-   and no min-height has to be guessed. */
-.js .qmatch__query {
-  display: grid;
-}
-
-/* visibility keeps the inactive questions out of the accessibility tree and
-   off the tab order. It is delayed on the way out so the fade still plays,
-   and immediate on the way in. */
-.js .qmatch__q {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(7px);
-  transition: opacity 0.32s ease, transform 0.32s var(--ease-out),
-    visibility 0s linear 0.32s;
-}
-
-.js .qmatch__q.is-on {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition: opacity 0.32s ease, transform 0.32s var(--ease-out),
-    visibility 0s linear 0s;
-}
-
-.qmatch__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.qmatch__modes {
-  display: inline-flex;
-  gap: 2px;
-  padding: 2px;
-  background: rgba(250, 249, 246, 0.06);
-  border: 1px solid rgba(220, 229, 218, 0.2);
-  border-radius: 999px;
-  margin-bottom: 0.4rem;
-}
-
-.qmatch__mode {
+.qsurf__stat {
+  margin: 0.75rem 0 0;
   font-family: var(--font-display);
-  font-size: 0.72rem;
-  color: rgba(220, 229, 218, 0.68);
-  background: transparent;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.28rem 0.7rem;
-  cursor: pointer;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  font-size: 0.86rem;
+  color: rgba(220, 229, 218, 0.72);
 }
 
-.qmatch__mode:hover {
-  color: var(--color-bg);
-}
-
-.qmatch__mode.is-on {
-  color: #16210f;
-  background: var(--color-sage-tint);
-}
-
-/* Same one-cell grid as the questions, so switching modes cannot resize the
-   block even though the two lines wrap to different heights. */
-.js .qmatch__copies {
-  display: grid;
-}
-
-.js .qmatch__copy {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.28s ease, visibility 0s linear 0.28s;
-}
-
-.js .qmatch__copy.is-on {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.28s ease, visibility 0s linear 0s;
-}
-
-.qmatch__copy {
-  margin: 0;
-  font-size: 0.93rem;
-  line-height: 1.55;
-  color: var(--color-sage-tint);
-}
-
-/* Without JS both versions show, so each needs to say which one it is. */
-html:not(.js) .qmatch__copy + .qmatch__copy {
-  margin-top: 0.6rem;
-}
-
-/* All five questions show at once with no JS, so they need to read as
-   separate questions rather than as one run-on block. */
-html:not(.js) .qmatch__q + .qmatch__q {
-  margin-top: 0.35rem;
-}
-
-html:not(.js) .qmatch__copy::before {
-  content: attr(data-label) '. ';
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--color-bg);
-}
-
-html:not(.js) .qmatch__modes {
-  display: none;
-}
-
-.qmatch__surfaces {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.qmatch__surface {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  color: rgba(220, 229, 218, 0.62);
-  background: rgba(250, 249, 246, 0.04);
-  border: 1px solid rgba(220, 229, 218, 0.16);
-  border-radius: 999px;
-  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
-  transition: color 0.3s ease, background-color 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.qmatch__surface::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex: none;
-  box-shadow: inset 0 0 0 1.5px rgba(220, 229, 218, 0.4);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.qmatch__surface.is-cited {
-  color: var(--color-bg);
-  background: rgba(250, 249, 246, 0.1);
-  border-color: rgba(220, 229, 218, 0.4);
-}
-
-.qmatch__surface.is-cited::before {
-  background: var(--color-gold);
-  box-shadow: inset 0 0 0 1.5px var(--color-gold);
-}
-
-.qmatch__readout {
-  margin: 0;
-  border-top: 1px dashed rgba(220, 229, 218, 0.3);
-  padding-top: 0.7rem;
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: rgba(220, 229, 218, 0.7);
-}
-
-.qmatch__readout b {
+.qsurf__stat b {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--color-gold);
   font-variant-numeric: tabular-nums;
 }
 
-.qmatch__note {
-  display: block;
-  margin-top: 0.25rem;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
+.qsurf__foot {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.65rem;
+  font-size: 0.78rem;
   line-height: 1.5;
-  color: rgba(220, 229, 218, 0.65);
+  color: rgba(220, 229, 218, 0.62);
+}
+
+.qsurf__foot a {
+  color: var(--color-sage-tint);
+  text-decoration-color: var(--color-gold);
+}
+
+.qsurf__foot a:hover {
+  color: var(--color-bg);
+}
+
+/* Result rows and citations fade up in sequence as the surface resolves. */
+.js .qsurf [data-step] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.34s ease, transform 0.34s var(--ease-out);
+}
+
+.js .qsurf [data-step].is-in {
+  opacity: 1;
+  transform: none;
 }
 
 /* PLG: funnel bars */
