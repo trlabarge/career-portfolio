@@ -133,6 +133,10 @@ h4 {
   color: var(--color-text);
   margin: 0 0 var(--space-sm);
   text-wrap: balance;
+  /* Last-resort net. A single word longer than a phone's content column
+     would otherwise push the whole document sideways. Headings that already
+     fit are untouched, so this never changes existing wrapping. */
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -375,6 +379,11 @@ p {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  /* Matches the menu button beside it, so the two header controls present
+     the same target height. */
+  min-height: 44px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.2rem;
@@ -390,11 +399,16 @@ p {
 
 .primary-nav__toggle {
   display: none;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 2px solid var(--color-sage);
   border-radius: var(--radius);
   color: var(--color-sage);
-  padding: 0.4rem 0.7rem;
+  padding: 0.4rem 0.9rem;
+  /* The only control in the header, and it was 36px tall. Comfortable touch
+     targets are 44px, which this reaches without changing the type size. */
+  min-height: 44px;
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 600;
@@ -429,6 +443,16 @@ p {
 .primary-nav__link[aria-current='page'] {
   color: var(--color-sage);
   border-bottom-color: var(--color-sage);
+}
+
+/* Between 721px and 860px the nav is still the horizontal desktop row, but a
+   tablet in that range is driving it with a thumb against a 31px target.
+   Scoped to coarse pointers so the mouse-driven header keeps its tighter
+   spacing and the active underline stays close to the word. */
+@media (pointer: coarse) {
+  .primary-nav__link {
+    padding-block: 0.55rem;
+  }
 }
 
 /* Hero -------------------------------------------------------------------- */
@@ -940,6 +964,9 @@ html:not(.js) .cap-panel + .cap-panel {
   border: 1px solid rgba(220, 229, 218, 0.18);
   border-radius: 999px;
   padding: 0.3rem 0.75rem 0.3rem 0.55rem;
+  /* These are the only controls inside the demo panels that a thumb has to
+     hit, and the pill was 29px tall. */
+  min-height: 38px;
   cursor: pointer;
   transition: color 0.2s ease, background-color 0.2s ease,
     border-color 0.2s ease;
@@ -2748,11 +2775,20 @@ html:not(.js) .pcoach__slider {
 .site-footer__nav {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: 0.35rem var(--space-md);
   list-style: none;
   margin: 0;
   padding: 0;
   font-family: var(--font-display);
+}
+
+/* The footer links were 22px tall, which is a small target for a thumb and
+   the last chance to reach any other page. Padding does the work so the row
+   spacing is unchanged on desktop. */
+.site-footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .site-footer__meta {
@@ -2772,8 +2808,15 @@ html:not(.js) .pcoach__slider {
   padding-bottom: var(--space-lg);
 }
 
+/* Case-study titles lead with a company name, and a compound like
+   "ConstructConnect" is one unbreakable 16-character word. At the global h1
+   floor of 2.75rem it needs 374px, more than a 360px phone has, so it forced
+   a horizontal scrollbar on the whole page. A lower floor here keeps these
+   titles inside the column without shrinking the homepage hero, which has no
+   long word and should stay as loud as it is. */
 .case-hero h1 {
   max-width: 16ch;
+  font-size: clamp(2.25rem, 8vw, 5.75rem);
 }
 
 /* Client logo, linked to the company's own site. Lives inside the "Company"
@@ -4037,7 +4080,12 @@ html.js .path[data-path-progress] .path__step.is-lit::after {
   font-size: 0.86rem;
 }
 
+/* A standalone control rather than a link inside a sentence, so it earns a
+   full touch target instead of the 23px the bare summary line gave it. */
 .chart__data summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   cursor: pointer;
   color: var(--color-sage);
   font-family: var(--font-display);
@@ -4617,10 +4665,16 @@ html.js .path[data-path-progress] .path__step.is-lit::after {
 }
 
 @media (max-width: 720px) {
+  /* Both charts are wider than a phone, and the left edge of every series is
+     its flat opening, so the part worth seeing starts off-screen. The text
+     hint below says so, but a hint you have to read is a weak affordance.
+     The mask fades the right edge while there is more chart to reach and
+     resolves as the scroll lands, so the chart itself shows it moves. */
   .growth__plot,
   .qbars__plot {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(90deg, #000 0, #000 84%, rgba(0, 0, 0, 0.12) 100%);
   }
 
   .growth__svg {
@@ -5187,7 +5241,7 @@ html:not(.js) .rebrand-film__video {
 /* Responsive -------------------------------------------------------------- */
 @media (max-width: 720px) {
   .primary-nav__toggle {
-    display: inline-block;
+    display: inline-flex;
   }
 
   .primary-nav__list {
@@ -5208,9 +5262,24 @@ html:not(.js) .rebrand-film__video {
     display: flex;
   }
 
+  /* Block, not inline. As an inline box the link's padding and rule only
+     spanned the text, so the rows had ragged half-width underlines and the
+     tap area was the width of the word rather than the width of the row. */
   .primary-nav__link {
-    padding-block: 0.75rem;
+    display: block;
+    padding-block: 0.85rem;
     border-bottom: 1px solid var(--color-sage-tint);
+  }
+
+  .primary-nav__list li:last-child .primary-nav__link {
+    border-bottom: 0;
+  }
+
+  /* The nav sits over page content, so it needs to be opaque in its own
+     right and to lift off what it covers. */
+  .primary-nav__list {
+    background-color: var(--color-bg);
+    box-shadow: 0 14px 26px rgba(43, 43, 43, 0.13);
   }
 
   .site-header__inner {
@@ -5286,11 +5355,22 @@ html:not(.js) .rebrand-film__video {
   }
 }
 
-/* Capabilities + stack responsive ----------------------------------------- */
+/* Capabilities + stack responsive -----------------------------------------
+   One column, so the tablist sits above the stage instead of beside it. The
+   earlier version also expanded all four descriptions here, which made the
+   list about 1000px tall on a phone and stranded the single visible demo
+   panel a full screen below the item it belongs to. Three of the four demos
+   were effectively unreachable, since nothing on a plain expanded list reads
+   as tappable.
+
+   So on mobile the list keeps the same collapsed behaviour as desktop. Four
+   compact rows, only the active one open, and the panel it controls right
+   underneath. Tapping a row visibly changes both the row and the panel, and
+   the panel stays in view while doing it. */
 @media (max-width: 860px) {
   .capabilities {
     grid-template-columns: 1fr;
-    gap: var(--space-md);
+    gap: var(--space-sm);
   }
 
   .cap-stage {
@@ -5298,9 +5378,90 @@ html:not(.js) .rebrand-film__video {
     min-height: 0;
   }
 
-  .cap-item__desc {
-    max-height: none;
-    opacity: 1;
+  /* Roomier hit area than the desktop row, and a visible divider so the four
+     rows read as a list of controls rather than as running copy. */
+  .cap-item {
+    gap: 0.85rem;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-bottom: 1px solid rgba(74, 107, 82, 0.16);
+    border-radius: 0;
+  }
+
+  .cap-item.is-active {
+    border-bottom-color: transparent;
+  }
+
+  /* Without the stage sitting alongside as a hint, nothing said these rows
+     did anything. A chevron that points down when the row is closed and up
+     when it is open is the cheapest honest signal, and it costs no markup. */
+  .cap-item::after {
+    content: '';
+    flex: none;
+    /* Pinned to the title line rather than centred, so it does not drift
+       into the middle of the description once a row opens. */
+    align-self: flex-start;
+    margin-top: 0.55rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-left: auto;
+    border-right: 2px solid var(--color-gold);
+    border-bottom: 2px solid var(--color-gold);
+    transform: rotate(45deg);
+    transform-origin: 60% 60%;
+    transition: transform 0.22s var(--ease-out), border-color 0.22s ease;
+  }
+
+  .cap-item.is-active::after {
+    transform: rotate(-135deg);
+    border-color: var(--color-sage);
+  }
+
+  .cap-item__text {
+    min-width: 0;
+  }
+
+  .cap-item__title {
+    font-size: 1.15rem;
+    margin-bottom: 0;
+  }
+
+  .cap-item.is-active .cap-item__title {
+    margin-bottom: 0.3rem;
+  }
+
+  /* Taller than the desktop cap because the same copy wraps to more lines in
+     a phone-width column and would otherwise be cut off mid-sentence. */
+  .cap-item.is-active .cap-item__desc {
+    max-height: 22rem;
+  }
+
+  .cap-list {
+    gap: 0;
+  }
+
+  /* The demo panels lose about 90px of width to page and panel padding on a
+     phone, which was enough to wrap both the chip and the tag onto two lines
+     and push the actual demo down. Tighter chrome, a little less padding,
+     and the header stays on one line. */
+  .cap-demo {
+    padding: 1.15rem;
+    gap: 1.15rem;
+  }
+
+  .cap-demo__bar {
+    gap: 0.6rem;
+  }
+
+  .cap-demo__chip {
+    font-size: 0.62rem;
+    letter-spacing: 0.09em;
+    padding: 0.3rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .cap-demo__tag {
+    font-size: 0.78rem;
+    text-align: right;
   }
 }
 
@@ -5328,9 +5489,19 @@ html:not(.js) .rebrand-film__video {
     inset: auto;
   }
 
+  /* The canvas wrap ships before .container so it can sit behind the copy
+     when it is absolutely positioned. Back in normal flow that source order
+     put the tool list above the heading it belongs to, so reorder it here.
+     Do not fix this by moving the markup, the absolute layer needs to stay
+     first for the desktop stacking. */
   .stack {
     min-height: 0;
-    display: block;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stack__canvas-wrap {
+    order: 2;
   }
 }
 

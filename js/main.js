@@ -15,16 +15,31 @@
     var list = document.querySelector('.primary-nav__list');
     if (!toggle || !list) return;
 
+    function close(focusToggle) {
+      if (!list.classList.contains('is-open')) return;
+      list.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      if (focusToggle) toggle.focus();
+    }
+
     toggle.addEventListener('click', function () {
       var open = list.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', String(open));
     });
 
     list.addEventListener('click', function (e) {
-      if (e.target.closest('.primary-nav__link')) {
-        list.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+      if (e.target.closest('.primary-nav__link')) close(false);
+    });
+
+    /* An open menu covers the top of the page, so it needs the two ordinary
+       ways out. Escape returns focus to the button that opened it; a tap
+       anywhere off the menu just dismisses it. */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close(true);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!list.contains(e.target) && !toggle.contains(e.target)) close(false);
     });
   })();
 
@@ -62,6 +77,11 @@
       return;
     }
 
+    /* threshold 0 rather than a fraction of the element. A block taller than
+       the viewport can never reach a 0.15 ratio, so on a short phone the
+       tallest case-study steps stayed hidden forever. The negative bottom
+       margin is what holds the reveal back until the element is properly in
+       view, and it works the same whatever the element's height. */
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -69,7 +89,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
     items.forEach(function (el) { io.observe(el); });
   })();
