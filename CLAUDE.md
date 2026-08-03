@@ -78,12 +78,16 @@ punctuated by confident full-bleed color-field sections.
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. Panel 01 (Demand that compounds) is a real interactive demo, see
-  below. Panels 02 to 04 are still branded PLACEHOLDERS (a search/answer
-  mock, a funnel, team nodes) each tagged "Interactive demo coming soon";
-  real animations land later. `.cap-demo` and `.cap-stage` are both pinned to
-  `min-height: 400px` so switching tabs never jumps the sticky stage, which
-  means panel 01 sets the floor for all four.
+  item. Panels 01 and 02 are real interactive demos, see below. Panels 03
+  and 04 are still branded PLACEHOLDERS (a funnel, team nodes) each tagged
+  "Interactive demo coming soon"; real animations land later. `.cap-demo`
+  and `.cap-stage` are both pinned to `min-height: 460px`, sized to the
+  tallest panel (currently 02) so switching tabs never jumps the sticky
+  stage. Re-measure and update that number if a panel's content grows.
+  Panels 02 to 04 carry the `hidden` attribute in the markup and only the
+  tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
+  back to `display: block`. Without that rule the entire right-hand stage is
+  unreachable with no JS. Do not remove it.
   - Demand-compounding chart (`.dstack`, inside panel 01, `data-demand-stack`
     on the `.cap-demo`). A stacked area chart of four channels over eight
     quarters. Paid comes online in Q1 and stays near flat, SEO in Q2, content
@@ -129,6 +133,53 @@ punctuated by confident full-bleed color-field sections.
     Under `prefers-reduced-motion` the wipe and the toggle tween are both
     skipped, but the toggles still work and redraw instantly, same reasoning
     as the constellation's pointer handling.
+  - Query-to-page language match (`.qmatch`, inside panel 02,
+    `data-query-match` on the `.cap-demo`). The claim being made is that
+    retrieval runs on the buyer's vocabulary, so this demo is typographic
+    rather than a chart. Keep it that way. Four panels in four registers
+    reads as a system, four charts reads as a template.
+    A buyer question rotates above the same product described two ways. The
+    words the question and the page share light up in sequence like a
+    highlighter, then each of five retrieval surfaces resolves, then the
+    readout counts them. The `Our words` / `Buyer's words` toggle is the
+    argument. Vendor language carries no `[data-w]` spans at all, so nothing
+    can ever match it and the readout falls to 0 of 5. That outcome is
+    produced by the markup rather than scripted, which is the point, so do
+    not add a fake partial match to soften it. The honest caveat lives in the
+    note instead, that vendor language still ranks for vendor language and
+    the buyer never types it.
+    Matching is literal, not semantic. Each `.qmatch__q` declares
+    `data-hits="key,key"` and both the question and the buyer copy mark the
+    same keys with `data-w`. JS lights every `[data-w]` in the active
+    question, plus the `[data-w]` in the page copy whose key is in that
+    question's hit list. Adding a question means adding its keys to both
+    sides, and the shared vocabulary has to be real, since the highlight is
+    showing the reader literal word overlap.
+    The example is deliberately generic (a data observability product) and
+    chipped "Illustrative model". It is not Agolo, CEI, or Implicit, even
+    though the Agolo to Implicit study has the same before/after in real
+    published language. Tim chose the generic version so the panel reads as
+    a capability rather than a case study recap. There is no client metric
+    on this panel for the same reason.
+    Both the question list and the two page copies stack in a single CSS
+    grid cell (`grid-area: 1 / 1`), so each block is always as tall as its
+    tallest member at any width and the rotation and the toggle can never
+    resize the panel. That replaces guessing a min-height, so do not swap it
+    back for one. `visibility` (not just opacity) keeps inactive copies out
+    of the accessibility tree, delayed on the way out so the fade still runs.
+    The panel is hidden until its tab is selected, and a hidden element does
+    not intersect, so one IntersectionObserver starts and stops the rotation
+    for both scrolling away and tab switching. `queryMatch()` therefore needs
+    no coupling to `capabilities()`. The advance timer is deliberately held
+    separately from the effect timers, since `play()` clears the effect
+    timers and would otherwise kill the loop whenever the mode is toggled.
+    The rotation runs on a loop, so there is deliberately NO `aria-live` on
+    the readout. It would fire every few seconds forever. A `visually-hidden`
+    paragraph describes the whole demo instead, and the toggle's
+    `aria-pressed` covers the part a user actually drives.
+    Under `prefers-reduced-motion` the loop never starts. One question shows
+    with its matches already lit and the surfaces resolved, and the toggle
+    still works instantly.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.

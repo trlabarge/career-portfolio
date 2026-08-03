@@ -241,15 +241,46 @@
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-2" aria-labelledby="cap-tab-2" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--content">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Found everywhere</span></div>
+              <div class="cap-demo cap-demo--content" data-query-match>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Getting found</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__search">How do I reset a locked-out customer's MFA?</div>
-                  <div class="cap-demo__answer">
-                    <span class="cap-demo__src">Google</span>
-                    <span class="cap-demo__src">ChatGPT</span>
-                    <span class="cap-demo__src">Perplexity</span>
-                    <span class="cap-demo__src">Claude</span>
+                  <div class="qmatch">
+                    <p class="visually-hidden">An illustration of the same product described two ways. Written in vendor language, a data observability page shares no words with any question its buyers actually ask, so no search or answer engine retrieves it. Written in the buyer's own language, every question overlaps the page and all five surfaces return it.</p>
+
+                    <div class="qmatch__block">
+                      <span class="qmatch__label">Buyer asks</span>
+                      <ul class="qmatch__query">
+                        <li class="qmatch__q is-on" data-hits="dashboard,numbers">why does my <span data-w="dashboard">dashboard</span> show different <span data-w="numbers">numbers</span> than the source system</li>
+                        <li class="qmatch__q" data-hits="upstream,job,broke,report">how do I find which <span data-w="upstream">upstream</span> <span data-w="job">job</span> <span data-w="broke">broke</span> a <span data-w="report">report</span></li>
+                        <li class="qmatch__q" data-hits="dashboard,numbers,upstream"><span data-w="dashboard">dashboard</span> showing wrong <span data-w="numbers">numbers</span> after an <span data-w="upstream">upstream</span> change</li>
+                        <li class="qmatch__q" data-hits="ceo,broke,report">alert me before the <span data-w="ceo">CEO</span> sees a <span data-w="broke">broken</span> <span data-w="report">report</span></li>
+                        <li class="qmatch__q" data-hits="job,dashboard">who owns the <span data-w="job">job</span> that feeds this <span data-w="dashboard">dashboard</span></li>
+                      </ul>
+                    </div>
+
+                    <div class="qmatch__block">
+                      <div class="qmatch__head">
+                        <span class="qmatch__label">What the page says</span>
+                        <div class="qmatch__modes" role="group" aria-label="Page language">
+                          <button type="button" class="qmatch__mode" data-mode="vendor" aria-pressed="false">Our words</button>
+                          <button type="button" class="qmatch__mode is-on" data-mode="buyer" aria-pressed="true">Buyer&rsquo;s words</button>
+                        </div>
+                      </div>
+                      <div class="qmatch__copies">
+                        <p class="qmatch__copy" data-mode="vendor" data-label="Our words">Unified observability for the modern data stack, with column-level lineage and ML-driven anomaly detection.</p>
+                        <p class="qmatch__copy is-on" data-mode="buyer" data-label="Buyer&rsquo;s words">When a <span data-w="dashboard">dashboard</span> shows the wrong <span data-w="numbers">numbers</span>, we tell you which <span data-w="upstream">upstream</span> <span data-w="job">job</span> <span data-w="broke">broke</span> it, before your <span data-w="ceo">CEO</span> opens the <span data-w="report">report</span>.</p>
+                      </div>
+                    </div>
+
+                    <ul class="qmatch__surfaces">
+                      <li class="qmatch__surface is-cited">Organic search</li>
+                      <li class="qmatch__surface is-cited">AI Overviews</li>
+                      <li class="qmatch__surface is-cited">ChatGPT</li>
+                      <li class="qmatch__surface is-cited">Perplexity</li>
+                      <li class="qmatch__surface is-cited">Claude</li>
+                    </ul>
+
+                    <p class="qmatch__readout">Surfaced in <b data-role="hits">5</b> of 5<span class="qmatch__note" data-role="note">Every surface retrieves on the words the question was asked in.</span></p>
                   </div>
                 </div>
               </div>

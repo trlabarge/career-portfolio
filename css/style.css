@@ -763,7 +763,7 @@ html:not(.js) .cap-item__desc {
 .cap-stage {
   position: sticky;
   top: 90px;
-  min-height: 400px;
+  min-height: 460px;
 }
 
 .cap-panel {
@@ -772,6 +772,17 @@ html:not(.js) .cap-item__desc {
 
 .cap-panel[hidden] {
   display: none;
+}
+
+/* Panels 2 to 4 ship with the hidden attribute and only the tablist ever
+   clears it, so with no JS the entire right-hand stage was unreachable.
+   Show them all instead, matching how every .cap-item__desc opens up. */
+html:not(.js) .cap-panel[hidden] {
+  display: block;
+}
+
+html:not(.js) .cap-panel + .cap-panel {
+  margin-top: var(--space-sm);
 }
 
 @keyframes cap-fade {
@@ -785,9 +796,10 @@ html:not(.js) .cap-item__desc {
   border: 1px solid rgba(74, 107, 82, 0.5);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  /* Tall enough for the demand chart plus its legend and readout, applied to
-     every panel so switching tabs does not jump the sticky stage. */
-  min-height: 400px;
+  /* Sized to the tallest panel, currently the query-match demo at ~458px,
+     and applied to every panel so switching tabs cannot jump the sticky
+     stage. Re-measure if a panel's content grows. */
+  min-height: 460px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -898,7 +910,7 @@ html:not(.js) .cap-item__desc {
   font-family: var(--font-display);
   font-size: 11px;
   letter-spacing: 0.06em;
-  fill: rgba(220, 229, 218, 0.55);
+  fill: rgba(220, 229, 218, 0.65);
 }
 
 /* Hovering or focusing a legend key isolates that band. */
@@ -928,7 +940,7 @@ html:not(.js) .cap-item__desc {
   gap: 0.45rem;
   font-family: var(--font-display);
   font-size: 0.8rem;
-  color: rgba(220, 229, 218, 0.5);
+  color: rgba(220, 229, 218, 0.62);
   background: rgba(250, 249, 246, 0.04);
   border: 1px solid rgba(220, 229, 218, 0.18);
   border-radius: 999px;
@@ -972,7 +984,7 @@ html:not(.js) .cap-item__desc {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.11em;
-  color: rgba(220, 229, 218, 0.45);
+  color: rgba(220, 229, 218, 0.6);
   margin-left: 0.15rem;
 }
 
@@ -1008,7 +1020,7 @@ html:not(.js) .dstack__hint {
   font-size: 0.66rem;
   text-transform: uppercase;
   letter-spacing: 0.11em;
-  color: rgba(220, 229, 218, 0.6);
+  color: rgba(220, 229, 218, 0.68);
 }
 
 .dstack__stat b {
@@ -1044,30 +1056,250 @@ html:not(.js) .dstack__hint {
   border: 1px solid rgba(250, 249, 246, 0.4);
 }
 
-/* Content: search + sources */
-.cap-demo__search {
+/* Content: query-to-page language match ----------------------------------
+   The argument is that retrieval runs on the buyer's vocabulary, so the
+   demo is typographic rather than a chart. A rotating buyer question sits
+   above the same product described two ways, and the words the question and
+   the page share light up like a highlighter. Vendor language shares
+   nothing with any of the questions, so nothing lights and no surface
+   returns it. queryMatch() in /js/main.js runs the sequence; the markup
+   alone is the readable static version. */
+.qmatch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.qmatch__label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: rgba(220, 229, 218, 0.68);
+  margin-bottom: 0.4rem;
+}
+
+/* The matched words. The wash grows from the left like a marker stroke,
+   which is why it rides on background-size rather than opacity. */
+[data-w] {
+  background-image: linear-gradient(rgba(201, 160, 81, 0.42),
+    rgba(201, 160, 81, 0.42));
+  background-repeat: no-repeat;
+  background-size: var(--lit, 0%) 100%;
+  border-radius: 3px;
+  padding: 0.05em 0.14em;
+  margin: 0 -0.14em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.34s var(--ease-out), color 0.34s ease;
+}
+
+/* A lit word also brightens to full off-white, so the match lands as a
+   change in the text itself and not only as a wash behind it. */
+[data-w].is-lit,
+html:not(.js) [data-w] {
+  --lit: 100%;
+  color: var(--color-bg);
+}
+
+.qmatch__query {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
   background: rgba(250, 249, 246, 0.06);
   border: 1px solid rgba(220, 229, 218, 0.3);
   border-radius: 8px;
-  padding: 0.9rem 1.1rem;
-  color: var(--color-bg);
-  font-size: 1.05rem;
 }
 
-.cap-demo__answer {
+.qmatch__q {
+  color: var(--color-bg);
+  font-size: 0.97rem;
+  line-height: 1.5;
+}
+
+/* Stacking every question in one grid cell means the box is always as tall
+   as the longest one, at any width, so the rotation never jolts the layout
+   and no min-height has to be guessed. */
+.js .qmatch__query {
+  display: grid;
+}
+
+/* visibility keeps the inactive questions out of the accessibility tree and
+   off the tab order. It is delayed on the way out so the fade still plays,
+   and immediate on the way in. */
+.js .qmatch__q {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(7px);
+  transition: opacity 0.32s ease, transform 0.32s var(--ease-out),
+    visibility 0s linear 0.32s;
+}
+
+.js .qmatch__q.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.32s ease, transform 0.32s var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+.qmatch__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.qmatch__modes {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(250, 249, 246, 0.06);
+  border: 1px solid rgba(220, 229, 218, 0.2);
+  border-radius: 999px;
+  margin-bottom: 0.4rem;
+}
+
+.qmatch__mode {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: rgba(220, 229, 218, 0.68);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.qmatch__mode:hover {
+  color: var(--color-bg);
+}
+
+.qmatch__mode.is-on {
+  color: #16210f;
+  background: var(--color-sage-tint);
+}
+
+/* Same one-cell grid as the questions, so switching modes cannot resize the
+   block even though the two lines wrap to different heights. */
+.js .qmatch__copies {
+  display: grid;
+}
+
+.js .qmatch__copy {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+}
+
+.js .qmatch__copy.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.28s ease, visibility 0s linear 0s;
+}
+
+.qmatch__copy {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: var(--color-sage-tint);
+}
+
+/* Without JS both versions show, so each needs to say which one it is. */
+html:not(.js) .qmatch__copy + .qmatch__copy {
+  margin-top: 0.6rem;
+}
+
+/* All five questions show at once with no JS, so they need to read as
+   separate questions rather than as one run-on block. */
+html:not(.js) .qmatch__q + .qmatch__q {
+  margin-top: 0.35rem;
+}
+
+html:not(.js) .qmatch__copy::before {
+  content: attr(data-label) '. ';
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-bg);
+}
+
+html:not(.js) .qmatch__modes {
+  display: none;
+}
+
+.qmatch__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.4rem;
 }
 
-.cap-demo__src {
+.qmatch__surface {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-display);
-  font-size: 0.85rem;
-  color: var(--color-bg);
-  background: rgba(74, 107, 82, 0.55);
-  border: 1px solid rgba(220, 229, 218, 0.35);
+  font-size: 0.78rem;
+  color: rgba(220, 229, 218, 0.62);
+  background: rgba(250, 249, 246, 0.04);
+  border: 1px solid rgba(220, 229, 218, 0.16);
   border-radius: 999px;
-  padding: 0.4rem 0.85rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  transition: color 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.qmatch__surface::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  box-shadow: inset 0 0 0 1.5px rgba(220, 229, 218, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.qmatch__surface.is-cited {
+  color: var(--color-bg);
+  background: rgba(250, 249, 246, 0.1);
+  border-color: rgba(220, 229, 218, 0.4);
+}
+
+.qmatch__surface.is-cited::before {
+  background: var(--color-gold);
+  box-shadow: inset 0 0 0 1.5px var(--color-gold);
+}
+
+.qmatch__readout {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: rgba(220, 229, 218, 0.7);
+}
+
+.qmatch__readout b {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.qmatch__note {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.65);
 }
 
 /* PLG: funnel bars */

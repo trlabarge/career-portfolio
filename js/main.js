@@ -615,6 +615,179 @@
     io.observe(root);
   })();
 
+  /* --- Content built for how people search now: query to page match ------ */
+  /* A buyer question rotates above the same product described two ways. The
+     words the question and the page share light up in sequence, then each
+     retrieval surface resolves. Vendor language carries no [data-w] words at
+     all, so nothing can ever match it and no surface returns it, which is
+     the argument rather than a scripted outcome.
+
+     The panel is hidden until its tab is selected, and a hidden element does
+     not intersect, so one IntersectionObserver covers both scrolling away
+     and switching tabs without this needing to know about capabilities(). */
+  (function queryMatch() {
+    var root = document.querySelector('[data-query-match]');
+    if (!root) return;
+
+    function all(sel, scope) {
+      return Array.prototype.slice.call((scope || root).querySelectorAll(sel));
+    }
+
+    var questions = all('.qmatch__q');
+    var copies = all('.qmatch__copy');
+    var modeBtns = all('.qmatch__mode');
+    var surfaces = all('.qmatch__surface');
+    var hits = root.querySelector('[data-role="hits"]');
+    var note = root.querySelector('[data-role="note"]');
+    if (!questions.length || !copies.length || !surfaces.length) return;
+    if (!modeBtns.length || !hits || !note) return;
+
+    var NOTES = {
+      buyer: 'Every surface retrieves on the words the question was asked in.',
+      vendor: 'Vendor language still ranks for vendor language. The buyer never types it.'
+    };
+
+    var CYCLE = 4400;
+    var mode = 'buyer';
+    var qi = 0;
+    var timers = [];
+    var advanceId = 0;
+    var running = false;
+
+    function later(fn, ms) { timers.push(window.setTimeout(fn, ms)); }
+
+    function clearEffects() {
+      timers.forEach(function (id) { window.clearTimeout(id); });
+      timers = [];
+    }
+
+    function darken() {
+      all('[data-w]').forEach(function (w) { w.classList.remove('is-lit'); });
+      surfaces.forEach(function (s) { s.classList.remove('is-cited'); });
+      hits.textContent = '0';
+    }
+
+    function showQuestion(i) {
+      qi = i;
+      questions.forEach(function (q, n) { q.classList.toggle('is-on', n === i); });
+    }
+
+    function showMode(next) {
+      mode = next;
+      copies.forEach(function (c) {
+        c.classList.toggle('is-on', c.dataset.mode === next);
+      });
+      modeBtns.forEach(function (b) {
+        var on = b.dataset.mode === next;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      note.textContent = NOTES[next] || '';
+    }
+
+    function activeCopy() {
+      var found = copies.filter(function (c) { return c.dataset.mode === mode; });
+      return found[0] || copies[0];
+    }
+
+    function play(instant) {
+      clearEffects();
+      darken();
+
+      var q = questions[qi];
+      var keys = (q.getAttribute('data-hits') || '').split(',');
+      var asked = all('[data-w]', q);
+      var shared = all('[data-w]', activeCopy()).filter(function (w) {
+        return keys.indexOf(w.dataset.w) > -1;
+      });
+      var matched = shared.length > 0;
+
+      if (instant) {
+        asked.concat(shared).forEach(function (w) { w.classList.add('is-lit'); });
+        surfaces.forEach(function (s) { s.classList.toggle('is-cited', matched); });
+        hits.textContent = String(matched ? surfaces.length : 0);
+        return;
+      }
+
+      asked.forEach(function (w, n) {
+        later(function () { w.classList.add('is-lit'); }, 260 + n * 110);
+      });
+      shared.forEach(function (w, n) {
+        later(function () { w.classList.add('is-lit'); }, 640 + n * 110);
+      });
+
+      /* Surfaces resolve after the last word has landed, so the causality
+         reads in the right order. A miss has nothing to stagger, so the
+         chips simply stay dark. */
+      if (!matched) return;
+      var base = 640 + shared.length * 110 + 260;
+      surfaces.forEach(function (s, n) {
+        later(function () {
+          s.classList.add('is-cited');
+          hits.textContent = String(n + 1);
+        }, base + n * 140);
+      });
+    }
+
+    function scheduleAdvance() {
+      window.clearTimeout(advanceId);
+      advanceId = window.setTimeout(function () {
+        if (!running) return;
+        showQuestion((qi + 1) % questions.length);
+        play(false);
+        scheduleAdvance();
+      }, CYCLE);
+    }
+
+    function start() {
+      if (running || reduceMotion) return;
+      running = true;
+      play(false);
+      scheduleAdvance();
+    }
+
+    function stop() {
+      running = false;
+      clearEffects();
+      window.clearTimeout(advanceId);
+    }
+
+    /* Toggling restarts the dwell, so the change gets a full cycle to be
+       read rather than however much of one happened to be left. */
+    modeBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.dataset.mode === mode) return;
+        showMode(btn.dataset.mode);
+        if (running) {
+          play(false);
+          scheduleAdvance();
+        } else {
+          play(true);
+        }
+      });
+    });
+
+    showMode(mode);
+    showQuestion(0);
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      play(true);
+      return;
+    }
+
+    /* Clear the shipped end state now, so the sequence always starts from
+       nothing rather than flashing the finished panel first. */
+    darken();
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start();
+        else stop();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');
