@@ -785,6 +785,184 @@
     io.observe(root);
   })();
 
+  /* --- PLG or sales-led: the right-lever decision board ------------------ */
+  /* This panel's claim is judgment, so the demo is a decision board rather
+     than a funnel. A funnel would present PLG as the answer, which argues
+     against the copy. Four mechanism questions score a motion from 0 (pure
+     sales-led) to 100 (pure product-led), and the verdict has to be able to
+     rule PLG out, otherwise the demo proves nothing.
+
+     Three presets snap the board to real engagements, which land at 100, 54
+     and 0. Those configurations come from the case studies, so keep them in
+     sync if a study is ever restated. */
+  (function plgLever() {
+    var root = document.querySelector('[data-plg-lever]');
+    if (!root) return;
+
+    function all(sel, scope) {
+      return Array.prototype.slice.call((scope || root).querySelectorAll(sel));
+    }
+
+    var radios = all('.lever__opts input');
+    var presetBtns = all('.lever__preset');
+    var marker = root.querySelector('.lever__marker');
+    var out = {
+      call: root.querySelector('[data-role="call"]'),
+      why: root.querySelector('[data-role="why"]'),
+      match: root.querySelector('[data-role="match"]')
+    };
+    if (!radios.length || !marker || !out.call || !out.why || !out.match) return;
+
+    /* Single-player value is the precondition and a procurement gate is a
+       hard blocker, so those two carry most of the weight. */
+    var WEIGHTS = { single: 34, buy: 28, cat: 20, exp: 18 };
+
+    var BANDS = [
+      { min: 82, call: 'Product-led.',
+        why: 'People can reach value and get started without talking to anyone, so let them.' },
+      { min: 60, call: 'Product-led, with a sales assist.',
+        why: 'Self-serve carries the top of the funnel. Humans show up for the accounts worth a human.' },
+      { min: 38, call: 'Run both.',
+        why: 'Self-serve is a real front door here and the revenue still closes through a sales process. Two motions cost more than one, so staff it honestly.' },
+      { min: 18, call: 'Sales-led, with a self-serve front door.',
+        why: 'A trial earns attention. Closing the deal is still a human job.' },
+      { min: 0, call: 'Sales-led.',
+        why: 'PLG here burns a year and produces signups that never buy. Run demand gen.' }
+    ];
+
+    var PRESETS = {
+      implicit: {
+        set: { single: 'plg', buy: 'plg', cat: 'plg', exp: 'plg' },
+        match: 'That\u2019s <a href="/the-work/implicit-plg-gtm">Implicit</a>. 2,100 signups in six months, from zero.'
+      },
+      constructconnect: {
+        set: { single: 'plg', buy: 'sales', cat: 'plg', exp: 'sales' },
+        match: 'That\u2019s <a href="/the-work/constructconnect-conversion-optimization">ConstructConnect</a>. In-product surfaces feeding a sales team, and $5.5MM+ in ARR.'
+      },
+      cei: {
+        set: { single: 'sales', buy: 'sales', cat: 'sales', exp: 'sales' },
+        match: 'That\u2019s <a href="/the-work/ai-productization-gtm">CEI Clairvoyance</a>. Sold through workshops and proof of value, $1MM+ in pipeline.'
+      }
+    };
+
+    var PRESET_ORDER = ['implicit', 'constructconnect', 'cei'];
+    var DWELL = 3000;
+    var cycleId = 0;
+    var running = false;
+    var manual = false;
+    var at = 0;
+
+    function reading() {
+      var state = {};
+      radios.forEach(function (r) {
+        if (r.checked) state[r.dataset.input] = r.value;
+      });
+      return state;
+    }
+
+    function score(state) {
+      var total = 0;
+      Object.keys(WEIGHTS).forEach(function (k) {
+        if (state[k] === 'plg') total += WEIGHTS[k];
+      });
+      return total;
+    }
+
+    function matching(state) {
+      var found = null;
+      PRESET_ORDER.forEach(function (name) {
+        var want = PRESETS[name].set;
+        var same = Object.keys(want).every(function (k) {
+          return state[k] === want[k];
+        });
+        if (same) found = name;
+      });
+      return found;
+    }
+
+    function render() {
+      var state = reading();
+      var value = score(state);
+      var band = BANDS[0];
+      for (var i = 0; i < BANDS.length; i++) {
+        if (value >= BANDS[i].min) { band = BANDS[i]; break; }
+      }
+      marker.style.setProperty('--at', String(value));
+      out.call.textContent = band.call;
+      out.why.textContent = band.why;
+
+      var preset = matching(state);
+      /* Only an exact match names an engagement. A board the user has half
+         moved off a preset must not claim to be that engagement. */
+      out.match.innerHTML = preset ? PRESETS[preset].match : '';
+      presetBtns.forEach(function (b) {
+        b.classList.toggle('is-on', b.dataset.preset === preset);
+      });
+    }
+
+    function apply(name) {
+      var want = PRESETS[name].set;
+      radios.forEach(function (r) {
+        r.checked = r.value === want[r.dataset.input];
+      });
+      render();
+    }
+
+    function scheduleCycle() {
+      window.clearTimeout(cycleId);
+      if (manual || reduceMotion) return;
+      cycleId = window.setTimeout(function () {
+        if (!running) return;
+        at = (at + 1) % PRESET_ORDER.length;
+        apply(PRESET_ORDER[at]);
+        scheduleCycle();
+      }, DWELL);
+    }
+
+    function start() {
+      if (running || reduceMotion) return;
+      running = true;
+      scheduleCycle();
+    }
+
+    function stop() {
+      running = false;
+      window.clearTimeout(cycleId);
+    }
+
+    /* Any deliberate change hands the board over for good, and only then does
+       the verdict start announcing itself. Marking it live from the start
+       would make a screen reader read every step of the automatic cycle. */
+    function takeOver() {
+      manual = true;
+      window.clearTimeout(cycleId);
+      out.call.setAttribute('aria-live', 'polite');
+    }
+
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () { takeOver(); render(); });
+    });
+
+    presetBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        takeOver();
+        apply(b.dataset.preset);
+      });
+    });
+
+    render();
+
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start();
+        else stop();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

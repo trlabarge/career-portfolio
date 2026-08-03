@@ -78,9 +78,9 @@ punctuated by confident full-bleed color-field sections.
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. Panels 01 and 02 are real interactive demos, see below. Panels 03
-  and 04 are still branded PLACEHOLDERS (a funnel, team nodes) each tagged
-  "Interactive demo coming soon"; real animations land later. `.cap-demo`
+  item. Panels 01 to 03 are real interactive demos, see below. Panel 04 is
+  still a branded PLACEHOLDER (team nodes) tagged "Interactive demo coming
+  soon"; a real animation lands later. `.cap-demo`
   and `.cap-stage` are both pinned to `min-height: 460px`, sized to the
   tallest panel (currently 02) so switching tabs never jumps the sticky
   stage. Re-measure and update that number if a panel's content grows.
@@ -183,6 +183,50 @@ punctuated by confident full-bleed color-field sections.
     Under `prefers-reduced-motion` the auto-advance never starts and the
     sequence never staggers. One surface shows fully resolved and the tabs
     still switch instantly.
+  - Right-lever decision board (`.lever`, inside panel 03, `data-plg-lever`
+    on the `.cap-demo`). The claim on this panel is judgment, that knowing
+    which motion fits is the skill. The placeholder it replaced was a PLG
+    funnel, which argued the opposite by presenting PLG as the answer. Do not
+    go back to a funnel here.
+    Four mechanism questions score a motion from 0 (pure sales-led) to 100
+    (pure product-led). Single-player value 34, buying it 28, the category
+    20, expansion 18. Those four came from Tim directly, replacing an earlier
+    set built on deal size and buying committee, which are proxies rather
+    than causes. Single-player value is the precondition and a procurement
+    gate is a hard blocker, which is why those two carry most of the weight.
+    All 16 combinations produce distinct scores spread across five verdict
+    bands.
+    The verdict must be able to rule PLG out. The bottom band reads "PLG here
+    burns a year and produces signups that never buy. Run demand gen." A
+    board that can only ever recommend PLG proves nothing, so keep that
+    refusal if the copy is reworked.
+    Three presets snap the board to real engagements and land at 100, 54 and
+    0. Implicit is product-led, ConstructConnect is both motions at once
+    (in-product surfaces feeding a sales team, PQLs up 6.5x, revenue still
+    closing as contracts), CEI Clairvoyance is sales-led. Those
+    configurations are derived from the case studies, so re-check them if a
+    study is restated. ConstructConnect is what stops the panel reading as a
+    false binary, since the middle is where most companies actually sit.
+    Only an exact match on all four inputs names an engagement. Move one
+    toggle off a preset and `.lever__match` empties, so a half-changed board
+    never claims to be a real client.
+    The inputs are native radios, so keyboard behaviour and no-JS
+    readability come for free. Nothing recomputes the verdict without JS
+    though, and native radios would still flip, so `html:not(.js)` disables
+    the controls and hides the presets, leaving a static readout of the
+    default engagement rather than a board contradicting its own verdict.
+    `--at` on `.lever__marker` is a unitless 0 to 100, and the CSS travels it
+    between 7px and width minus 7px so the marker stays fully inside the
+    track at both extremes. A plain percentage offset half-clipped it at 0
+    and 100.
+    On reveal the board auto-cycles the three presets every 3s. Any radio
+    change or preset click sets `manual`, stops the cycle for good, and only
+    then adds `aria-live="polite"` to the verdict. Marking it live from the
+    start would make a screen reader announce every step of the automatic
+    cycle, same reasoning as the no-`aria-live` decision on panel 02.
+    Under `prefers-reduced-motion` the cycle never starts and the marker
+    jumps rather than slides, which the global reduced-motion block already
+    handles by collapsing transition-duration.
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.

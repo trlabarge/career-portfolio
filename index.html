@@ -318,14 +318,68 @@
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-3" aria-labelledby="cap-tab-3" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--plg">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Right lever</span></div>
+              <div class="cap-demo cap-demo--plg" data-plg-lever>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Right lever</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__funnel">
-                    <span style="--w:100%">Signups</span>
-                    <span style="--w:72%">Activated</span>
-                    <span style="--w:44%">Paid</span>
-                    <span style="--w:26%">Expanded</span>
+                  <div class="lever">
+                    <p class="visually-hidden">Four questions that decide whether a product-led motion can carry growth or whether it needs a sales-led one. Whether the product is useful to one person on day one, whether it can be bought on a card, whether buyers already know the category, and whether one user pulls in a team. Set to Implicit the answer is product-led, set to ConstructConnect it is both motions at once, and set to CEI Clairvoyance it is sales-led.</p>
+
+                    <div class="lever__presets">
+                      <span class="lever__presets-label">Try one</span>
+                      <button type="button" class="lever__preset is-on" data-preset="implicit">Implicit</button>
+                      <button type="button" class="lever__preset" data-preset="constructconnect">ConstructConnect</button>
+                      <button type="button" class="lever__preset" data-preset="cei">CEI</button>
+                    </div>
+
+                    <div class="lever__rows">
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-single-ask">Single-player value</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-single-ask">
+                          <input type="radio" id="lv-single-plg" name="lv-single" data-input="single" value="plg" checked>
+                          <label for="lv-single-plg">Day one</label>
+                          <input type="radio" id="lv-single-sales" name="lv-single" data-input="single" value="sales">
+                          <label for="lv-single-sales">Needs a team</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-buy-ask">Buying it</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-buy-ask">
+                          <input type="radio" id="lv-buy-plg" name="lv-buy" data-input="buy" value="plg" checked>
+                          <label for="lv-buy-plg">On a card</label>
+                          <input type="radio" id="lv-buy-sales" name="lv-buy" data-input="buy" value="sales">
+                          <label for="lv-buy-sales">Security review</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-cat-ask">The category</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-cat-ask">
+                          <input type="radio" id="lv-cat-plg" name="lv-cat" data-input="cat" value="plg" checked>
+                          <label for="lv-cat-plg">Already known</label>
+                          <input type="radio" id="lv-cat-sales" name="lv-cat" data-input="cat" value="sales">
+                          <label for="lv-cat-sales">Needs explaining</label>
+                        </div>
+                      </div>
+                      <div class="lever__row">
+                        <span class="lever__ask" id="lv-exp-ask">Expansion</span>
+                        <div class="lever__opts" role="group" aria-labelledby="lv-exp-ask">
+                          <input type="radio" id="lv-exp-plg" name="lv-exp" data-input="exp" value="plg" checked>
+                          <label for="lv-exp-plg">Pulls in a team</label>
+                          <input type="radio" id="lv-exp-sales" name="lv-exp" data-input="exp" value="sales">
+                          <label for="lv-exp-sales">Seat by seat</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="lever__meter">
+                      <div class="lever__ends"><span>Sales-led</span><span>Product-led</span></div>
+                      <div class="lever__track"><i class="lever__marker" style="--at:100"></i></div>
+                    </div>
+
+                    <div class="lever__verdict">
+                      <p class="lever__call" data-role="call">Product-led.</p>
+                      <p class="lever__why" data-role="why">People can reach value and get started without talking to anyone, so let them.</p>
+                      <p class="lever__match" data-role="match">That&rsquo;s <a href="/the-work/implicit-plg-gtm">Implicit</a>. 2,100 signups in six months, from zero.</p>
+                    </div>
                   </div>
                 </div>
               </div>
