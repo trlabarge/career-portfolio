@@ -1627,16 +1627,35 @@ html:not(.js) .pcoach__slider {
   align-items: baseline;
   gap: 0.75rem;
   margin-bottom: 0.4rem;
+}
+
+/* Player at one end, coach at the other, so the bar reads as a spectrum
+   between the two roles rather than as a single filled quantity. */
+.pcoach__end {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
   font-family: var(--font-display);
-  font-size: 0.8rem;
+}
+
+.pcoach__end-name {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
   color: rgba(220, 229, 218, 0.68);
 }
 
-.pcoach__meter-head b {
+.pcoach__end b {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-gold);
   font-variant-numeric: tabular-nums;
+  color: var(--color-gold);
+}
+
+/* The coach share is the remainder, so it takes the track's own tone rather
+   than competing with the gold fill. */
+.pcoach__end:last-child b {
+  color: var(--color-sage-tint);
 }
 
 .pcoach__track {

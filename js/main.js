@@ -1007,11 +1007,17 @@
       return Math.round(FLOOR + (100 - FLOOR) / Math.pow(size, 1.2));
     }
 
+    function clamp(v) { return Math.max(MIN, Math.min(MAX, v)); }
+
+    /* size is continuous so the thumb and the bar travel smoothly, while
+       the readout and the announced value stay whole people. */
     function render(size) {
       var pct = handsOn(size);
-      out.size.textContent = String(size);
+      var whole = Math.round(size);
+      out.size.textContent = String(whole);
       out.pct.textContent = pct + '%';
-      out.coach.textContent = (100 - pct) + '% coaching';
+      out.coach.textContent = (100 - pct) + '%';
+      slider.setAttribute('aria-valuetext', whole + (whole === 1 ? ' person' : ' people'));
       fill.style.setProperty('--w', pct + '%');
       items.forEach(function (li) {
         /* An anchored item has no data-at, so it can never flip. */
@@ -1047,7 +1053,7 @@
         if (start === null) start = ts;
         var p = Math.min((ts - start) / duration, 1);
         var eased = 1 - Math.pow(1 - p, 3);
-        var size = Math.round(MIN + (MAX - MIN) * eased);
+        var size = MIN + (MAX - MIN) * eased;
         slider.value = String(size);
         render(size);
         if (p < 1) sweepId = window.requestAnimationFrame(step);
@@ -1058,10 +1064,31 @@
     slider.addEventListener('input', function () {
       manual = true;
       stopSweep();
-      render(parseInt(slider.value, 10));
+      render(parseFloat(slider.value));
     });
 
-    render(parseInt(slider.value, 10));
+    /* The fine step is there for smooth dragging, so arrow keys would crawl
+       across the range one hundredth of a person at a time. Keyboard moves
+       whole people instead, stepping to the next integer rather than adding
+       one to a fractional position. */
+    slider.addEventListener('keydown', function (e) {
+      var now = parseFloat(slider.value);
+      var next;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = Math.floor(now) + 1;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = Math.ceil(now) - 1;
+      else if (e.key === 'PageUp') next = Math.floor(now) + 3;
+      else if (e.key === 'PageDown') next = Math.ceil(now) - 3;
+      else if (e.key === 'Home') next = MIN;
+      else if (e.key === 'End') next = MAX;
+      else return;
+      e.preventDefault();
+      manual = true;
+      stopSweep();
+      slider.value = String(clamp(next));
+      render(parseFloat(slider.value));
+    });
+
+    render(parseFloat(slider.value));
 
     if (reduceMotion || !('IntersectionObserver' in window)) return;
 

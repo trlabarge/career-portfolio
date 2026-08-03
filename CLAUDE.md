@@ -257,7 +257,17 @@ punctuated by confident full-bleed color-field sections.
     work for" is a claim only other people can make, so this panel renders
     the operating model behind it rather than asserting it. It is not proof
     and is not meant to read as proof. See the known gap below.
-    One native range input for team size, 1 to 12. The hands-on share is
+    One native range input for team size, 1 to 12. Its `step` is 0.01 rather
+    than 1, so the thumb and the bar travel smoothly instead of snapping
+    between twelve slots. The readout rounds to whole people and
+    `aria-valuetext` announces them, and a `keydown` handler moves arrow keys
+    to the next whole integer, since a hundredth-of-a-person step would
+    otherwise make the control unusable from the keyboard.
+    The meter is labelled Player at one end and Coach at the other, so the
+    bar reads as a spectrum between the two roles. The panel carries no
+    `.cap-demo__tag`; "Player coach" was removed from the top right on Tim's
+    instruction and became those two end labels instead.
+    The hands-on share is
     `FLOOR + (100 - FLOOR) / size^1.2` with `FLOOR` 22, so it falls steeply
     as the first hires land and then flattens onto a floor it never leaves.
     Four work items hand off at sizes 2, 4, 6 and 8 (`data-at`), and three
