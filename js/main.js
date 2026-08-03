@@ -970,6 +970,110 @@
     io.observe(root);
   })();
 
+  /* --- A leader people want to work for: the player-coach allocation ----- */
+  /* The headline is a claim only other people can make, so this panel shows
+     the operating model behind it instead of asserting it. One slider for
+     team size redistributes the work between doing it and coaching it.
+
+     The whole argument sits in FLOOR. The hands-on share falls steeply as
+     the first hires land and then flattens onto a floor it never leaves, and
+     three work items never hand off at any team size. A leader who claims to
+     stay close to the work and then shows a chart reaching zero has
+     disproved themselves, so do not let this bottom out. */
+  (function playerCoachMix() {
+    var root = document.querySelector('[data-player-coach-mix]');
+    if (!root) return;
+
+    function all(sel) {
+      return Array.prototype.slice.call(root.querySelectorAll(sel));
+    }
+
+    var slider = root.querySelector('.pcoach__slider');
+    var fill = root.querySelector('.pcoach__fill');
+    var items = all('.pcoach__item');
+    var out = {
+      size: root.querySelector('[data-role="size"]'),
+      pct: root.querySelector('[data-role="pct"]'),
+      coach: root.querySelector('[data-role="coach"]')
+    };
+    if (!slider || !fill || !items.length) return;
+    if (!out.size || !out.pct || !out.coach) return;
+
+    var FLOOR = 22;   /* the share that never hands off, whatever the size */
+    var MAX = parseInt(slider.max, 10) || 12;
+    var MIN = parseInt(slider.min, 10) || 1;
+
+    function handsOn(size) {
+      return Math.round(FLOOR + (100 - FLOOR) / Math.pow(size, 1.2));
+    }
+
+    function render(size) {
+      var pct = handsOn(size);
+      out.size.textContent = String(size);
+      out.pct.textContent = pct + '%';
+      out.coach.textContent = (100 - pct) + '% coaching';
+      fill.style.setProperty('--w', pct + '%');
+      items.forEach(function (li) {
+        /* An anchored item has no data-at, so it can never flip. */
+        var at = parseInt(li.getAttribute('data-at'), 10);
+        li.classList.toggle('is-team', !isNaN(at) && size >= at);
+        var owner = li.querySelector('[data-role="owner"]');
+        if (owner) {
+          owner.textContent = li.classList.contains('is-team') ? 'The team' : 'Me';
+        }
+      });
+    }
+
+    var manual = false;
+    var sweepId = 0;
+
+    function stopSweep() {
+      window.cancelAnimationFrame(sweepId);
+      sweepId = 0;
+    }
+
+    /* One sweep from a team of one up to the full size, so the redistribution
+       plays out as the team grows. It does not loop, since a control that
+       keeps moving on its own is one the user has to fight to grab. */
+    function sweep() {
+      if (manual || reduceMotion) return;
+      stopSweep();
+      var start = null;
+      var duration = 2200;
+      slider.value = String(MIN);
+      render(MIN);
+      sweepId = window.requestAnimationFrame(function step(ts) {
+        if (manual) return;
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        var size = Math.round(MIN + (MAX - MIN) * eased);
+        slider.value = String(size);
+        render(size);
+        if (p < 1) sweepId = window.requestAnimationFrame(step);
+        else stopSweep();
+      });
+    }
+
+    slider.addEventListener('input', function () {
+      manual = true;
+      stopSweep();
+      render(parseInt(slider.value, 10));
+    });
+
+    render(parseInt(slider.value, 10));
+
+    if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) sweep();
+        else stopSweep();
+      });
+    }, { threshold: 0.3 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

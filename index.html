@@ -387,15 +387,37 @@
               </div>
             </div>
             <div class="cap-panel" role="tabpanel" id="cap-panel-4" aria-labelledby="cap-tab-4" tabindex="0" hidden>
-              <div class="cap-demo cap-demo--leader">
-                <div class="cap-demo__bar"><span class="cap-demo__chip">Interactive demo coming soon</span><span class="cap-demo__tag">Team that ships</span></div>
+              <div class="cap-demo cap-demo--leader" data-player-coach-mix>
+                <div class="cap-demo__bar"><span class="cap-demo__chip cap-demo__chip--quiet">Illustrative model</span><span class="cap-demo__tag">Player coach</span></div>
                 <div class="cap-demo__body">
-                  <div class="cap-demo__team">
-                    <span class="cap-node">Demand</span>
-                    <span class="cap-node">Content</span>
-                    <span class="cap-node">Ops</span>
-                    <span class="cap-node">Design</span>
-                    <span class="cap-node">Product</span>
+                  <div class="pcoach">
+                    <p class="visually-hidden">How the work splits between doing it and coaching it as a marketing team grows from one person to twelve. Copy, pages, campaigns, and reporting hand off as there are people to hand them to. Reading the numbers, picking what is worth building, and positioning stay hands on at every team size, so the hands-on share falls but never reaches zero.</p>
+
+                    <div class="pcoach__control">
+                      <label class="pcoach__label" for="pc-team">Team size</label>
+                      <output class="pcoach__size" for="pc-team" data-role="size">12</output>
+                      <input class="pcoach__slider" type="range" id="pc-team" min="1" max="12" step="1" value="12">
+                    </div>
+
+                    <div class="pcoach__meter">
+                      <div class="pcoach__meter-head">
+                        <span><b data-role="pct">26%</b> hands on</span>
+                        <span data-role="coach">74% coaching</span>
+                      </div>
+                      <div class="pcoach__track"><i class="pcoach__fill" style="--w:26%"></i></div>
+                    </div>
+
+                    <ul class="pcoach__work">
+                      <li class="pcoach__item is-team" data-at="2">Writing the copy<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="4">Building the pages<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="6">Running the campaigns<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item is-team" data-at="8">The reporting stack<span class="pcoach__owner" data-role="owner">The team</span></li>
+                      <li class="pcoach__item" data-anchor>Reading the numbers myself<span class="pcoach__owner" data-role="owner">Me</span></li>
+                      <li class="pcoach__item" data-anchor>Picking what&rsquo;s worth building<span class="pcoach__owner" data-role="owner">Me</span></li>
+                      <li class="pcoach__item" data-anchor>Positioning and the story<span class="pcoach__owner" data-role="owner">Me</span></li>
+                    </ul>
+
+                    <p class="pcoach__note">The hands-on share falls as the team grows and never reaches zero. Staying close to the work is how you know what is quietly on fire.</p>
                   </div>
                 </div>
               </div>
