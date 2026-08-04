@@ -2133,9 +2133,14 @@ html:not(.js) .pcoach__slider {
   font-size: 1.05rem;
 }
 
-.hit-block strong {
+.hit-block__eyebrow {
   font-family: var(--font-display);
-  color: var(--color-sage);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin: 0 0 0.35rem;
 }
 
 /* About page: animated stat strip ------------------------------------------ */
