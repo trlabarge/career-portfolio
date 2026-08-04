@@ -2135,11 +2135,11 @@ html:not(.js) .pcoach__slider {
 
 .hit-block__eyebrow {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-sage);
   margin: 0 0 0.35rem;
 }
 
@@ -2181,6 +2181,12 @@ html:not(.js) .pcoach__slider {
 .highlight-list strong {
   font-family: var(--font-display);
   color: var(--color-terracotta);
+}
+
+.highlight-list__tag {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  color: var(--color-sage);
 }
 
 /* About page: How I Lead, player/coach illustration pair -------------------
