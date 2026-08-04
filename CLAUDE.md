@@ -70,6 +70,16 @@ punctuated by confident full-bleed color-field sections.
     into view. Hiding is gated behind an `html.js` class (set by an inline head
     script) so content is never hidden when JS is off. Stagger via
     `--reveal-delay` inline.
+    The observer runs at `threshold: 0` with `rootMargin: '0px 0px -10% 0px'`.
+    The threshold must stay 0. It was 0.15, which is a fraction of the
+    element's own area, so anything taller than roughly the viewport divided
+    by 0.15 could never intersect enough to fire. On a 640px phone that hid a
+    4,927px `.step` on the ConstructConnect study permanently, an entire
+    section of the case study that no amount of scrolling would bring back.
+    The negative bottom margin is what holds the reveal until the element is
+    properly in view, and unlike a ratio it behaves the same at every element
+    height. If reveals ever need to fire later, move that percentage, never
+    the threshold.
   - Metric counters. `.metric__value[data-count]` counts up when in view. Store
     `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
     is the initial text so no-JS still shows it.
@@ -88,6 +98,18 @@ punctuated by confident full-bleed color-field sections.
   nothing. Re-measure both numbers if a panel's content grows. Panel 01 now
   carries noticeable slack under its readout as a result, which is the
   accepted cost of panel 03's longer verdict copy.
+  Below 861px the two columns stack, so the list sits above the stage. The
+  list keeps the same collapsed behaviour as desktop there, one open
+  description at a time. An earlier pass expanded all four on mobile, which
+  made the list about 1000px tall and left the single visible panel a full
+  screen below the item that controls it. Three of the four demos were
+  effectively unreachable, since nothing about a plain expanded list reads
+  as tappable. Do not reintroduce that. The rows also grow a chevron
+  (`.cap-item::after`, down when closed, up when open) purely as a mobile
+  affordance, since on desktop the stage sitting alongside is the hint and
+  on mobile there is nothing. `.cap-demo` chrome tightens on mobile too, as
+  the chip and tag otherwise wrapped to two lines each and pushed the demo
+  itself down.
   Each panel deliberately moves in a different interaction register. Legend
   toggles on 01, surface tabs on 02, a radio board on 03, a continuous
   slider on 04. Four of the same control would read as a template, so keep
@@ -618,6 +640,47 @@ Components added for this page, both in `/css/style.css`:
 - Semantic HTML5 (header, nav, main, section, article, footer). One H1 per page.
 - Accessibility: skip link, alt text, ARIA where needed, keyboard navigable,
   sufficient contrast.
+
+### Mobile rules worth not relearning
+
+The site is checked at 320x640, 360x640, 360x800, 390x844, 430x932 and
+768x1024. A few things are load-bearing.
+
+- No page may scroll horizontally. `body` carries `overflow-x: hidden`, which
+  means a real overflow hides rather than announces itself, so measure
+  `document.documentElement.scrollWidth` against `innerWidth` instead of
+  trusting the look of it. Headings carry `overflow-wrap: break-word` as a
+  last-resort net, and `.case-hero h1` takes a lower clamp floor
+  (`2.25rem` against the global `2.75rem`) because case-study titles lead with
+  a company name and "ConstructConnect" is one unbreakable 16-character word
+  that needed 374px on a 360px screen. The homepage hero keeps the taller
+  floor, it has no long word and should stay loud.
+- Standalone controls get at least 44px of height: the brand, the menu button,
+  the mobile nav links, footer nav links, and the `.chart__data` summary.
+  `.dstack__key` sits at 38px, the most a pill that size can take without
+  breaking the row. Links inside running sentences are deliberately left
+  alone, since padding them out would wreck the line spacing of the copy and
+  inline links are exempt from the target-size rule anyway. There is also a
+  `@media (pointer: coarse)` bump on `.primary-nav__link`, which is what
+  covers a tablet between 721px and 860px still using the horizontal desktop
+  nav. It is scoped to coarse pointers so the mouse-driven header keeps its
+  tighter spacing.
+- The mobile nav closes on Escape (returning focus to the button) and on a tap
+  outside itself, not only on a link click. The links are `display: block` so
+  the row, not the word, is the target. As an inline box they gave ragged
+  half-width underlines.
+- `.stack__canvas-wrap` ships before `.container` so the absolute canvas layer
+  sits behind the copy. Below 720px it returns to normal flow, where that
+  source order put the tool list above the heading it belongs to, so `.stack`
+  becomes a flex column and the wrap takes `order: 2`. Fix it there, not by
+  moving the markup, which would break the desktop stacking.
+- `.growth__plot` and `.qbars__plot` scroll sideways under 720px, and the left
+  edge of both series is the flat opening, so the part worth seeing starts
+  off-screen. A `mask-image` fades the right edge as the affordance. The text
+  hint stays, a hint you have to read is not enough on its own. The
+  `min-width` on the two SVGs cannot come down. Axis labels are SVG text and
+  scale with the viewBox, so fitting the chart to a phone renders them at
+  roughly 4px.
 
 ### Per-page requirements (every new page must have)
 
