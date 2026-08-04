@@ -379,16 +379,23 @@ p {
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  /* Matches the menu button beside it, so the two header controls present
-     the same target height. */
-  min-height: 44px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.2rem;
   letter-spacing: -0.03em;
   color: var(--color-text);
+}
+
+/* Matches the menu button beside it, so the two header controls present the
+   same target height. Scoped to touch, since growing it unconditionally made
+   the sticky header 13px taller on every desktop page, which is a design
+   change nobody asked for. */
+@media (pointer: coarse) {
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 .brand:hover,
@@ -964,12 +971,18 @@ html:not(.js) .cap-panel + .cap-panel {
   border: 1px solid rgba(220, 229, 218, 0.18);
   border-radius: 999px;
   padding: 0.3rem 0.75rem 0.3rem 0.55rem;
-  /* These are the only controls inside the demo panels that a thumb has to
-     hit, and the pill was 29px tall. */
-  min-height: 38px;
   cursor: pointer;
   transition: color 0.2s ease, background-color 0.2s ease,
     border-color 0.2s ease;
+}
+
+/* The only controls inside the demo panels a thumb has to hit, and the pill
+   was 29px. 38px is the most it can take without breaking the legend row.
+   Touch only, so panel 01 keeps its measured desktop height. */
+@media (pointer: coarse) {
+  .dstack__key {
+    min-height: 38px;
+  }
 }
 
 .dstack__key.is-on {
@@ -2783,12 +2796,14 @@ html:not(.js) .pcoach__slider {
 }
 
 /* The footer links were 22px tall, which is a small target for a thumb and
-   the last chance to reach any other page. Padding does the work so the row
-   spacing is unchanged on desktop. */
-.site-footer__nav a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+   the last chance to reach any other page. Touch only, so the desktop footer
+   keeps its original height. */
+@media (pointer: coarse) {
+  .site-footer__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 .site-footer__meta {
@@ -4080,16 +4095,22 @@ html.js .path[data-path-progress] .path__step.is-lit::after {
   font-size: 0.86rem;
 }
 
-/* A standalone control rather than a link inside a sentence, so it earns a
-   full touch target instead of the 23px the bare summary line gave it. */
 .chart__data summary {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
   cursor: pointer;
   color: var(--color-sage);
   font-family: var(--font-display);
   font-weight: 600;
+}
+
+/* A standalone control rather than a link inside a sentence, so it earns a
+   full touch target instead of the 23px the bare summary line gives it.
+   Padding rather than display:flex plus min-height. Any display other than
+   list-item suppresses the disclosure triangle, and losing that marker costs
+   more than the extra height gains. */
+@media (pointer: coarse) {
+  .chart__data summary {
+    padding-block: 0.65rem;
+  }
 }
 
 .chart__data table {
