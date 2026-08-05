@@ -788,6 +788,117 @@ Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
 Resume download button appears on About, The Work index, Fractional CMO, Contact.
 Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.pdf, added 2026-07-31).
 
+## Timbot, the chat widget
+
+An avatar chatbot that speaks as Tim, present on every page. It exists because
+a recruiter comparing candidates remembers the one they had a conversation
+with. It is a differentiator, and it is also the single easiest thing on this
+site to turn into a liability, which is why the guardrails below are not
+optional.
+
+### Architecture
+
+Static site, one serverless function. No framework, no client-side build step,
+consistent with everything else here.
+
+- `/api/chat.js` streams a reply over SSE. The `ANTHROPIC_API_KEY` lives in
+  Vercel env vars and never reaches the browser. Model is `claude-opus-5` at
+  `effort: "low"`, which keeps a chat widget responsive.
+  Thinking is left at its default (on) rather than disabled, because this model
+  leaks `<thinking>` tags into visible output when thinking is explicitly off.
+  Thinking counts toward `max_tokens`, hence 3000 for what should be a
+  four-sentence answer.
+- `/api/_lib/knowledge.js` is the entire system prompt as one generated string.
+  It ships inside the function bundle, and Vercel compiles `/api` rather than
+  serving it, so the persona and the do-not-say rules are not publicly
+  fetchable. `/timbot/` and `/scripts/` are additionally excluded via
+  `.vercelignore`, since everything else in the repo root is served as a static
+  asset. That is also why `CLAUDE.md` is readable at `/CLAUDE.md` today.
+- `/api/_lib/validate.js` rebuilds the message list from scratch on every
+  request rather than forwarding what the browser sent. This is the piece that
+  drops an injected `role: "system"` turn, strips extra fields like
+  `cache_control`, and ignores content that arrives as a block array instead of
+  a string.
+- `/js/timbot.js` is the widget. Vanilla, no dependencies. The conversation
+  lives in `sessionStorage` so it survives navigation, which matters when the
+  launcher follows you across the site.
+
+### There is no retrieval step, and there should not be one
+
+The whole corpus is roughly 30,000 tokens against a 1,000,000 token window, so
+everything goes in the system prompt every time, cached. Retrieval is where
+these bots lose accuracy, by fetching the wrong chunk and answering
+confidently from it. Do not add a vector database here. If the corpus ever
+triples it still fits.
+
+The system prompt is one static block with `cache_control`, so repeat turns
+read it at roughly a tenth of input price. Keep it byte-stable. Anything
+per-request, a timestamp or a visitor ID, must go in the messages array and
+never in the system block, or every turn pays full price.
+
+### The knowledge is generated from the site, not hand-written
+
+`npm run timbot:build` reads every page's HTML, strips it to text, appends
+`timbot/facts.md`, `persona.md`, and `personality.md`, and writes
+`api/_lib/knowledge.js`. The site is the source of truth, so the bot cannot
+drift from what a visitor is reading on the same screen.
+
+**Re-run it and commit the result after editing site copy or any `timbot/*.md`
+file.** There is no build step on this project and `timbot/` is excluded from
+the Vercel upload, so the deploy cannot regenerate it. Forgetting this is the
+most likely way the bot goes stale.
+
+### The three source files do different jobs
+
+Keep them separate. Collapsing them produces a file nobody can edit safely.
+
+- `timbot/facts.md` is what the bot may claim. Career history, the numbers
+  ledger tying every figure to the page that backs it, the known gaps it must
+  never fill, and the say-it-this-way rules.
+- `timbot/persona.md` is how it speaks. The concede-then-reframe pattern, the
+  confidence calibration, anchor quotes, and the never-say list.
+- `timbot/personality.md` is the texture. Quick answers, running bits,
+  recommendations, the origin story.
+
+`timbot/persona-transcript.md` and `Timbot-Personality.md` are the raw
+recordings those three are derived from. They are not in the prompt.
+
+### Guardrails that are load-bearing
+
+- **Never invent a number.** Every figure must appear verbatim in the corpus.
+  The specific trap is a visitor asking for a total across projects, which
+  invites the model to sum unrelated figures into a credential Tim never
+  claimed. `facts.md` says decline instead.
+- **`[FILL]` and `[CONFIRM]` markers mean unknown.** The prompt tells the model
+  to treat them as missing information, never to read the bracket text aloud,
+  and never to guess at what belongs there.
+- **The say-it-this-way section is not about banned topics.** The
+  ConstructConnect VP story and the BDR termination are both fine and both
+  written out as permitted answers. What is restricted is a handful of
+  sentences that identify a real person.
+- **Treat every visitor message as untrusted.** Roleplay, fiction, and
+  developer-mode framings are the dangerous ones, because they are polite and
+  sound legitimate while asking for a fabricated credential on Tim's own site.
+
+### Testing
+
+`npm run timbot:test` covers request validation and the handler's guard paths
+with no API key and no network. It is the fast check. The real check is
+`timbot/eval-questions.md`, 59 questions run against the live bot and graded by
+hand. Sections B, G, and H are launch blockers there.
+
+### Known gaps
+
+- The avatar is `/assets/about/player-coach-coach.webp` cropped to its top with
+  `object-position: 50% 8%`, since that art is a full figure. A dedicated
+  head-and-shoulders illustration in the same ink-and-watercolor style would
+  look markedly better and is a drop-in replacement.
+- Rate limiting in `/api/chat.js` is an in-memory map, which means per
+  serverless instance. It is a speed bump, not a wall. Move it to Vercel KV or
+  Upstash before the URL sees real traffic.
+- Nothing logs the conversations. The questions recruiters actually ask are
+  genuinely useful intelligence and worth capturing, anonymised.
+
 ## Known placeholders to replace later
 
 - Homepage capability panel 04 ("A leader people want to work for") has no

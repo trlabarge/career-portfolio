@@ -1,6 +1,12 @@
-# Timbot source material. These files are the grounding corpus and evaluation
-# set for the chatbot. They contain employment detail, unpublished context, and
-# do-not-answer rules that should never be fetchable at timlabarge.com/timbot/.
-# When the chat API function is built, it bundles what it needs via the Vercel
-# `includeFiles` config rather than by being served as a static asset.
+# Timbot source material. These files are the grounding corpus, the recorded
+# transcripts, and the evaluation set. They contain employment detail,
+# unpublished context, and do-not-say rules that should never be fetchable at
+# timlabarge.com/timbot/.
+#
+# The bot does not read them at runtime. `npm run timbot:build` compiles them
+# into api/_lib/knowledge.js, which ships inside the serverless function bundle
+# rather than as a static asset, so it is not publicly reachable either.
 timbot/
+
+# Build tooling. Run locally, committed for provenance, never served.
+scripts/
