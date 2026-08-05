@@ -5748,6 +5748,15 @@ html:not(.js) .rebrand-film__video {
   color: var(--color-text-muted);
 }
 
+.timbot__intro p + p {
+  margin-top: 0.5rem;
+}
+
+.timbot__intro-lead {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 .timbot__msg {
   display: flex;
   max-width: 100%;

@@ -16,11 +16,13 @@
   var OPEN_KEY = 'timbot:open';
   var MAX_TURNS = 24;
 
-  var GREETING =
-    'Hi. I’m not Tim, but I’m pretty close. I’m Timbot.\n\n' +
-    'They fed me his case studies, his resume, and several hours of him ' +
-    'talking into a microphone, so I know his numbers, his opinions, and ' +
-    'the fact that he cannot make a decent burger. Ask me anything.';
+  var GREETING_LEAD = 'Hi. I’m not Tim, but I’m pretty close. I’m Timbot.';
+
+  var GREETING_BODY =
+    'Tim fed me examples of some of his work over the years, his resume, and ' +
+    'several hours of him talking into a microphone, so I know his numbers, ' +
+    'his opinions, and the fact that he cannot make a decent burger. ' +
+    'Ask me anything.';
 
   var PROMPTS = [
     'What’s your biggest revenue win?',
@@ -254,9 +256,8 @@
     this.log.innerHTML = '';
 
     var intro = el('div', 'timbot__intro');
-    GREETING.split('\n\n').forEach(function (para) {
-      intro.appendChild(el('p', null, para));
-    });
+    intro.appendChild(el('p', 'timbot__intro-lead', GREETING_LEAD));
+    intro.appendChild(el('p', null, GREETING_BODY));
     this.log.appendChild(intro);
 
     this.messages.forEach(function (message) {
