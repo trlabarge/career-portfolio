@@ -5,7 +5,7 @@ Processes the Timbot avatar from its raw upload into the file the site loads.
     pip install Pillow
     python3 scripts/process-timbot-avatar.py
 
-Input:  assets/timbot/timbot-avatar-source.png   (raw upload, kept for provenance)
+Input:  assets/timbot/timbot-avatar-source.*     (raw upload, kept for provenance)
 Output: assets/timbot/timbot-avatar.webp         (512x512 RGBA, what the site uses)
 
 The source art is a circular illustration sitting on a square white canvas.
@@ -29,7 +29,15 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "assets" / "timbot" / "timbot-avatar-source.png"
+_SRC_DIR = ROOT / "assets" / "timbot"
+SRC = next(
+    (
+        _SRC_DIR / f"timbot-avatar-source{ext}"
+        for ext in (".png", ".webp", ".jpg", ".jpeg")
+        if (_SRC_DIR / f"timbot-avatar-source{ext}").exists()
+    ),
+    _SRC_DIR / "timbot-avatar-source.png",
+)
 OUT = ROOT / "assets" / "timbot" / "timbot-avatar.webp"
 
 SIZE = 512

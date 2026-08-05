@@ -82,10 +82,11 @@ export default async function handler(req, res) {
     const stream = client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      // Low effort keeps a chat widget responsive. Thinking stays on, which is
-      // the default here and avoids the tag-leak behaviour this model shows
-      // when thinking is explicitly disabled.
-      output_config: { effort: 'low' },
+      // Medium rather than low. Low is faster and noticeably flatter, and a
+      // persona bot that sounds bored is worse than one that takes an extra
+      // beat. Thinking stays on, which is the default here and avoids the
+      // tag-leak behaviour this model shows when thinking is disabled.
+      output_config: { effort: 'medium' },
       system: [
         {
           type: 'text',

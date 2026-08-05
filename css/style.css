@@ -5634,9 +5634,8 @@ html:not(.js) .rebrand-film__video {
   flex: 0 0 48px;
   border-radius: 50%;
   object-fit: cover;
-  /* The source art is a full figure, so bias the crop toward the head. */
-  object-position: 50% 8%;
-  background: var(--color-sage-tint);
+  object-position: center;
+  background: transparent;
 }
 
 .timbot__launcher-label {
@@ -5684,8 +5683,8 @@ html:not(.js) .rebrand-film__video {
   flex: 0 0 40px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 8%;
-  background: var(--color-sage-tint);
+  object-position: center;
+  background: transparent;
 }
 
 .timbot__head-text {

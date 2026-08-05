@@ -17,18 +17,19 @@
   var MAX_TURNS = 24;
 
   var GREETING =
-    "I'm Tim's AI stand-in, built on his case studies and his own words. " +
-    'Ask me about the work, how he leads a team, whether he’d fit your ' +
-    'company, or what he’s cooking this weekend.';
+    'Hi. I’m not Tim, but I’m pretty close. I’m Timbot.\n\n' +
+    'They fed me his case studies, his resume, and several hours of him ' +
+    'talking into a microphone, so I know his numbers, his opinions, and ' +
+    'the fact that he cannot make a decent burger. Ask me anything.';
 
   var PROMPTS = [
-    "What's his biggest revenue win?",
-    'Would he fit a Series B company?',
-    "What's he like to work with?",
-    'What whiskey should I try?',
+    'What’s your biggest revenue win?',
+    'Would you fit a Series B company?',
+    'What are you like to work with?',
+    'Why can’t you make a burger?',
   ];
 
-  var AVATAR = '/assets/about/player-coach-coach.webp';
+  var AVATAR = '/assets/timbot/timbot-avatar.webp';
 
   function el(tag, className, text) {
     var node = document.createElement(tag);
@@ -116,7 +117,7 @@
     var headText = el('div', 'timbot__head-text');
     headText.appendChild(el('p', 'timbot__head-name', 'Timbot'));
     headText.appendChild(
-      el('p', 'timbot__head-role', 'Tim’s AI stand-in, not Tim')
+      el('p', 'timbot__head-role', 'Not Tim, but pretty close')
     );
 
     var close = el('button', 'timbot__close');
@@ -136,7 +137,7 @@
     var form = el('form', 'timbot__form');
     var field = el('textarea', 'timbot__input');
     field.rows = 1;
-    field.placeholder = 'Ask about the work, the team, the whiskey…';
+    field.placeholder = 'What do you want to know about Tim?';
     field.setAttribute('aria-label', 'Your message');
     field.maxLength = 2000;
 
@@ -253,7 +254,9 @@
     this.log.innerHTML = '';
 
     var intro = el('div', 'timbot__intro');
-    intro.appendChild(el('p', null, GREETING));
+    GREETING.split('\n\n').forEach(function (para) {
+      intro.appendChild(el('p', null, para));
+    });
     this.log.appendChild(intro);
 
     this.messages.forEach(function (message) {
