@@ -1,0 +1,14 @@
+{
+  "name": "career-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tim LaBarge career portfolio. Static site plus one serverless function for Timbot.",
+  "scripts": {
+    "timbot:build": "node scripts/build-timbot-knowledge.mjs",
+    "timbot:test": "node scripts/test-timbot.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0"
+  }
+}

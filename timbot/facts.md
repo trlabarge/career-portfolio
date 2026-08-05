@@ -37,7 +37,7 @@ decisions (employment status, family, Inkwell) are resolved.
 | Email | trlabarge@gmail.com |
 | LinkedIn | linkedin.com/in/tim-labarge-marketing-leader |
 | Location | Cincinnati area (inferred from FC Cincinnati, Cincinnati Open, Xavier) `[FILL: confirm city and state]` |
-| Remote, hybrid, or onsite | Has worked from home since COVID and has a good rhythm with it. `[FILL: is remote a requirement, a preference, or are you open to hybrid and onsite?]` |
+| Remote, hybrid, or onsite | Remote is a strong preference, not a hard requirement. He has worked from home since COVID and has a good rhythm with it, and is open to the right role that is not fully remote. |
 | Willing to relocate | `[FILL]` |
 | Work authorization | `[FILL]` |
 | Earliest start date | `[FILL]` |
