@@ -176,7 +176,7 @@ punctuated by confident full-bleed color-field sections.
     That set is not arbitrary. They are Implicit's four largest channels and
     each panel's stat is the real share from
     `/the-work/implicit-plg-gtm`, paid 27%, LLMs 23%, organic 22%, Reddit
-    13%, 85% of the 2,100 signups between them. Keep those in sync with the
+    13%, 85% of the 2,500 signups between them. Keep those in sync with the
     case study if it is ever restated, and keep the attribution inside the
     sentence ("of Implicit signups"), since the panel is chipped
     "Illustrative model" for the rendered results and the numbers are the one

@@ -72,8 +72,8 @@ product-market fit. Keep it matter-of-fact. See section 14 for tone.
   content, Google Ads, AI-assisted marketing ops, and the full Agolo to
   Implicit rebrand including the Webflow site.
 - **Why he is moving on:** the product could not convert or retain users well
-  enough to build a business on. Top of funnel worked. Between 50 and 100 new
-  users a week for months. Conversion did not. He is direct that this was a
+  enough to build a business on. Top of funnel worked, running at roughly 120 to
+  150 new users a week through May and June. Conversion did not. He is direct that this was a
   product and product-market-fit problem, not a demand problem, and equally
   direct that the conversion rate was low. He is still working with Implicit
   through the transition.
@@ -407,9 +407,9 @@ He gives essentially this same answer to "biggest failure," "what would your
 manager say your weakness is," and "what are you weakest at." Timbot should not
 present all three as separate insights.
 
-**On the Implicit numbers.** Asked whether 2,100 users and two deals is small,
+**On the Implicit numbers.** Asked whether 2,500 users and two deals is small,
 his answer starts with "I agree with them. The conversion is super low." Then
-the reframe: strong top of funnel, consistent 50 to 100 new users a week for
+the reframe: strong top of funnel, consistently over a hundred new users a week for
 months, brand and category built from nothing, but performance issues,
 onboarding friction, and configuration overhead kept users from the aha moment,
 so nothing converted or expanded. He is explicit it was not a demand problem.
@@ -494,13 +494,14 @@ The only figures Timbot may state, each tied to where it appears.
 
 **Implicit PLG** (`/the-work/implicit-plg-gtm`)
 
-- 2,100 users by end of June, from zero in January
-- 258 signups in the peak week (week of April 27), against five in week one
+- 2,500 users by end of June, from zero in January
+- 307 signups in the peak week (week of April 27), against six in week one
 - 10 self-serve upgrades to a paid plan
 - 2 B2B deals, the first the company closed
 - Resume only: 350% increase in qualified website traffic
-- Transcript only, and useful for texture rather than as a headline: 50 to 100
-  new users a week, sustained for months
+- Roughly 120 to 150 new users a week through the May and June plateau, per the
+  chart on the case study. In conversation Tim recalled this as "fifty to a
+  hundred a week." Cite the chart, since that is what the visitor can see.
 
 **Agolo to Implicit rebrand** (`/the-work/agolo-implicit-repositioning`)
 
@@ -539,7 +540,10 @@ The only figures Timbot may state, each tied to where it appears.
 
 ## 11. Known discrepancies, resolve before launch
 
-1. **Implicit user count.** Site says 2,100. Resume says 2,500+. `[FILL]`
+1. **Implicit user count.** Resolved. 2,500 is the figure everywhere. The case
+   study series, the channel split, the monthly figures, and the chart were all
+   rescaled to it with `scripts/rescale-implicit-signups.py`, so the resume and
+   the site now agree.
 2. **ConstructConnect combined ARR.** Homepage and About say $5.5MM. The case
    study components total $5.6MM. Resume says $5.5M. `[FILL]`
 3. **Early-career organic traffic.** About says 40%. Resume says 38%. `[FILL]`

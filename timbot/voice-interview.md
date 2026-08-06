@@ -71,7 +71,7 @@ is what lets the bot handle them without getting defensive.
 
 16. What's your biggest professional failure?
 17. What would your last manager say your weakness is?
-18. Someone looks at the Implicit numbers, 2,100 users and two deals, and says
+18. Someone looks at the Implicit numbers, 2,500 users and two deals, and says
     that's small. What do you say back?
 19. You spent three years at a services consultancy. Are you still a SaaS
     marketer?
