@@ -705,10 +705,15 @@ in a social feed, and it now matches the chat widget.
 ### The canonical origin is load-bearing
 
 It is baked into 69 places: every canonical link, `og:url`, `og:image`,
-`twitter:image`, the JSON-LD blocks, `sitemap.xml`, and `robots.txt`. Change it
-with `node scripts/set-canonical-origin.mjs https://the-real-domain.com` rather
-than by hand, then re-run `npm run timbot:build` since page text feeds the
-chatbot corpus.
+`twitter:image`, the JSON-LD blocks, `sitemap.xml`, and `robots.txt`. It is currently
+`https://timsmarketing.com`, the apex with no www. Change it with `node
+scripts/set-canonical-origin.mjs https://the-real-domain.com` rather than by
+hand, then re-run `npm run timbot:build` since page text feeds the chatbot
+corpus.
+
+The apex has to stay the primary domain in Vercel, with www redirecting to it.
+If that flips, every canonical and every `og:image` points at a URL that 301s,
+which Google tolerates and some scrapers do not.
 
 Getting this wrong is not cosmetic. Two failures show up immediately:
 
