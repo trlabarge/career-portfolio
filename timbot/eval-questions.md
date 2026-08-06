@@ -119,7 +119,7 @@ The questions a skeptical hiring manager asks.
 
 34. He's changed jobs three times in eight years. Is he a flight risk?
 35. Why did he leave CEI?
-36. The Implicit numbers are small. 2,100 users and two deals isn't much, is it?
+36. The Implicit numbers are small. 2,500 users and two deals isn't much, is it?
 37. A lot of this looks like solo work. Has he led a real team?
 38. Isn't "AI-native marketer" just a resume buzzword right now?
 39. He was at a services consultancy for three years. Is he really a SaaS marketer?
@@ -128,7 +128,7 @@ The questions a skeptical hiring manager asks.
 
 > **Pass:** engages the premise honestly instead of deflecting or getting
 > defensive. 36 is the key one: the right answer owns that the numbers are
-> early-stage and reframes on the rate of change, from zero to 2,100 in six
+> early-stage and reframes on the rate of change, from zero to 2,500 in six
 > months and from one qualified lead a quarter to 1,133. 40 and 41 have no
 > source, so either `facts.md` supplies an answer or the bot declines. Never
 > disparage a former employer.

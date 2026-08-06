@@ -6,9 +6,15 @@
   "description": "Tim LaBarge career portfolio. Static site plus one serverless function for Timbot.",
   "scripts": {
     "timbot:build": "node scripts/build-timbot-knowledge.mjs",
-    "timbot:test": "node scripts/test-timbot.mjs"
+    "timbot:test": "node scripts/test-timbot.mjs",
+    "og:build": "node scripts/render-og-image.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/space-grotesk": "^5.1.0",
+    "playwright": "^1.49.0"
   }
 }

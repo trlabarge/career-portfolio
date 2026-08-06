@@ -1,12 +1,20 @@
-# Timbot source material. These files are the grounding corpus, the recorded
-# transcripts, and the evaluation set. They contain employment detail,
-# unpublished context, and do-not-say rules that should never be fetchable at
-# timlabarge.com/timbot/.
+# Patterns here use gitignore semantics, so a bare `timbot/` would match ANY
+# directory of that name at any depth, including `assets/timbot/`, which is
+# where the avatar lives. That shipped once and broke the image in production.
+# Anchor every directory rule with a leading slash.
+
+# Timbot source material. The grounding corpus, the recorded transcripts, and
+# the evaluation set. Employment detail, unpublished context, and do-not-say
+# rules that should never be fetchable at timlabarge.com/timbot/.
 #
-# The bot does not read them at runtime. `npm run timbot:build` compiles them
+# The bot does not read these at runtime. `npm run timbot:build` compiles them
 # into api/_lib/knowledge.js, which ships inside the serverless function bundle
 # rather than as a static asset, so it is not publicly reachable either.
-timbot/
+/timbot/
 
 # Build tooling. Run locally, committed for provenance, never served.
-scripts/
+/scripts/
+
+# Raw avatar art and its notes. The processed webp beside them does ship.
+/assets/timbot/timbot-avatar-source.webp
+/assets/timbot/README.md

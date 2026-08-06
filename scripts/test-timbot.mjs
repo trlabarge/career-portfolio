@@ -8,6 +8,7 @@
  */
 
 import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
 import {
   parseMessages,
   MAX_CHARS_PER_MESSAGE,
@@ -143,6 +144,66 @@ test('rejects a history that does not end on the user', () => {
 test('rejects whitespace-only input', () => {
   assert.ok(parseMessages({ messages: [{ role: 'user', content: '   \n  ' }] }).error);
 });
+
+console.log('\ndeploy assets');
+
+/**
+ * Every asset the widget references must exist AND survive .vercelignore.
+ *
+ * This exists because a bare `timbot/` rule in .vercelignore matched
+ * `assets/timbot/` as well as the intended root folder, so the avatar was
+ * committed, present locally, and missing in production. Nothing catches that
+ * short of loading the deployed page.
+ */
+{
+  const root = new URL('..', import.meta.url);
+  const readText = (rel) => readFileSync(new URL(rel, root), 'utf8');
+
+  const rules = readText('.vercelignore')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'));
+
+  /** Approximates gitignore matching for the rule shapes we actually use. */
+  function ignored(path) {
+    return rules.some((rule) => {
+      const anchored = rule.startsWith('/');
+      const bare = (anchored ? rule.slice(1) : rule).replace(/\/$/, '');
+      const isDir = rule.endsWith('/');
+
+      if (anchored) {
+        return isDir ? path.startsWith(`${bare}/`) : path === bare;
+      }
+      // Unanchored rules match at any depth, which is the trap.
+      return isDir
+        ? path === bare || path.startsWith(`${bare}/`) || path.includes(`/${bare}/`)
+        : path === bare || path.endsWith(`/${bare}`);
+    });
+  }
+
+  const sources = ['js/timbot.js', 'css/style.css', 'ask/index.html'];
+  const referenced = new Set();
+
+  for (const file of sources) {
+    const text = readText(file);
+    for (const match of text.matchAll(/['"(](\/assets\/[^'")\s]+)['")]/g)) {
+      referenced.add(match[1].slice(1));
+    }
+  }
+
+  test('the widget references at least one asset', () => {
+    assert.ok(referenced.size > 0, 'no /assets/ paths found, the scan is broken');
+  });
+
+  for (const path of referenced) {
+    test(`${path} exists`, () => {
+      assert.ok(existsSync(new URL(path, root)), 'missing from the repo');
+    });
+    test(`${path} is not excluded from the deploy`, () => {
+      assert.ok(!ignored(path), 'matched a .vercelignore rule, it would 404 in production');
+    });
+  }
+}
 
 console.log('\nhandler guards');
 
