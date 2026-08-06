@@ -693,12 +693,31 @@ The site is checked at 320x640, 360x640, 360x800, 390x844, 430x932 and
 - Add the new URL to `sitemap.xml`.
 
 The social share image `/assets/og-image.png` (1200x630) is generated from
-`/assets/og-image.source.html` by rendering it in a 1200x630 headless Chromium
-viewport and screenshotting. Edit the source HTML and re-render to update it.
+`/assets/og-image.source.html` by `node scripts/render-og-image.mjs`, which
+renders it in a headless Chromium viewport and screenshots it. Edit the source
+and re-render. The script refuses to write a file if Space Grotesk did not
+load, since a card that silently falls back to a system sans stops looking like
+the site, so run it somewhere with access to Google Fonts.
 
-The canonical production origin used throughout is `https://timlabarge.com`.
-Update it everywhere (meta tags, JSON-LD, sitemap, robots) if the real domain
-differs.
+The card carries the Timbot avatar illustration. A face outperforms a text card
+in a social feed, and it now matches the chat widget.
+
+### The canonical origin is load-bearing
+
+It is baked into 69 places: every canonical link, `og:url`, `og:image`,
+`twitter:image`, the JSON-LD blocks, `sitemap.xml`, and `robots.txt`. Change it
+with `node scripts/set-canonical-origin.mjs https://the-real-domain.com` rather
+than by hand, then re-run `npm run timbot:build` since page text feeds the
+chatbot corpus.
+
+Getting this wrong is not cosmetic. Two failures show up immediately:
+
+- A canonical pointing at a domain you do not serve tells Google the real
+  version of every page lives elsewhere.
+- An `og:image` the scraper cannot fetch makes LinkedIn and iMessage fall back
+  to hunting the page for the largest image available, which on this site means
+  a logo from the brand marquee. That shipped once and put the Hugo Boss
+  wordmark on a LinkedIn share.
 
 ## Site architecture
 
