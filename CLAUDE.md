@@ -699,8 +699,10 @@ and re-render. The script refuses to write a file if Space Grotesk did not
 load, since a card that silently falls back to a system sans stops looking like
 the site, so run it somewhere with access to Google Fonts.
 
-The card carries the Timbot avatar illustration. A face outperforms a text card
-in a social feed, and it now matches the chat widget.
+The card carries the TL mark, in a sage rounded-square badge, set directly in
+markup and CSS (a `.face` div with a `.mark` span, no image file) so the
+render script never depends on an asset existing on disk. It matches the
+favicon and the Timbot avatar.
 
 ### The canonical origin is load-bearing
 
@@ -913,10 +915,12 @@ hand. Sections B, G, and H are launch blockers there.
 
 ### Known gaps
 
-- The avatar is `/assets/about/player-coach-coach.webp` cropped to its top with
-  `object-position: 50% 8%`, since that art is a full figure. A dedicated
-  head-and-shoulders illustration in the same ink-and-watercolor style would
-  look markedly better and is a drop-in replacement.
+- The avatar is `/assets/timbot/timbot-avatar.svg`, the same TL mark as the
+  favicon (sage rounded square, off-white "TL", scaled 3x for crispness at
+  the widget's sizes) rather than an illustrated face. It replaced an earlier
+  cropped-illustration avatar. A dedicated head-and-shoulders illustration in
+  an ink-and-watercolor style, matching the About page's player/coach art,
+  would be a stronger drop-in replacement if that art ever gets made.
 - Rate limiting in `/api/chat.js` is an in-memory map, which means per
   serverless instance. It is a speed bump, not a wall. Move it to Vercel KV or
   Upstash before the URL sees real traffic.
