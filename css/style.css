@@ -18,6 +18,7 @@
   --color-text-muted: #5A5A56;  /* secondary text on off-white */
   --color-sage-dark: #3B5642;   /* darker sage for hover states */
   --color-terracotta-dark: #8F5241;
+  --color-terracotta-tint: #F0DED6; /* light terracotta, company-type chips */
   --color-cream: #F2EFE7;       /* slightly deeper warm tone for panels */
 
   /* Typography */
@@ -2625,6 +2626,15 @@ html:not(.js) .pcoach__slider {
   padding: 0.3rem 0.7rem;
 }
 
+/* Company-type chip. Sage chips say what the work was, terracotta chips say
+   who it was for, so the two families have to stay visually distinct. The
+   tint is deliberate: solid terracotta is reserved for CTAs and the bento
+   hero card, and ten solid pills across two pages would spend that signal. */
+.work-card__tag--type {
+  color: var(--color-terracotta-dark);
+  background-color: var(--color-terracotta-tint);
+}
+
 /* Homepage bento showcase ------------------------------------------------- */
 .work-grid--bento {
   grid-template-columns: 1.05fr 1fr;
@@ -2635,6 +2645,25 @@ html:not(.js) .pcoach__slider {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+/* A bare chip in a flex column would stretch to the card width, and pushing
+   it down with auto margin is what lines the chips up across a row when the
+   descriptions above them differ in length. Same trick as .icon-card__when. */
+.work-grid--bento .work-card__tag--type {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* The hero card's own field is solid terracotta, so the tinted chip would
+   read as tonal against it. Off-white fill separates it instead. */
+.work-card--hero .work-card__tag--type {
+  background-color: var(--color-bg);
+  margin-top: 0;
+}
+
+.work-card--hero .work-card__foot .work-card__tag--type {
+  align-self: flex-start;
 }
 
 .work-card__eyebrow {

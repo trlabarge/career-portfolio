@@ -9,6 +9,40 @@ Head of Marketing, and CMO roles at growth-stage SaaS companies (Series A to C).
 This is a career portfolio, not a lead-gen or consulting site. It is also open to
 select fractional and advisory work.
 
+## The positioning, and why AI runs through it
+
+The site's central claim is that Tim has spent the last four years bringing AI
+products to market, two at CEI and two at Implicit. That claim is load-bearing
+and it changed the site in 2026-08 after an advisor pointed out that the
+evidence for it was already here, just filed under labels that hid it.
+
+Two things follow, and both are easy to undo by accident.
+
+- **Commercialization is the claim, not tooling.** Tool fluency (Claude Code in
+  the hero, the AI cluster in the constellation, the LLM-search capability
+  panel) is the abundant claim that every marketer makes. Having shipped AI
+  go-to-market three times is the scarce one. Copy should lead with the second
+  and let the first support it. Do not let a rewrite invert that order.
+- **Three of the five case studies are AI go-to-market, across two company
+  types.** Implicit twice (a PLG launch from zero and the Agolo repositioning),
+  both at a pre-revenue AI-native startup, plus CEI Clairvoyance at a mid-size
+  tech and AI services firm. Naming both types is what shows range. Dropping
+  the services firm makes him read as an early-stage specialist, which is the
+  exact undersell the change was made to fix.
+
+There is deliberately **no AI nav item and no AI section**. The claim is about
+who he is, so it lives in the title tag, the hero subhead, the work grid, the
+About page, and the structured data. A nav item would read as a service line,
+which undercuts the full-time-role intent, and it would date badly. A
+perspective/POV page on AI in GTM is the one addition that would earn a nav
+slot later, and the agreed sequence is to build it as a single page first with
+no nav item, then promote it only if it gets read. Name it Perspective or
+Notes, never AI.
+
+`timbot/persona.md` carries a "What to lead with" section encoding the same
+rules for the chatbot, including the line Tim does not cross (he is a marketer
+who commercialized AI, not an ML engineer). Keep the two in sync.
+
 ## Voice and style rules
 
 Follow these on every piece of copy written for this site.
@@ -582,6 +616,36 @@ Components added for this page, both in `/css/style.css`:
   trim-to-bbox + white-strip (if opaque) + downscale + PNG-export steps
   against a replacement source; there is no build step wired up for this,
   it was done manually with Pillow during asset intake.
+- Case study cards carry two chip families and the distinction is the whole
+  point. `.work-card__tag` (sage tint, sage-dark text) says what the work was.
+  `.work-card__tag--type` (terracotta tint, terracotta-dark text) says what
+  kind of company it was for, and it exists so the AI throughline is scannable
+  without reading a single card. The three values are `AI-Native Startup`,
+  `Tech/AI Services Firm`, and `B2B SaaS`, Title Case to match the existing
+  discipline tags. They appear on both the homepage bento and `/the-work`, and
+  the two lists must stay in sync.
+  The tint is deliberate. Solid terracotta is reserved for CTAs and the bento
+  hero card, and ten solid pills across two pages would spend that signal, so
+  `--color-terracotta-tint` (`#F0DED6`) was added for this. `#8F5241` on it is
+  5.1:1, which passes AA at the chip's 0.72rem size. Because the pill carries
+  its own fill it stays legible on the sage Agolo card with no variant. The one
+  variant that IS needed is on `.work-card--hero`, whose field is solid
+  terracotta, where the fill swaps to off-white so the chip does not read as
+  tonal against its own hue.
+  In the bento the chip takes `align-self: flex-start` (a bare span in a flex
+  column would stretch to the card width) and `margin-top: auto`, which is what
+  lines the chips up across a row when the copy above them differs in length.
+  Same trick as `.icon-card__when`.
+- The homepage bento (`.work-grid--bento`) holds five cards, not four. The
+  ConstructConnect hero spans two rows in column one, Implicit and CEI
+  Clairvoyance stack beside it, and row three is SEO next to the sage Agolo
+  card. That placement is pure grid auto-flow given the hero's `grid-row: span
+  2`, so it needs no explicit row/column rules and it survives reordering only
+  if the hero stays first in the DOM. Adding CEI Clairvoyance is what broke the
+  old four-card arrangement, since the sage card used to be full width. It
+  dropped `--wide` to half width to close the hole. The `.work-card--wide`
+  rules are now unused and were kept for a possible sixth study rather than
+  deleted.
 - Brand strip (`.proof`) is a full-bleed, seamlessly looping marquee, not a
   static wrapped row: `.proof__track` (`overflow: hidden`, edge fade via
   `mask-image`) contains one `.proof__logos` flex row holding the full logo
@@ -928,6 +992,19 @@ hand. Sections B, G, and H are launch blockers there.
   genuinely useful intelligence and worth capturing, anonymised.
 
 ## Known placeholders to replace later
+
+- **The CEI AI pipeline figure disagrees with itself and needs one answer.**
+  The homepage bento card reads "Millions in AI project pipeline" on Tim's
+  instruction. Everywhere else that engagement is `$1MM+`, which is the figure
+  the case study, its meta description, the `/the-work` card headline, and
+  Timbot's ledger all carry. "Millions" asserts at least two, so the homepage
+  currently claims more than the case study one click below it, and the corpus
+  carries both, which is the exact situation the never-inflate-a-number
+  guardrail exists to prevent. It also fights the house rule that specific
+  beats generic, since a real `$3MM+` would be both more precise and a bigger
+  claim than the word. Resolve it by getting the actual number from Tim, then
+  rolling it through all four locations at once. Do not leave the two in
+  disagreement.
 
 - Homepage capability panel 04 ("A leader people want to work for") has no
   third-party evidence. The panel shows Tim's operating model, which is
