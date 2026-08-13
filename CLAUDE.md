@@ -1013,6 +1013,12 @@ Rules that are load-bearing.
 - **Every name links to that person's LinkedIn profile.** A quote a recruiter
   can verify in one click is worth more than one they cannot, which is the
   whole reason the links are there and are visibly underlined rather than bare.
+- **Attributions are past tense and name the shared company.** Four of them
+  read "Worked with Tim at X, where he was Y". The title is the role that
+  person held at the time, not their role today, and the phrasing exists so a
+  reader cannot mistake it for a current one. Henry's says "Former Chief
+  Marketing Officer" and Jake's says "worked with Tim at ConstructConnect", so
+  both already carry it. Do not rewrite any of these into a bare title.
 - **Four of the six are trimmed** from longer notes. Trims cut on sentence and
   paragraph boundaries only, never mid-sentence, so no ellipses are needed and
   nobody's meaning is sharpened. `timbot/facts.md` §15 carries both the site
@@ -1027,7 +1033,14 @@ Rules that are load-bearing.
 
 `.testimonial--pair` is the two-up variant, currently only on `/about`. Two
 display-size quotes centered side by side read as a shouting match, so the
-variant goes left-aligned and one step down in type. Above 720px it uses
+variant goes left-aligned and one step down in type. Each figure carries a
+gold left rule running its full height, quote and attribution together. That
+is load-bearing rather than decorative. Without it the two quotes are the same
+white-on-sage treatment with only a gap between them and they read as one
+continuous passage, which is exactly how the first pass shipped and had to be
+fixed. The stacked layout under 720px takes a full `--space-lg` row gap for
+the same reason, since there the two follow each other in reading order.
+Above 720px it uses
 subgrid so both quotes share a row and both attributions share the next,
 which is what lines the two **names** up. The flex fallback bottom-aligns
 instead, lining up the last line of the roles, so the names drift apart

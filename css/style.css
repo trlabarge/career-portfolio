@@ -2061,10 +2061,17 @@ html:not(.js) .pcoach__slider {
   margin-top: var(--space-lg);
 }
 
+/* Two quotes in the same white-on-sage treatment sitting side by side read as
+   one continuous passage, since nothing marks where the first ends and the
+   second begins. The gold left rule bounds each one, and it is the same
+   device .icon-card__when uses. It runs the full height of the figure, quote
+   and attribution together, so each person is visibly one block. */
 .testimonial--pair figure {
   margin: 0;
   display: flex;
   flex-direction: column;
+  border-left: 2px solid var(--color-gold);
+  padding-left: var(--space-md);
 }
 
 .testimonial--pair blockquote {
@@ -2117,10 +2124,13 @@ html:not(.js) .pcoach__slider {
   }
 }
 
+/* Stacked, the two quotes need more air between them than the desktop column
+   gap gives, since here they follow each other in reading order and a tight
+   gap is exactly what makes them read as one quote. */
 @media (max-width: 720px) {
   .testimonial__pair {
     grid-template-columns: 1fr;
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
 }
 

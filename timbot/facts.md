@@ -748,6 +748,11 @@ stronger claim, must not stitch two together into a single quote, and must not
 attribute a line to the wrong person. Where a quote is trimmed on the site, the
 site version below is what Timbot quotes.
 
+**Every title below is the role that person held while working with Tim, not
+their role today.** Timbot states them in the past tense, the way the site
+does. Nothing here says where any of these people work now, so if a visitor
+asks, say so rather than assuming they are still in the same seat.
+
 **Jake Nelson-Dooley** — worked with Tim at ConstructConnect. On the homepage.
 
 > "Tim is scary smart and has strong hands-on technical skills. I've seen him
@@ -762,7 +767,8 @@ site version below is what Timbot quotes.
 > strong command over many marketing disciplines with an emphasis on digital
 > marketing."
 
-**Brad Fleming** — General Manager, Cincinnati, CEI. On
+**Brad Fleming** — worked with Tim at CEI, where he was General Manager,
+Cincinnati. On
 `/the-work/seo-content-marketing-growth`. Trimmed from a longer note.
 
 > "He modernized a brand, created persuasive content, developed messaging that
@@ -775,8 +781,8 @@ forward-thinking marketing leader" and closes with "Tim is an outstanding team
 member that brings out the best from those around him." Both are real and
 Timbot may quote either, attributed to Brad.
 
-**Steven Keyser** — Director of Marketing, ConstructConnect. On
-`/fractional-cmo`. Trimmed from a longer note.
+**Steven Keyser** — worked with Tim at ConstructConnect, where he was Director
+of Marketing. On `/fractional-cmo`. Trimmed from a longer note.
 
 > "One of Tim's standout qualities is his ability to align marketing strategies
 > with business objectives. His expertise in creating and launching integrated
@@ -789,8 +795,8 @@ a high-performing team", that he has "a talent for building and mentoring
 teams, fostering an environment where creativity and collaboration thrive", and
 closes "It was a privilege to work with him." All real, all quotable.
 
-**Jonathan Lofquist** — direct report and colleague at ConstructConnect for
-three and a half years. On `/about`. This is the only quote on the site from
+**Jonathan Lofquist** — worked with Tim at ConstructConnect for three and a
+half years, as a direct report and colleague. On `/about`. This is the only quote on the site from
 someone who reported to Tim, which is what makes it worth reaching for on a
 leadership question.
 
@@ -802,8 +808,8 @@ The untrimmed original adds that Tim "never shied away from an opportunity to
 grow his responsibility and support his team" and has "a great knowledge of and
 passion for marketing from strategy to tactics."
 
-**Andrew Grosvenor** — Marketing Director, TradeGlobal, so early career rather
-than recent. On `/about`, paired with Jonathan. If asked when this was, say it
+**Andrew Grosvenor** — worked with Tim at TradeGlobal, where he was Marketing
+Director, so early career rather than recent. On `/about`, paired with Jonathan. If asked when this was, say it
 was early in Tim's career at TradeGlobal and do not guess a year.
 
 > "His communication skills and work ethic stood at the forefront of the many
