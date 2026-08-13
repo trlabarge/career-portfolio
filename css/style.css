@@ -2029,6 +2029,101 @@ html:not(.js) .pcoach__slider {
   color: var(--color-bg);
 }
 
+/* Every attributed name links to that person's LinkedIn profile. A quote a
+   recruiter can verify in one click is worth more than one they cannot, so
+   the link is deliberately visible rather than a bare-looking name. Gold
+   underline against the sage field, filling in on hover. */
+.testimonial cite a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.2s var(--ease-out);
+}
+
+.testimonial cite a:hover,
+.testimonial cite a:focus-visible {
+  color: var(--color-gold);
+}
+
+/* Two-up variant, used on /about to run a direct report and a peer side by
+   side. Left-aligned and a step down in type, since two display-size quotes
+   centered next to each other read as a shouting match rather than a pair. */
+.testimonial--pair {
+  text-align: left;
+}
+
+.testimonial__pair {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.testimonial--pair figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial--pair blockquote {
+  margin: 0;
+  max-width: none;
+  font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+  line-height: 1.4;
+}
+
+.testimonial--pair figcaption {
+  margin-top: auto;
+  padding-top: var(--space-md);
+}
+
+/* The base .testimonial cite carries its own margin-top; the figcaption owns
+   that spacing here instead, so zero it out or the gap doubles. */
+.testimonial--pair cite {
+  margin-top: 0;
+}
+
+/* Two columns only above 720px, so subgrid is scoped there too. In the single
+   column below it there is nothing to align across, and the flex fallback is
+   already the right behaviour. */
+@media (min-width: 721px) {
+  /* Subgrid puts both quotes in a shared row and both attributions in
+     another, so the row sizes to the taller quote and the two NAMES line up.
+     The flex fallback bottom-aligns instead, which lines up the last line of
+     the roles and therefore misaligns the names whenever one role wraps and
+     the other does not. Neither margin-top:auto nor flex:1 on the blockquote
+     can fix that, since both consume the leftover space and bottom-anchor the
+     caption. The row has to be shared across the two figures.
+     row-gap is zeroed because the figcaption's own padding-top owns the
+     quote-to-name spacing; leaving the column gap on the rows too stacks the
+     two and opens a visible hole under the shorter quote. */
+  @supports (grid-template-rows: subgrid) {
+    .testimonial__pair {
+      grid-template-rows: auto auto;
+      row-gap: 0;
+    }
+
+    .testimonial--pair figure {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 2;
+    }
+
+    .testimonial--pair figcaption {
+      margin-top: 0;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .testimonial__pair {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
 /* Closing CTA ------------------------------------------------------------- */
 .cta-split {
   display: grid;

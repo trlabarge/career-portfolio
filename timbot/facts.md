@@ -740,19 +740,92 @@ between us."
 
 ## 15. Testimonials
 
-Only one exists.
+Six exist. Each is quoted on the site at the page listed, and each name links
+to that person's LinkedIn profile there.
+
+Timbot may quote any of them verbatim. It must not paraphrase one into a
+stronger claim, must not stitch two together into a single quote, and must not
+attribute a line to the wrong person. Where a quote is trimmed on the site, the
+site version below is what Timbot quotes.
+
+**Jake Nelson-Dooley** — worked with Tim at ConstructConnect. On the homepage.
 
 > "Tim is scary smart and has strong hands-on technical skills. I've seen him
 > build marketing campaigns from soup to nuts. He genuinely cares about the
 > customers, and the people on his team. He's a natural leader."
-> — Jake Nelson-Dooley, worked with Tim at ConstructConnect
 
-Timbot may quote it, must not paraphrase it into a stronger claim, and must not
-imply others exist.
+**Henry Purdy** — Former Chief Marketing Officer, ConstructConnect. On
+`/the-work/constructconnect-conversion-optimization`.
 
-`[FILL: the CEI marketing analyst he managed for three years is an obvious ask.
-A quote from someone who reported to you is the single highest-value addition to
-this site.]`
+> "Tim successfully drove large volume demand generation for a significant
+> portion of the business, in addition to leading others on the team. He has a
+> strong command over many marketing disciplines with an emphasis on digital
+> marketing."
+
+**Brad Fleming** — General Manager, Cincinnati, CEI. On
+`/the-work/seo-content-marketing-growth`. Trimmed from a longer note.
+
+> "He modernized a brand, created persuasive content, developed messaging that
+> clearly defined high customer value. Tim showed his leadership marketing the
+> company, business groups, products, and service lines. He also brought
+> leading edge tools for marketing campaigns that drove new logo engagement."
+
+The untrimmed original also opens by calling Tim "a very strategic and
+forward-thinking marketing leader" and closes with "Tim is an outstanding team
+member that brings out the best from those around him." Both are real and
+Timbot may quote either, attributed to Brad.
+
+**Steven Keyser** — Director of Marketing, ConstructConnect. On
+`/fractional-cmo`. Trimmed from a longer note.
+
+> "One of Tim's standout qualities is his ability to align marketing strategies
+> with business objectives. His expertise in creating and launching integrated
+> marketing campaigns was instrumental in generating demand, increasing lead
+> volume, and boosting customer retention. His ability to manage large budgets
+> and complex projects with precision is impressive."
+
+The untrimmed original also says his impact was "transformative", that he "led
+a high-performing team", that he has "a talent for building and mentoring
+teams, fostering an environment where creativity and collaboration thrive", and
+closes "It was a privilege to work with him." All real, all quotable.
+
+**Jonathan Lofquist** — direct report and colleague at ConstructConnect for
+three and a half years. On `/about`. This is the only quote on the site from
+someone who reported to Tim, which is what makes it worth reaching for on a
+leadership question.
+
+> "Working with Tim you will quickly observe his thoughtfulness and ability to
+> build consensus and lead a team. He did a fantastic job of navigating change
+> within the organization through his expert ability to communicate."
+
+The untrimmed original adds that Tim "never shied away from an opportunity to
+grow his responsibility and support his team" and has "a great knowledge of and
+passion for marketing from strategy to tactics."
+
+**Andrew Grosvenor** — Marketing Director, TradeGlobal, so early career rather
+than recent. On `/about`, paired with Jonathan. If asked when this was, say it
+was early in Tim's career at TradeGlobal and do not guess a year.
+
+> "His communication skills and work ethic stood at the forefront of the many
+> other strengths that he brought to the table every single day. His ability to
+> lead by example calls upon himself and his peers to strive for excellence in
+> everything they touch."
+
+The untrimmed original opens "Tim is one of the most well-rounded professionals
+I've had the pleasure of working beside throughout my career" and closes "I
+believe he would be a valuable member to any team he joins."
+
+Which one to reach for. Leadership and management questions go to Jonathan
+first, since he reported to Tim, then Andrew or Jake. Demand generation and
+execution go to Henry. Brand, content, and messaging go to Brad. Budget
+ownership and tying marketing to business objectives go to Steven.
+
+Still missing, and worth asking for: a quote from a **CEI** direct report (the
+marketing analyst he managed for three years is the obvious ask), and anything
+at all from someone who **bought advisory or fractional work**, which the
+`/fractional-cmo` page still has none of. Steven's quote sits on that page
+because it is the closest match in register, not because it is fractional
+evidence, and Timbot must not present it as such.
 
 ---
 
