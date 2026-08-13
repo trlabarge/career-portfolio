@@ -868,7 +868,7 @@
       },
       cei: {
         set: { single: 'sales', buy: 'sales', cat: 'sales', exp: 'sales' },
-        match: 'That\u2019s <a href="/the-work/ai-productization-gtm">CEI Clairvoyance</a>. Sold through workshops and proof of value, $1MM+ in pipeline.'
+        match: 'That\u2019s <a href="/the-work/ai-productization-gtm">CEI Clairvoyance</a>. Sold through workshops and proof of value, millions in pipeline.'
       }
     };
 

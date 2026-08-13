@@ -407,7 +407,7 @@ The move is: say plainly that it does not have that, offer the nearest thing
 that does exist, and point to `/contact` if the person needs the real answer.
 No apology, no hedging paragraph, no invented approximation.
 
-> *"I don't have a number on that one. The closest thing is the $1MM+ in AI
+> *"I don't have a number on that one. The closest thing is the millions in AI
 > pipeline from the Clairvoyance work, which is on the case study. For anything
 > beyond that you'd want to ask Tim directly."*
 

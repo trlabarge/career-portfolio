@@ -993,19 +993,6 @@ hand. Sections B, G, and H are launch blockers there.
 
 ## Known placeholders to replace later
 
-- **The CEI AI pipeline figure disagrees with itself and needs one answer.**
-  The homepage bento card reads "Millions in AI project pipeline" on Tim's
-  instruction. Everywhere else that engagement is `$1MM+`, which is the figure
-  the case study, its meta description, the `/the-work` card headline, and
-  Timbot's ledger all carry. "Millions" asserts at least two, so the homepage
-  currently claims more than the case study one click below it, and the corpus
-  carries both, which is the exact situation the never-inflate-a-number
-  guardrail exists to prevent. It also fights the house rule that specific
-  beats generic, since a real `$3MM+` would be both more precise and a bigger
-  claim than the word. Resolve it by getting the actual number from Tim, then
-  rolling it through all four locations at once. Do not leave the two in
-  disagreement.
-
 - Homepage capability panel 04 ("A leader people want to work for") has no
   third-party evidence. The panel shows Tim's operating model, which is
   self-asserted by nature. The only real evidence on the site is the Jake
@@ -1027,7 +1014,16 @@ hand. Sections B, G, and H are launch blockers there.
   just hidden, so this needs a fresh layout rather than an unhide).
 - The CEI Clairvoyance case study has no closed-won revenue, deal count, or
   workshop/proof-of-value engagement counts, since none was available. It
-  leads on the $1MM+ pipeline number instead. The recruiting lift is written
+  leads on the pipeline number instead, stated as "Millions in AI project
+  pipeline" on Tim's instruction (2026-08). It previously read `$1MM+`
+  everywhere. There is no more precise figure on record, so nothing on the
+  site or in Timbot may resolve "millions" to a specific number. If a real
+  figure ever surfaces, it replaces the word in all nine places at once. They
+  are the homepage bento card, the `/the-work` card headline, the case study's
+  meta/og/twitter/JSON-LD descriptions, its lede, both of its `.metric__value`
+  stats, the Fractional CMO page's work card, the `.lever` panel copy in
+  `/js/main.js`, and the `facts.md` ledger. Grep for "millions" rather than
+  trusting this list. The recruiting lift is written
   qualitatively for the same reason, on Tim's explicit instruction, so do not
   invent a figure for it. The seven AI pages are named in the copy but only
   `https://cei.ai/` is linked, since the deep URLs could not be verified (the
