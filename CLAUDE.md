@@ -991,19 +991,79 @@ hand. Sections B, G, and H are launch blockers there.
 - Nothing logs the conversations. The questions recruiters actually ask are
   genuinely useful intelligence and worth capturing, anonymised.
 
+## Testimonials
+
+Six quotes, one per person, each on exactly one page. Spreading them out was
+the point. Before 2026-08 the site ran two quotes and used Jake's twice, which
+is the thing a reader notices and discounts.
+
+| Person | Page | What it evidences |
+| --- | --- | --- |
+| Jake Nelson-Dooley | `/` | Range and hands-on ability |
+| Henry Purdy | `/the-work/constructconnect-conversion-optimization` | Demand gen at volume |
+| Brad Fleming | `/the-work/seo-content-marketing-growth` | Brand, content, messaging |
+| Steven Keyser | `/fractional-cmo` | Business alignment, budget ownership |
+| Jonathan Lofquist | `/about` | Leadership, from a direct report |
+| Andrew Grosvenor | `/about` | Leadership, from a peer |
+
+Rules that are load-bearing.
+
+- **One quote, one page.** Do not reuse a person across two pages to fill a
+  gap. If a page needs a quote and none fits, the honest move is no quote.
+- **Every name links to that person's LinkedIn profile.** A quote a recruiter
+  can verify in one click is worth more than one they cannot, which is the
+  whole reason the links are there and are visibly underlined rather than bare.
+- **Attributions are past tense and name the shared company.** Four of them
+  read "Worked with Tim at X, where he was Y". The title is the role that
+  person held at the time, not their role today, and the phrasing exists so a
+  reader cannot mistake it for a current one. Henry's says "Former Chief
+  Marketing Officer" and Jake's says "worked with Tim at ConstructConnect", so
+  both already carry it. Do not rewrite any of these into a bare title.
+- **Four of the six are trimmed** from longer notes. Trims cut on sentence and
+  paragraph boundaries only, never mid-sentence, so no ellipses are needed and
+  nobody's meaning is sharpened. `timbot/facts.md` §15 carries both the site
+  version and a summary of what was cut, so Timbot can quote the fuller note
+  if asked. Keep those in sync if a quote on a page is re-trimmed.
+- **Blockquotes carry no quotation marks.** The component's scale and field do
+  that work. Jake's had straight ASCII quotes until 2026-08, the only ones on
+  the site, and they were removed for consistency.
+- All six use the same `figure > blockquote` + `figcaption > cite` markup. The
+  ConstructConnect page used a `blockquote > p` + sibling `cite` variant until
+  2026-08, normalized then.
+
+`.testimonial--pair` is the two-up variant, currently only on `/about`. Two
+display-size quotes centered side by side read as a shouting match, so the
+variant goes left-aligned and one step down in type. Each figure carries a
+gold left rule running its full height, quote and attribution together. That
+is load-bearing rather than decorative. Without it the two quotes are the same
+white-on-sage treatment with only a gap between them and they read as one
+continuous passage, which is exactly how the first pass shipped and had to be
+fixed. The stacked layout under 720px takes a full `--space-lg` row gap for
+the same reason, since there the two follow each other in reading order.
+Above 720px it uses
+subgrid so both quotes share a row and both attributions share the next,
+which is what lines the two **names** up. The flex fallback bottom-aligns
+instead, lining up the last line of the roles, so the names drift apart
+whenever one role wraps and the other does not. Neither `margin-top: auto`
+nor `flex: 1` on the blockquote can fix that on its own, since both consume
+the leftover space and bottom-anchor the caption. The row has to be shared
+across the two figures. `row-gap` is zeroed in the subgrid branch because the
+figcaption's `padding-top` already owns the quote-to-name spacing.
+
 ## Known placeholders to replace later
 
 - Homepage capability panel 04 ("A leader people want to work for") has no
-  third-party evidence. The panel shows Tim's operating model, which is
-  self-asserted by nature. The only real evidence on the site is the Jake
-  Nelson-Dooley quote, already used in the homepage testimonial section and
-  on the Fractional CMO page, so it was deliberately not used a third time
-  inside the panel. Tim has confirmed he can supply more testimonials, names
-  of people who grew under him, and the real team sizes he has led. Any one
-  of those would materially improve this panel. Real team sizes would also
-  replace the generic 1 to 12 slider range. A short wall of quotes from
-  former reports would be strictly stronger than the current demo and should
-  replace or sit beside it once the material exists.
+  third-party evidence inside the panel itself. The panel shows Tim's
+  operating model, which is self-asserted by nature. As of 2026-08 the
+  leadership evidence lives on `/about` instead, in the `.testimonial--pair`
+  section directly under "Player coach, literally." (Jonathan Lofquist, a
+  direct report, and Andrew Grosvenor, a peer). That was the cheaper half of
+  the fix. Replacing or flanking the demo itself with a wall of quotes is
+  still the stronger move and is still open, but it means re-measuring the
+  pinned `.cap-demo` / `.cap-stage` heights and picking an interaction
+  register that is not already in use, so it was deliberately left as its own
+  job. Real team sizes would also replace the generic 1 to 12 slider range,
+  and Tim has confirmed he can supply them.
 
 - Proof-strip brand logos are text labels. Real logo files to come.
 - The About page's "Why marketing" section had a dashed-border "Photo coming
@@ -1044,6 +1104,10 @@ hand. Sections B, G, and H are launch blockers there.
   under the "Fractional CMO" label, and no named client, metric, or
   testimonial from that work was available. The page therefore leans entirely
   on full-time-role results and says so in the evidence section rather than
-  implying a fractional track record. It reuses the Jake Nelson-Dooley quote
-  from the homepage. A testimonial from someone who actually bought advisory
-  work would be the single highest-value addition to the page.
+  implying a fractional track record. Its quote is Steven Keyser, Director of
+  Marketing at ConstructConnect, chosen because his lines about aligning
+  marketing to business objectives and managing large budgets are the closest
+  register on record to what a fractional buyer screens for. It is not
+  fractional evidence and must never be presented as such. A testimonial from
+  someone who actually bought advisory work would still be the single
+  highest-value addition to the page.
