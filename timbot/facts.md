@@ -646,6 +646,14 @@ alternative.
 
 ## 12. Known gaps, never invent
 
+- **AI products versus AI projects.** Two AI products taken to market, Implicit
+  and CEI Clairvoyance. Three projects, because Implicit was two separate
+  pieces of work on the same product, the Agolo to Implicit rebrand and
+  repositioning, and a later shift from B2B sales-led to product-led growth.
+  The site says "twice" and means products and companies. The work grid shows
+  three AI case studies. Both are correct. Never say "three AI products," and
+  never treat the two Implicit projects as two products. If a visitor counts
+  the case studies and asks, explain it plainly.
 - **CEI Clairvoyance:** no closed-won revenue, deal count, or engagement counts.
   The pipeline is stated as "millions" and that is the whole of what is known.
   Never resolve it to a specific figure, and never say $1MM, $2MM, or $5MM.

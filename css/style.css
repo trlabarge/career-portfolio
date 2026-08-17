@@ -216,6 +216,23 @@ p {
   color: var(--color-bg);
 }
 
+/* .eyebrow and .lede both hardcode a dark colour for the off-white page, so
+   on a solid field they inherit nothing and render dark-on-dark. Sage tint
+   rather than full off-white keeps them subordinate to the heading, which is
+   the same relationship they have on a light section. .stack sets the same
+   two values scoped to itself and still wins, so that section is unchanged. */
+.section--sage .eyebrow,
+.section--sage .lede,
+.section--terracotta .eyebrow,
+.section--terracotta .lede {
+  color: var(--color-sage-tint);
+}
+
+.section--terracotta .eyebrow,
+.section--terracotta .lede {
+  color: var(--color-cream);
+}
+
 /* Available to screen readers, removed from the visual layout. */
 .visually-hidden {
   position: absolute;
@@ -1766,6 +1783,166 @@ html:not(.js) .pcoach__slider {
   font-size: 0.8rem;
   line-height: 1.5;
   color: rgba(220, 229, 218, 0.65);
+}
+
+/* AI go-to-market: the before/after shift ---------------------------------
+   The one panel in the section whose numbers are real rather than modelled,
+   which is why it carries the loud gold .cap-demo__chip instead of the quiet
+   outline variant the other four use.
+
+   Its interaction register is a two-state commit flip, deliberately not a
+   register already in use (legend toggles on 01, surface tabs on 02, a radio
+   board on 03, a continuous slider on 04). One button moves both rows at
+   once from what the company was selling to what a buyer could actually
+   purchase. A draggable before/after divider was the alternative and was
+   rejected as mechanically too close to panel 04's range input.
+
+   The resolved state ships in the markup, so with no JS the panel reads as a
+   finished before/after with both results visible. aiShift() adds .is-armed
+   on init to hide the payoff, and the button removes it. */
+.ashift {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ashift__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ashift__row {
+  border-left: 2px solid rgba(201, 160, 81, 0.5);
+  padding-left: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.ashift__co {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-sage-tint);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.ashift__kind {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(220, 229, 218, 0.55);
+}
+
+.ashift__pair {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.ashift__state {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+.ashift__state--before {
+  color: rgba(220, 229, 218, 0.5);
+}
+
+.ashift__state--after {
+  color: var(--color-cream);
+  font-weight: 500;
+}
+
+/* Rotated square, same construction as the .chain and .path arrowheads. */
+.ashift__arrow {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--color-gold);
+  border-right: 2px solid var(--color-gold);
+  transform: rotate(45deg);
+}
+
+.ashift__result {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(220, 229, 218, 0.7);
+}
+
+.ashift__num {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-gold);
+  margin-right: 0.35rem;
+}
+
+.ashift__btn {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-sage-tint);
+  background: transparent;
+  border: 1px solid rgba(220, 229, 218, 0.35);
+  border-radius: 999px;
+  padding: 0.5rem 0.95rem;
+  min-height: 38px;
+  cursor: pointer;
+  transition: border-color var(--dur, 0.25s) ease, color var(--dur, 0.25s) ease;
+}
+
+.ashift__btn:hover,
+.ashift__btn:focus-visible {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.ashift__btn[aria-pressed="true"] {
+  border-color: rgba(201, 160, 81, 0.55);
+  color: var(--color-gold);
+}
+
+.ashift__note {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.65);
+}
+
+/* Armed (pre-flip) state. Only ever set by JS, so no-JS keeps the resolved
+   markup. --row-i staggers the two rows so the flip reads as one movement. */
+.ashift.is-armed .ashift__arrow,
+.ashift.is-armed .ashift__state--after,
+.ashift.is-armed .ashift__result {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.ashift__arrow,
+.ashift__state--after,
+.ashift__result {
+  transition: opacity 0.45s var(--ease-out) calc(var(--row-i, 0) * 140ms),
+    transform 0.45s var(--ease-out) calc(var(--row-i, 0) * 140ms);
 }
 
 /* Featured work card stats ------------------------------------------------- */

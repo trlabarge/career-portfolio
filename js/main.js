@@ -1121,6 +1121,63 @@
     io.observe(root);
   })();
 
+  /* --- AI go-to-market: the before/after shift ---------------------------
+     Two-state commit flip. The resolved state ships in the markup so the
+     panel reads as a finished before/after with no JS, which is why this
+     arms it rather than building it. Once flipped there is nothing left to
+     commit, so the button retires instead of becoming a dead control.
+
+     Under prefers-reduced-motion the panel opens already resolved and never
+     arms, same reasoning as the other panels' auto-sequences. */
+  (function aiShift() {
+    var root = document.querySelector('[data-ai-shift]');
+    if (!root) return;
+    var shift = root.querySelector('.ashift');
+    var btn = root.querySelector('[data-role="flip"]');
+    if (!shift || !btn) return;
+
+    var SHOW = 'Show what changed';
+    var HIDE = 'Show the before';
+
+    // Stagger the two rows so the flip reads as one movement, not two.
+    Array.prototype.slice.call(shift.querySelectorAll('.ashift__row'))
+      .forEach(function (row, i) { row.style.setProperty('--row-i', i); });
+
+    // Two-way rather than one-shot. A button that removes itself changes the
+    // panel's content height, which below 861px (no min-height on the stage)
+    // is a visible jump. Keeping it in flow also lets the flip be replayed.
+    function set(armed) {
+      shift.classList.toggle('is-armed', armed);
+      btn.setAttribute('aria-pressed', String(!armed));
+      btn.textContent = armed ? SHOW : HIDE;
+    }
+
+    btn.addEventListener('click', function () {
+      set(!shift.classList.contains('is-armed'));
+    });
+
+    // Reduced motion opens resolved and never arms, same as the other
+    // panels' auto-sequences. The control still works.
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      set(false);
+      return;
+    }
+
+    set(true);
+
+    // Arm on the way in so the flip is available when the panel is reached,
+    // and resolve on the way out so it is never left stranded mid-argument.
+    var manual = false;
+    btn.addEventListener('click', function () { manual = true; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (manual) return;
+        if (!entry.isIntersecting) set(false);
+      });
+    }, { threshold: 0.4 });
+    io.observe(root);
+  })();
+
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

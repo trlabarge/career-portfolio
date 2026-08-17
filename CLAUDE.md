@@ -30,14 +30,56 @@ Two things follow, and both are easy to undo by accident.
   the services firm makes him read as an early-stage specialist, which is the
   exact undersell the change was made to fix.
 
-There is deliberately **no AI nav item and no AI section**. The claim is about
-who he is, so it lives in the title tag, the hero subhead, the work grid, the
-About page, and the structured data. A nav item would read as a service line,
-which undercuts the full-time-role intent, and it would date badly. A
+There is deliberately **no AI nav item**. A nav item would read as a service
+line, which undercuts the full-time-role intent, and it would date badly. A
 perspective/POV page on AI in GTM is the one addition that would earn a nav
 slot later, and the agreed sequence is to build it as a single page first with
 no nav item, then promote it only if it gets read. Name it Perspective or
 Notes, never AI.
+
+The **no AI section** half of that rule was narrowly overridden in 2026-08,
+after Tim's mentor said the claim was true but too quiet to land. The homepage
+now carries a `section--sage section--narrow` statement band, "Every company is
+being asked to turn what it sells into an AI product." It is a positioning
+argument that hands off to the case studies, not a service line, so it lists no
+deliverables and carries no offer language or CTA. **It sits after the
+capabilities section and before the work grid, and that placement is
+load-bearing**, since putting it any earlier makes the first two screens read
+as an AI specialist ad. It also deliberately carries no cards, because cards
+here duplicate the work grid directly below it.
+
+### Two counts, and they are not the same number
+
+The single easiest thing to garble on this site, because the copy says "twice"
+while the work grid shows three AI case studies. Both are correct.
+
+- **Two AI products taken to market.** Implicit, and CEI Clairvoyance. "Twice"
+  always means this, and it counts products and companies.
+- **Three projects.** Implicit was two distinct pieces of work on the *same*
+  product, the Agolo to Implicit rebrand and repositioning, and a later shift
+  in go-to-market from B2B sales-led to product-led growth.
+- Never write "three AI products," and never treat the two Implicit projects as
+  two products. `timbot/persona.md` and `facts.md` §12 both carry this rule
+  because a visitor who counts the cards will ask.
+
+### The anti-narrowing guardrail
+
+An earlier pass at the 2026-08 messaging work put the AI claim in the H1 and
+made it the whole identity. Tim rejected it: the AI work is the sharpest proof
+inside a broader marketing leadership claim, never a replacement for it. What
+holds that line, and what a future rewrite must not quietly undo:
+
+- The homepage H1 stays a general marketing leadership claim. The AI content
+  lives in the subhead, panel 05, and the band.
+- ConstructConnect stays the bento hero card. It is the biggest number on the
+  site and carries zero AI language, which makes it the breadth proof.
+- Four of the five capability panels have nothing to do with AI. Keep that
+  ratio.
+- No AI language in the testimonial or the closing CTA.
+- Banned phrasings anywhere: "leader in the age of AI", "AI-first marketer",
+  "AI-native leader", "harnessing the power of AI", "the AI revolution". Note
+  "AI-powered" appears on two case study pages as CEI's own real service and
+  keyword names, which is the one sanctioned use.
 
 `timbot/persona.md` carries a "What to lead with" section encoding the same
 rules for the chatbot, including the line Tim does not cross (he is a marketer
@@ -88,6 +130,12 @@ punctuated by confident full-bleed color-field sections.
   section backgrounds (`.section--sage`, `.section--terracotta`), not just small
   touches. Rhythm is white space, then a bold color block, then white again.
   Headings on solid color fields are set to the off-white for contrast.
+  `.eyebrow` and `.lede` both hardcode a dark colour for the off-white page, so
+  they inherit nothing on a color field and used to render dark-on-dark. There
+  is now a global rule lightening both under `.section--sage` and
+  `.section--terracotta`. `.stack` sets the same two values scoped to itself
+  and still wins, so that section is unchanged. Do not "fix" a new color-field
+  section with another one-off override, the global rule already covers it.
 - Warm texture. A faint SVG grain overlays the whole page (`body::before`).
   Layered mountain-inspired flat SVG shapes sit behind the hero.
 - Motion patterns (all in `/js/main.js`, all gated by `prefers-reduced-motion`):
@@ -118,11 +166,13 @@ punctuated by confident full-bleed color-field sections.
     `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
     is the initial text so no-JS still shows it.
   - Scroll-progress bar, injected at the top of `<body>` by JS.
-- Interactive capabilities section (`.capabilities`, the "Four things I bring"
+- Interactive capabilities section (`.capabilities`, the "Five things I bring"
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. All four panels are real interactive demos, see below. Above 861px,
+  item. All five panels are real interactive demos, see below. `capabilities()`
+  in `/js/main.js` is fully generic over `.cap-item` / `.cap-panel`, so adding
+  a panel needs no JS change there. Above 861px,
   where `.cap-stage` is
   sticky, `.cap-demo` and `.cap-stage` are pinned to the height of the
   tallest panel so switching tabs cannot shift the page. Two steps, 535px
@@ -146,8 +196,12 @@ punctuated by confident full-bleed color-field sections.
   itself down.
   Each panel deliberately moves in a different interaction register. Legend
   toggles on 01, surface tabs on 02, a radio board on 03, a continuous
-  slider on 04. Four of the same control would read as a template, so keep
-  a new panel out of a register already in use.
+  slider on 04, a two-state commit flip on 05. Five of the same control would
+  read as a template, so keep a new panel out of a register already in use.
+  Panel 05 was measured against the pinned heights when it was added and fits
+  inside the existing 535px and 590px steps, so neither number moved. On a
+  360px viewport the five-row list measures ~538px, well clear of the ~1000px
+  failure described below. Re-check both if its content grows.
   Panels 02 to 04 carry the `hidden` attribute in the markup and only the
   tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
   back to `display: block`. Without that rule the entire right-hand stage is
@@ -346,6 +400,31 @@ punctuated by confident full-bleed color-field sections.
     radios on panel 03.
     Under `prefers-reduced-motion` the sweep never runs and the panel opens
     at the full team size, already resolved. Dragging still works.
+  - AI go-to-market before/after (`.ashift`, inside panel 05, `data-ai-shift`
+    on the `.cap-demo`). Two rows, Implicit and CEI, each moving from what the
+    company was selling to what a buyer could actually purchase, with the real
+    result underneath. The claim on this panel is that the technology was never
+    the hard part.
+    **This is the one panel whose numbers are real, so it carries the loud gold
+    `.cap-demo__chip` reading "Real engagements" rather than the quiet outline
+    "Illustrative model" the other four use.** That contrast is deliberate. Do
+    not normalize it.
+    The register is a two-state commit flip, one button moving both rows at
+    once. It is two-way rather than one-shot: a button that removes itself
+    changes the panel's content height, which below 861px (where the stage has
+    no `min-height`) is a visible jump. Keeping it in flow also lets the flip
+    be replayed. `aria-pressed` carries the state and the label swaps between
+    "Show the before" and "Show what changed".
+    The resolved state ships in the markup, so with no JS the panel reads as a
+    finished before/after. `aiShift()` in `/js/main.js` adds `.is-armed` to
+    hide the payoff rather than building it, same principle as the static
+    chart SVGs. `--row-i` staggers the two rows so the flip reads as one
+    movement.
+    An IntersectionObserver resolves the panel on the way out so it is never
+    left stranded mid-argument, and any click sets `manual` and stops that,
+    same reasoning as panels 02 and 03. Under `prefers-reduced-motion` the
+    panel opens already resolved and never arms, but the button still works.
+
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
@@ -759,9 +838,15 @@ The site is checked at 320x640, 360x640, 360x800, 390x844, 430x932 and
 The social share image `/assets/og-image.png` (1200x630) is generated from
 `/assets/og-image.source.html` by `node scripts/render-og-image.mjs`, which
 renders it in a headless Chromium viewport and screenshots it. Edit the source
-and re-render. The script refuses to write a file if Space Grotesk did not
-load, since a card that silently falls back to a system sans stops looking like
-the site, so run it somewhere with access to Google Fonts.
+and re-render with `npm run og:build`. The script refuses to write a file if
+Space Grotesk did not load, since a card that silently falls back to a system
+sans stops looking like the site.
+
+It does **not** need network access. The script reads both faces out of
+`node_modules/@fontsource/*` and inlines them as data URIs before
+screenshotting, so the render is offline and deterministic. Run `npm install`
+first. If Playwright cannot find Chromium, pass
+`CHROME_PATH=/opt/pw-browsers/chromium`.
 
 The card carries the TL mark, in a sage rounded-square badge, set directly in
 markup and CSS (a `.face` div with a `.mark` span, no image file) so the
