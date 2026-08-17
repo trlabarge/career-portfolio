@@ -1140,16 +1140,62 @@
     var HIDE = 'Show the before';
 
     // Stagger the two rows so the flip reads as one movement, not two.
-    Array.prototype.slice.call(shift.querySelectorAll('.ashift__row'))
-      .forEach(function (row, i) { row.style.setProperty('--row-i', i); });
+    var rows = Array.prototype.slice.call(shift.querySelectorAll('.ashift__row'));
+    rows.forEach(function (row, i) { row.style.setProperty('--row-i', i); });
+
+    /* The counting number is driven from here rather than with data-count,
+       because the global counters() above observes every [data-count], fires
+       at 0.6 intersection and then unobserves. The panel is hidden until its
+       tab is selected, so that would run the count the moment the tab opens
+       and leave nothing to see on the actual flip. */
+    var nums = Array.prototype.slice
+      .call(shift.querySelectorAll('.ashift__num[data-from][data-to]'))
+      .map(function (el) {
+        return {
+          el: el,
+          from: parseFloat(el.getAttribute('data-from')),
+          to: parseFloat(el.getAttribute('data-to'))
+        };
+      });
+
+    function fmt(v) {
+      return Math.round(v).toLocaleString('en-US');
+    }
+
+    var raf = null;
+    function countTo(resolved, snap) {
+      if (raf) window.cancelAnimationFrame(raf);
+      if (reduceMotion || snap) {
+        nums.forEach(function (n) { n.el.textContent = fmt(resolved ? n.to : n.from); });
+        return;
+      }
+      var dur = 1100;
+      var start = null;
+      raf = window.requestAnimationFrame(function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        nums.forEach(function (n) {
+          var a = resolved ? n.from : n.to;
+          var b = resolved ? n.to : n.from;
+          n.el.textContent = fmt(a + (b - a) * eased);
+        });
+        if (p < 1) raf = window.requestAnimationFrame(step);
+        else raf = null;
+      });
+    }
 
     // Two-way rather than one-shot. A button that removes itself changes the
     // panel's content height, which below 861px (no min-height on the stage)
     // is a visible jump. Keeping it in flow also lets the flip be replayed.
-    function set(armed) {
+    var armedNow = null;
+    function set(armed, snap) {
+      if (armedNow === armed) return;
+      armedNow = armed;
       shift.classList.toggle('is-armed', armed);
       btn.setAttribute('aria-pressed', String(!armed));
       btn.textContent = armed ? SHOW : HIDE;
+      countTo(!armed, snap);
     }
 
     btn.addEventListener('click', function () {
@@ -1159,20 +1205,27 @@
     // Reduced motion opens resolved and never arms, same as the other
     // panels' auto-sequences. The control still works.
     if (reduceMotion || !('IntersectionObserver' in window)) {
-      set(false);
+      set(false, true);
       return;
     }
 
-    set(true);
+    // Snap into the armed state, since the panel is hidden at this point and
+    // an animation nobody can see is just wasted frames.
+    set(true, true);
 
-    // Arm on the way in so the flip is available when the panel is reached,
-    // and resolve on the way out so it is never left stranded mid-argument.
+    /* Resolve on the way out so the panel is never left stranded mid
+       argument. The `seen` guard is load-bearing: the panel ships hidden
+       behind its tab, so the observer's first callback reports
+       isIntersecting false and would otherwise resolve the flip before
+       anyone had opened the tab, leaving nothing to press. */
     var manual = false;
+    var seen = false;
     btn.addEventListener('click', function () { manual = true; });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (manual) return;
-        if (!entry.isIntersecting) set(false);
+        if (entry.isIntersecting) seen = true;
+        else if (seen) set(false);
       });
     }, { threshold: 0.4 });
     io.observe(root);

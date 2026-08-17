@@ -14,7 +14,14 @@
   var ENDPOINT = '/api/chat';
   var STORE_KEY = 'timbot:conversation';
   var OPEN_KEY = 'timbot:open';
+  var WAVE_KEY = 'timbot:waved';
   var MAX_TURNS = 24;
+
+  /* How long someone reads before the launcher waves at them, once a
+     session. Long enough that it does not fire during a bounce, short
+     enough that most readers are still on the page. */
+  var WAVE_DELAY = 20000;
+  var WAVE_LINGER = 6000;
 
   var GREETING_LEAD = 'Hi. I’m not Tim, but I’m pretty close. I’m Timbot.';
 
@@ -61,6 +68,8 @@
   function Timbot() {
     this.messages = load();
     this.streaming = false;
+    this.waveTimer = null;
+    this.waveEnd = null;
     this.build();
     this.render();
 
@@ -71,10 +80,15 @@
     }
 
     try {
-      if (sessionStorage.getItem(OPEN_KEY) === '1') this.open(true);
+      if (sessionStorage.getItem(OPEN_KEY) === '1') {
+        this.open(true);
+        return;
+      }
     } catch (e) {
       /* ignore */
     }
+
+    this.armWave();
   }
 
   Timbot.prototype.build = function () {
@@ -100,6 +114,12 @@
     launcher.appendChild(
       el('span', 'visually-hidden', 'Open the chat with Tim’s AI stand-in')
     );
+
+    /* Decorative only. The launcher's accessible name already says what the
+       button does, and a hand emoji read aloud adds nothing. */
+    var wave = el('span', 'timbot__wave', '👋');
+    wave.setAttribute('aria-hidden', 'true');
+    launcher.appendChild(wave);
 
     /* Panel */
     var panel = el('div', 'timbot__panel');
@@ -178,6 +198,7 @@
     this.send = send;
 
     launcher.addEventListener('click', function () {
+      self.cancelWave();
       if (panel.hidden) self.open();
       else self.close();
     });
@@ -207,7 +228,68 @@
     });
   };
 
+  /* Waves once per session, and only at someone who has never opened the
+     chat. Skipped under prefers-reduced-motion, since the whole point of it
+     is the motion. */
+  Timbot.prototype.armWave = function () {
+    var self = this;
+
+    if (document.body.hasAttribute('data-timbot-open')) return;
+    if (this.messages.length) return;
+    if (!this.panel.hidden) return;
+
+    var reduce = false;
+    try {
+      reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {
+      /* ignore */
+    }
+    if (reduce) return;
+
+    try {
+      if (sessionStorage.getItem(WAVE_KEY) === '1') return;
+      if (sessionStorage.getItem(OPEN_KEY) === '1') return;
+    } catch (e) {
+      /* ignore */
+    }
+
+    this.waveTimer = window.setTimeout(function () {
+      self.waveTimer = null;
+      if (!self.panel.hidden) return;
+
+      try {
+        sessionStorage.setItem(WAVE_KEY, '1');
+      } catch (e) {
+        /* ignore */
+      }
+
+      self.root.classList.add('is-waving');
+      self.waveEnd = window.setTimeout(function () {
+        self.waveEnd = null;
+        self.root.classList.remove('is-waving');
+      }, WAVE_LINGER);
+    }, WAVE_DELAY);
+  };
+
+  Timbot.prototype.cancelWave = function () {
+    if (this.waveTimer) {
+      window.clearTimeout(this.waveTimer);
+      this.waveTimer = null;
+    }
+    if (this.waveEnd) {
+      window.clearTimeout(this.waveEnd);
+      this.waveEnd = null;
+    }
+    this.root.classList.remove('is-waving');
+    try {
+      sessionStorage.setItem(WAVE_KEY, '1');
+    } catch (e) {
+      /* ignore */
+    }
+  };
+
   Timbot.prototype.open = function (silent) {
+    this.cancelWave();
     this.panel.hidden = false;
     this.root.classList.add('is-open');
     this.launcher.setAttribute('aria-expanded', 'true');

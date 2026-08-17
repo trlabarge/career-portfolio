@@ -48,6 +48,23 @@ load-bearing**, since putting it any earlier makes the first two screens read
 as an AI specialist ad. It also deliberately carries no cards, because cards
 here duplicate the work grid directly below it.
 
+The band is built in four beats, not one paragraph. It shipped as a headline
+over a single long block and read as a wall that people skipped. Now: the
+opening line as a `.lede`, then `.pullline` ("The technology is rarely the hard
+part.") at display scale, then `.hardparts`, three gold-numbered items for
+positioning, packaging and demand, then `.hardparts__close` with the claim.
+Same words throughout, four levels of hierarchy instead of one. `.hardparts`
+uses gold numerals straight on the field rather than `.chain`, which paints
+cream cards with light borders for the off-white page and would put three pale
+boxes on sage.
+
+The homepage hero follows the same principle. `.hero__subhead`,
+`.hero__claim` and `.hero__meta` are three deliberate weights: breadth, then
+the AI claim against a gold rule, then the tool list small and muted. Running
+them together as one paragraph is what made the block get skimmed, and it also
+inverted the ordering rule below. The bottom margin lives on `.hero__meta`,
+since `.hero__subhead` is no longer the last element before the button row.
+
 ### Two counts, and they are not the same number
 
 The single easiest thing to garble on this site, because the copy says "twice"
@@ -424,6 +441,30 @@ punctuated by confident full-bleed color-field sections.
     left stranded mid-argument, and any click sets `manual` and stops that,
     same reasoning as panels 02 and 03. Under `prefers-reduced-motion` the
     panel opens already resolved and never arms, but the button still works.
+    **That observer needs its `seen` guard.** The panel ships hidden behind
+    its tab, so the observer's very first callback reports `isIntersecting`
+    false. Without `seen` that resolves the flip before anyone has opened the
+    tab, and the demo is over before it starts. This shipped broken once.
+    The flip animates four things off `--row-i`: the before line dims and
+    strikes through, the arrow draws, the after line rises in, and the result
+    tweens. The strikethrough is real `text-decoration` with an animated
+    `text-decoration-color`, not a pseudo-element rule scaling in from the
+    left. The pseudo-element draws more nicely but can only strike one line,
+    and both before strings wrap to two, so it left the second line untouched
+    and read as a rendering bug.
+    **The counting number is driven inside `aiShift()`, never with
+    `data-count`.** The global `counters()` observes every `[data-count]`,
+    fires at 0.6 intersection and unobserves. Since the panel is hidden until
+    its tab opens, that would run the count on tab open and leave nothing to
+    see on the actual flip.
+    The two rows carry deliberately different visuals. Implicit gets
+    `.ashift__bar`, a real quantity, 1 to 1,133 qualified leads a quarter,
+    with the 1 floored to a visible sliver the same way `.qbars` floors its
+    1-lead column. **CEI gets no bar, and must not get one.** Its result is
+    the word "Millions", which nothing on this site may resolve to a figure,
+    and a filling bar beside it implies exactly that magnitude. CEI gets
+    `.ashift__chips` instead, Named / Scoped / Priced, which is what
+    productization actually produced there.
 
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
@@ -997,6 +1038,33 @@ consistent with everything else here.
 - `/js/timbot.js` is the widget. Vanilla, no dependencies. The conversation
   lives in `sessionStorage` so it survives navigation, which matters when the
   launcher follows you across the site.
+
+### The wave
+
+The launcher waves once per session, 20s in, to catch someone who has been
+reading and never noticed it. `armWave()` sets a timer, `cancelWave()` kills it
+and is called from both `open()` and the launcher's click handler, so it can
+never fire over an active conversation.
+
+- **Once per session, tracked under `timbot:waved`.** Not per page load. It
+  follows you across the site like the launcher does, and being waved at on
+  every navigation reads as nagging.
+- Skipped if the panel is already open, if `/ask` set `data-timbot-open`, if
+  there is already a stored conversation, or if `timbot:open` is `1`. Note
+  `timbot:open` is set back to `0` on close, so it is a "currently open" flag
+  and not a "has ever been opened" one. The stored-conversation check is what
+  actually covers the second case.
+- Skipped entirely under `prefers-reduced-motion`. `timbot.js` is its own IIFE
+  and does not share `main.js`'s `reduceMotion`, so it runs its own
+  `matchMedia` check. It also deliberately does not write `timbot:waved` in
+  that branch, so nothing is consumed by a session that never saw it.
+- The bounce animates the standalone `translate` property, not `transform`,
+  because `.timbot__launcher:hover` already owns `transform: translateY(-2px)`.
+  The two compose independently, so hovering mid-wave does not cancel the
+  bounce. Do not "simplify" that back into `transform`.
+- The 👋 badge is `aria-hidden` and `pointer-events: none`. The launcher's
+  accessible name already says what the button does, and the wave must never
+  steal focus.
 
 ### There is no retrieval step, and there should not be one
 
