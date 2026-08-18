@@ -1121,116 +1121,70 @@
     io.observe(root);
   })();
 
-  /* --- AI go-to-market: the before/after shift ---------------------------
-     Two-state commit flip. The resolved state ships in the markup so the
-     panel reads as a finished before/after with no JS, which is why this
-     arms it rather than building it. Once flipped there is nothing left to
-     commit, so the button retires instead of becoming a dead control.
+  /* --- AI go-to-market: the before/after comparison ----------------------
+     Both states are always on screen. A two-option segmented switch drives
+     which side is emphasised, so this only ever moves a class and the CSS
+     does the dimming.
 
-     Under prefers-reduced-motion the panel opens already resolved and never
-     arms, same reasoning as the other panels' auto-sequences. */
+     The resolved-looking neutral state ships in the markup, so with no JS
+     both columns render at full strength and the panel still reads as a
+     finished comparison. This adds .is-before on init rather than building
+     anything.
+
+     There is deliberately no [data-count] anywhere in this panel. The global
+     counters() above observes every [data-count], fires at 0.6 intersection
+     and then unobserves. The panel is hidden until its tab is selected, so a
+     counter here would run on tab open rather than on interaction. */
   (function aiShift() {
     var root = document.querySelector('[data-ai-shift]');
     if (!root) return;
     var shift = root.querySelector('.ashift');
-    var btn = root.querySelector('[data-role="flip"]');
-    if (!shift || !btn) return;
+    var togs = Array.prototype.slice.call(root.querySelectorAll('.ashift__tog'));
+    if (!shift || !togs.length) return;
 
-    var SHOW = 'Show what changed';
-    var HIDE = 'Show the before';
-
-    // Stagger the two rows so the flip reads as one movement, not two.
-    var rows = Array.prototype.slice.call(shift.querySelectorAll('.ashift__row'));
-    rows.forEach(function (row, i) { row.style.setProperty('--row-i', i); });
-
-    /* The counting number is driven from here rather than with data-count,
-       because the global counters() above observes every [data-count], fires
-       at 0.6 intersection and then unobserves. The panel is hidden until its
-       tab is selected, so that would run the count the moment the tab opens
-       and leave nothing to see on the actual flip. */
-    var nums = Array.prototype.slice
-      .call(shift.querySelectorAll('.ashift__num[data-from][data-to]'))
-      .map(function (el) {
-        return {
-          el: el,
-          from: parseFloat(el.getAttribute('data-from')),
-          to: parseFloat(el.getAttribute('data-to'))
-        };
-      });
-
-    function fmt(v) {
-      return Math.round(v).toLocaleString('en-US');
-    }
-
-    var raf = null;
-    function countTo(resolved, snap) {
-      if (raf) window.cancelAnimationFrame(raf);
-      if (reduceMotion || snap) {
-        nums.forEach(function (n) { n.el.textContent = fmt(resolved ? n.to : n.from); });
-        return;
-      }
-      var dur = 1100;
-      var start = null;
-      raf = window.requestAnimationFrame(function step(ts) {
-        if (start === null) start = ts;
-        var p = Math.min((ts - start) / dur, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        nums.forEach(function (n) {
-          var a = resolved ? n.from : n.to;
-          var b = resolved ? n.to : n.from;
-          n.el.textContent = fmt(a + (b - a) * eased);
-        });
-        if (p < 1) raf = window.requestAnimationFrame(step);
-        else raf = null;
+    function set(state) {
+      shift.classList.toggle('is-before', state === 'before');
+      shift.classList.toggle('is-after', state === 'after');
+      togs.forEach(function (t) {
+        t.setAttribute('aria-pressed', String(t.getAttribute('data-state') === state));
       });
     }
 
-    // Two-way rather than one-shot. A button that removes itself changes the
-    // panel's content height, which below 861px (no min-height on the stage)
-    // is a visible jump. Keeping it in flow also lets the flip be replayed.
-    var armedNow = null;
-    function set(armed, snap) {
-      if (armedNow === armed) return;
-      armedNow = armed;
-      shift.classList.toggle('is-armed', armed);
-      btn.setAttribute('aria-pressed', String(!armed));
-      btn.textContent = armed ? SHOW : HIDE;
-      countTo(!armed, snap);
-    }
-
-    btn.addEventListener('click', function () {
-      set(!shift.classList.contains('is-armed'));
+    var manual = false;
+    togs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        manual = true;
+        set(t.getAttribute('data-state'));
+      });
     });
 
-    // Reduced motion opens resolved and never arms, same as the other
-    // panels' auto-sequences. The control still works.
+    /* Reduced motion opens on the payoff rather than making someone click to
+       reach it, since the transition that would have sold it is suppressed.
+       Both buttons still work. */
     if (reduceMotion || !('IntersectionObserver' in window)) {
-      set(false, true);
+      set('after');
       return;
     }
 
-    // Snap into the armed state, since the panel is hidden at this point and
-    // an animation nobody can see is just wasted frames.
-    set(true, true);
+    set('before');
 
-    /* Resolve on the way out so the panel is never left stranded mid
-       argument. The `seen` guard is load-bearing: the panel ships hidden
-       behind its tab, so the observer's first callback reports
-       isIntersecting false and would otherwise resolve the flip before
-       anyone had opened the tab, leaving nothing to press. */
-    var manual = false;
+    /* Advance to the after state on the way out, so someone who scrolls past
+       without touching it still sees the payoff.
+
+       The `seen` guard is load-bearing. The panel ships hidden behind its
+       tab, so the observer's very first callback reports isIntersecting
+       false, and without the guard that advances the panel before anyone has
+       opened the tab. This shipped broken once. */
     var seen = false;
-    btn.addEventListener('click', function () { manual = true; });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (manual) return;
         if (entry.isIntersecting) seen = true;
-        else if (seen) set(false);
+        else if (seen) set('after');
       });
     }, { threshold: 0.4 });
     io.observe(root);
   })();
-
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

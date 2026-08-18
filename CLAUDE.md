@@ -418,53 +418,61 @@ punctuated by confident full-bleed color-field sections.
     Under `prefers-reduced-motion` the sweep never runs and the panel opens
     at the full team size, already resolved. Dragging still works.
   - AI go-to-market before/after (`.ashift`, inside panel 05, `data-ai-shift`
-    on the `.cap-demo`). Two rows, Implicit and CEI, each moving from what the
-    company was selling to what a buyer could actually purchase, with the real
-    result underneath. The claim on this panel is that the technology was never
-    the hard part.
+    on the `.cap-demo`). Two rows, Implicit and CEI, each showing what the
+    company was selling and what a buyer could actually purchase, side by
+    side, with a hard metric under each state. The claim on this panel is that
+    the technology was never the hard part.
     **This is the one panel whose numbers are real, so it carries the loud gold
     `.cap-demo__chip` reading "Real engagements" rather than the quiet outline
     "Illustrative model" the other four use.** That contrast is deliberate. Do
     not normalize it.
-    The register is a two-state commit flip, one button moving both rows at
-    once. It is two-way rather than one-shot: a button that removes itself
-    changes the panel's content height, which below 861px (where the stage has
-    no `min-height`) is a visible jump. Keeping it in flow also lets the flip
-    be replayed. `aria-pressed` carries the state and the label swaps between
-    "Show the before" and "Show what changed".
-    The resolved state ships in the markup, so with no JS the panel reads as a
-    finished before/after. `aiShift()` in `/js/main.js` adds `.is-armed` to
-    hide the payoff rather than building it, same principle as the static
-    chart SVGs. `--row-i` staggers the two rows so the flip reads as one
-    movement.
-    An IntersectionObserver resolves the panel on the way out so it is never
-    left stranded mid-argument, and any click sets `manual` and stops that,
-    same reasoning as panels 02 and 03. Under `prefers-reduced-motion` the
-    panel opens already resolved and never arms, but the button still works.
+    **Both states are on screen at once, and that is the point.** An earlier
+    version was a one-button commit flip that swapped one state for the other,
+    which meant the comparison the panel exists to make was never actually
+    visible. Do not go back to a sequential reveal here.
+    The register is a two-option segmented switch (`.ashift__toggle` /
+    `.ashift__tog`, `aria-pressed`) that drives which side is emphasised.
+    `.ashift` takes `is-before` or `is-after` and the CSS does the dimming.
+    It is styled as a switch rather than as tabs so it does not read as a
+    second copy of panel 02.
+    The neutral state ships in the markup with no state class, so with no JS
+    both columns render at full strength and the panel reads as a finished
+    comparison. `aiShift()` in `/js/main.js` adds `is-before` on init.
+    The inactive side drops to 0.38 opacity and its value goes sage-tint
+    rather than gold. It deliberately stays legible. It is still half the
+    argument, and a column faded to nothing makes the panel look broken.
+    An IntersectionObserver advances to `is-after` on the way out so someone
+    who scrolls past still sees the payoff, and any click sets `manual` and
+    stops that, same reasoning as panels 02 and 03. Under
+    `prefers-reduced-motion` the panel opens on `is-after`, since the
+    transition that would have sold the change is suppressed, and both
+    buttons still work.
     **That observer needs its `seen` guard.** The panel ships hidden behind
     its tab, so the observer's very first callback reports `isIntersecting`
-    false. Without `seen` that resolves the flip before anyone has opened the
-    tab, and the demo is over before it starts. This shipped broken once.
-    The flip animates four things off `--row-i`: the before line dims and
-    strikes through, the arrow draws, the after line rises in, and the result
-    tweens. The strikethrough is real `text-decoration` with an animated
-    `text-decoration-color`, not a pseudo-element rule scaling in from the
-    left. The pseudo-element draws more nicely but can only strike one line,
-    and both before strings wrap to two, so it left the second line untouched
-    and read as a rendering bug.
-    **The counting number is driven inside `aiShift()`, never with
-    `data-count`.** The global `counters()` observes every `[data-count]`,
-    fires at 0.6 intersection and unobserves. Since the panel is hidden until
-    its tab opens, that would run the count on tab open and leave nothing to
-    see on the actual flip.
-    The two rows carry deliberately different visuals. Implicit gets
-    `.ashift__bar`, a real quantity, 1 to 1,133 qualified leads a quarter,
-    with the 1 floored to a visible sliver the same way `.qbars` floors its
-    1-lead column. **CEI gets no bar, and must not get one.** Its result is
-    the word "Millions", which nothing on this site may resolve to a figure,
-    and a filling bar beside it implies exactly that magnitude. CEI gets
-    `.ashift__chips` instead, Named / Scoped / Priced, which is what
-    productization actually produced there.
+    false. Without `seen` that advances the panel before anyone has opened the
+    tab. This shipped broken once.
+    **There is deliberately no `data-count` anywhere in this panel.** The
+    global `counters()` observes every `[data-count]`, fires at 0.6
+    intersection and unobserves. Since the panel is hidden until its tab
+    opens, that would run on tab open rather than on interaction.
+    Metrics render as a small uppercase `.ashift__mlabel` above a large
+    `.ashift__mval`, matching `.dstack__stat-label` and `.metric__label`
+    elsewhere. Tim dictated them with colons ("leads per quarter: 1"), and
+    label-over-value gives the same reading without breaking the no-colons
+    rule.
+    Two columns are kept below 861px rather than stacked. Type steps down
+    instead. Stacking turns the comparison back into the sequential reveal
+    this design replaced.
+    **Implicit's after figure reads `1,000+`, not 1,133.** Tim chose the
+    rounded form for this panel after the discrepancy was flagged. 1,133 stays
+    the canonical figure everywhere else, including the `/the-work` card
+    headline and the Agolo case study chart. They are the same result, not two
+    metrics, and `timbot/facts.md` §10 carries the same note.
+    **CEI's before state reads `$0` pipeline.** That is a claim of absence
+    supported by "nothing a client can buy", since there was no purchasable
+    practice to have pipeline for. It does not breach the
+    never-resolve-millions rule, which governs the after state, and
+    `$Millions` still names no figure.
 
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
@@ -1046,9 +1054,14 @@ reading and never noticed it. `armWave()` sets a timer, `cancelWave()` kills it
 and is called from both `open()` and the launcher's click handler, so it can
 never fire over an active conversation.
 
-- **Once per session, tracked under `timbot:waved`.** Not per page load. It
-  follows you across the site like the launcher does, and being waved at on
-  every navigation reads as nagging.
+- **Once per session, tracked under `timbot:waved`,** which is three-state
+  rather than a boolean. Unset arms the 20s timer. `shown` means the bounce
+  already ran this session, so a later page in the same session shows the hand
+  immediately and statically, no timer and no motion. `done` means the visitor
+  clicked and nothing shows again. That is what makes the hand persist across
+  navigation until it is acknowledged, while the *motion* still only ever
+  happens once. Two classes carry it, `is-waving` (hand plus bounce and
+  wiggle, three iterations) and `is-waved` (hand only).
 - Skipped if the panel is already open, if `/ask` set `data-timbot-open`, if
   there is already a stored conversation, or if `timbot:open` is `1`. Note
   `timbot:open` is set back to `0` on close, so it is a "currently open" flag
@@ -1062,9 +1075,15 @@ never fire over an active conversation.
   because `.timbot__launcher:hover` already owns `transform: translateY(-2px)`.
   The two compose independently, so hovering mid-wave does not cancel the
   bounce. Do not "simplify" that back into `transform`.
-- The 👋 badge is `aria-hidden` and `pointer-events: none`. The launcher's
+- The 👋 is `aria-hidden` and `pointer-events: none`. The launcher's
   accessible name already says what the button does, and the wave must never
   steal focus.
+- **No ring and no plate.** It sits at 2.1rem with only a drop shadow. An
+  earlier version put a 1rem emoji inside a 30px gold circle, which read as a
+  notification dot rather than as a hand. It is a hand, so it should look like
+  one at a glance.
+- The motion runs three iterations and then stops while the hand stays. A
+  badge that keeps moving until it is clicked competes with reading.
 
 ### There is no retrieval step, and there should not be one
 

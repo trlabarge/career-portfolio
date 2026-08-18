@@ -445,36 +445,42 @@
                 <div class="cap-demo__bar"><span class="cap-demo__chip">Real engagements</span></div>
                 <div class="cap-demo__body">
                   <div class="ashift">
-                    <p class="visually-hidden">Two AI products taken to market. At Implicit, a pre-revenue AI-native startup, the company stopped selling GraphRAG infrastructure to data science teams and started selling an AI knowledge engine for maintenance and support, and qualified leads went from one a quarter to 1,133. At CEI, a mid-size tech and AI services firm, an AI capability that clients could not actually buy became CEI Clairvoyance, a named practice with a defined engagement path, generating millions in AI project pipeline.</p>
+                    <p class="visually-hidden">Two AI products taken to market, each shown as what the company was selling before and what a buyer could purchase after. At Implicit, a pre-revenue AI-native startup, GraphRAG infrastructure sold to data science teams became an AI knowledge engine for maintenance and support teams, and qualified leads went from one a quarter to over a thousand. At CEI, a mid-size tech and AI services firm, an AI delivery capability that no client could buy became CEI Clairvoyance, a named and purchasable practice, taking AI project pipeline from nothing to millions.</p>
+
+                    <div class="ashift__toggle" role="group" aria-label="Show before or after">
+                      <button class="ashift__tog" type="button" data-state="before" aria-pressed="true">Before</button>
+                      <button class="ashift__tog" type="button" data-state="after" aria-pressed="false">After</button>
+                    </div>
 
                     <ol class="ashift__rows">
                       <li class="ashift__row">
                         <p class="ashift__co">Implicit <span class="ashift__kind">Pre-revenue AI-native startup</span></p>
-                        <div class="ashift__pair">
-                          <span class="ashift__state ashift__state--before">GraphRAG infrastructure, sold to data science teams</span>
-                          <span class="ashift__arrow" aria-hidden="true"></span>
-                          <span class="ashift__state ashift__state--after">An AI knowledge engine for maintenance and support</span>
+                        <div class="ashift__cols">
+                          <div class="ashift__side ashift__side--before">
+                            <p class="ashift__what">GraphRAG infrastructure, sold to data science teams</p>
+                            <p class="ashift__metric"><span class="ashift__mlabel">Leads per quarter</span><b class="ashift__mval">1</b></p>
+                          </div>
+                          <div class="ashift__side ashift__side--after">
+                            <p class="ashift__what">An AI knowledge engine for maintenance and support teams</p>
+                            <p class="ashift__metric"><span class="ashift__mlabel">Leads per quarter</span><b class="ashift__mval">1,000+</b></p>
+                          </div>
                         </div>
-                        <p class="ashift__result"><b class="ashift__num" data-from="1" data-to="1133">1,133</b> qualified leads a quarter, up from one</p>
-                        <div class="ashift__bar" aria-hidden="true"><i class="ashift__fill"></i></div>
                       </li>
                       <li class="ashift__row">
                         <p class="ashift__co">CEI <span class="ashift__kind">Mid-size tech and AI services firm</span></p>
-                        <div class="ashift__pair">
-                          <span class="ashift__state ashift__state--before">Real AI capability, nothing a client could buy</span>
-                          <span class="ashift__arrow" aria-hidden="true"></span>
-                          <span class="ashift__state ashift__state--after">CEI Clairvoyance, a named and purchasable practice</span>
+                        <div class="ashift__cols">
+                          <div class="ashift__side ashift__side--before">
+                            <p class="ashift__what">AI delivery capability, nothing a client can buy</p>
+                            <p class="ashift__metric"><span class="ashift__mlabel">Pipeline</span><b class="ashift__mval">$0</b></p>
+                          </div>
+                          <div class="ashift__side ashift__side--after">
+                            <p class="ashift__what">CEI Clairvoyance, a named and purchasable practice</p>
+                            <p class="ashift__metric"><span class="ashift__mlabel">Pipeline</span><b class="ashift__mval">$Millions</b></p>
+                          </div>
                         </div>
-                        <p class="ashift__result"><b class="ashift__num">Millions</b> in AI project pipeline</p>
-                        <ul class="ashift__chips" aria-hidden="true">
-                          <li class="ashift__chip" style="--chip-i:0">Named</li>
-                          <li class="ashift__chip" style="--chip-i:1">Scoped</li>
-                          <li class="ashift__chip" style="--chip-i:2">Priced</li>
-                        </ul>
                       </li>
                     </ol>
 
-                    <button class="ashift__btn" type="button" data-role="flip" aria-pressed="true">Show the before</button>
                     <p class="ashift__note">The technology was never the hard part. Making it something a buyer could understand and purchase was.</p>
                   </div>
                 </div>
