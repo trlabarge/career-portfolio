@@ -1,7 +1,7 @@
 /* ==========================================================================
    Tim LaBarge — Career Portfolio
    Vanilla JS: nav toggle, scroll progress, reveal-on-scroll, metric counters,
-   rotating hero word, tool-stack constellation.
+   rotating hero word, tool-stack constellation, case study filters.
    No libraries. All motion respects prefers-reduced-motion.
    ========================================================================== */
 (function () {
@@ -1771,5 +1771,314 @@
     }, { threshold: 0.4 });
 
     vids.forEach(function (v) { io.observe(v); });
+  })();
+
+  /* --- Case study filters (/the-work) ------------------------------------ */
+  /* Two facets, company type and type of work, both built at runtime from the
+     chips already printed on the cards. That is the whole design: the tags on
+     the cards stay the single source of truth, so adding a case study or
+     retagging one needs no change here, and the band can never offer a filter
+     that matches nothing.
+
+     One selection per facet, combined with AND, "All" on both by default, so
+     an untouched page is exactly the scrollable list it was before. Clicking
+     the selected chip clears that facet again.
+
+     Each chip carries the number of projects it would leave, counted against
+     the OTHER facet's current selection, and a chip that would leave none is
+     disabled. Those counts are what keep a visitor from clicking their way
+     into an empty grid, which matters here because most disciplines belong to
+     a single company type. */
+  (function workFilters() {
+    var root = document.querySelector('[data-work-filters]');
+    var grid = document.querySelector('[data-work-grid]');
+    if (!root || !grid) return;
+
+    /* A tag belongs to exactly one facet, and the company-type modifier is
+       what tells them apart, same distinction the two chip colours make. */
+    var FACETS = [
+      {
+        key: 'company',
+        label: 'Company type',
+        owns: function (tag) { return tag.classList.contains('work-card__tag--type'); }
+      },
+      {
+        key: 'work',
+        label: 'Type of work',
+        owns: function (tag) { return !tag.classList.contains('work-card__tag--type'); }
+      }
+    ];
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.work-card'));
+    if (cards.length < 2) return;
+
+    function slugify(text) {
+      return text.toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function tagsOf(el, facet) {
+      return Array.prototype.slice.call(el.querySelectorAll('.work-card__tag'))
+        .filter(function (tag) {
+          return facet.owns(tag) && tag.textContent.trim();
+        })
+        .map(function (tag) {
+          var text = tag.textContent.trim();
+          return { slug: slugify(text), label: text };
+        });
+    }
+
+    /* Read the DOM once. Everything after this works off records and values. */
+    var records = cards.map(function (el) {
+      var rec = { el: el };
+      FACETS.forEach(function (f) {
+        rec[f.key] = tagsOf(el, f).map(function (t) { return t.slug; });
+      });
+      return rec;
+    });
+
+    /* Values are ordered by how many projects carry them, so the buckets worth
+       clicking lead and the one-project tags fall to the end of the row. */
+    var state = {};
+    FACETS.forEach(function (f) {
+      var seen = {};
+      var values = [];
+      cards.forEach(function (el) {
+        tagsOf(el, f).forEach(function (t) {
+          if (!seen[t.slug]) {
+            seen[t.slug] = { slug: t.slug, label: t.label, total: 0 };
+            values.push(seen[t.slug]);
+          }
+          seen[t.slug].total++;
+        });
+      });
+      values.sort(function (a, b) {
+        return b.total - a.total || a.label.localeCompare(b.label);
+      });
+      f.values = values;
+      state[f.key] = 'all';
+    });
+
+    /* A filtered view is linkable, which is the point: ?company=b2b-saas can
+       be sent to someone. replaceState rather than pushState, so the back
+       button still leaves the page instead of unwinding chip clicks. */
+    (window.location.search || '').replace(/^\?/, '').split('&')
+      .forEach(function (pair) {
+        if (!pair) return;
+        var bits = pair.split('=');
+        var key = decodeURIComponent(bits[0] || '');
+        var val = decodeURIComponent(bits[1] || '');
+        FACETS.forEach(function (f) {
+          if (f.key !== key) return;
+          var known = f.values.some(function (v) { return v.slug === val; });
+          if (known) state[f.key] = val;
+        });
+      });
+
+    function has(rec, key, value) {
+      return value === 'all' || rec[key].indexOf(value) !== -1;
+    }
+
+    function matches(rec) {
+      return FACETS.every(function (f) { return has(rec, f.key, state[f.key]); });
+    }
+
+    /* What this facet value would leave, with every other facet still applied.
+       The selected chip therefore always counts at least the current result,
+       so it can never disable itself. */
+    function countFor(facetKey, value) {
+      var n = 0;
+      records.forEach(function (rec) {
+        var ok = FACETS.every(function (f) {
+          return has(rec, f.key, f.key === facetKey ? value : state[f.key]);
+        });
+        if (ok) n++;
+      });
+      return n;
+    }
+
+    /* Build the band. Below 721px the two chip rows stack to roughly 700px,
+       which is a screen of controls sitting between the headline and the
+       first case study, so the groups live inside a native <details> that
+       ships closed there and open above it. The status line stays outside the
+       disclosure, so a collapsed band still says how many projects are
+       showing and still offers the way back. */
+    var chips = [];
+    var frag = document.createDocumentFragment();
+
+    var disclosure = document.createElement('details');
+    disclosure.className = 'work-filters__disclosure';
+
+    var summary = document.createElement('summary');
+    summary.className = 'work-filters__summary';
+
+    var summaryLabel = document.createElement('span');
+    summaryLabel.className = 'work-filters__summary-label';
+    summaryLabel.textContent = 'Filter projects';
+    summary.appendChild(summaryLabel);
+
+    /* Names the selections while the disclosure is closed, so a collapsed
+       band never hides what it is doing. */
+    var summaryActive = document.createElement('span');
+    summaryActive.className = 'work-filters__summary-active';
+    summary.appendChild(summaryActive);
+
+    disclosure.appendChild(summary);
+
+    var groups = document.createElement('div');
+    groups.className = 'work-filters__groups';
+    disclosure.appendChild(groups);
+    frag.appendChild(disclosure);
+
+    FACETS.forEach(function (f) {
+      if (f.values.length < 2) return;
+
+      var group = document.createElement('div');
+      group.className = 'work-filters__group';
+
+      var label = document.createElement('span');
+      label.className = 'work-filters__label';
+      label.id = 'work-filters-' + f.key;
+      label.textContent = f.label;
+      group.appendChild(label);
+
+      var row = document.createElement('div');
+      row.className = 'work-filters__chips';
+      row.setAttribute('role', 'group');
+      row.setAttribute('aria-labelledby', label.id);
+
+      [{ slug: 'all', label: 'All' }].concat(f.values).forEach(function (v) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'work-filters__chip work-filters__chip--' + f.key;
+        btn.setAttribute('aria-controls', grid.id);
+        btn.appendChild(document.createTextNode(v.label));
+
+        /* The count is decoration for a screen reader, which gets the same
+           number spelled out in the button's own label instead. */
+        var count = document.createElement('span');
+        count.className = 'work-filters__count';
+        count.setAttribute('aria-hidden', 'true');
+        btn.appendChild(count);
+
+        btn.addEventListener('click', function () { select(f.key, v.slug); });
+        row.appendChild(btn);
+        chips.push({ btn: btn, count: count, facet: f.key, value: v.slug, label: v.label });
+      });
+
+      group.appendChild(row);
+      groups.appendChild(group);
+    });
+
+    if (!chips.length) return;
+
+    var status = document.createElement('p');
+    status.className = 'work-filters__status';
+
+    var message = document.createElement('span');
+    message.setAttribute('role', 'status');
+    status.appendChild(message);
+
+    var resetBtn = document.createElement('button');
+    resetBtn.type = 'button';
+    resetBtn.className = 'work-filters__reset';
+    resetBtn.textContent = 'Show everything';
+    resetBtn.hidden = true;
+    resetBtn.addEventListener('click', function () {
+      FACETS.forEach(function (f) { state[f.key] = 'all'; });
+      render(true);
+      syncUrl();
+    });
+    status.appendChild(resetBtn);
+
+    frag.appendChild(status);
+    root.appendChild(frag);
+
+    /* The summary is hidden above 721px, where the band is short enough to
+       stay open, so the open state has to follow the breakpoint rather than
+       the visitor. */
+    var wide = window.matchMedia('(min-width: 721px)');
+    function syncDisclosure() { disclosure.open = wide.matches; }
+    syncDisclosure();
+    if (wide.addEventListener) wide.addEventListener('change', syncDisclosure);
+    else if (wide.addListener) wide.addListener(syncDisclosure);
+
+    function select(key, value) {
+      /* Clicking the selected chip clears the facet, which is what a pressed
+         toggle should do and is faster than hunting for All. */
+      state[key] = (state[key] === value && value !== 'all') ? 'all' : value;
+      render(true);
+      syncUrl();
+    }
+
+    function syncUrl() {
+      if (!window.history || !window.history.replaceState) return;
+      var parts = [];
+      FACETS.forEach(function (f) {
+        if (state[f.key] !== 'all') parts.push(f.key + '=' + encodeURIComponent(state[f.key]));
+      });
+      var url = window.location.pathname +
+        (parts.length ? '?' + parts.join('&') : '') + window.location.hash;
+      window.history.replaceState(null, '', url);
+    }
+
+    function render(animate) {
+      chips.forEach(function (c) {
+        var n = countFor(c.facet, c.value);
+        var on = state[c.facet] === c.value;
+        c.count.textContent = String(n);
+        c.btn.setAttribute('aria-pressed', String(on));
+        c.btn.setAttribute('aria-label',
+          c.label + ', ' + n + (n === 1 ? ' project' : ' projects'));
+        c.btn.disabled = n === 0 && !on;
+      });
+
+      if (animate) {
+        cards.forEach(function (el) { el.classList.remove('is-filtered-in'); });
+        /* Forced reflow, so re-running the animation on a card that was
+           already showing actually restarts it. */
+        void grid.offsetWidth;
+      }
+
+      var shown = 0;
+      records.forEach(function (rec) {
+        var on = matches(rec);
+        rec.el.hidden = !on;
+        if (!on) return;
+        /* A card hidden behind a filter cannot intersect, so it would never
+           earn its reveal on its own. */
+        rec.el.classList.add('is-visible');
+        rec.el.style.setProperty('--filter-i', String(shown));
+        if (animate) rec.el.classList.add('is-filtered-in');
+        shown++;
+      });
+
+      var active = [];
+      FACETS.forEach(function (f) {
+        if (state[f.key] === 'all') return;
+        f.values.forEach(function (v) {
+          if (v.slug === state[f.key]) active.push(v.label);
+        });
+      });
+      summaryActive.textContent = active.join(', ');
+
+      var filtered = FACETS.some(function (f) { return state[f.key] !== 'all'; });
+      if (!shown) {
+        message.textContent = 'No projects match that combination.';
+      } else if (filtered) {
+        message.textContent = 'Showing ' + shown + ' of ' + records.length + ' projects.';
+      } else {
+        message.textContent = 'Showing all ' + records.length + ' projects.';
+      }
+      resetBtn.hidden = !filtered;
+    }
+
+    grid.addEventListener('animationend', function (e) {
+      if (e.animationName === 'work-card-in') e.target.classList.remove('is-filtered-in');
+    });
+
+    render(false);
   })();
 })();

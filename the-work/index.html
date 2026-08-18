@@ -57,12 +57,20 @@
           <a class="btn btn--ghost" href="/assets/resume.pdf">Download Resume</a>
         </div>
 
-        <div class="work-grid">
+        <!-- Filter band. Deliberately empty here: workFilters() in
+             /js/main.js builds every control from the tags already printed on
+             the cards below, so the two can never drift apart. With no JS it
+             stays empty and .work-filters:empty removes it, leaving the plain
+             scrollable list. -->
+        <div class="work-filters reveal" style="--reveal-delay:220ms" data-work-filters></div>
+
+        <div class="work-grid" id="work-grid" data-work-grid>
           <a class="work-card reveal" style="--reveal-delay:0ms" href="/the-work/implicit-plg-gtm">
             <h3>From 0 &rarr; 2,500 Users in 6 Months</h3>
             <p>Built Implicit's product-led growth motion from zero at a pre-revenue company, across answer engines, organic search, paid, and community.</p>
             <div class="work-card__tags">
               <span class="work-card__tag work-card__tag--type">AI-Native Startup</span>
+              <span class="work-card__tag work-card__tag--type">B2B SaaS</span>
               <span class="work-card__tag">AI Go-To-Market</span>
               <span class="work-card__tag">Product-Led Growth</span>
               <span class="work-card__tag">SEO &amp; Content</span>
@@ -83,6 +91,7 @@
             <p>Renamed Agolo to Implicit and moved it off selling GraphRAG infrastructure, onto an AI knowledge engine for maintenance and support.</p>
             <div class="work-card__tags">
               <span class="work-card__tag work-card__tag--type">AI-Native Startup</span>
+              <span class="work-card__tag work-card__tag--type">B2B SaaS</span>
               <span class="work-card__tag">AI Go-To-Market</span>
               <span class="work-card__tag">Brand &amp; Positioning</span>
               <span class="work-card__tag">Naming &amp; Identity</span>

@@ -752,6 +752,14 @@ Components added for this page, both in `/css/style.css`:
   `Tech/AI Services Firm`, and `B2B SaaS`, Title Case to match the existing
   discipline tags. They appear on both the homepage bento and `/the-work`, and
   the two lists must stay in sync.
+  **A card can carry more than one.** Both Implicit studies are an AI-native
+  startup selling B2B SaaS and carry both chips, on Tim's instruction. That is
+  what puts Implicit in front of a visitor filtering `/the-work` for SaaS
+  rather than hiding it behind the startup label. ConstructConnect is B2B SaaS
+  alone and both CEI studies are Tech/AI Services Firm alone. In the bento the
+  pair sits in a `.work-card__types` wrapper, which takes over the single
+  chip's `margin-top: auto`, since chips in a row-direction flex box would
+  otherwise bottom-align against each other whenever the pair wrapped.
   The tint is deliberate. Solid terracotta is reserved for CTAs and the bento
   hero card, and ten solid pills across two pages would spend that signal, so
   `--color-terracotta-tint` (`#F0DED6`) was added for this. `#8F5241` on it is
@@ -820,6 +828,65 @@ Components added for this page, both in `/css/style.css`:
   navigable, reduced-motion honored). Motion frames the proof, it never delays
   the numbers, case study links, or testimonial.
 
+### The filter band on /the-work
+
+Two facets above the case study grid, company type and type of work, so a
+recruiter screening for one kind of company or one discipline can cut to it.
+The default state is both facets on All, which renders exactly the scrollable
+list the page was before, and that is deliberate. Filtering is an accelerator
+here, never a gate.
+
+Things that are load-bearing.
+
+- **The controls are generated, not written.** `.work-filters` ships as an
+  empty `<div data-work-filters>` and `workFilters()` in `/js/main.js` builds
+  every chip by reading the tags already printed on the cards, splitting them
+  by the `--type` modifier. The tags on the cards stay the single source of
+  truth, so adding a case study or retagging one needs no filter maintenance
+  and the band can never offer a filter that matches nothing. Do not hand-write
+  the control list into the HTML.
+- **`:empty` is the no-JS state.** Nothing can filter without JS, so the empty
+  container hides itself and the full list renders untouched. That is also why
+  the band ships empty rather than hidden.
+- **One selection per facet, ANDed across the two.** Clicking the selected chip
+  clears that facet. Multi-select within a facet was not built, since with five
+  studies two company types selected together is nearly the same set as All.
+- **Every chip carries the count it would leave**, computed against the *other*
+  facet's current selection, and a chip that would leave zero is `disabled`.
+  That is what makes an empty grid unreachable by clicking, which matters
+  because most disciplines here belong to a single company type (Productization
+  is CEI only, Conversion Optimization is ConstructConnect only). The empty
+  state still exists in `render()` for a hand-edited URL, and it should stay.
+- **Selected chips take the colour of the chip family they filter**, terracotta
+  for company type and sage for type of work, so a control and the tag it
+  matches read as the same thing. Do not normalize the two to one colour.
+- **Work-type values are ordered by how many projects carry them**, so the
+  buckets worth clicking lead and the one-project tags fall to the end.
+- **The state is in the query string** (`?company=…&work=…`, slugs), written
+  with `replaceState` and read on load, so a filtered view is linkable. Use
+  `replaceState`, not `pushState`, or the back button unwinds chip clicks
+  instead of leaving the page. An unrecognised slug is ignored rather than
+  applied.
+- **Below 721px the groups collapse into a native `<details>`.** Stacked, the
+  two chip rows measure about 700px on a phone, which is a screen of controls
+  sitting between the headline and the first case study. That is the same
+  failure the capabilities list had on mobile. `workFilters()` forces the
+  details open above 721px and the summary is `display: none` there, so the
+  band reads as a plain panel on desktop. The status line stays *outside* the
+  disclosure on purpose, so a collapsed band still says how many projects are
+  showing and still offers "Show everything", and the summary names the active
+  selections so a closed band never hides what it is doing.
+- `.work-filters` uses `grid-template-columns: minmax(0, 1fr)`, not a bare
+  auto column. An auto grid column sizes from its items' min-content width and
+  the summary's selection line is `nowrap`, so a long pair of labels widened
+  the whole band past a 320px viewport instead of ellipsing. `body`'s
+  `overflow-x: hidden` then hid the result rather than announcing it, which is
+  exactly the trap the mobile rules below describe.
+- Filtered-in cards re-deal with a 45ms stagger (`work-card-in`,
+  `--filter-i`), and `render()` also forces `is-visible` onto every shown card,
+  since a card hidden behind a filter cannot intersect and would never earn its
+  reveal on its own.
+
 ## Tech and conventions
 
 - Plain HTML/CSS/JS. No framework, no build step.
@@ -828,7 +895,8 @@ Components added for this page, both in `/css/style.css`:
 - Deployed on Vercel.
 - Mobile-first and responsive. Vanilla JS only, no libraries (`/js/main.js`
   handles nav toggle, scroll progress, reveal-on-scroll, metric counters, the
-  rotating hero word, the growth-curve draw, and the tool-stack constellation).
+  rotating hero word, the growth-curve draw, the tool-stack constellation, and
+  the case study filters).
 - Semantic HTML5 (header, nav, main, section, article, footer). One H1 per page.
 - Accessibility: skip link, alt text, ARIA where needed, keyboard navigable,
   sufficient contrast.
@@ -928,7 +996,8 @@ Getting this wrong is not cosmetic. Two failures show up immediately:
 
 - `/` — Homepage (fully built).
 - `/about` — About Me (placeholder scaffold).
-- `/the-work` — Case study index (built, links to five case studies).
+- `/the-work` — Case study index (built, links to five case studies). Carries
+  the two-facet filter band, see below.
 - `/the-work/constructconnect-conversion-optimization` — fully built.
 - `/the-work/implicit-plg-gtm` — fully built.
 - `/the-work/seo-content-marketing-growth` — fully built.
