@@ -14,7 +14,14 @@
   var ENDPOINT = '/api/chat';
   var STORE_KEY = 'timbot:conversation';
   var OPEN_KEY = 'timbot:open';
+  var WAVE_KEY = 'timbot:waved';
   var MAX_TURNS = 24;
+
+  /* How long someone reads before the launcher waves at them, once a
+     session. Long enough that it does not fire during a bounce, short
+     enough that most readers are still on the page. The hand then stays
+     until the chat is opened, so there is no linger timer. */
+  var WAVE_DELAY = 20000;
 
   var GREETING_LEAD = 'Hi. I’m not Tim, but I’m pretty close. I’m Timbot.';
 
@@ -61,6 +68,7 @@
   function Timbot() {
     this.messages = load();
     this.streaming = false;
+    this.waveTimer = null;
     this.build();
     this.render();
 
@@ -71,10 +79,15 @@
     }
 
     try {
-      if (sessionStorage.getItem(OPEN_KEY) === '1') this.open(true);
+      if (sessionStorage.getItem(OPEN_KEY) === '1') {
+        this.open(true);
+        return;
+      }
     } catch (e) {
       /* ignore */
     }
+
+    this.armWave();
   }
 
   Timbot.prototype.build = function () {
@@ -100,6 +113,12 @@
     launcher.appendChild(
       el('span', 'visually-hidden', 'Open the chat with Tim’s AI stand-in')
     );
+
+    /* Decorative only. The launcher's accessible name already says what the
+       button does, and a hand emoji read aloud adds nothing. */
+    var wave = el('span', 'timbot__wave', '👋');
+    wave.setAttribute('aria-hidden', 'true');
+    launcher.appendChild(wave);
 
     /* Panel */
     var panel = el('div', 'timbot__panel');
@@ -178,6 +197,7 @@
     this.send = send;
 
     launcher.addEventListener('click', function () {
+      self.cancelWave();
       if (panel.hidden) self.open();
       else self.close();
     });
@@ -207,7 +227,81 @@
     });
   };
 
+  /* Waves once per session, and only at someone who has never opened the
+     chat. Skipped under prefers-reduced-motion, since the whole point of it
+     is the motion.
+
+     WAVE_KEY is three-state rather than a boolean:
+       unset   arm the timer
+       shown   the bounce already ran this session, so later pages show the
+               hand immediately and statically, no timer and no motion
+       done    the visitor clicked, so nothing shows again this session
+
+     That is what makes the hand persist across navigation until it is
+     acknowledged, instead of disappearing a few seconds after it appears. */
+  Timbot.prototype.armWave = function () {
+    var self = this;
+
+    if (document.body.hasAttribute('data-timbot-open')) return;
+    if (this.messages.length) return;
+    if (!this.panel.hidden) return;
+
+    var reduce = false;
+    try {
+      reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {
+      /* ignore */
+    }
+    if (reduce) return;
+
+    var state = null;
+    try {
+      state = sessionStorage.getItem(WAVE_KEY);
+      if (sessionStorage.getItem(OPEN_KEY) === '1') return;
+    } catch (e) {
+      /* ignore */
+    }
+
+    if (state === 'done') return;
+
+    /* Already waved earlier in the session, on another page. Show the hand
+       straight away without replaying the motion, which would make every
+       navigation feel like a fresh interruption. */
+    if (state === 'shown') {
+      this.root.classList.add('is-waved');
+      return;
+    }
+
+    this.waveTimer = window.setTimeout(function () {
+      self.waveTimer = null;
+      if (!self.panel.hidden) return;
+
+      try {
+        sessionStorage.setItem(WAVE_KEY, 'shown');
+      } catch (e) {
+        /* ignore */
+      }
+
+      self.root.classList.add('is-waving');
+    }, WAVE_DELAY);
+  };
+
+  Timbot.prototype.cancelWave = function () {
+    if (this.waveTimer) {
+      window.clearTimeout(this.waveTimer);
+      this.waveTimer = null;
+    }
+    this.root.classList.remove('is-waving');
+    this.root.classList.remove('is-waved');
+    try {
+      sessionStorage.setItem(WAVE_KEY, 'done');
+    } catch (e) {
+      /* ignore */
+    }
+  };
+
   Timbot.prototype.open = function (silent) {
+    this.cancelWave();
     this.panel.hidden = false;
     this.root.classList.add('is-open');
     this.launcher.setAttribute('aria-expanded', 'true');

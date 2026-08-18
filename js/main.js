@@ -1121,6 +1121,70 @@
     io.observe(root);
   })();
 
+  /* --- AI go-to-market: the before/after comparison ----------------------
+     Both states are always on screen. A two-option segmented switch drives
+     which side is emphasised, so this only ever moves a class and the CSS
+     does the dimming.
+
+     The resolved-looking neutral state ships in the markup, so with no JS
+     both columns render at full strength and the panel still reads as a
+     finished comparison. This adds .is-before on init rather than building
+     anything.
+
+     There is deliberately no [data-count] anywhere in this panel. The global
+     counters() above observes every [data-count], fires at 0.6 intersection
+     and then unobserves. The panel is hidden until its tab is selected, so a
+     counter here would run on tab open rather than on interaction. */
+  (function aiShift() {
+    var root = document.querySelector('[data-ai-shift]');
+    if (!root) return;
+    var shift = root.querySelector('.ashift');
+    var togs = Array.prototype.slice.call(root.querySelectorAll('.ashift__tog'));
+    if (!shift || !togs.length) return;
+
+    function set(state) {
+      shift.classList.toggle('is-before', state === 'before');
+      shift.classList.toggle('is-after', state === 'after');
+      togs.forEach(function (t) {
+        t.setAttribute('aria-pressed', String(t.getAttribute('data-state') === state));
+      });
+    }
+
+    var manual = false;
+    togs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        manual = true;
+        set(t.getAttribute('data-state'));
+      });
+    });
+
+    /* Reduced motion opens on the payoff rather than making someone click to
+       reach it, since the transition that would have sold it is suppressed.
+       Both buttons still work. */
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      set('after');
+      return;
+    }
+
+    set('before');
+
+    /* Advance to the after state on the way out, so someone who scrolls past
+       without touching it still sees the payoff.
+
+       The `seen` guard is load-bearing. The panel ships hidden behind its
+       tab, so the observer's very first callback reports isIntersecting
+       false, and without the guard that advances the panel before anyone has
+       opened the tab. This shipped broken once. */
+    var seen = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (manual) return;
+        if (entry.isIntersecting) seen = true;
+        else if (seen) set('after');
+      });
+    }, { threshold: 0.4 });
+    io.observe(root);
+  })();
   /* --- Tool-stack knowledge graph (clustered, logo-aware, mouse-reactive) */
   (function constellation() {
     var wrap = document.querySelector('.stack__canvas-wrap[data-constellation]');

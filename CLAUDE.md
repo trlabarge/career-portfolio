@@ -30,14 +30,73 @@ Two things follow, and both are easy to undo by accident.
   the services firm makes him read as an early-stage specialist, which is the
   exact undersell the change was made to fix.
 
-There is deliberately **no AI nav item and no AI section**. The claim is about
-who he is, so it lives in the title tag, the hero subhead, the work grid, the
-About page, and the structured data. A nav item would read as a service line,
-which undercuts the full-time-role intent, and it would date badly. A
+There is deliberately **no AI nav item**. A nav item would read as a service
+line, which undercuts the full-time-role intent, and it would date badly. A
 perspective/POV page on AI in GTM is the one addition that would earn a nav
 slot later, and the agreed sequence is to build it as a single page first with
 no nav item, then promote it only if it gets read. Name it Perspective or
 Notes, never AI.
+
+The **no AI section** half of that rule was narrowly overridden in 2026-08,
+after Tim's mentor said the claim was true but too quiet to land. The homepage
+now carries a `section--sage section--narrow` statement band, "Every company is
+being asked to turn what it sells into an AI product." It is a positioning
+argument that hands off to the case studies, not a service line, so it lists no
+deliverables and carries no offer language or CTA. **It sits after the
+capabilities section and before the work grid, and that placement is
+load-bearing**, since putting it any earlier makes the first two screens read
+as an AI specialist ad. It also deliberately carries no cards, because cards
+here duplicate the work grid directly below it.
+
+The band is built in four beats, not one paragraph. It shipped as a headline
+over a single long block and read as a wall that people skipped. Now: the
+opening line as a `.lede`, then `.pullline` ("The technology is rarely the hard
+part.") at display scale, then `.hardparts`, three gold-numbered items for
+positioning, packaging and demand, then `.hardparts__close` with the claim.
+Same words throughout, four levels of hierarchy instead of one. `.hardparts`
+uses gold numerals straight on the field rather than `.chain`, which paints
+cream cards with light borders for the off-white page and would put three pale
+boxes on sage.
+
+The homepage hero follows the same principle. `.hero__subhead`,
+`.hero__claim` and `.hero__meta` are three deliberate weights: breadth, then
+the AI claim against a gold rule, then the tool list small and muted. Running
+them together as one paragraph is what made the block get skimmed, and it also
+inverted the ordering rule below. The bottom margin lives on `.hero__meta`,
+since `.hero__subhead` is no longer the last element before the button row.
+
+### Two counts, and they are not the same number
+
+The single easiest thing to garble on this site, because the copy says "twice"
+while the work grid shows three AI case studies. Both are correct.
+
+- **Two AI products taken to market.** Implicit, and CEI Clairvoyance. "Twice"
+  always means this, and it counts products and companies.
+- **Three projects.** Implicit was two distinct pieces of work on the *same*
+  product, the Agolo to Implicit rebrand and repositioning, and a later shift
+  in go-to-market from B2B sales-led to product-led growth.
+- Never write "three AI products," and never treat the two Implicit projects as
+  two products. `timbot/persona.md` and `facts.md` §12 both carry this rule
+  because a visitor who counts the cards will ask.
+
+### The anti-narrowing guardrail
+
+An earlier pass at the 2026-08 messaging work put the AI claim in the H1 and
+made it the whole identity. Tim rejected it: the AI work is the sharpest proof
+inside a broader marketing leadership claim, never a replacement for it. What
+holds that line, and what a future rewrite must not quietly undo:
+
+- The homepage H1 stays a general marketing leadership claim. The AI content
+  lives in the subhead, panel 05, and the band.
+- ConstructConnect stays the bento hero card. It is the biggest number on the
+  site and carries zero AI language, which makes it the breadth proof.
+- Four of the five capability panels have nothing to do with AI. Keep that
+  ratio.
+- No AI language in the testimonial or the closing CTA.
+- Banned phrasings anywhere: "leader in the age of AI", "AI-first marketer",
+  "AI-native leader", "harnessing the power of AI", "the AI revolution". Note
+  "AI-powered" appears on two case study pages as CEI's own real service and
+  keyword names, which is the one sanctioned use.
 
 `timbot/persona.md` carries a "What to lead with" section encoding the same
 rules for the chatbot, including the line Tim does not cross (he is a marketer
@@ -88,6 +147,12 @@ punctuated by confident full-bleed color-field sections.
   section backgrounds (`.section--sage`, `.section--terracotta`), not just small
   touches. Rhythm is white space, then a bold color block, then white again.
   Headings on solid color fields are set to the off-white for contrast.
+  `.eyebrow` and `.lede` both hardcode a dark colour for the off-white page, so
+  they inherit nothing on a color field and used to render dark-on-dark. There
+  is now a global rule lightening both under `.section--sage` and
+  `.section--terracotta`. `.stack` sets the same two values scoped to itself
+  and still wins, so that section is unchanged. Do not "fix" a new color-field
+  section with another one-off override, the global rule already covers it.
 - Warm texture. A faint SVG grain overlays the whole page (`body::before`).
   Layered mountain-inspired flat SVG shapes sit behind the hero.
 - Motion patterns (all in `/js/main.js`, all gated by `prefers-reduced-motion`):
@@ -118,11 +183,13 @@ punctuated by confident full-bleed color-field sections.
     `data-count`, `data-decimals`, `data-prefix`, `data-suffix`. The final value
     is the initial text so no-JS still shows it.
   - Scroll-progress bar, injected at the top of `<body>` by JS.
-- Interactive capabilities section (`.capabilities`, the "Four things I bring"
+- Interactive capabilities section (`.capabilities`, the "Five things I bring"
   block). Left column is a clickable vertical tablist (`.cap-item`, ARIA
   tab/tabpanel, arrow-key navigable). The active item highlights and its
   description expands. The right `.cap-stage` swaps a dynamic demo panel per
-  item. All four panels are real interactive demos, see below. Above 861px,
+  item. All five panels are real interactive demos, see below. `capabilities()`
+  in `/js/main.js` is fully generic over `.cap-item` / `.cap-panel`, so adding
+  a panel needs no JS change there. Above 861px,
   where `.cap-stage` is
   sticky, `.cap-demo` and `.cap-stage` are pinned to the height of the
   tallest panel so switching tabs cannot shift the page. Two steps, 535px
@@ -146,8 +213,12 @@ punctuated by confident full-bleed color-field sections.
   itself down.
   Each panel deliberately moves in a different interaction register. Legend
   toggles on 01, surface tabs on 02, a radio board on 03, a continuous
-  slider on 04. Four of the same control would read as a template, so keep
-  a new panel out of a register already in use.
+  slider on 04, a two-state commit flip on 05. Five of the same control would
+  read as a template, so keep a new panel out of a register already in use.
+  Panel 05 was measured against the pinned heights when it was added and fits
+  inside the existing 535px and 590px steps, so neither number moved. On a
+  360px viewport the five-row list measures ~538px, well clear of the ~1000px
+  failure described below. Re-check both if its content grows.
   Panels 02 to 04 carry the `hidden` attribute in the markup and only the
   tablist ever clears it, so `html:not(.js) .cap-panel[hidden]` forces them
   back to `display: block`. Without that rule the entire right-hand stage is
@@ -346,6 +417,63 @@ punctuated by confident full-bleed color-field sections.
     radios on panel 03.
     Under `prefers-reduced-motion` the sweep never runs and the panel opens
     at the full team size, already resolved. Dragging still works.
+  - AI go-to-market before/after (`.ashift`, inside panel 05, `data-ai-shift`
+    on the `.cap-demo`). Two rows, Implicit and CEI, each showing what the
+    company was selling and what a buyer could actually purchase, side by
+    side, with a hard metric under each state. The claim on this panel is that
+    the technology was never the hard part.
+    **This is the one panel whose numbers are real, so it carries the loud gold
+    `.cap-demo__chip` reading "Real engagements" rather than the quiet outline
+    "Illustrative model" the other four use.** That contrast is deliberate. Do
+    not normalize it.
+    **Both states are on screen at once, and that is the point.** An earlier
+    version was a one-button commit flip that swapped one state for the other,
+    which meant the comparison the panel exists to make was never actually
+    visible. Do not go back to a sequential reveal here.
+    The register is a two-option segmented switch (`.ashift__toggle` /
+    `.ashift__tog`, `aria-pressed`) that drives which side is emphasised.
+    `.ashift` takes `is-before` or `is-after` and the CSS does the dimming.
+    It is styled as a switch rather than as tabs so it does not read as a
+    second copy of panel 02.
+    The neutral state ships in the markup with no state class, so with no JS
+    both columns render at full strength and the panel reads as a finished
+    comparison. `aiShift()` in `/js/main.js` adds `is-before` on init.
+    The inactive side drops to 0.38 opacity and its value goes sage-tint
+    rather than gold. It deliberately stays legible. It is still half the
+    argument, and a column faded to nothing makes the panel look broken.
+    An IntersectionObserver advances to `is-after` on the way out so someone
+    who scrolls past still sees the payoff, and any click sets `manual` and
+    stops that, same reasoning as panels 02 and 03. Under
+    `prefers-reduced-motion` the panel opens on `is-after`, since the
+    transition that would have sold the change is suppressed, and both
+    buttons still work.
+    **That observer needs its `seen` guard.** The panel ships hidden behind
+    its tab, so the observer's very first callback reports `isIntersecting`
+    false. Without `seen` that advances the panel before anyone has opened the
+    tab. This shipped broken once.
+    **There is deliberately no `data-count` anywhere in this panel.** The
+    global `counters()` observes every `[data-count]`, fires at 0.6
+    intersection and unobserves. Since the panel is hidden until its tab
+    opens, that would run on tab open rather than on interaction.
+    Metrics render as a small uppercase `.ashift__mlabel` above a large
+    `.ashift__mval`, matching `.dstack__stat-label` and `.metric__label`
+    elsewhere. Tim dictated them with colons ("leads per quarter: 1"), and
+    label-over-value gives the same reading without breaking the no-colons
+    rule.
+    Two columns are kept below 861px rather than stacked. Type steps down
+    instead. Stacking turns the comparison back into the sequential reveal
+    this design replaced.
+    **Implicit's after figure reads `1,000+`, not 1,133.** Tim chose the
+    rounded form for this panel after the discrepancy was flagged. 1,133 stays
+    the canonical figure everywhere else, including the `/the-work` card
+    headline and the Agolo case study chart. They are the same result, not two
+    metrics, and `timbot/facts.md` §10 carries the same note.
+    **CEI's before state reads `$0` pipeline.** That is a claim of absence
+    supported by "nothing a client can buy", since there was no purchasable
+    practice to have pipeline for. It does not breach the
+    never-resolve-millions rule, which governs the after state, and
+    `$Millions` still names no figure.
+
 - Signature interactive elements (two, both on the homepage):
   - Animated growth curve (`.growth`). An SVG line draws itself (stroke-dashoffset)
     next to the metric counters, reinforcing compounding results.
@@ -759,9 +887,15 @@ The site is checked at 320x640, 360x640, 360x800, 390x844, 430x932 and
 The social share image `/assets/og-image.png` (1200x630) is generated from
 `/assets/og-image.source.html` by `node scripts/render-og-image.mjs`, which
 renders it in a headless Chromium viewport and screenshots it. Edit the source
-and re-render. The script refuses to write a file if Space Grotesk did not
-load, since a card that silently falls back to a system sans stops looking like
-the site, so run it somewhere with access to Google Fonts.
+and re-render with `npm run og:build`. The script refuses to write a file if
+Space Grotesk did not load, since a card that silently falls back to a system
+sans stops looking like the site.
+
+It does **not** need network access. The script reads both faces out of
+`node_modules/@fontsource/*` and inlines them as data URIs before
+screenshotting, so the render is offline and deterministic. Run `npm install`
+first. If Playwright cannot find Chromium, pass
+`CHROME_PATH=/opt/pw-browsers/chromium`.
 
 The card carries the TL mark, in a sage rounded-square badge, set directly in
 markup and CSS (a `.face` div with a `.mark` span, no image file) so the
@@ -912,6 +1046,44 @@ consistent with everything else here.
 - `/js/timbot.js` is the widget. Vanilla, no dependencies. The conversation
   lives in `sessionStorage` so it survives navigation, which matters when the
   launcher follows you across the site.
+
+### The wave
+
+The launcher waves once per session, 20s in, to catch someone who has been
+reading and never noticed it. `armWave()` sets a timer, `cancelWave()` kills it
+and is called from both `open()` and the launcher's click handler, so it can
+never fire over an active conversation.
+
+- **Once per session, tracked under `timbot:waved`,** which is three-state
+  rather than a boolean. Unset arms the 20s timer. `shown` means the bounce
+  already ran this session, so a later page in the same session shows the hand
+  immediately and statically, no timer and no motion. `done` means the visitor
+  clicked and nothing shows again. That is what makes the hand persist across
+  navigation until it is acknowledged, while the *motion* still only ever
+  happens once. Two classes carry it, `is-waving` (hand plus bounce and
+  wiggle, three iterations) and `is-waved` (hand only).
+- Skipped if the panel is already open, if `/ask` set `data-timbot-open`, if
+  there is already a stored conversation, or if `timbot:open` is `1`. Note
+  `timbot:open` is set back to `0` on close, so it is a "currently open" flag
+  and not a "has ever been opened" one. The stored-conversation check is what
+  actually covers the second case.
+- Skipped entirely under `prefers-reduced-motion`. `timbot.js` is its own IIFE
+  and does not share `main.js`'s `reduceMotion`, so it runs its own
+  `matchMedia` check. It also deliberately does not write `timbot:waved` in
+  that branch, so nothing is consumed by a session that never saw it.
+- The bounce animates the standalone `translate` property, not `transform`,
+  because `.timbot__launcher:hover` already owns `transform: translateY(-2px)`.
+  The two compose independently, so hovering mid-wave does not cancel the
+  bounce. Do not "simplify" that back into `transform`.
+- The 👋 is `aria-hidden` and `pointer-events: none`. The launcher's
+  accessible name already says what the button does, and the wave must never
+  steal focus.
+- **No ring and no plate.** It sits at 2.1rem with only a drop shadow. An
+  earlier version put a 1rem emoji inside a 30px gold circle, which read as a
+  notification dot rather than as a hand. It is a hand, so it should look like
+  one at a glance.
+- The motion runs three iterations and then stops while the hand stays. A
+  badge that keeps moving until it is clicked competes with reading.
 
 ### There is no retrieval step, and there should not be one
 

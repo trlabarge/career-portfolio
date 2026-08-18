@@ -216,6 +216,98 @@ p {
   color: var(--color-bg);
 }
 
+/* .eyebrow and .lede both hardcode a dark colour for the off-white page, so
+   on a solid field they inherit nothing and render dark-on-dark. Sage tint
+   rather than full off-white keeps them subordinate to the heading, which is
+   the same relationship they have on a light section. .stack sets the same
+   two values scoped to itself and still wins, so that section is unchanged. */
+.section--sage .eyebrow,
+.section--sage .lede,
+.section--terracotta .eyebrow,
+.section--terracotta .lede {
+  color: var(--color-sage-tint);
+}
+
+.section--terracotta .eyebrow,
+.section--terracotta .lede {
+  color: var(--color-cream);
+}
+
+/* Pull-line and the three hard parts ---------------------------------------
+   Both exist for the "Right now" band on the homepage, which shipped as a
+   headline over one long paragraph and read as a wall. Same words, four
+   beats: opening line, this pull-line, the three parts, closing claim.
+   The pull-line is the sentence that earns attention and was buried
+   mid-paragraph. Kept as its own component rather than scoped to the band,
+   since a color field with one big line is a pattern worth reusing. */
+.pullline {
+  margin: var(--space-md) 0 var(--space-lg);
+  max-width: 20ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.6vw, 2.9rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--color-bg);
+}
+
+/* Gold numerals straight onto the field, echoing .cap-item__num and
+   .chain__num. Deliberately NOT .chain, which paints cream cards with light
+   borders for the off-white page and would put three pale boxes on sage. */
+.hardparts {
+  list-style: none;
+  margin: 0 0 var(--space-lg);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.hardparts__item {
+  border-top: 2px solid rgba(201, 160, 81, 0.55);
+  padding-top: 0.75rem;
+}
+
+.hardparts__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-gold);
+  margin-bottom: 0.35rem;
+}
+
+.hardparts__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.hardparts__desc {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-sage-tint);
+}
+
+.hardparts__close {
+  margin: 0;
+  max-width: 620px;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--color-cream);
+}
+
+@media (max-width: 720px) {
+  .hardparts {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}
+
 /* Available to screen readers, removed from the visual layout. */
 .visually-hidden {
   position: absolute;
@@ -547,11 +639,38 @@ html:not(.js) .rotator__word:first-child {
   transform: none;
 }
 
+/* Three tiers, not one paragraph. An earlier version ran all three sentences
+   together at one size and weight, so the whole block read as texture under
+   the H1 and got skimmed. Tier 2 is the emphasis line and carries the claim a
+   hiring manager has not already heard; tier 3 is the tool list, which stays
+   subordinate per the ordering rule in timbot/persona.md. The bottom margin
+   lives on .hero__meta, since .hero__subhead is no longer the last element
+   before the button row. */
 .hero__subhead {
   font-size: clamp(1.15rem, 2vw, 1.4rem);
   color: var(--color-text-muted);
   max-width: 680px;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.hero__claim {
+  position: relative;
+  max-width: 680px;
+  margin: 0 0 var(--space-sm);
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--color-gold);
+  font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+.hero__meta {
+  max-width: 680px;
+  margin: 0 0 var(--space-lg);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 
 /* Proof strip ------------------------------------------------------------- */
@@ -1766,6 +1885,192 @@ html:not(.js) .pcoach__slider {
   font-size: 0.8rem;
   line-height: 1.5;
   color: rgba(220, 229, 218, 0.65);
+}
+
+/* AI go-to-market: the before/after comparison ----------------------------
+   The one panel in the section whose numbers are real, which is why it
+   carries the loud gold .cap-demo__chip reading "Real engagements" rather
+   than the quiet outline "Illustrative model" the other four use.
+
+   Both states are on screen at once, in two columns, with a segmented
+   Before / After control driving which side is emphasised. An earlier
+   version swapped one state for the other on a single button, which meant
+   the comparison the panel exists to make was never actually visible.
+
+   Interaction register is a two-option segmented switch, deliberately not a
+   register already in use (legend toggles on 01, surface tabs on 02, a radio
+   board on 03, a continuous slider on 04). It is styled as a switch rather
+   than as tabs so it does not read as a second copy of panel 02. */
+.ashift {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ashift__toggle {
+  align-self: center;
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid rgba(220, 229, 218, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.ashift__tog {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(220, 229, 218, 0.7);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.42rem 1.05rem;
+  min-height: 32px;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+
+.ashift__tog:hover {
+  color: var(--color-cream);
+}
+
+.ashift__tog[aria-pressed='true'] {
+  background: var(--color-gold);
+  color: #0f1a0c;
+}
+
+.ashift__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ashift__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Spans both columns, since the company is not a property of either state. */
+.ashift__co {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-sage-tint);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.ashift__kind {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(220, 229, 218, 0.55);
+}
+
+.ashift__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+/* Base state is both sides at full strength. The dimming only ever comes
+   from .is-before / .is-after, which JS adds, so with no JS the panel reads
+   as a finished side-by-side comparison rather than a half-greyed one. */
+.ashift__side {
+  border-left: 2px solid rgba(201, 160, 81, 0.45);
+  padding-left: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: opacity 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.ashift__what {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-cream);
+}
+
+.ashift__metric {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.ashift__mlabel {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(220, 229, 218, 0.55);
+}
+
+.ashift__mval {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.4s var(--ease-out);
+}
+
+/* The inactive side stays legible rather than disappearing. It is still half
+   the argument, and a column faded to nothing would make the panel look
+   broken rather than de-emphasised. */
+.ashift.is-after .ashift__side--before,
+.ashift.is-before .ashift__side--after {
+  opacity: 0.38;
+  border-left-color: rgba(220, 229, 218, 0.18);
+}
+
+.ashift.is-after .ashift__side--before .ashift__mval,
+.ashift.is-before .ashift__side--after .ashift__mval {
+  color: var(--color-sage-tint);
+}
+
+.ashift__note {
+  margin: 0;
+  border-top: 1px dashed rgba(220, 229, 218, 0.3);
+  padding-top: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(220, 229, 218, 0.65);
+}
+
+/* Two columns are kept on mobile rather than stacked. The side-by-side
+   comparison is the whole point of the panel, and stacking turns it back
+   into the sequential reveal this design replaced. Type steps down instead. */
+@media (max-width: 860px) {
+  .ashift__cols {
+    gap: 0.6rem;
+  }
+
+  .ashift__side {
+    padding-left: 0.55rem;
+  }
+
+  .ashift__what {
+    font-size: 0.78rem;
+  }
+
+  .ashift__mval {
+    font-size: 1.25rem;
+  }
 }
 
 /* Featured work card stats ------------------------------------------------- */
@@ -5736,6 +6041,7 @@ html:not(.js) .rebrand-film__video {
 /* --- Launcher ------------------------------------------------------------ */
 
 .timbot__launcher {
+  position: relative; /* anchors .timbot__wave */
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -5782,6 +6088,66 @@ html:not(.js) .rebrand-film__video {
 
 .timbot.is-open .timbot__launcher {
   padding: 0.4rem;
+}
+
+/* --- The wave ------------------------------------------------------------
+   Fires once per session, 20s in, to catch someone who has been reading and
+   has not noticed the launcher. Two classes carry it: .is-waving shows the
+   hand and runs the motion, .is-waved shows the hand alone. timbot.js adds
+   .is-waving on the page where the timer fires and .is-waved on any later
+   page in the same session, so the hand persists across navigation until the
+   chat is opened rather than vanishing after a few seconds.
+
+   No ring, no plate. It is a hand, so it should read as a hand at a glance
+   rather than as a notification dot.
+
+   The bounce animates the standalone `translate` property rather than
+   `transform`, because .timbot__launcher:hover already owns
+   `transform: translateY(-2px)`. The two compose independently, so hovering
+   mid-wave does not cancel the bounce or vice versa. */
+.timbot__wave {
+  position: absolute;
+  top: -26px;
+  left: -18px;
+  font-size: 2.1rem;
+  line-height: 1;
+  opacity: 0;
+  transform: scale(0.5);
+  transform-origin: bottom right;
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(43, 43, 43, 0.3));
+}
+
+.timbot.is-waving .timbot__wave,
+.timbot.is-waved .timbot__wave {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Motion only on the page where the timer actually fired. Three iterations,
+   then it settles and the hand simply stays put, so it stops competing with
+   whatever the visitor is reading. */
+.timbot.is-waving .timbot__wave {
+  animation: timbot-wiggle 1.1s var(--ease-out) 0.25s 3;
+  transform-origin: bottom right;
+}
+
+.timbot.is-waving .timbot__launcher {
+  animation: timbot-bounce 1.1s var(--ease-out) 3;
+}
+
+@keyframes timbot-bounce {
+  0%, 55%, 100% { translate: 0 0; }
+  20% { translate: 0 -8px; }
+  38% { translate: 0 -3px; }
+}
+
+@keyframes timbot-wiggle {
+  0%, 60%, 100% { rotate: 0deg; }
+  15% { rotate: -18deg; }
+  30% { rotate: 14deg; }
+  45% { rotate: -8deg; }
 }
 
 /* --- Panel --------------------------------------------------------------- */
