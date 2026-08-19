@@ -1784,11 +1784,13 @@
      an untouched page is exactly the scrollable list it was before. Clicking
      the selected chip clears that facet again.
 
-     Each chip carries the number of projects it would leave, counted against
+     Each chip knows the number of projects it would leave, counted against
      the OTHER facet's current selection, and a chip that would leave none is
-     disabled. Those counts are what keep a visitor from clicking their way
-     into an empty grid, which matters here because most disciplines belong to
-     a single company type. */
+     disabled. That is what keeps a visitor from clicking their way into an
+     empty grid, which matters here because most disciplines belong to a single
+     company type. The number is spoken in the chip's accessible name rather
+     than printed on it, since a count badge on every chip was most of what
+     made the band too wide and too loud to sit above the grid. */
   (function workFilters() {
     var root = document.querySelector('[data-work-filters]');
     var grid = document.querySelector('[data-work-grid]');
@@ -1799,12 +1801,12 @@
     var FACETS = [
       {
         key: 'company',
-        label: 'Company type',
+        label: 'Company',
         owns: function (tag) { return tag.classList.contains('work-card__tag--type'); }
       },
       {
         key: 'work',
-        label: 'Type of work',
+        label: 'Work type',
         owns: function (tag) { return !tag.classList.contains('work-card__tag--type'); }
       }
     ];
@@ -1954,18 +1956,10 @@
         btn.type = 'button';
         btn.className = 'work-filters__chip work-filters__chip--' + f.key;
         btn.setAttribute('aria-controls', grid.id);
-        btn.appendChild(document.createTextNode(v.label));
-
-        /* The count is decoration for a screen reader, which gets the same
-           number spelled out in the button's own label instead. */
-        var count = document.createElement('span');
-        count.className = 'work-filters__count';
-        count.setAttribute('aria-hidden', 'true');
-        btn.appendChild(count);
-
+        btn.textContent = v.label;
         btn.addEventListener('click', function () { select(f.key, v.slug); });
         row.appendChild(btn);
-        chips.push({ btn: btn, count: count, facet: f.key, value: v.slug, label: v.label });
+        chips.push({ btn: btn, facet: f.key, value: v.slug, label: v.label });
       });
 
       group.appendChild(row);
@@ -2028,7 +2022,6 @@
       chips.forEach(function (c) {
         var n = countFor(c.facet, c.value);
         var on = state[c.facet] === c.value;
-        c.count.textContent = String(n);
         c.btn.setAttribute('aria-pressed', String(on));
         c.btn.setAttribute('aria-label',
           c.label + ', ' + n + (n === 1 ? ' project' : ' projects'));
@@ -2070,7 +2063,7 @@
       } else if (filtered) {
         message.textContent = 'Showing ' + shown + ' of ' + records.length + ' projects.';
       } else {
-        message.textContent = 'Showing all ' + records.length + ' projects.';
+        message.textContent = records.length + ' projects.';
       }
       resetBtn.hidden = !filtered;
     }

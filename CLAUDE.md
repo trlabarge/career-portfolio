@@ -96,7 +96,9 @@ holds that line, and what a future rewrite must not quietly undo:
 - Banned phrasings anywhere: "leader in the age of AI", "AI-first marketer",
   "AI-native leader", "harnessing the power of AI", "the AI revolution". Note
   "AI-powered" appears on two case study pages as CEI's own real service and
-  keyword names, which is the one sanctioned use.
+  keyword names, and in the homepage `.hero__claim` ("AI-native and AI-powered
+  programs") where Tim dictated it directly in 2026-08. Those are the sanctioned
+  uses.
 
 `timbot/persona.md` carries a "What to lead with" section encoding the same
 rules for the chatbot, including the line Tim does not cross (he is a marketer
@@ -836,6 +838,14 @@ The default state is both facets on All, which renders exactly the scrollable
 list the page was before, and that is deliberate. Filtering is an accelerator
 here, never a gate.
 
+**It is a toolbar, not a panel, and that is the second thing it shipped as.**
+The first pass was a bordered cream card with stacked labels and a count badge
+on every chip, 288px tall on a laptop, which pushed the first case study below
+the fold. Tim rejected it. What replaced it has no fill and no border box, the
+facet label sits inline with its own chip row, and the counts moved into the
+accessible name. It measures 112px on a laptop and 89px on a phone. If this is
+ever touched, height is the constraint that matters. Keep it quiet.
+
 Things that are load-bearing.
 
 - **The controls are generated, not written.** `.work-filters` ships as an
@@ -851,31 +861,44 @@ Things that are load-bearing.
 - **One selection per facet, ANDed across the two.** Clicking the selected chip
   clears that facet. Multi-select within a facet was not built, since with five
   studies two company types selected together is nearly the same set as All.
-- **Every chip carries the count it would leave**, computed against the *other*
+- **Every chip knows the count it would leave**, computed against the *other*
   facet's current selection, and a chip that would leave zero is `disabled`.
-  That is what makes an empty grid unreachable by clicking, which matters
-  because most disciplines here belong to a single company type (Productization
-  is CEI only, Conversion Optimization is ConstructConnect only). The empty
-  state still exists in `render()` for a hand-edited URL, and it should stay.
+  That is what makes an empty grid unreachable by clicking. The number is
+  spoken in the chip's `aria-label` and never printed, since a badge on every
+  chip is most of what made the first version too wide. The empty state still
+  exists in `render()` for a hand-edited URL, and it should stay.
 - **Selected chips take the colour of the chip family they filter**, terracotta
   for company type and sage for type of work, so a control and the tag it
   matches read as the same thing. Do not normalize the two to one colour.
-- **Work-type values are ordered by how many projects carry them**, so the
-  buckets worth clicking lead and the one-project tags fall to the end.
+- **The work-type vocabulary on `/the-work` is exactly five values**, on Tim's
+  instruction: `AI Go-To-Market`, `Demand Generation`, `Brand & Positioning`,
+  `SEO & Content`, `Product-Led Growth`. Four earlier tags were folded in
+  rather than kept, since a facet with nine values and five one-project entries
+  is a wall, not a filter. Conversion Optimization folded into Demand
+  Generation, Naming & Identity and Messaging into Brand & Positioning, and
+  Productization into AI Go-To-Market. Those four still appear on
+  `/fractional-cmo` cards and inside the case studies, which is fine, the facet
+  is built from `/the-work` alone. Adding a sixth value means adding it to a
+  card, so weigh it against the height budget above.
+  The ConstructConnect card now reads Demand Generation alone, which is the one
+  place the fold costs something, since conversion optimization is that study's
+  signature. Its headline and copy still say so.
+- **Values are ordered by how many projects carry them**, so the buckets worth
+  clicking lead and the one-project tags fall to the end.
 - **The state is in the query string** (`?company=…&work=…`, slugs), written
   with `replaceState` and read on load, so a filtered view is linkable. Use
   `replaceState`, not `pushState`, or the back button unwinds chip clicks
   instead of leaving the page. An unrecognised slug is ignored rather than
   applied.
 - **Below 721px the groups collapse into a native `<details>`.** Stacked, the
-  two chip rows measure about 700px on a phone, which is a screen of controls
-  sitting between the headline and the first case study. That is the same
-  failure the capabilities list had on mobile. `workFilters()` forces the
-  details open above 721px and the summary is `display: none` there, so the
-  band reads as a plain panel on desktop. The status line stays *outside* the
-  disclosure on purpose, so a collapsed band still says how many projects are
-  showing and still offers "Show everything", and the summary names the active
-  selections so a closed band never hides what it is doing.
+  chip rows still cost most of a phone screen between the headline and the
+  first case study. That is the same failure the capabilities list had on
+  mobile. `workFilters()` forces the details open above 721px and the summary
+  is `display: none` there, so the band reads as a plain toolbar on desktop.
+  The status line stays *outside* the disclosure on purpose, so a collapsed
+  band still says how many projects are showing and still offers "Show
+  everything", and the summary names the active selections so a closed band
+  never hides what it is doing.
 - `.work-filters` uses `grid-template-columns: minmax(0, 1fr)`, not a bare
   auto column. An auto grid column sizes from its items' min-content width and
   the summary's selection line is `nowrap`, so a long pair of labels widened
@@ -886,6 +909,30 @@ Things that are load-bearing.
   `--filter-i`), and `render()` also forces `is-visible` onto every shown card,
   since a card hidden behind a filter cannot intersect and would never earn its
   reveal on its own.
+
+### Case study cards on /the-work carry a field colour
+
+Five white boxes in a grid read as a list of links rather than five distinct
+pieces of work, so each card on `/the-work` takes a tinted field
+(`.work-card--field-lavender` / `--field-cream` / `--field-terracotta`) and the
+grid carries `.work-grid--studies`, which is also what scopes the larger card
+headline (`clamp(1.55rem, 2.2vw, 1.9rem)`).
+
+- **The tint is keyed to company type**, not picked per card. Lavender is the
+  AI-native startup, cream is the tech and AI services firm, terracotta tint is
+  the B2B-SaaS-only study. So filtering by company type resolves the grid to a
+  single colour, which is the point. Do not reassign these to make a prettier
+  spread.
+- **Sage tint is deliberately not a field.** The discipline chips are sage tint
+  and would disappear into it.
+- The one collision the tints do create is a terracotta-tint chip on the
+  terracotta-tint field, where the chip fill swaps to off-white. Same fix and
+  same reasoning as `.work-card--hero`.
+- Chips on a tinted field take a 1px inset ring, since two pale fills an eighth
+  of a step apart stop reading as separate objects.
+- `/fractional-cmo` reuses `.work-grid` with its own problem-led headlines and
+  its own tags, and is deliberately left plain. It is a different framing of
+  the same five studies, not a second copy of this grid.
 
 ## Tech and conventions
 
