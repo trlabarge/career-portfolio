@@ -3050,10 +3050,16 @@ html:not(.js) .pcoach__slider {
    distinct pieces of work, so each card takes a tinted field. The tint is
    keyed to company type, which means it reinforces the filter above rather
    than being decoration: filter to one company type and the grid resolves to
-   one colour. Sage tint is deliberately NOT used as a field, since the
-   discipline chips are sage tint and would vanish into it. */
-.work-card--field-lavender {
-  background-color: var(--color-lavender);
+   one colour.
+
+   The three fields are the site's own triad, sage tint, cream, terracotta
+   tint. Lavender was tried first for the AI-native startup and read as
+   off-palette against the warm off-white page, so it is not used here.
+   Whatever replaces a field, it has to keep three tints that separate at a
+   glance: gold tint sits so close to cream that two of the five cards stop
+   looking different. */
+.work-card--field-sage {
+  background-color: var(--color-sage-tint);
 }
 
 .work-card--field-cream {
@@ -3064,22 +3070,28 @@ html:not(.js) .pcoach__slider {
   background-color: var(--color-terracotta-tint);
 }
 
-/* The one collision the tints do create. A terracotta-tint chip on a
-   terracotta-tint field reads as tonal, so the fill swaps to off-white, same
-   fix and same reasoning as .work-card--hero. */
-.work-card--field-terracotta .work-card__tag--type {
+/* Sage on sage tint is 3.4:1, which passes for large text but only just, and
+   these headlines carry the card. */
+.work-card--field-sage h3 {
+  color: var(--color-sage-dark);
+}
+
+/* Each tint collides with the chip family that shares its hue, where the fill
+   swaps to off-white. Same fix and same reasoning as .work-card--hero. */
+.work-card--field-terracotta .work-card__tag--type,
+.work-card--field-sage .work-card__tag:not(.work-card__tag--type) {
   background-color: var(--color-bg);
 }
 
 /* On a tinted field the chips need their own edge, since two pale fills an
    eighth of a step apart stop reading as separate objects. */
-.work-card--field-lavender .work-card__tag,
+.work-card--field-sage .work-card__tag,
 .work-card--field-cream .work-card__tag,
 .work-card--field-terracotta .work-card__tag {
   box-shadow: inset 0 0 0 1px rgba(74, 107, 82, 0.14);
 }
 
-.work-card--field-lavender .work-card__tag--type,
+.work-card--field-sage .work-card__tag--type,
 .work-card--field-cream .work-card__tag--type,
 .work-card--field-terracotta .work-card__tag--type {
   box-shadow: inset 0 0 0 1px rgba(143, 82, 65, 0.18);
@@ -3255,7 +3267,7 @@ html:not(.js) .pcoach__slider {
    that neither label wraps, which would cost the row an extra line. */
 .work-filters__label {
   flex: none;
-  width: 5.75rem;
+  width: 6.9rem;
   white-space: nowrap;
   font-family: var(--font-display);
   font-size: 0.66rem;

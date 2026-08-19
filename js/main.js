@@ -1801,12 +1801,12 @@
     var FACETS = [
       {
         key: 'company',
-        label: 'Company',
+        label: 'Company Type',
         owns: function (tag) { return tag.classList.contains('work-card__tag--type'); }
       },
       {
         key: 'work',
-        label: 'Work type',
+        label: 'Work Type',
         owns: function (tag) { return !tag.classList.contains('work-card__tag--type'); }
       }
     ];
@@ -1841,8 +1841,14 @@
       return rec;
     });
 
-    /* Values are ordered by how many projects carry them, so the buckets worth
-       clicking lead and the one-project tags fall to the end of the row. */
+    /* The AI value leads its facet, then the rest by how many projects carry
+       them, so the AI throughline is the first thing in both rows and the
+       one-project tags fall to the end. Derived from the label rather than a
+       hardcoded slug, so it survives a retag like the rest of this module. */
+    function leadsWithAi(v) {
+      return /^ai[-\s]/i.test(v.label) ? 0 : 1;
+    }
+
     var state = {};
     FACETS.forEach(function (f) {
       var seen = {};
@@ -1857,7 +1863,9 @@
         });
       });
       values.sort(function (a, b) {
-        return b.total - a.total || a.label.localeCompare(b.label);
+        return leadsWithAi(a) - leadsWithAi(b) ||
+          b.total - a.total ||
+          a.label.localeCompare(b.label);
       });
       f.values = values;
       state[f.key] = 'all';

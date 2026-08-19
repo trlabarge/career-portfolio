@@ -883,8 +883,12 @@ Things that are load-bearing.
   The ConstructConnect card now reads Demand Generation alone, which is the one
   place the fold costs something, since conversion optimization is that study's
   signature. Its headline and copy still say so.
-- **Values are ordered by how many projects carry them**, so the buckets worth
-  clicking lead and the one-project tags fall to the end.
+- **The AI value leads each facet, then the rest by project count**, so the AI
+  throughline is the first thing in both rows and the one-project tags fall to
+  the end. `leadsWithAi()` matches on the label starting with "AI", not on a
+  hardcoded slug, so it survives a retag like the rest of the module. That is
+  what puts AI-Native Startup ahead of B2B SaaS even though B2B SaaS carries
+  more projects.
 - **The state is in the query string** (`?company=…&work=…`, slugs), written
   with `replaceState` and read on load, so a filtered view is linkable. Use
   `replaceState`, not `pushState`, or the back button unwinds chip clicks
@@ -914,20 +918,28 @@ Things that are load-bearing.
 
 Five white boxes in a grid read as a list of links rather than five distinct
 pieces of work, so each card on `/the-work` takes a tinted field
-(`.work-card--field-lavender` / `--field-cream` / `--field-terracotta`) and the
+(`.work-card--field-sage` / `--field-cream` / `--field-terracotta`) and the
 grid carries `.work-grid--studies`, which is also what scopes the larger card
 headline (`clamp(1.55rem, 2.2vw, 1.9rem)`).
 
-- **The tint is keyed to company type**, not picked per card. Lavender is the
+- **The tint is keyed to company type**, not picked per card. Sage tint is the
   AI-native startup, cream is the tech and AI services firm, terracotta tint is
   the B2B-SaaS-only study. So filtering by company type resolves the grid to a
   single colour, which is the point. Do not reassign these to make a prettier
   spread.
-- **Sage tint is deliberately not a field.** The discipline chips are sage tint
-  and would disappear into it.
-- The one collision the tints do create is a terracotta-tint chip on the
-  terracotta-tint field, where the chip fill swaps to off-white. Same fix and
-  same reasoning as `.work-card--hero`.
+- **The three fields are the site's own triad and lavender is not in it.** The
+  AI-native card shipped lavender first and read as off-palette against the
+  warm off-white page. Whatever replaces a field has to keep three tints that
+  separate at a glance, which is also why a gold tint was not the answer, it
+  sits close enough to cream that two of the five cards stop looking different.
+- **Each tint collides with the chip family that shares its hue**, and in both
+  places the chip fill swaps to off-white. Terracotta-tint company chips on the
+  terracotta field, sage-tint discipline chips on the sage field. Same fix and
+  same reasoning as `.work-card--hero`. It does mean one tag renders two ways
+  across the grid, which is the accepted cost of the fields.
+- `h3` on the sage field steps to `--color-sage-dark`. Plain sage on sage tint
+  is 3.4:1, which passes for large text but only just, and these headlines
+  carry the card.
 - Chips on a tinted field take a 1px inset ring, since two pale fills an eighth
   of a step apart stop reading as separate objects.
 - `/fractional-cmo` reuses `.work-grid` with its own problem-led headlines and
