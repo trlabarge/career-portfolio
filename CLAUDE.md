@@ -96,7 +96,9 @@ holds that line, and what a future rewrite must not quietly undo:
 - Banned phrasings anywhere: "leader in the age of AI", "AI-first marketer",
   "AI-native leader", "harnessing the power of AI", "the AI revolution". Note
   "AI-powered" appears on two case study pages as CEI's own real service and
-  keyword names, which is the one sanctioned use.
+  keyword names, and in the homepage `.hero__claim` ("AI-native and AI-powered
+  programs") where Tim dictated it directly in 2026-08. Those are the sanctioned
+  uses.
 
 `timbot/persona.md` carries a "What to lead with" section encoding the same
 rules for the chatbot, including the line Tim does not cross (he is a marketer
@@ -752,6 +754,14 @@ Components added for this page, both in `/css/style.css`:
   `Tech/AI Services Firm`, and `B2B SaaS`, Title Case to match the existing
   discipline tags. They appear on both the homepage bento and `/the-work`, and
   the two lists must stay in sync.
+  **A card can carry more than one.** Both Implicit studies are an AI-native
+  startup selling B2B SaaS and carry both chips, on Tim's instruction. That is
+  what puts Implicit in front of a visitor filtering `/the-work` for SaaS
+  rather than hiding it behind the startup label. ConstructConnect is B2B SaaS
+  alone and both CEI studies are Tech/AI Services Firm alone. In the bento the
+  pair sits in a `.work-card__types` wrapper, which takes over the single
+  chip's `margin-top: auto`, since chips in a row-direction flex box would
+  otherwise bottom-align against each other whenever the pair wrapped.
   The tint is deliberate. Solid terracotta is reserved for CTAs and the bento
   hero card, and ten solid pills across two pages would spend that signal, so
   `--color-terracotta-tint` (`#F0DED6`) was added for this. `#8F5241` on it is
@@ -820,6 +830,122 @@ Components added for this page, both in `/css/style.css`:
   navigable, reduced-motion honored). Motion frames the proof, it never delays
   the numbers, case study links, or testimonial.
 
+### The filter band on /the-work
+
+Two facets above the case study grid, company type and type of work, so a
+recruiter screening for one kind of company or one discipline can cut to it.
+The default state is both facets on All, which renders exactly the scrollable
+list the page was before, and that is deliberate. Filtering is an accelerator
+here, never a gate.
+
+**It is a toolbar, not a panel, and that is the second thing it shipped as.**
+The first pass was a bordered cream card with stacked labels and a count badge
+on every chip, 288px tall on a laptop, which pushed the first case study below
+the fold. Tim rejected it. What replaced it has no fill and no border box, the
+facet label sits inline with its own chip row, and the counts moved into the
+accessible name. It measures 112px on a laptop and 89px on a phone. If this is
+ever touched, height is the constraint that matters. Keep it quiet.
+
+Things that are load-bearing.
+
+- **The controls are generated, not written.** `.work-filters` ships as an
+  empty `<div data-work-filters>` and `workFilters()` in `/js/main.js` builds
+  every chip by reading the tags already printed on the cards, splitting them
+  by the `--type` modifier. The tags on the cards stay the single source of
+  truth, so adding a case study or retagging one needs no filter maintenance
+  and the band can never offer a filter that matches nothing. Do not hand-write
+  the control list into the HTML.
+- **`:empty` is the no-JS state.** Nothing can filter without JS, so the empty
+  container hides itself and the full list renders untouched. That is also why
+  the band ships empty rather than hidden.
+- **One selection per facet, ANDed across the two.** Clicking the selected chip
+  clears that facet. Multi-select within a facet was not built, since with five
+  studies two company types selected together is nearly the same set as All.
+- **Every chip knows the count it would leave**, computed against the *other*
+  facet's current selection, and a chip that would leave zero is `disabled`.
+  That is what makes an empty grid unreachable by clicking. The number is
+  spoken in the chip's `aria-label` and never printed, since a badge on every
+  chip is most of what made the first version too wide. The empty state still
+  exists in `render()` for a hand-edited URL, and it should stay.
+- **Selected chips take the colour of the chip family they filter**, terracotta
+  for company type and sage for type of work, so a control and the tag it
+  matches read as the same thing. Do not normalize the two to one colour.
+- **The work-type vocabulary on `/the-work` is exactly five values**, on Tim's
+  instruction: `AI Go-To-Market`, `Demand Generation`, `Brand & Positioning`,
+  `SEO & Content`, `Product-Led Growth`. Four earlier tags were folded in
+  rather than kept, since a facet with nine values and five one-project entries
+  is a wall, not a filter. Conversion Optimization folded into Demand
+  Generation, Naming & Identity and Messaging into Brand & Positioning, and
+  Productization into AI Go-To-Market. Those four still appear on
+  `/fractional-cmo` cards and inside the case studies, which is fine, the facet
+  is built from `/the-work` alone. Adding a sixth value means adding it to a
+  card, so weigh it against the height budget above.
+  The ConstructConnect card now reads Demand Generation alone, which is the one
+  place the fold costs something, since conversion optimization is that study's
+  signature. Its headline and copy still say so.
+- **The AI value leads each facet, then the rest by project count**, so the AI
+  throughline is the first thing in both rows and the one-project tags fall to
+  the end. `leadsWithAi()` matches on the label starting with "AI", not on a
+  hardcoded slug, so it survives a retag like the rest of the module. That is
+  what puts AI-Native Startup ahead of B2B SaaS even though B2B SaaS carries
+  more projects.
+- **The state is in the query string** (`?company=…&work=…`, slugs), written
+  with `replaceState` and read on load, so a filtered view is linkable. Use
+  `replaceState`, not `pushState`, or the back button unwinds chip clicks
+  instead of leaving the page. An unrecognised slug is ignored rather than
+  applied.
+- **Below 721px the groups collapse into a native `<details>`.** Stacked, the
+  chip rows still cost most of a phone screen between the headline and the
+  first case study. That is the same failure the capabilities list had on
+  mobile. `workFilters()` forces the details open above 721px and the summary
+  is `display: none` there, so the band reads as a plain toolbar on desktop.
+  The status line stays *outside* the disclosure on purpose, so a collapsed
+  band still says how many projects are showing and still offers "Show
+  everything", and the summary names the active selections so a closed band
+  never hides what it is doing.
+- `.work-filters` uses `grid-template-columns: minmax(0, 1fr)`, not a bare
+  auto column. An auto grid column sizes from its items' min-content width and
+  the summary's selection line is `nowrap`, so a long pair of labels widened
+  the whole band past a 320px viewport instead of ellipsing. `body`'s
+  `overflow-x: hidden` then hid the result rather than announcing it, which is
+  exactly the trap the mobile rules below describe.
+- Filtered-in cards re-deal with a 45ms stagger (`work-card-in`,
+  `--filter-i`), and `render()` also forces `is-visible` onto every shown card,
+  since a card hidden behind a filter cannot intersect and would never earn its
+  reveal on its own.
+
+### Case study cards on /the-work carry a field colour
+
+Five white boxes in a grid read as a list of links rather than five distinct
+pieces of work, so each card on `/the-work` takes a tinted field
+(`.work-card--field-sage` / `--field-cream` / `--field-terracotta`) and the
+grid carries `.work-grid--studies`, which is also what scopes the larger card
+headline (`clamp(1.55rem, 2.2vw, 1.9rem)`).
+
+- **The tint is keyed to company type**, not picked per card. Sage tint is the
+  AI-native startup, cream is the tech and AI services firm, terracotta tint is
+  the B2B-SaaS-only study. So filtering by company type resolves the grid to a
+  single colour, which is the point. Do not reassign these to make a prettier
+  spread.
+- **The three fields are the site's own triad and lavender is not in it.** The
+  AI-native card shipped lavender first and read as off-palette against the
+  warm off-white page. Whatever replaces a field has to keep three tints that
+  separate at a glance, which is also why a gold tint was not the answer, it
+  sits close enough to cream that two of the five cards stop looking different.
+- **Each tint collides with the chip family that shares its hue**, and in both
+  places the chip fill swaps to off-white. Terracotta-tint company chips on the
+  terracotta field, sage-tint discipline chips on the sage field. Same fix and
+  same reasoning as `.work-card--hero`. It does mean one tag renders two ways
+  across the grid, which is the accepted cost of the fields.
+- `h3` on the sage field steps to `--color-sage-dark`. Plain sage on sage tint
+  is 3.4:1, which passes for large text but only just, and these headlines
+  carry the card.
+- Chips on a tinted field take a 1px inset ring, since two pale fills an eighth
+  of a step apart stop reading as separate objects.
+- `/fractional-cmo` reuses `.work-grid` with its own problem-led headlines and
+  its own tags, and is deliberately left plain. It is a different framing of
+  the same five studies, not a second copy of this grid.
+
 ## Tech and conventions
 
 - Plain HTML/CSS/JS. No framework, no build step.
@@ -828,7 +954,8 @@ Components added for this page, both in `/css/style.css`:
 - Deployed on Vercel.
 - Mobile-first and responsive. Vanilla JS only, no libraries (`/js/main.js`
   handles nav toggle, scroll progress, reveal-on-scroll, metric counters, the
-  rotating hero word, the growth-curve draw, and the tool-stack constellation).
+  rotating hero word, the growth-curve draw, the tool-stack constellation, and
+  the case study filters).
 - Semantic HTML5 (header, nav, main, section, article, footer). One H1 per page.
 - Accessibility: skip link, alt text, ARIA where needed, keyboard navigable,
   sufficient contrast.
@@ -928,7 +1055,8 @@ Getting this wrong is not cosmetic. Two failures show up immediately:
 
 - `/` — Homepage (fully built).
 - `/about` — About Me (placeholder scaffold).
-- `/the-work` — Case study index (built, links to five case studies).
+- `/the-work` — Case study index (built, links to five case studies). Carries
+  the two-facet filter band, see below.
 - `/the-work/constructconnect-conversion-optimization` — fully built.
 - `/the-work/implicit-plg-gtm` — fully built.
 - `/the-work/seo-content-marketing-growth` — fully built.
