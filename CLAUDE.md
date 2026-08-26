@@ -48,15 +48,113 @@ load-bearing**, since putting it any earlier makes the first two screens read
 as an AI specialist ad. It also deliberately carries no cards, because cards
 here duplicate the work grid directly below it.
 
-The band is built in four beats, not one paragraph. It shipped as a headline
-over a single long block and read as a wall that people skipped. Now: the
-opening line as a `.lede`, then `.pullline` ("The technology is rarely the hard
-part.") at display scale, then `.hardparts`, three gold-numbered items for
-positioning, packaging and demand, then `.hardparts__close` with the claim.
-Same words throughout, four levels of hierarchy instead of one. `.hardparts`
-uses gold numerals straight on the field rather than `.chain`, which paints
-cream cards with light borders for the off-white page and would put three pale
-boxes on sage.
+The band went through four shapes. First a headline over a single long
+paragraph, which read as a wall people skipped. Then a stacked sequence of
+beats (opening line, a pull-line, the jargon list, the three hard parts,
+closing claim). Then a narrow two-column stage scoped to `.section--narrow`
+(780px), the claim on the left and `.jargon` crossing into `.hardparts`
+stacked on the right. It now runs the section's full width instead, dropping
+`.section--narrow` so the container matches the "What I do" section directly
+above it (1160px rather than 780px), which is what gives the headline and the
+jargon list room to run larger without wrapping into two-word lines. `.rightnow`
+is a two-column grid holding just the claim (H2 plus `.lede`) and `.jargon`
+side by side; `.hardparts-wrap` ("What really matters" plus the three
+disciplines) is a full-width sibling below both, back to three columns across
+the section rather than stacked in one narrow column, since three real
+disciplines spanning the whole section reads as the conclusion rather than a
+footnote. The closing line ("I have done that twice, at two companies that
+could not have been more different.") was cut entirely: it was doing the
+same job the layout and the three disciplines already do on their own, and a
+recruiter can get the "twice" count from the work grid immediately below.
+`.hardparts` uses gold numerals straight on the field rather than `.chain`,
+which paints cream cards with light borders for the off-white page and would
+put three pale boxes on sage. Below 760px `.rightnow` collapses to one
+column, claim first; below 720px `.hardparts` collapses to one column too.
+
+`.jargon` (added 2026-08, went through a narrow-column stage before landing
+full width) is what makes the claim's argument visible instead of just
+stated. A muted label ("What everyone says", no colon) sits over eight
+italic terms, AI-first, Next-gen AI, Cutting-edge AI, Disruptive,
+Game-changing, The AI revolution, Unprecedented, Scale, sized larger than the
+rest of the band's secondary copy (clamp up to 1.7rem, sized up again once
+the section stopped being narrow) since this list is the section's visual
+centerpiece now rather than a pull quote. Each term strikes through with a
+gold line that draws in on scroll, staggered, then dims further once struck.
+The whole block is `aria-hidden`, since it's decorative reinforcement of
+something the surrounding copy already says in words, not new information.
+It needs no dedicated JS: staggering runs off `--jargon-i` (inline per term,
+the same trick `.hardparts` and the `.path` glow use) into `transition-delay`
+under `.reveal.is-visible`, and `html:not(.js)` forces the struck, dimmed end
+state statically so a no-JS visitor still sees the terms crossed out. **The
+stagger and each transition's duration are deliberately slow (260ms per
+term, 0.6-0.7s per transition, spreading the eight terms over roughly
+3.5s).** The first cut used 130ms and 0.4s and the whole sequence was over in
+about 1.2s, before a visitor scrolling into the section had registered what
+they were looking at. Don't speed this back up without re-testing at normal
+scroll speed, not by stepping through it in devtools. `.hardparts-wrap` fades
+in at 1500ms into that same sequence, arriving while several terms are still
+mid-cross-out rather than waiting for all eight to finish, so the "what
+really matters" answer shows up while the "what everyone says" argument is
+still visibly being made above it.
+
+**The word list deliberately excludes "AI-native" and "AI-powered."** Both
+are Tim's own sanctioned self-description one screen up, in the hero's
+`.hero__claim` and as CEI's real service name, so mocking them here would
+contradict the hero rather than argue past it. Every term in the list is one
+nobody on this site ever claims for Tim; "the AI revolution" is already on
+the sitewide banned-phrase list below, so using it as the punchline of what
+NOT to say is consistent rather than a second exception to that rule.
+
+`.hardparts__item` also carries an ambient sequential glow, 01 then 02 then
+03, forever, same one-shared-cycle-plus-offset construction as the `.path`
+glow further down (`--glow-i`, set inline per `<li>`, 0/1/2, feeds
+`animation-delay`), but tuned differently on both intensity and spacing
+after two rounds of "still too subtle."
+
+**Round one** only animated `border-top-color` and was invisible unless you
+already knew to look for it. Fixed by moving the glow onto
+`.hardparts__item::before`, a 2px bar laid exactly over the existing
+border-top rather than the border itself, so the intensity can go much
+higher (a real box-shadow bloom, up to 46px of blur) without the
+box-shadow-wraps-the-whole-box problem an earlier attempt hit: a box-shadow
+on the actual item bled into neighbouring items and read as a bordered card
+outline, which `.hardparts` is deliberately not (see above). Confining the
+bloom to a thin absolutely-positioned bar keeps it reading as a glowing line
+traveling across the row rather than a halo around each card, even at an
+intensity bright enough to actually notice. `.hardparts__num` pulses in
+step, brighter and briefly larger (`transform: scale`), so each beat reads
+at both ends of the item.
+
+**Round two fixed timing, not intensity.** `.path`'s `--glow-i * 0.45s`
+spacing packs all three of its five elements' beats into the first ~1.2s of
+its 5.4s cycle, which is right for a route that lights up once and settles.
+Copying that same 0.45s spacing onto `.hardparts` clustered all three pulses
+into the animation's opening 1.2s too, then went dark for the remaining
+~4.2s of every cycle. The CSS `animation` clock runs from page load, not
+from when `.hardparts-wrap` actually becomes visible via `.reveal`, so by
+the time a visitor had scrolled to it and the reveal fade finished, the
+three pulses had usually already fired and the section sat in that dead
+zone for the rest of the wait. Respaced to `--glow-i * 1.8s` (a full
+cycle/3) so a pulse starts roughly every 1.8s forever, no matter when
+someone arrives: watch for any two-second stretch and you will see one.
+Each keyframe also holds near peak for a beat (5% to 11% of the cycle)
+rather than spiking at a single instant, which gave the fix more room to
+actually register. No dedicated reduced-motion rule: the sitewide block
+already collapses this to a single 0.001ms pass.
+
+**`.hardparts__num` must stay `display: inline-block`, never `block`.** A
+block box stretches to its item's full column width by default even though
+the short "01" text sits left-aligned inside it, which is invisible at rest
+but not once the glow's `transform: scale(1.2)` scales that whole invisible
+full-width box. That pushed real, measurable overflow past the viewport on
+narrow phones (this shipped broken once, confirmed via
+`document.documentElement.scrollWidth`) despite looking completely fine in
+every screenshot, since the extra width was transparent. `inline-block`
+shrink-wraps the box to the visible text, so the transform has nothing
+invisible left to scale. Neither the bar (opacity, box-shadow) nor the
+number (text-shadow, transform) touches a layout-affecting property
+otherwise, so there is no jitter risk the way animating border-top-width
+would have had.
 
 The homepage hero follows the same principle. `.hero__subhead`,
 `.hero__claim` and `.hero__meta` are three deliberate weights: breadth, then
