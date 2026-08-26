@@ -233,13 +233,14 @@ p {
   color: var(--color-cream);
 }
 
-/* Pull-line and the three hard parts ---------------------------------------
-   Both exist for the "Right now" band on the homepage, which shipped as a
-   headline over one long paragraph and read as a wall. Same words, four
-   beats: opening line, this pull-line, the three parts, closing claim.
-   The pull-line is the sentence that earns attention and was buried
-   mid-paragraph. Kept as its own component rather than scoped to the band,
-   since a color field with one big line is a pattern worth reusing. */
+/* Pull-line, the tired-AI-language beat, and the three hard parts ---------
+   All three exist for the "Right now" band on the homepage, which shipped
+   as a headline over one long paragraph and read as a wall. Same words,
+   five beats: opening line, this pull-line, the jargon strike-through, the
+   three parts, closing claim. The pull-line is the sentence that earns
+   attention and was buried mid-paragraph. Kept as its own component rather
+   than scoped to the band, since a color field with one big line is a
+   pattern worth reusing. */
 .pullline {
   margin: var(--space-md) 0 var(--space-lg);
   max-width: 20ch;
@@ -249,6 +250,99 @@ p {
   letter-spacing: -0.03em;
   line-height: 1.08;
   color: var(--color-bg);
+}
+
+/* The jargon strike-through. Every AI vendor's own words, struck out and
+   left to fade, right before .hardparts fades up in their place, so the
+   pull-line's claim ("the technology is rarely the hard part") is shown
+   rather than just stated. Purely decorative reinforcement of a point the
+   surrounding copy already makes in words, hence aria-hidden on the whole
+   block.
+
+   No dedicated JS. Staggering off --jargon-i, set inline per <li>, is the
+   same trick .hardparts and the .path glow use, so this needed no new JS
+   module, just transition-delay math scoped under .reveal.is-visible. The
+   strike (::after, scaleX 0 to 1) runs first per item, then the item's own
+   opacity drops further once struck, "clearing" it before .hardparts
+   arrives. html:not(.js) forces both straight to their struck, dimmed end
+   state, same fix as .cap-panel[hidden], so a no-JS visitor still sees the
+   terms crossed out rather than seeing nothing happen. Reduced motion needs
+   no extra rule: reveal() adds is-visible immediately in that branch, and
+   the sitewide reduced-motion block collapses every transition-DURATION to
+   instant, so each term still snaps into its struck state on its own
+   --jargon-i delay (the same residual pacing .hardparts's own
+   --reveal-delay already has under reduced motion) rather than animating,
+   with no continuous or looping motion at any point.
+
+   Deliberately NOT "AI-native" or "AI-powered": both are Tim's own
+   sanctioned self-description elsewhere on this page (the hero's
+   .hero__claim, CEI's real service name), so mocking them here would
+   contradict copy one screen up. Every term below is one nobody on this
+   site ever claims for Tim. */
+.jargon {
+  margin: 0 0 var(--space-lg);
+}
+
+.jargon__label {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-sage-tint);
+  opacity: 0.7;
+}
+
+.jargon__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  max-width: 560px;
+}
+
+.jargon__term {
+  position: relative;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-sage-tint);
+  opacity: 0.65;
+  transition: opacity 0.5s var(--ease-out);
+  transition-delay: calc(var(--jargon-i, 0) * 130ms + 500ms);
+}
+
+.jargon__term::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: 55%;
+  height: 2px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+  transition-delay: calc(var(--jargon-i, 0) * 130ms + 150ms);
+}
+
+.js .reveal.is-visible .jargon__term {
+  opacity: 0.32;
+}
+
+.js .reveal.is-visible .jargon__term::after {
+  transform: scaleX(1);
+}
+
+html:not(.js) .jargon__term {
+  opacity: 0.32;
+}
+
+html:not(.js) .jargon__term::after {
+  transform: scaleX(1);
 }
 
 /* Gold numerals straight onto the field, echoing .cap-item__num and

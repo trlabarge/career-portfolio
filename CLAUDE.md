@@ -48,15 +48,37 @@ load-bearing**, since putting it any earlier makes the first two screens read
 as an AI specialist ad. It also deliberately carries no cards, because cards
 here duplicate the work grid directly below it.
 
-The band is built in four beats, not one paragraph. It shipped as a headline
+The band is built in five beats, not one paragraph. It shipped as a headline
 over a single long block and read as a wall that people skipped. Now: the
 opening line as a `.lede`, then `.pullline` ("The technology is rarely the hard
-part.") at display scale, then `.hardparts`, three gold-numbered items for
-positioning, packaging and demand, then `.hardparts__close` with the claim.
-Same words throughout, four levels of hierarchy instead of one. `.hardparts`
-uses gold numerals straight on the field rather than `.chain`, which paints
-cream cards with light borders for the off-white page and would put three pale
-boxes on sage.
+part.") at display scale, then `.jargon`, then `.hardparts`, three gold-numbered
+items for positioning, packaging and demand, then `.hardparts__close` with the
+claim. Same words throughout, five levels of hierarchy instead of one.
+`.hardparts` uses gold numerals straight on the field rather than `.chain`,
+which paints cream cards with light borders for the off-white page and would
+put three pale boxes on sage.
+
+`.jargon` (added 2026-08) is what makes the pull-line's claim visible instead
+of just stated. A muted label ("What everyone says", no colon) sits over six
+italic terms, AI-first, Next-gen AI, Cutting-edge AI, Disruptive,
+Game-changing, The AI revolution, each struck through with a gold line that
+draws in on scroll, staggered, then dims further once struck, right before
+`.hardparts` fades up in its place. Buzzwords crossing out into the three real
+disciplines. The whole block is `aria-hidden`, since it's decorative
+reinforcement of something the surrounding copy already says in words, not new
+information. It needs no dedicated JS: staggering runs off `--jargon-i`
+(inline per term, the same trick `.hardparts` and the `.path` glow use) into
+`transition-delay` under `.reveal.is-visible`, and `html:not(.js)` forces the
+struck, dimmed end state statically so a no-JS visitor still sees the terms
+crossed out. Retimed the band's cascade for it: pull-line at 80ms, jargon at
+160ms, hardparts at 1300ms (after the strikes resolve), close at 1400ms.
+**The word list deliberately excludes "AI-native" and "AI-powered."** Both are
+Tim's own sanctioned self-description one screen up, in the hero's
+`.hero__claim` and as CEI's real service name, so mocking them here would
+contradict the hero rather than argue past it. Every term in the list is one
+nobody on this site ever claims for Tim; "the AI revolution" is already on the
+sitewide banned-phrase list below, so using it as the punchline of what NOT to
+say is consistent rather than a second exception to that rule.
 
 The homepage hero follows the same principle. `.hero__subhead`,
 `.hero__claim` and `.hero__meta` are three deliberate weights: breadth, then
