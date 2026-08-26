@@ -48,37 +48,71 @@ load-bearing**, since putting it any earlier makes the first two screens read
 as an AI specialist ad. It also deliberately carries no cards, because cards
 here duplicate the work grid directly below it.
 
-The band is built in five beats, not one paragraph. It shipped as a headline
-over a single long block and read as a wall that people skipped. Now: the
-opening line as a `.lede`, then `.pullline` ("The technology is rarely the hard
-part.") at display scale, then `.jargon`, then `.hardparts`, three gold-numbered
-items for positioning, packaging and demand, then `.hardparts__close` with the
-claim. Same words throughout, five levels of hierarchy instead of one.
-`.hardparts` uses gold numerals straight on the field rather than `.chain`,
-which paints cream cards with light borders for the off-white page and would
-put three pale boxes on sage.
+The band went through three shapes. First a headline over a single long
+paragraph, which read as a wall people skipped. Then a stacked sequence of
+beats (opening line, a pull-line, the jargon list, the three hard parts,
+closing claim). It now argues spatially: `.rightnow` is a two-column grid,
+the claim (H2 plus `.lede`) on the left, and on the right `.jargon` crossing
+out into `.hardparts` directly beneath it, so the two lists read as one
+continuous argument rather than a sequence of separate beats. The pull-line
+("The technology is rarely the hard part.") was cut entirely once the layout
+itself made that argument, and the words themselves would have repeated it.
+Below both columns, `.hardparts__close` still carries the claim. `.hardparts`
+uses gold numerals straight on the field rather than `.chain`, which paints
+cream cards with light borders for the off-white page and would put three
+pale boxes on sage. Below 760px `.rightnow` collapses to one column, claim
+first.
 
-`.jargon` (added 2026-08) is what makes the pull-line's claim visible instead
-of just stated. A muted label ("What everyone says", no colon) sits over six
-italic terms, AI-first, Next-gen AI, Cutting-edge AI, Disruptive,
-Game-changing, The AI revolution, each struck through with a gold line that
-draws in on scroll, staggered, then dims further once struck, right before
-`.hardparts` fades up in its place. Buzzwords crossing out into the three real
-disciplines. The whole block is `aria-hidden`, since it's decorative
-reinforcement of something the surrounding copy already says in words, not new
-information. It needs no dedicated JS: staggering runs off `--jargon-i`
-(inline per term, the same trick `.hardparts` and the `.path` glow use) into
-`transition-delay` under `.reveal.is-visible`, and `html:not(.js)` forces the
-struck, dimmed end state statically so a no-JS visitor still sees the terms
-crossed out. Retimed the band's cascade for it: pull-line at 80ms, jargon at
-160ms, hardparts at 1300ms (after the strikes resolve), close at 1400ms.
-**The word list deliberately excludes "AI-native" and "AI-powered."** Both are
-Tim's own sanctioned self-description one screen up, in the hero's
+`.jargon` (added 2026-08, moved into this layout shortly after) is what makes
+the claim's argument visible instead of just stated. A muted label ("What
+everyone says", no colon) sits over eight italic terms, AI-first, Next-gen
+AI, Cutting-edge AI, Disruptive, Game-changing, The AI revolution,
+Unprecedented, Scale, sized larger than the rest of the band's secondary copy
+since this list is the section's visual centerpiece now rather than a pull
+quote. Each term strikes through with a gold line that draws in on scroll,
+staggered, then dims further once struck, right before "What really matters"
+and `.hardparts` fade up beneath it in the same column. Buzzwords crossing
+out into the three real disciplines. The whole block is `aria-hidden`, since
+it's decorative reinforcement of something the surrounding copy already says
+in words, not new information. It needs no dedicated JS: staggering runs off
+`--jargon-i` (inline per term, the same trick `.hardparts` and the `.path`
+glow use) into `transition-delay` under `.reveal.is-visible`, and
+`html:not(.js)` forces the struck, dimmed end state statically so a no-JS
+visitor still sees the terms crossed out. **The stagger and each transition's
+duration are deliberately slow (260ms per term, 0.6-0.7s per transition,
+spreading the eight terms over roughly 3.5s).** The first cut used 130ms and
+0.4s and the whole sequence was over in about 1.2s, before a visitor
+scrolling into the section had registered what they were looking at. Don't
+speed this back up without re-testing at normal scroll speed, not by
+stepping through it in devtools. `.hardparts-wrap` fades in at 1500ms into
+that same sequence, arriving while several terms are still mid-cross-out
+rather than waiting for all eight to finish, so the "what really matters"
+answer shows up while the "what everyone says" argument is still visibly
+being made above it.
+
+**The word list deliberately excludes "AI-native" and "AI-powered."** Both
+are Tim's own sanctioned self-description one screen up, in the hero's
 `.hero__claim` and as CEI's real service name, so mocking them here would
 contradict the hero rather than argue past it. Every term in the list is one
-nobody on this site ever claims for Tim; "the AI revolution" is already on the
-sitewide banned-phrase list below, so using it as the punchline of what NOT to
-say is consistent rather than a second exception to that rule.
+nobody on this site ever claims for Tim; "the AI revolution" is already on
+the sitewide banned-phrase list below, so using it as the punchline of what
+NOT to say is consistent rather than a second exception to that rule.
+
+`.hardparts__item` also carries an ambient sequential glow, 01 then 02 then
+03, forever, same construction as the `.path` glow further down: one shared
+5.4s cycle, each item offset by `--glow-i * 0.45s` (set inline per `<li>`,
+0/1/2) so the wave stays in phase regardless of when the item first appeared,
+and no dedicated reduced-motion rule since the sitewide block already
+collapses it to a single 0.001ms pass. **The glow animates border-top colour
+only, never a box-shadow and never border-top-width.** A box-shadow was the
+first attempt, and box-shadow wraps an element's entire box, not just its top
+edge; with three items a bare `--space-sm` apart, the blur on each bled into
+the next and the whole stack read as one bordered card outline around all
+three items, which is exactly the look `.hardparts` exists to avoid (see
+above). Animating width instead would have fixed the card look but shifts
+the padding-top content beneath it by a pixel on every peak, forever, a
+permanent jitter for an effect that is supposed to read as light rather than
+layout. Colour-only avoids both.
 
 The homepage hero follows the same principle. `.hero__subhead`,
 `.hero__claim` and `.hero__meta` are three deliberate weights: breadth, then

@@ -233,44 +233,67 @@ p {
   color: var(--color-cream);
 }
 
-/* Pull-line, the tired-AI-language beat, and the three hard parts ---------
-   All three exist for the "Right now" band on the homepage, which shipped
-   as a headline over one long paragraph and read as a wall. Same words,
-   five beats: opening line, this pull-line, the jargon strike-through, the
-   three parts, closing claim. The pull-line is the sentence that earns
-   attention and was buried mid-paragraph. Kept as its own component rather
-   than scoped to the band, since a color field with one big line is a
-   pattern worth reusing. */
-.pullline {
-  margin: var(--space-md) 0 var(--space-lg);
-  max-width: 20ch;
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4.6vw, 2.9rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  color: var(--color-bg);
+/* The tired-AI-language beat and the three hard parts ----------------------
+   Both exist for the "Right now" band on the homepage, which went through a
+   full-width headline-over-paragraph stage and then a stacked pull-line
+   stage before landing here: a side-by-side contrast. The claim sits on the
+   left. The right column argues it, "what everyone says" crossing out into
+   "what really matters" directly beneath it, so the two lists read as one
+   continuous thought rather than two separate ideas. */
+.rightnow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: start;
+  margin-bottom: var(--space-lg);
+}
+
+/* The default h2 clamp (up to 3.5rem) was sized for a full-width headline.
+   Halved into a ~360px column it wrapped to one or two words per line, so
+   this column gets its own smaller ceiling rather than fighting the shared
+   h2 rule. */
+.rightnow__claim h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.2rem);
+}
+
+@media (max-width: 760px) {
+  .rightnow {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .rightnow__claim h2 {
+    font-size: clamp(2rem, 6vw, 2.75rem);
+  }
 }
 
 /* The jargon strike-through. Every AI vendor's own words, struck out and
-   left to fade, right before .hardparts fades up in their place, so the
-   pull-line's claim ("the technology is rarely the hard part") is shown
-   rather than just stated. Purely decorative reinforcement of a point the
-   surrounding copy already makes in words, hence aria-hidden on the whole
-   block.
+   left to fade, right before .hardparts-wrap fades up beneath it, so the
+   claim on the left ("every company is being asked...") is shown being
+   worked through on the right rather than just stated. Purely decorative
+   reinforcement of a point the surrounding copy already makes in words,
+   hence aria-hidden on the whole block. Sized larger than the rest of the
+   band's secondary copy (clamp up to 1.35rem) since this list, not a
+   pull-line, is now the section's visual centerpiece.
 
    No dedicated JS. Staggering off --jargon-i, set inline per <li>, is the
    same trick .hardparts and the .path glow use, so this needed no new JS
    module, just transition-delay math scoped under .reveal.is-visible. The
    strike (::after, scaleX 0 to 1) runs first per item, then the item's own
-   opacity drops further once struck, "clearing" it before .hardparts
-   arrives. html:not(.js) forces both straight to their struck, dimmed end
-   state, same fix as .cap-panel[hidden], so a no-JS visitor still sees the
-   terms crossed out rather than seeing nothing happen. Reduced motion needs
-   no extra rule: reveal() adds is-visible immediately in that branch, and
-   the sitewide reduced-motion block collapses every transition-DURATION to
+   opacity drops further once struck, "clearing" it before .hardparts-wrap
+   arrives. The stagger and each transition's own duration both run slower
+   than the first cut (130ms/0.4s per step, finished in about 1.2s total):
+   at that pace the whole sequence was over before a visitor scrolling into
+   the section had registered what they were looking at. 260ms per step and
+   0.6-0.7s per transition spreads the eight terms out over roughly 3.5s, so
+   the crossing-out itself is the thing being watched rather than a blur.
+   html:not(.js) forces both straight to their struck, dimmed end state,
+   same fix as .cap-panel[hidden], so a no-JS visitor still sees the terms
+   crossed out rather than seeing nothing happen. Reduced motion needs no
+   extra rule: reveal() adds is-visible immediately in that branch, and the
+   sitewide reduced-motion block collapses every transition-DURATION to
    instant, so each term still snaps into its struck state on its own
-   --jargon-i delay (the same residual pacing .hardparts's own
+   --jargon-i delay (the same residual pacing .hardparts-wrap's own
    --reveal-delay already has under reduced motion) rather than animating,
    with no continuous or looping motion at any point.
 
@@ -283,7 +306,8 @@ p {
   margin: 0 0 var(--space-lg);
 }
 
-.jargon__label {
+.jargon__label,
+.hardparts__label {
   margin: 0 0 0.6rem;
   font-family: var(--font-display);
   font-size: 0.72rem;
@@ -300,19 +324,18 @@ p {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.4rem;
-  max-width: 560px;
+  gap: 0.65rem 1.6rem;
 }
 
 .jargon__term {
   position: relative;
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 1rem;
+  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
   color: var(--color-sage-tint);
   opacity: 0.65;
-  transition: opacity 0.5s var(--ease-out);
-  transition-delay: calc(var(--jargon-i, 0) * 130ms + 500ms);
+  transition: opacity 0.6s var(--ease-out);
+  transition-delay: calc(var(--jargon-i, 0) * 260ms + 1100ms);
 }
 
 .jargon__term::after {
@@ -325,8 +348,8 @@ p {
   background: var(--color-gold);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.4s var(--ease-out);
-  transition-delay: calc(var(--jargon-i, 0) * 130ms + 150ms);
+  transition: transform 0.7s var(--ease-out);
+  transition-delay: calc(var(--jargon-i, 0) * 260ms + 450ms);
 }
 
 .js .reveal.is-visible .jargon__term {
@@ -347,19 +370,58 @@ html:not(.js) .jargon__term::after {
 
 /* Gold numerals straight onto the field, echoing .cap-item__num and
    .chain__num. Deliberately NOT .chain, which paints cream cards with light
-   borders for the off-white page and would put three pale boxes on sage. */
+   borders for the off-white page and would put three pale boxes on sage.
+   Single column now that the list lives in the narrower right-hand column
+   rather than spanning the full section width. */
 .hardparts {
   list-style: none;
-  margin: 0 0 var(--space-lg);
+  margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
+/* An ambient sequential glow, 01 then 02 then 03, forever. Same construction
+   as the .path glow further down: one shared 5.4s cycle, each item offset by
+   --glow-i * 0.45s (set inline per <li>) so the wave stays in phase
+   regardless of when the item first appeared, a 7% peak against a 16% rest
+   window, and no dedicated reduced-motion rule since the sitewide block
+   already collapses it to a single 0.001ms pass. Border and number glow
+   separately rather than a box-shadow'd card, since .hardparts is
+   deliberately not a card (see above). A box-shadow was the first attempt
+   and it wraps an element's whole box, not just the top edge; with three
+   items a bare --space-sm apart, the blur on each bled into the next and
+   merged into what read as a single bordered card outline around all three,
+   exactly the look this component exists to avoid. Animating border-top
+   width and colour keeps the change confined to the rule that is already
+   there. Colour only, never width: animating border-top-width shifts the
+   padding-top content beneath it by a pixel on every peak, a permanent
+   forever-looping jitter for a glow that is supposed to read as light, not
+   layout. */
 .hardparts__item {
   border-top: 2px solid rgba(201, 160, 81, 0.55);
   padding-top: 0.75rem;
+  animation: hardparts-glow-rule 5.4s ease-in-out infinite;
+  animation-delay: calc(var(--glow-i, 0) * 0.45s);
+}
+
+@keyframes hardparts-glow-rule {
+  0%, 16%, 100% {
+    border-top-color: rgba(201, 160, 81, 0.55);
+  }
+  7% {
+    border-top-color: rgba(201, 160, 81, 1);
+  }
+}
+
+@keyframes hardparts-glow-num {
+  0%, 16%, 100% {
+    text-shadow: 0 0 0 rgba(201, 160, 81, 0);
+  }
+  7% {
+    text-shadow: 0 0 12px rgba(201, 160, 81, 0.9);
+  }
 }
 
 .hardparts__num {
@@ -370,6 +432,8 @@ html:not(.js) .jargon__term::after {
   letter-spacing: 0.14em;
   color: var(--color-gold);
   margin-bottom: 0.35rem;
+  animation: hardparts-glow-num 5.4s ease-in-out infinite;
+  animation-delay: calc(var(--glow-i, 0) * 0.45s);
 }
 
 .hardparts__title {
@@ -393,13 +457,6 @@ html:not(.js) .jargon__term::after {
   font-size: clamp(1.05rem, 1.8vw, 1.2rem);
   line-height: 1.55;
   color: var(--color-cream);
-}
-
-@media (max-width: 720px) {
-  .hardparts {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
 }
 
 /* Available to screen readers, removed from the visual layout. */
