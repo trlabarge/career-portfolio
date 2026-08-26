@@ -1279,12 +1279,18 @@ hand. Sections B, G, and H are launch blockers there.
 
 ### Known gaps
 
-- The avatar is `/assets/timbot/timbot-avatar.svg`, the same TL mark as the
-  favicon (sage rounded square, off-white "TL", scaled 3x for crispness at
-  the widget's sizes) rather than an illustrated face. It replaced an earlier
-  cropped-illustration avatar. A dedicated head-and-shoulders illustration in
-  an ink-and-watercolor style, matching the About page's player/coach art,
-  would be a stronger drop-in replacement if that art ever gets made.
+- The avatar is `/assets/timbot/timbot-avatar.webp` (512x512 RGBA, restored
+  2026-08-26), a cropped ink-and-watercolor illustration, used on both the
+  launcher (`.timbot__avatar`) and the panel header (`.timbot__head-avatar`)
+  in `js/timbot.js`. It briefly shipped as the sage/off-white "TL" mark
+  (matching the favicon) before Tim asked for the illustration back.
+  `assets/timbot/timbot-avatar-source.webp` is the raw upload, kept for
+  provenance and excluded from the Vercel deploy by `.vercelignore`.
+  Regenerate the processed file with `scripts/process-timbot-avatar.py` (see
+  `assets/timbot/README.md`) if the source art is ever replaced. **The TL
+  mark stays on the social share card** (`/assets/og-image.png`, built from
+  `/assets/og-image.source.html`) and the favicon; this swap only touches the
+  chat widget, not the share image.
 - Rate limiting in `/api/chat.js` is an in-memory map, which means per
   serverless instance. It is a speed bump, not a wall. Move it to Vercel KV or
   Upstash before the URL sees real traffic.

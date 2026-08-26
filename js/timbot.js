@@ -38,7 +38,7 @@
     'Why can’t you make a burger?',
   ];
 
-  var AVATAR = '/assets/timbot/timbot-avatar.svg';
+  var AVATAR = '/assets/timbot/timbot-avatar.webp';
 
   function el(tag, className, text) {
     var node = document.createElement(tag);
