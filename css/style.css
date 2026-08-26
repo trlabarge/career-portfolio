@@ -235,35 +235,28 @@ p {
 
 /* The tired-AI-language beat and the three hard parts ----------------------
    Both exist for the "Right now" band on the homepage, which went through a
-   full-width headline-over-paragraph stage and then a stacked pull-line
-   stage before landing here: a side-by-side contrast. The claim sits on the
-   left. The right column argues it, "what everyone says" crossing out into
-   "what really matters" directly beneath it, so the two lists read as one
-   continuous thought rather than two separate ideas. */
+   full-width headline-over-paragraph stage, then a stacked pull-line stage,
+   then a narrow two-column stage before landing here. It now runs the full
+   section width, matching the "What I do" section above rather than a
+   narrower band of its own, which is what gives the headline and the jargon
+   list room to run larger. The claim and "what everyone says" sit side by
+   side up top; "what really matters" runs full width beneath both, since
+   three real disciplines laid out across the whole section read as the
+   section's actual conclusion rather than a footnote squeezed into one
+   column. */
 .rightnow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-lg);
+  gap: var(--space-xl);
   align-items: start;
-  margin-bottom: var(--space-lg);
-}
-
-/* The default h2 clamp (up to 3.5rem) was sized for a full-width headline.
-   Halved into a ~360px column it wrapped to one or two words per line, so
-   this column gets its own smaller ceiling rather than fighting the shared
-   h2 rule. */
-.rightnow__claim h2 {
-  font-size: clamp(1.7rem, 3.6vw, 2.2rem);
+  margin-bottom: var(--space-xl);
 }
 
 @media (max-width: 760px) {
   .rightnow {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
-  }
-
-  .rightnow__claim h2 {
-    font-size: clamp(2rem, 6vw, 2.75rem);
+    margin-bottom: var(--space-lg);
   }
 }
 
@@ -273,7 +266,7 @@ p {
    worked through on the right rather than just stated. Purely decorative
    reinforcement of a point the surrounding copy already makes in words,
    hence aria-hidden on the whole block. Sized larger than the rest of the
-   band's secondary copy (clamp up to 1.35rem) since this list, not a
+   band's secondary copy (clamp up to 1.7rem) since this list, not a
    pull-line, is now the section's visual centerpiece.
 
    No dedicated JS. Staggering off --jargon-i, set inline per <li>, is the
@@ -331,7 +324,7 @@ p {
   position: relative;
   font-family: var(--font-body);
   font-style: italic;
-  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+  font-size: clamp(1.25rem, 1.9vw, 1.7rem);
   color: var(--color-sage-tint);
   opacity: 0.65;
   transition: opacity 0.6s var(--ease-out);
@@ -371,92 +364,141 @@ html:not(.js) .jargon__term::after {
 /* Gold numerals straight onto the field, echoing .cap-item__num and
    .chain__num. Deliberately NOT .chain, which paints cream cards with light
    borders for the off-white page and would put three pale boxes on sage.
-   Single column now that the list lives in the narrower right-hand column
-   rather than spanning the full section width. */
+   Back to three columns now that the list runs the section's full width
+   again rather than living in a narrow column. */
 .hardparts {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
 }
 
-/* An ambient sequential glow, 01 then 02 then 03, forever. Same construction
-   as the .path glow further down: one shared 5.4s cycle, each item offset by
-   --glow-i * 0.45s (set inline per <li>) so the wave stays in phase
-   regardless of when the item first appeared, a 7% peak against a 16% rest
-   window, and no dedicated reduced-motion rule since the sitewide block
-   already collapses it to a single 0.001ms pass. Border and number glow
-   separately rather than a box-shadow'd card, since .hardparts is
-   deliberately not a card (see above). A box-shadow was the first attempt
-   and it wraps an element's whole box, not just the top edge; with three
-   items a bare --space-sm apart, the blur on each bled into the next and
-   merged into what read as a single bordered card outline around all three,
-   exactly the look this component exists to avoid. Animating border-top
-   width and colour keeps the change confined to the rule that is already
-   there. Colour only, never width: animating border-top-width shifts the
-   padding-top content beneath it by a pixel on every peak, a permanent
-   forever-looping jitter for a glow that is supposed to read as light, not
-   layout. */
+@media (max-width: 720px) {
+  .hardparts {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}
+
+/* An ambient sequential glow, 01 then 02 then 03, forever. Same one-shared-
+   cycle-plus-offset construction as the .path glow further down (--glow-i,
+   set inline per <li>, feeds animation-delay so the wave stays in phase
+   regardless of when the item first appeared), but built for visibility
+   rather than restraint: the first cut only animated border-top-color and
+   was so subtle it read as not there at all unless you already knew to look
+   for it.
+
+   The glow now lives on .hardparts__item::before, a 2px bar laid exactly
+   over the existing border-top rather than the border itself, so the
+   intensity can go much higher (a real box-shadow bloom) without the
+   box-shadow-wraps-the-whole-box problem the first attempt hit: a
+   box-shadow on the actual card bled into neighbouring items and read as a
+   bordered card outline, which .hardparts is deliberately not (see above).
+   Confining it to a thin absolutely-positioned bar means the bloom is
+   visually a glowing LINE traveling across the row, not a halo around each
+   card, even at an intensity bright enough to actually notice. The number
+   pulses in step, brighter and briefly larger, so each beat reads at both
+   ends of the item rather than only at the rule. Neither the bar nor the
+   scale affects layout (opacity, box-shadow and transform are all
+   paint-only), so there is no jitter risk the way animating border-top-width
+   would have had. No dedicated reduced-motion rule: the sitewide block
+   already collapses this to a single 0.001ms pass. */
 .hardparts__item {
+  position: relative;
   border-top: 2px solid rgba(201, 160, 81, 0.55);
   padding-top: 0.75rem;
-  animation: hardparts-glow-rule 5.4s ease-in-out infinite;
-  animation-delay: calc(var(--glow-i, 0) * 0.45s);
 }
 
-@keyframes hardparts-glow-rule {
-  0%, 16%, 100% {
-    border-top-color: rgba(201, 160, 81, 0.55);
+.hardparts__item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-gold);
+  opacity: 0;
+  animation: hardparts-glow-bar 5.4s ease-in-out infinite;
+  animation-delay: calc(var(--glow-i, 0) * 1.8s);
+  pointer-events: none;
+}
+
+/* Spaced a full cycle/3 apart (1.8s) rather than the .path glow's tight
+   0.45s, and each keyframe holds near peak for a beat (5% to 11%) instead
+   of spiking at a single point. The CSS animation clock runs from page
+   load, not from when .hardparts-wrap actually becomes visible via
+   .reveal, and the tight 0.45s spacing used at first meant all three items
+   flashed within the animation's opening 1.2s and then sat idle for the
+   remaining ~4.2s of every cycle; since the section typically only becomes
+   visible a couple of seconds into that cycle, most visitors landed in the
+   dead zone and never saw a glow at all. Spreading the three pulses evenly
+   across the full 5.4s means a visitor watching for even a couple of
+   seconds is reliably looking at (or just about to see) one. */
+@keyframes hardparts-glow-bar {
+  0%, 22%, 100% {
+    opacity: 0;
+    box-shadow: 0 0 0 0 rgba(201, 160, 81, 0);
   }
-  7% {
-    border-top-color: rgba(201, 160, 81, 1);
+  5% {
+    opacity: 1;
+    box-shadow: 0 0 22px 4px rgba(201, 160, 81, 0.95),
+      0 0 46px 10px rgba(201, 160, 81, 0.5);
+  }
+  11% {
+    opacity: 0.8;
+    box-shadow: 0 0 16px 3px rgba(201, 160, 81, 0.7),
+      0 0 32px 8px rgba(201, 160, 81, 0.35);
   }
 }
 
 @keyframes hardparts-glow-num {
-  0%, 16%, 100% {
+  0%, 22%, 100% {
     text-shadow: 0 0 0 rgba(201, 160, 81, 0);
+    transform: scale(1);
   }
-  7% {
-    text-shadow: 0 0 12px rgba(201, 160, 81, 0.9);
+  5% {
+    text-shadow: 0 0 20px rgba(201, 160, 81, 1), 0 0 36px rgba(201, 160, 81, 0.6);
+    transform: scale(1.2);
+  }
+  11% {
+    text-shadow: 0 0 12px rgba(201, 160, 81, 0.75);
+    transform: scale(1.08);
   }
 }
 
 .hardparts__num {
-  display: block;
+  /* inline-block, not block: a block box stretches to the item's full
+     width even though the short text sits at its left edge, and scaling
+     that invisible full-width box via the glow animation pushed real
+     overflow past the viewport on narrow screens. Shrink-wrapping to the
+     text keeps the scale transform confined to what's actually visible. */
+  display: inline-block;
   font-family: var(--font-display);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--color-gold);
   margin-bottom: 0.35rem;
+  transform-origin: left center;
   animation: hardparts-glow-num 5.4s ease-in-out infinite;
-  animation-delay: calc(var(--glow-i, 0) * 0.45s);
+  animation-delay: calc(var(--glow-i, 0) * 1.8s);
 }
 
 .hardparts__title {
   margin: 0 0 0.3rem;
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .hardparts__desc {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--color-sage-tint);
-}
-
-.hardparts__close {
-  margin: 0;
-  max-width: 620px;
-  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-  line-height: 1.55;
-  color: var(--color-cream);
 }
 
 /* Available to screen readers, removed from the visual layout. */
