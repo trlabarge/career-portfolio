@@ -1238,6 +1238,67 @@ Global nav on all pages: About Me, The Work, Fractional CMO, Contact.
 Resume download button appears on About, The Work index, Fractional CMO, Contact.
 Resume file at `/assets/resume.pdf` is the real resume (Tim_LaBarge_Resume_2026.pdf, added 2026-07-31).
 
+## /payload, the private plan page
+
+A password-protected 12-month marketing plan for Payload, presented to its CEO
+on a screen-shared call. It is deliberately outside the portfolio: not in the
+nav, the sitemap, `robots.txt`, or the Timbot page list, and it must stay out
+of all four. Do not add it to `PAGES` in `scripts/build-timbot-knowledge.mjs`,
+since that would put a private client plan into a public chatbot. It is not
+listed in `robots.txt` either, on Tim's call, because a Disallow line
+advertises the path to anyone who reads the file. `noindex` lives in the page
+meta, the `X-Robots-Tag` header in `vercel.json`, and the middleware response.
+
+**Protection is server-side, never a JS check.**
+
+- `/middleware.js` (Vercel Routing Middleware, matcher `/payload` and
+  `/payload/:path*`) runs before the cache and static serving. Without a valid
+  session a page request gets the password screen at the same URL (401) and
+  any other file gets a bare 401. With no `PAYLOAD_PAGE_PASSWORD` set it lets
+  nothing through. `/payload/brand/` is the one public prefix, for the logo on
+  the password screen. Never put plan content there.
+- `/api/payload-auth.js` takes a plain form POST, so the gate works with no
+  JS, and sets the cookie on the right password.
+- `/api/_lib/payload-gate.js` holds the shared pieces, Web Crypto only since
+  the middleware runs on the edge. The cookie is `<issued ms>.<HMAC of that
+  time keyed by the password>`, never the password. Changing the env var logs
+  everyone out. It has no Max-Age (gone when the browser closes, on Tim's
+  instruction) plus a 12-hour server-side cap, since some browsers restore
+  session cookies. The password screen markup is inlined here too, so it
+  needs no file behind the gate.
+- `npm run payload:test` covers all of it offline. It cannot prove Vercel
+  actually runs the middleware, so check a preview deploy after changing it.
+
+**The page itself** (`index.html`, `payload.css`, `payload.js`, all
+self-contained) copies the site's tokens rather than linking `style.css`, and
+adds one restrained accent, slate (`--color-slate`, `#2F4760`), used for
+phases, active states and must-have badges. Timbot and the site header are
+deliberately not loaded. Body copy is 18px or more for reading over a shared
+screen.
+
+- **Copy is Tim's, verbatim, with one sanctioned edit.** The brief named the
+  CEO, Ryan, throughout. Tim asked for no names, so every mention became
+  "leadership", "the leadership team" or "C-suite leaders". Keep it that way.
+  "CEO" survives where the brief already said CEO. `C-suite` and `part-time`
+  are wrapped in `.nw` so they never break at the hyphen.
+- The 44 function cards were generated once from structured copy. Edit the
+  HTML directly now, keeping the 11 functions in the same order in every
+  phase, since the fixed order is what lets a viewer compare phases.
+- Tabs follow the ARIA tabs pattern. Each phase has a real hash
+  (`#phase-1` to `#phase-4`) written with `pushState`, so links and the back
+  button work. Left and right arrows switch phase whenever the plan section
+  is on screen, not only when a tab has focus, because Tim drives it while
+  presenting. Timeline segments and the overview table's phase names both
+  jump to the tab.
+- Open cards are remembered per card in `sessionStorage`, so a tab switch or
+  a reload mid-call keeps them. With no JS every card renders open and every
+  phase panel shows.
+- The flywheel draws in once on scroll and never loops. Its descriptions live
+  in a visually-hidden list as well as the center readout.
+- The Payload logo is expected at `/payload/brand/payload-logo.svg`. Until it
+  exists, both the password screen and the top bar fall back to a text
+  wordmark via `onerror`.
+
 ## Timbot, the chat widget
 
 An avatar chatbot that speaks as Tim, present on every page. It exists because
