@@ -1,0 +1,31 @@
+import { chromium } from 'playwright';
+import { readFileSync } from 'node:fs';
+const SP = process.argv[2];
+const fontCss = [['Space Grotesk','space-grotesk',[500,600,700]],['Inter','inter',[400,500,600]]].flatMap(([fam,pkg,ws])=>ws.map(w=>`@font-face{font-family:'${fam}';font-weight:${w};src:url(/__font/${pkg}/${w}) format('woff2')}`)).join('\n');
+async function page(b, w, h) {
+  const p = await b.newPage({ viewport: { width: w, height: h } });
+  p.errs=[]; p.on('pageerror', e=>p.errs.push(e.message)); p.on('console', m=>{ if(m.type()==='error' && !/gstatic|googleapis/.test(m.text())) p.errs.push(m.text())});
+  await p.route('https://fonts.googleapis.com/**', r=>r.fulfill({contentType:'text/css', body: fontCss}));
+  await p.route('https://fonts.gstatic.com/**', r=>r.abort());
+  await p.route('**/__font/**', r=>{ const [, , pkg, w] = new URL(r.request().url()).pathname.split('/'); r.fulfill({contentType:'font/woff2', body: readFileSync(`node_modules/@fontsource/${pkg}/files/${pkg}-latin-${w}-normal.woff2`)}); });
+  return p;
+}
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const g = await page(b, 1440, 900); await g.goto('http://localhost:8765/payload/_gate-preview.html'); await g.waitForTimeout(400); await g.screenshot({path:`${SP}/n-gate.png`});
+const p = await page(b, 1440, 900);
+await p.goto('http://localhost:8765/payload/index.html'); await p.waitForTimeout(300);
+const H = await p.evaluate(()=>document.body.scrollHeight);
+for (let y=0;y<H;y+=400){ await p.evaluate(y=>scrollTo(0,y),y); await p.waitForTimeout(40);} await p.waitForTimeout(1500);
+const shot = async (sel, name, off=0) => { await p.evaluate(([s,o])=>{const el=document.querySelector(s); scrollTo(0, el.getBoundingClientRect().top+scrollY+o)}, [sel,off]); await p.waitForTimeout(700); await p.screenshot({path:`${SP}/n-${name}.png`}); };
+await shot('body','hero');
+await shot('.levers-section','levers');
+await shot('#panel-1 .moves','moves', -120);
+await p.click('#panel-1 .move:nth-child(2) .move__link'); await p.waitForTimeout(1200);
+await p.screenshot({path:`${SP}/n-openfn.png`});
+console.log('open after link', await p.getAttribute('#p1-listening-btn','aria-expanded'), 'errors', p.errs);
+const m = await page(b, 390, 844); await m.goto('http://localhost:8765/payload/index.html'); await m.waitForTimeout(300);
+const H2 = await m.evaluate(()=>document.body.scrollHeight);
+for (let y=0;y<H2;y+=500){ await m.evaluate(y=>scrollTo(0,y),y); await m.waitForTimeout(30);} await m.waitForTimeout(1200);
+console.log('phone overflow', await m.evaluate(()=>[document.documentElement.scrollWidth, innerWidth]));
+await m.evaluate(()=>document.querySelector('.levers-section').scrollIntoView()); await m.waitForTimeout(500); await m.screenshot({path:`${SP}/n-m-levers.png`});
+await b.close();

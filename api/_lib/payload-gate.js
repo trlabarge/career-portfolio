@@ -112,7 +112,7 @@ body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans
 .gate{width:100%;max-width:480px;background:#fff;border:1px solid #E4E1D8;border-radius:16px;padding:48px 44px;box-shadow:0 30px 60px -30px rgba(34,54,75,.25);position:relative;overflow:hidden}
 .gate::before{content:'';position:absolute;inset:0 0 auto;height:6px;background:linear-gradient(90deg,var(--slate-tint),var(--slate) 60%,var(--gold))}
 .gate__brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.02em;color:var(--slate-dark);margin:0 0 28px}
-.gate__brand img{height:32px;width:auto;display:block}
+.gate__brand img{height:48px;width:auto;display:block;border-radius:10px}
 .gate__eyebrow{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 h1{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;line-height:1.1;letter-spacing:-.03em;margin:0 0 28px;color:var(--text)}
 label{display:block;font-weight:600;font-size:1rem;margin-bottom:8px}
@@ -129,7 +129,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 </head>
 <body>
 <main class="gate">
-<p class="gate__brand"><img src="/payload/brand/payload-logo.svg" alt="Payload" onerror="this.replaceWith(document.createTextNode('Payload'))"></p>
+<p class="gate__brand"><img src="/payload/brand/payload-logo.png" alt="Payload" onerror="this.replaceWith(document.createTextNode('Payload'))"></p>
 <p class="gate__eyebrow">Private</p>
 <h1>Payload 12-Month Marketing Plan</h1>
 ${message}

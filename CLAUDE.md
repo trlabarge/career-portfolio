@@ -1295,9 +1295,28 @@ screen.
   phase panel shows.
 - The flywheel draws in once on scroll and never loops. Its descriptions live
   in a visually-hidden list as well as the center readout.
-- The Payload logo is expected at `/payload/brand/payload-logo.svg`. Until it
-  exists, both the password screen and the top bar fall back to a text
-  wordmark via `onerror`.
+- The Payload logo is `/payload/brand/payload-logo.png`, a horizontal crop
+  of the square tile Tim supplied (blue gradient kept, corners rounded in
+  CSS). It sits top left on the page and on the password screen.
+- **The 80,000-impression post is a tactic, never the foundation.** Tim's
+  call, 2026-09. It appears only inside Phase 1 (the Thought Leadership and
+  Listening cards and one top move). Keep it out of the hero, phase goals,
+  the levers and the phase outcomes. Point A's third proof point is the J.P.
+  Morgan and Fifth Third banking partnerships.
+- **No references to Tim's past work** (Implicit or anything else). This is
+  Payload's plan, not a portfolio piece, even though the PDF draft cites an
+  Implicit result.
+- **Copy rules for this page, on top of the sitewide ones.** Clarity over
+  clever, no jargon, and no stock AI-writing words ("unlock", "leverage",
+  "seamless" and the like), plus never "quiet", "quietly" or "actually".
+  Vary sentence shape so it does not read as generated.
+- Structure added after the first review. "How this plan grows Payload" is
+  five levers under the ambition, each tagged with the functions it lives
+  in, and together they cover all 11. Each phase opens with "Top 3 moves"
+  tiles above the 11 cards, each with a "Why it matters" line and a button
+  that opens and scrolls to its card. Key cards carry the same "Why it
+  matters" line at the top of their body. The reasons come from the PDF
+  draft of the plan.
 
 ## Timbot, the chat widget
 
