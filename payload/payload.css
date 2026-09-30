@@ -302,7 +302,7 @@ button { font: inherit; color: inherit; }
 }
 .limits__list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   background: var(--color-cream);
 }
 .limits__list li, .limits__rule {
@@ -311,10 +311,11 @@ button { font: inherit; color: inherit; }
   font-size: 1.125rem;
   line-height: 1.45;
 }
-.limits__list li + li { border-left: 1px solid var(--color-line); }
+.limits__list li:nth-child(even) { border-left: 1px solid var(--color-line); }
+.limits__list li:nth-child(n + 3) { border-top: 1px solid var(--color-line); }
 .limits__icon { color: var(--color-slate-mid); padding-top: 0.1rem; }
 .limits__icon .icon { width: 1.3rem; height: 1.3rem; }
-.limits__rule { background: var(--color-slate); color: #fff; }
+.limits__rule { background: var(--color-slate); color: #fff; align-items: center; }
 .limits__rule .limits__icon { color: var(--color-gold); }
 
 /* 4. Timeline ------------------------------------------------------------- */
@@ -798,7 +799,8 @@ html:not(.js) .phase[hidden] { display: block; }
   .ab { grid-template-columns: minmax(0, 1fr); }
   .ab__path { height: 70px; width: 80px; margin: 0 auto; transform: rotate(90deg); }
   .limits__list { grid-template-columns: minmax(0, 1fr); }
-  .limits__list li + li { border-left: 0; border-top: 1px solid var(--color-line); }
+  .limits__list li:nth-child(even) { border-left: 0; }
+  .limits__list li + li { border-top: 1px solid var(--color-line); }
   .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tab { min-height: 54px; padding: 0.55rem 0.8rem; }
   .outcomes--3, .outcomes--4 { grid-template-columns: minmax(0, 1fr); }
