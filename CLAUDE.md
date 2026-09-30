@@ -1281,9 +1281,16 @@ screen.
   "leadership", "the leadership team" or "C-suite leaders". Keep it that way.
   "CEO" survives where the brief already said CEO. `C-suite` and `part-time`
   are wrapped in `.nw` so they never break at the hyphen.
-- The 44 function cards were generated once from structured copy. Edit the
-  HTML directly now, keeping the 11 functions in the same order in every
-  phase, since the fixed order is what lets a viewer compare phases.
+- **Eight functions, on purpose.** The v3 PDF (after Tim's talk with the
+  CRO) lists 13, which Tim called overwhelming and unrealistic for two
+  marketers. The page merges them. PR sits in Thought Leadership and PR,
+  account-based marketing in Listening and Outreach, Partner-Led Growth in
+  Partners, Associations, and Events, Developer Marketing in Product and
+  Developer Marketing, and Customer Stories in Lifecycle and Adoption. Do
+  not split them back out, and keep must-have lists short. The 32 cards were
+  generated once from structured copy. Edit the HTML directly now, keeping
+  the 8 functions in the same order in every phase, since the fixed order
+  is what lets a viewer compare phases.
 - Tabs follow the ARIA tabs pattern. Each phase has a real hash
   (`#phase-1` to `#phase-4`) written with `pushState`, so links and the back
   button work. Left and right arrows switch phase whenever the plan section
@@ -1311,7 +1318,12 @@ screen.
 - **No presumptuous business claims.** Tim does not know Payload's numbers
   yet, so nothing may say a move is "likely the fastest revenue" or similar.
   Soften to "may" where a claim is a guess.
-- **No PR agency, and no PR contractor.** PR is handled in-house. The team
+- **Listening, outreach, and the automation behind them get emphasis.**
+  That is what resonated with the CEO, so it leads Phase 1 and 2's top moves
+  and lever 2.
+- **Stripe may be named** as the competitor, per Tim.
+- **No PR agency, and no PR contractor,** even though v3 lists both. PR is
+  handled in-house. Leaders are referred to by role, never by name. The team
   cards are "Marketer 1" and "Marketer 2".
 - The "If budget gets tight" section was removed on Tim's instruction. The
   legend's "Runs even when budget is tight" line is his and stays.
@@ -1323,8 +1335,9 @@ screen.
   "seamless" and the like), plus never "quiet", "quietly" or "actually".
   Vary sentence shape so it does not read as generated.
 - Structure added after the first review. "How this plan grows Payload" is
-  five levers under the ambition, each tagged with the functions it lives
-  in, and together they cover all 11. Each phase opens with "Top 3 moves"
+  six levers under the ambition (partners first, since v3 makes the 20+
+  integrations the main distribution channel), each tagged with the
+  functions it lives in, and together they cover all 8. Each phase opens with "Top 3 moves"
   tiles above the 11 cards, each with a "Why it matters" line and a button
   that opens and scrolls to its card. Key cards carry the same "Why it
   matters" line at the top of their body. The reasons come from the PDF
