@@ -79,6 +79,22 @@
       });
     });
 
+    /* "See the details" on a top move opens its card and brings it into
+       view below the sticky tab bar. */
+    document.querySelectorAll('[data-open-fn]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var fn = document.querySelector('[data-fn="' + btn.getAttribute('data-open-fn') + '"]');
+        if (!fn) return;
+        setCard(fn, true);
+        storeSet(openIds);
+        syncExpandAll(fn.closest('.phase'));
+        var bar = document.querySelector('.tabs-bar');
+        var top = fn.getBoundingClientRect().top + window.pageYOffset - bar.offsetHeight - 16;
+        window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' });
+        fn.querySelector('.fn__toggle').focus({ preventScroll: true });
+      });
+    });
+
     document.querySelectorAll('.phase').forEach(function (panel) {
       syncExpandAll(panel);
       panel.querySelector('[data-expand-all]').addEventListener('click', function () {
