@@ -1322,6 +1322,10 @@ screen.
   That is what resonated with the CEO, so it leads Phase 1 and 2's top moves
   and lever 2.
 - **Stripe may be named** as the competitor, per Tim.
+- **No specific new industry is named** (not legal or any other), even
+  though v3 leads with legal. Payload has already identified its target
+  industries, so the page talks about a repeatable path into "the
+  industries showing traction" in general terms.
 - **No PR agency, and no PR contractor,** even though v3 lists both. PR is
   handled in-house. Leaders are referred to by role, never by name. The team
   cards are "Marketer 1" and "Marketer 2".
@@ -1338,7 +1342,7 @@ screen.
   six levers under the ambition (partners first, since v3 makes the 20+
   integrations the main distribution channel), each tagged with the
   functions it lives in, and together they cover all 8. Each phase opens with "Top 3 moves"
-  tiles above the 11 cards, each with a "Why it matters" line and a button
+  tiles above the 8 cards, each with a "Why it matters" line and a button
   that opens and scrolls to its card. Key cards carry the same "Why it
   matters" line at the top of their body. The reasons come from the PDF
   draft of the plan.
