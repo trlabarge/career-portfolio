@@ -1372,9 +1372,26 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   labelled a general rule of thumb, not Nucleus data. The competitor-rep
   LinkedIn connection signal is an idea to test, with no tool named and no
   claim Tim has used one. No compensation or process details.
-- The two tab groups (tiers, first 90 days) use a generic `[data-tabs]`
-  pattern in `nucleus.js`. With no JS every panel renders and the tab rows
-  hide.
+- **Visual first, on Tim's instruction.** Every section leads with a graphic,
+  the H2 is a takeaway sentence (reading only headlines gives the whole plan),
+  and no text block runs past about 40 words. One added accent, signal blue
+  (`--color-signal`, `#34588C`), carries highlights and data only.
+- **Numbers.** Only Kevin's real figures (200, 3-4x, 6-9 and 12-24 month
+  cycles, 3 airlines) and the spend percentages appear. The spend split is
+  Claude's draft, badged "Starting hypothesis", and still needs Tim's sign
+  off. The event funnel is labelled illustrative and carries no numbers.
+  "Test for 60-90 days" on the competitor signal is Tim's wording.
+- **GSAP 3.12.5 and ScrollTrigger load from cdnjs** for the hero dot sort and
+  the scrubbed journey line. Everything checks for GSAP and falls back, and
+  the markup ships in its end state (the 200 hero dots are static circles in
+  their sorted positions), so the page reads fully with no JS or no CDN. The
+  sandbox cannot reach cdnjs, so local tests route those URLs to the npm
+  build of the same version.
+- The section nav (dots above 1180px, a slim bar below), the progress bar
+  and presentation mode (arrow keys step sections, Esc exits) are all built
+  in `navigation()` from each section's `data-nav` label. The tier picker is
+  an ARIA tablist and the rings mirror it. The spend donut is built from the
+  legend's `data-pct`, so the chart and legend cannot disagree.
 
 ## Timbot, the chat widget
 

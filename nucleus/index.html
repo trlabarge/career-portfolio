@@ -18,442 +18,668 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
+<div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+
+<!-- Icon sprite. Paths from Lucide (ISC license), inlined so nothing loads at runtime. -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-radar" viewBox="0 0 24 24"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-landmark" viewBox="0 0 24 24"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-click" viewBox="0 0 24 24"><path d="m9 9 5 12 1.8-5.2L21 14Z"/><path d="M7.2 2.2 8 5.1"/><path d="m5.1 8-2.9-.8"/><path d="M14 4.1 12 6"/><path d="m6 12-1.9 2"/></symbol>
+  <symbol id="i-usercheck" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></symbol>
+  <symbol id="i-network" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-6 9H2"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-present" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+</svg>
 
 <header class="topbar">
   <div class="wrap topbar__inner">
     <span class="topbar__name">Nucleus Security</span>
-    <a class="topbar__by" href="/"><span class="topbar__mark" aria-hidden="true">TL</span>Prepared by Tim LaBarge</a>
+    <div class="topbar__right">
+      <button class="present-btn" type="button" data-present aria-pressed="false"><svg class="icon"><use href="#i-present"/></svg><span>Present</span></button>
+      <a class="topbar__by" href="/"><span class="topbar__mark" aria-hidden="true">TL</span><span class="topbar__by-text">Prepared by Tim LaBarge</span></a>
+    </div>
   </div>
 </header>
 
+<!-- Section nav. Dots on desktop, a current-section bar on mobile. Built from
+     the sections' data-nav labels by nucleus.js, so it never drifts. -->
+<nav class="secnav" aria-label="Sections" data-secnav></nav>
+<div class="secbar" aria-hidden="true" data-secbar>
+  <span class="secbar__count"></span><span class="secbar__name"></span>
+</div>
+<p class="present-hint" role="status" data-present-hint></p>
+
 <main id="main">
 
-<!-- 1. Header -->
-<section class="hero">
+<!-- 1. Hero -->
+<section class="hero" id="top" data-nav="Start">
+  <div class="hero__art" aria-hidden="true">
+    <svg class="dots" viewBox="0 0 600 600" data-dots>
+      <circle class="dots__ring" cx="300" cy="300" r="62"/>
+      <circle class="dots__ring" cx="300" cy="300" r="166"/>
+      <circle class="dots__ring" cx="300" cy="300" r="296"/>
+      <circle class="dot dot--1" cx="309.0" cy="302.8" r="7"/>
+      <circle class="dot dot--1" cx="285.3" cy="307.0" r="7"/>
+      <circle class="dot dot--1" cx="307.9" cy="280.6" r="7"/>
+      <circle class="dot dot--1" cx="308.6" cy="323.3" r="7"/>
+      <circle class="dot dot--1" cx="275.0" cy="287.1" r="7"/>
+      <circle class="dot dot--1" cx="330.0" cy="291.8" r="7"/>
+      <circle class="dot dot--1" cx="281.9" cy="328.6" r="7"/>
+      <circle class="dot dot--1" cx="293.5" cy="264.2" r="7"/>
+      <circle class="dot dot--1" cx="330.8" cy="323.4" r="7"/>
+      <circle class="dot dot--1" cx="259.2" cy="303.7" r="7"/>
+      <circle class="dot dot--1" cx="328.9" cy="268.2" r="7"/>
+      <circle class="dot dot--1" cx="300.2" cy="345.0" r="7"/>
+      <circle class="dot dot--2" cx="335.9" cy="370.5" r="5.5"/>
+      <circle class="dot dot--2" cx="223.9" cy="271.5" r="5.5"/>
+      <circle class="dot dot--2" cx="377.3" cy="268.9" r="5.5"/>
+      <circle class="dot dot--2" cx="263.2" cy="377.0" r="5.5"/>
+      <circle class="dot dot--2" cx="274.6" cy="216.5" r="5.5"/>
+      <circle class="dot dot--2" cx="376.8" cy="345.4" r="5.5"/>
+      <circle class="dot dot--2" cx="210.8" cy="318.8" r="5.5"/>
+      <circle class="dot dot--2" cx="354.1" cy="224.4" r="5.5"/>
+      <circle class="dot dot--2" cx="311.4" cy="394.1" r="5.5"/>
+      <circle class="dot dot--2" cx="226.6" cy="237.1" r="5.5"/>
+      <circle class="dot dot--2" cx="398.3" cy="296.7" r="5.5"/>
+      <circle class="dot dot--2" cx="228.5" cy="370.0" r="5.5"/>
+      <circle class="dot dot--2" cx="305.5" cy="198.4" r="5.5"/>
+      <circle class="dot dot--2" cx="365.6" cy="380.0" r="5.5"/>
+      <circle class="dot dot--2" cx="196.0" cy="285.1" r="5.5"/>
+      <circle class="dot dot--2" cx="388.1" cy="239.8" r="5.5"/>
+      <circle class="dot dot--2" cx="275.4" cy="405.5" r="5.5"/>
+      <circle class="dot dot--2" cx="246.2" cy="204.2" r="5.5"/>
+      <circle class="dot dot--2" cx="405.9" cy="334.7" r="5.5"/>
+      <circle class="dot dot--2" cx="197.1" cy="346.5" r="5.5"/>
+      <circle class="dot dot--2" cx="345.0" cy="194.8" r="5.5"/>
+      <circle class="dot dot--2" cx="338.3" cy="409.4" r="5.5"/>
+      <circle class="dot dot--2" cx="196.5" cy="244.5" r="5.5"/>
+      <circle class="dot dot--2" cx="415.2" cy="270.7" r="5.5"/>
+      <circle class="dot dot--2" cx="234.1" cy="400.6" r="5.5"/>
+      <circle class="dot dot--2" cx="280.4" cy="179.9" r="5.5"/>
+      <circle class="dot dot--2" cx="396.7" cy="376.2" r="5.5"/>
+      <circle class="dot dot--2" cx="175.9" cy="309.3" r="5.5"/>
+      <circle class="dot dot--2" cx="386.2" cy="208.3" r="5.5"/>
+      <circle class="dot dot--2" cx="298.3" cy="427.2" r="5.5"/>
+      <circle class="dot dot--2" cx="214.4" cy="204.1" r="5.5"/>
+      <circle class="dot dot--2" cx="429.2" cy="313.0" r="5.5"/>
+      <circle class="dot dot--2" cx="194.9" cy="378.4" r="5.5"/>
+      <circle class="dot dot--2" cx="324.8" cy="169.9" r="5.5"/>
+      <circle class="dot dot--2" cx="370.3" cy="413.8" r="5.5"/>
+      <circle class="dot dot--2" cx="170.1" cy="263.2" r="5.5"/>
+      <circle class="dot dot--2" cx="421.7" cy="238.8" r="5.5"/>
+      <circle class="dot dot--2" cx="251.1" cy="428.5" r="5.5"/>
+      <circle class="dot dot--2" cx="248.7" cy="171.1" r="5.5"/>
+      <circle class="dot dot--2" cx="426.0" cy="361.0" r="5.5"/>
+      <circle class="dot dot--2" cx="164.7" cy="340.5" r="5.5"/>
+      <circle class="dot dot--2" cx="373.0" cy="177.7" r="5.5"/>
+      <circle class="dot dot--2" cx="329.0" cy="440.6" r="5.5"/>
+      <circle class="dot dot--2" cx="182.7" cy="215.2" r="5.5"/>
+      <circle class="dot dot--2" cx="445.0" cy="283.1" r="5.5"/>
+      <circle class="dot dot--2" cx="203.7" cy="411.2" r="5.5"/>
+      <circle class="dot dot--2" cx="295.8" cy="151.8" r="5.5"/>
+      <circle class="dot dot--2" cx="404.0" cy="407.3" r="5.5"/>
+      <circle class="dot dot--3" cx="224.1" cy="465.9" r="4.5"/>
+      <circle class="dot dot--3" cx="243.6" cy="125.5" r="4.5"/>
+      <circle class="dot dot--3" cx="460.3" cy="391.1" r="4.5"/>
+      <circle class="dot dot--3" cx="119.4" cy="341.3" r="4.5"/>
+      <circle class="dot dot--3" cx="405.8" cy="146.7" r="4.5"/>
+      <circle class="dot dot--3" cx="325.6" cy="485.4" r="4.5"/>
+      <circle class="dot dot--3" cx="155.1" cy="180.0" r="4.5"/>
+      <circle class="dot dot--3" cx="488.8" cy="290.6" r="4.5"/>
+      <circle class="dot dot--3" cx="166.5" cy="435.1" r="4.5"/>
+      <circle class="dot dot--3" cx="307.2" cy="109.3" r="4.5"/>
+      <circle class="dot dot--3" cx="424.1" cy="446.2" r="4.5"/>
+      <circle class="dot dot--3" cx="108.8" cy="275.9" r="4.5"/>
+      <circle class="dot dot--3" cx="458.0" cy="188.1" r="4.5"/>
+      <circle class="dot dot--3" cx="258.9" cy="490.1" r="4.5"/>
+      <circle class="dot dot--3" cx="201.4" cy="131.3" r="4.5"/>
+      <circle class="dot dot--3" cx="487.5" cy="358.1" r="4.5"/>
+      <circle class="dot dot--3" cx="121.8" cy="384.2" r="4.5"/>
+      <circle class="dot dot--3" cx="374.9" cy="116.7" r="4.5"/>
+      <circle class="dot dot--3" cx="368.9" cy="486.6" r="4.5"/>
+      <circle class="dot dot--3" cx="122.4" cy="208.6" r="4.5"/>
+      <circle class="dot dot--3" cx="493.6" cy="247.2" r="4.5"/>
+      <circle class="dot dot--3" cx="192.5" cy="470.4" r="4.5"/>
+      <circle class="dot dot--3" cx="264.0" cy="100.9" r="4.5"/>
+      <circle class="dot dot--3" cx="461.7" cy="423.1" r="4.5"/>
+      <circle class="dot dot--3" cx="96.8" cy="318.6" r="4.5"/>
+      <circle class="dot dot--3" cx="437.9" cy="148.4" r="4.5"/>
+      <circle class="dot dot--3" cx="300.7" cy="505.8" r="4.5"/>
+      <circle class="dot dot--3" cx="159.9" cy="148.2" r="4.5"/>
+      <circle class="dot dot--3" cx="506.7" cy="317.4" r="4.5"/>
+      <circle class="dot dot--3" cx="135.2" cy="427.3" r="4.5"/>
+      <circle class="dot dot--3" cx="335.7" cy="94.0" r="4.5"/>
+      <circle class="dot dot--3" cx="413.3" cy="476.7" r="4.5"/>
+      <circle class="dot dot--3" cx="96.3" cy="246.0" r="4.5"/>
+      <circle class="dot dot--3" cx="487.4" cy="201.8" r="4.5"/>
+      <circle class="dot dot--3" cx="227.9" cy="499.8" r="4.5"/>
+      <circle class="dot dot--3" cx="217.9" cy="103.2" r="4.5"/>
+      <circle class="dot dot--3" cx="494.2" cy="390.0" r="4.5"/>
+      <circle class="dot dot--3" cx="95.2" cy="365.0" r="4.5"/>
+      <circle class="dot dot--3" cx="407.5" cy="113.0" r="4.5"/>
+      <circle class="dot dot--3" cx="347.2" cy="511.2" r="4.5"/>
+      <circle class="dot dot--3" cx="121.8" cy="175.7" r="4.5"/>
+      <circle class="dot dot--3" cx="516.2" cy="271.2" r="4.5"/>
+      <circle class="dot dot--3" cx="159.6" cy="467.9" r="4.5"/>
+      <circle class="dot dot--3" cx="290.1" cy="80.6" r="4.5"/>
+      <circle class="dot dot--3" cx="456.1" cy="455.7" r="4.5"/>
+      <circle class="dot dot--3" cx="79.0" cy="290.6" r="4.5"/>
+      <circle class="dot dot--3" cx="469.9" cy="157.1" r="4.5"/>
+      <circle class="dot dot--3" cx="271.1" cy="520.9" r="4.5"/>
+      <circle class="dot dot--3" cx="171.6" cy="116.9" r="4.5"/>
+      <circle class="dot dot--3" cx="519.1" cy="348.5" r="4.5"/>
+      <circle class="dot dot--3" cx="105.1" cy="412.6" r="4.5"/>
+      <circle class="dot dot--3" cx="367.9" cy="84.5" r="4.5"/>
+      <circle class="dot dot--3" cx="395.8" cy="505.4" r="4.5"/>
+      <circle class="dot dot--3" cx="89.9" cy="213.0" r="4.5"/>
+      <circle class="dot dot--3" cx="514.4" cy="222.0" r="4.5"/>
+      <circle class="dot dot--3" cx="194.2" cy="503.0" r="4.5"/>
+      <circle class="dot dot--3" cx="240.6" cy="78.1" r="4.5"/>
+      <circle class="dot dot--3" cx="494.3" cy="423.9" r="4.5"/>
+      <circle class="dot dot--3" cx="72.3" cy="340.0" r="4.5"/>
+      <circle class="dot dot--3" cx="441.4" cy="116.1" r="4.5"/>
+      <circle class="dot dot--3" cx="320.1" cy="531.9" r="4.5"/>
+      <circle class="dot dot--3" cx="128.1" cy="142.1" r="4.5"/>
+      <circle class="dot dot--3" cx="534.2" cy="300.3" r="4.5"/>
+      <circle class="dot dot--3" cx="126.6" cy="458.5" r="4.5"/>
+      <circle class="dot dot--3" cx="320.9" cy="65.2" r="4.5"/>
+      <circle class="dot dot--3" cx="443.6" cy="487.8" r="4.5"/>
+      <circle class="dot dot--3" cx="66.5" cy="258.4" r="4.5"/>
+      <circle class="dot dot--3" cx="500.9" cy="172.6" r="4.5"/>
+      <circle class="dot dot--3" cx="237.8" cy="530.4" r="4.5"/>
+      <circle class="dot dot--3" cx="190.0" cy="87.5" r="4.5"/>
+      <circle class="dot dot--3" cx="525.4" cy="382.6" r="4.5"/>
+      <circle class="dot dot--3" cx="77.3" cy="391.6" r="4.5"/>
+      <circle class="dot dot--3" cx="402.6" cy="81.4" r="4.5"/>
+      <circle class="dot dot--3" cx="372.2" cy="531.2" r="4.5"/>
+      <circle class="dot dot--3" cx="90.0" cy="177.9" r="4.5"/>
+      <circle class="dot dot--3" cx="538.0" cy="248.0" r="4.5"/>
+      <circle class="dot dot--3" cx="159.2" cy="499.7" r="4.5"/>
+      <circle class="dot dot--3" cx="268.8" cy="56.9" r="4.5"/>
+      <circle class="dot dot--3" cx="487.7" cy="458.6" r="4.5"/>
+      <circle class="dot dot--3" cx="53.7" cy="309.9" r="4.5"/>
+      <circle class="dot dot--3" cx="475.4" cy="125.8" r="4.5"/>
+      <circle class="dot dot--3" cx="288.2" cy="547.6" r="4.5"/>
+      <circle class="dot dot--3" cx="141.0" cy="108.9" r="4.5"/>
+      <circle class="dot dot--3" cx="547.0" cy="333.6" r="4.5"/>
+      <circle class="dot dot--3" cx="94.6" cy="442.5" r="4.5"/>
+      <circle class="dot dot--3" cx="355.3" cy="55.5" r="4.5"/>
+      <circle class="dot dot--3" cx="424.7" cy="518.3" r="4.5"/>
+      <circle class="dot dot--3" cx="59.9" cy="223.1" r="4.5"/>
+      <circle class="dot dot--3" cx="529.6" cy="194.3" r="4.5"/>
+      <circle class="dot dot--3" cx="201.9" cy="533.7" r="4.5"/>
+      <circle class="dot dot--3" cx="214.3" cy="60.7" r="4.5"/>
+      <circle class="dot dot--3" cx="525.4" cy="418.8" r="4.5"/>
+      <circle class="dot dot--3" cx="52.9" cy="364.8" r="4.5"/>
+      <circle class="dot dot--3" cx="438.8" cy="84.7" r="4.5"/>
+      <circle class="dot dot--3" cx="343.2" cy="553.2" r="4.5"/>
+      <circle class="dot dot--3" cx="96.6" cy="142.1" r="4.5"/>
+      <circle class="dot dot--3" cx="557.4" cy="279.0" r="4.5"/>
+      <circle class="dot dot--3" cx="124.0" cy="489.8" r="4.5"/>
+      <circle class="dot dot--3" cx="301.6" cy="40.5" r="4.5"/>
+      <circle class="dot dot--3" cx="474.6" cy="493.0" r="4.5"/>
+      <circle class="dot dot--3" cx="40.3" cy="275.6" r="4.5"/>
+      <circle class="dot dot--3" cx="508.5" cy="142.1" r="4.5"/>
+      <circle class="dot dot--3" cx="252.7" cy="557.9" r="4.5"/>
+      <circle class="dot dot--3" cx="160.3" cy="77.3" r="4.5"/>
+      <circle class="dot dot--3" cx="554.1" cy="370.0" r="4.5"/>
+      <circle class="dot dot--3" cx="64.8" cy="420.3" r="4.5"/>
+      <circle class="dot dot--3" cx="392.4" cy="51.8" r="4.5"/>
+      <circle class="dot dot--3" cx="399.8" cy="546.0" r="4.5"/>
+      <circle class="dot dot--3" cx="59.6" cy="185.7" r="4.5"/>
+      <circle class="dot dot--3" cx="555.1" cy="221.7" r="4.5"/>
+      <circle class="dot dot--3" cx="164.5" cy="530.6" r="4.5"/>
+      <circle class="dot dot--3" cx="244.0" cy="37.8" r="4.5"/>
+      <circle class="dot dot--3" cx="518.9" cy="455.9" r="4.5"/>
+      <circle class="dot dot--3" cx="32.6" cy="333.0" r="4.5"/>
+      <circle class="dot dot--3" cx="475.3" cy="94.6" r="4.5"/>
+      <circle class="dot dot--3" cx="309.5" cy="570.5" r="4.5"/>
+      <circle class="dot dot--3" cx="109.8" cy="106.5" r="4.5"/>
+      <circle class="dot dot--3" cx="571.6" cy="314.2" r="4.5"/>
+      <circle class="dot dot--3" cx="89.6" cy="473.4" r="4.5"/>
+      <circle class="dot dot--3" cx="338.1" cy="29.4" r="4.5"/>
+      <circle class="dot dot--3" cx="455.0" cy="525.8" r="4.5"/>
+      <circle class="dot dot--3" cx="32.5" cy="238.1" r="4.5"/>
+      <circle class="dot dot--3" cx="539.6" cy="164.7" r="4.5"/>
+      <circle class="dot dot--3" cx="214.6" cy="562.2" r="4.5"/>
+      <circle class="dot dot--3" cx="185.6" cy="48.4" r="4.5"/>
+      <circle class="dot dot--3" cx="554.9" cy="408.5" r="4.5"/>
+      <circle class="dot dot--3" cx="38.1" cy="392.4" r="4.5"/>
+      <circle class="dot dot--3" cx="431.0" cy="54.5" r="4.5"/>
+      <circle class="dot dot--3" cx="369.4" cy="570.1" r="4.5"/>
+      <circle class="dot dot--3" cx="65.8" cy="147.4" r="4.5"/>
+      <circle class="dot dot--3" cx="576.4" cy="254.2" r="4.5"/>
+      <circle class="dot dot--3" cx="126.7" cy="520.9" r="4.5"/>
+      <circle class="dot dot--3" cx="278.5" cy="19.4" r="4.5"/>
+      <circle class="dot dot--3" cx="505.8" cy="492.8" r="4.5"/>
+      <circle class="dot dot--3" cx="17.4" cy="296.9" r="4.5"/>
+      <circle class="dot dot--3" cx="511.0" cy="111.0" r="4.5"/>
+      <circle class="dot dot--3" cx="272.1" cy="582.5" r="4.5"/>
+      <circle class="dot dot--3" cx="129.4" cy="72.3" r="4.5"/>
+      <circle class="dot dot--3" cx="580.2" cy="352.8" r="4.5"/>
+      <circle class="dot dot--3" cx="57.3" cy="450.7" r="4.5"/>
+      <text class="dots__label dots__label--1" x="300" y="372" text-anchor="middle">Tier 1</text>
+      <text class="dots__label" x="300" y="182" text-anchor="middle">Tier 2</text>
+      <text class="dots__label" x="300" y="22" text-anchor="middle">Tier 3</text>
+    </svg>
+  </div>
+  <div class="wrap hero__copy">
+    <p class="eyebrow">Draft for discussion</p>
+    <h1 class="hero__title">Nucleus Security: A Starting ABX Hypothesis</h1>
+    <p class="hero__sub">Built from our two conversations, and meant to be pressure-tested against Nucleus data.</p>
+    <p class="hero__note">You know this program far better than I do. This is how I would start and what I would test, from an outsider's partial view.</p>
+    <p class="hero__caption" aria-hidden="true"><span class="hero__swatch"></span>200 accounts sorting into tiers by buying signal. Illustrative.</p>
+  </div>
+</section>
+
+<!-- The plan in 30 seconds -->
+<section class="brief" id="brief" data-nav="In 30 seconds" aria-labelledby="brief-title">
   <div class="wrap">
-    <p class="eyebrow reveal">Draft for discussion</p>
-    <h1 class="hero__title reveal" style="--reveal-delay:80ms">Nucleus Security: A Starting ABX Hypothesis</h1>
-    <p class="hero__sub reveal" style="--reveal-delay:160ms">Built from our two conversations, and meant to be pressure-tested against Nucleus data.</p>
-    <p class="hero__note reveal" style="--reveal-delay:240ms">You know this program far better than I do. This is how I would start and what I would want to test, written from the outside with a partial view. Some of it will be wrong in ways only the data can show.</p>
+    <h2 class="brief__title" id="brief-title">The plan in 30 seconds</h2>
+    <ol class="brief__list">
+      <li class="reveal"><span class="brief__icon"><svg class="icon"><use href="#i-radar"/></svg></span><span>Add buying signals on top of fit, so effort goes to accounts in a buying cycle.</span></li>
+      <li class="reveal" style="--reveal-delay:60ms"><span class="brief__icon"><svg class="icon"><use href="#i-users"/></svg></span><span>Reach the practitioners who seem to drive wins.</span></li>
+      <li class="reveal" style="--reveal-delay:120ms"><span class="brief__icon"><svg class="icon"><use href="#i-loop"/></svg></span><span>Keep marketing in the deal after the meeting is booked.</span></li>
+      <li class="reveal" style="--reveal-delay:180ms"><span class="brief__icon"><svg class="icon"><use href="#i-calendar"/></svg></span><span>Pre-target events and confirm meetings within 48 hours.</span></li>
+      <li class="reveal" style="--reveal-delay:240ms"><span class="brief__icon"><svg class="icon"><use href="#i-plane"/></svg></span><span>Pilot a verticalized program in aviation.</span></li>
+    </ol>
   </div>
 </section>
 
 <!-- 2. What I heard -->
-<section class="section section--cream">
+<section class="section section--cream" id="heard" data-nav="What I heard" aria-labelledby="heard-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">01</p>
-      <h2>What I heard</h2>
-      <p class="lede">A short summary of what you told me. Please correct anything I got wrong.</p>
+      <p class="eyebrow">What I heard</p>
+      <h2 id="heard-title">The foundation is in place. The open question is which accounts are buying now.</h2>
     </header>
-    <ul class="heard">
-      <li class="heard__item reveal">
-        <h3>The list</h3>
-        <p>A 200-account ABX list built on ICP fit and tech stack signals, such as multiple scanners and a high integration count.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:60ms">
-        <h3>Early results</h3>
-        <p>ABX launched in July against a control group. The early read is 3-4x pipeline versus control. Commercial cycles of 6-9 months, 12-24 months for government, and large deals make that hard to validate yet.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:120ms">
-        <h3>Intent data</h3>
-        <p>OnFire, G2, ZoomInfo (Web Insights and intent) and HubSpot are in place. The G2 renewal is uncertain at year end. BDRs use the signals for outbound. Marketing uses them less.</p>
-      </li>
-      <li class="heard__item reveal">
-        <h3>Paid today</h3>
-        <p>Display prospecting and retargeting on Google and LinkedIn, with pain-point and "better together" integration messaging. It is not yet a full awareness-to-conversion journey, and it is not verticalized.</p>
-      </li>
-      <li class="heard__item heard__item--key reveal" style="--reveal-delay:60ms">
-        <h3>The key gap</h3>
-        <p>Knowing which accounts are actually in a buying cycle. Making ABX more targeted without shrinking audiences too far to reach efficiently.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:120ms">
-        <h3>Events</h3>
-        <p>Events produce lots of meetings. Held rates are lower than for web signups, and event opportunities convert less downstream.</p>
-      </li>
-      <li class="heard__item reveal">
-        <h3>Who is on the calls</h3>
-        <p>You are comparing Gong call attendees with Salesforce opportunity contacts. The early finding is that more practitioners, director level and below, on early calls correlates with winning.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:60ms">
-        <h3>After the meeting</h3>
-        <p>Mid-to-bottom funnel nurture after a meeting is booked is largely absent. Sales is open to marketing staying involved after an opportunity opens, as long as it supports the deal narrative.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:120ms">
-        <h3>Content syndication</h3>
-        <p>Tried repeatedly. It produces low-converting leads.</p>
-      </li>
-      <li class="heard__item reveal">
-        <h3>Aviation</h3>
-        <p>A vertical opportunity, with three major airline customers and an Aviation ISAC presence.</p>
-      </li>
-      <li class="heard__item reveal" style="--reveal-delay:60ms">
-        <h3>Channel</h3>
-        <p>Channel is 100% partner-led. Channel marketing is early-stage and mostly owned by the channel team.</p>
-      </li>
+
+    <ul class="stats">
+      <li class="stat reveal"><svg class="icon stat__icon"><use href="#i-target"/></svg><span class="stat__value" data-count="200">200</span><span class="stat__label">accounts on the ABX list, built on ICP fit and tech stack signals</span></li>
+      <li class="stat stat--accent reveal" style="--reveal-delay:70ms"><svg class="icon stat__icon"><use href="#i-trend"/></svg><span class="stat__value">3-<span data-count="4">4</span>x</span><span class="stat__label">early pipeline read versus the control group, since July</span></li>
+      <li class="stat reveal" style="--reveal-delay:140ms"><svg class="icon stat__icon"><use href="#i-clock"/></svg><span class="stat__value">6-<span data-count="9">9</span></span><span class="stat__label">month commercial cycle</span></li>
+      <li class="stat reveal" style="--reveal-delay:210ms"><svg class="icon stat__icon"><use href="#i-landmark"/></svg><span class="stat__value">12-<span data-count="24">24</span></span><span class="stat__label">month government cycle</span></li>
+      <li class="stat reveal" style="--reveal-delay:280ms"><svg class="icon stat__icon"><use href="#i-plane"/></svg><span class="stat__value" data-count="3">3</span><span class="stat__label">major airline customers, plus an Aviation ISAC presence</span></li>
     </ul>
+
+    <div class="sg">
+      <div class="sg__col reveal">
+        <h3 class="sg__title sg__title--good"><svg class="icon"><use href="#i-check"/></svg>Strengths</h3>
+        <ul class="sg__list">
+          <li>A fit-based list and a control group to measure against</li>
+          <li>OnFire, G2, ZoomInfo and HubSpot already in place</li>
+          <li>BDRs already working the signals</li>
+          <li>Events that book lots of meetings</li>
+          <li>A sales team open to marketing staying in deals</li>
+        </ul>
+      </div>
+      <div class="sg__col reveal" style="--reveal-delay:100ms">
+        <h3 class="sg__title sg__title--gap"><svg class="icon"><use href="#i-alert"/></svg>Gaps</h3>
+        <ul class="sg__list">
+          <li>Knowing which accounts are in a buying cycle</li>
+          <li>Marketing underuses the intent signals</li>
+          <li>Paid is display and retargeting, with no full journey or verticals</li>
+          <li>Little nurture after a meeting is booked</li>
+          <li>Event meetings hold and convert less</li>
+        </ul>
+      </div>
+    </div>
+    <p class="footnote reveal">Also noted. Content syndication produced low-converting leads. The G2 renewal is uncertain. Channel is 100% partner-led and its marketing is early.</p>
   </div>
 </section>
 
 <!-- 3. Where I'd focus -->
-<section class="section">
+<section class="section" id="focus" data-nav="Focus" aria-labelledby="focus-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">02</p>
-      <h2>Where I'd focus</h2>
-      <p class="lede">Three priorities, each tied to something you described as a gap.</p>
+      <p class="eyebrow">Where I'd focus</p>
+      <h2 id="focus-title">Three priorities, each aimed at a gap you described.</h2>
     </header>
     <ol class="focus">
-      <li class="focus__item reveal">
-        <span class="focus__num">1</span>
-        <div>
-          <h3>Find the accounts in a buying cycle</h3>
-          <p>The list selects for fit. I would add timing by combining the intent sources you have into one view of which accounts are active now, and point more budget and BDR time at them.</p>
-          <p class="focus__aside">A common rule of thumb, and not Nucleus data, is that only 5-10% of a market is in-market at any given time. If that is even roughly true for the 200, most of the list is not buying right now, which makes spotting the accounts that are worth extra effort.</p>
-        </div>
+      <li class="focus__card reveal">
+        <span class="focus__icon focus__icon--radar"><svg class="icon"><use href="#i-radar"/></svg></span>
+        <span class="focus__num">01</span>
+        <h3>Find the accounts in a buying cycle</h3>
+        <p>Combine the intent sources into one view of which accounts are active now. Point more budget and BDR time there.</p>
       </li>
-      <li class="focus__item reveal" style="--reveal-delay:80ms">
-        <span class="focus__num">2</span>
-        <div>
-          <h3>Reach the practitioners who seem to drive wins</h3>
-          <p>If your Gong finding holds up, the people to reach early are directors and the practitioners on their teams. I would aim more content, ads and BDR outreach at them and treat their engagement as a signal in its own right.</p>
-        </div>
+      <li class="focus__card reveal" style="--reveal-delay:90ms">
+        <span class="focus__icon"><svg class="icon"><use href="#i-users"/></svg></span>
+        <span class="focus__num">02</span>
+        <h3>Reach the practitioners who seem to drive wins</h3>
+        <p>If the Gong finding holds, aim early content, ads and outreach at directors and their teams.</p>
       </li>
-      <li class="focus__item reveal" style="--reveal-delay:160ms">
-        <span class="focus__num">3</span>
-        <div>
-          <h3>Keep marketing involved after the meeting</h3>
-          <p>With 6-9 month cycles, there is a long stretch after a meeting is booked where marketing does little today. Content built with AEs could help hold meetings and keep deals moving, as long as it supports the deal narrative.</p>
-        </div>
+      <li class="focus__card reveal" style="--reveal-delay:180ms">
+        <span class="focus__icon focus__icon--loop"><svg class="icon"><use href="#i-loop"/></svg></span>
+        <span class="focus__num">03</span>
+        <h3>Stay involved after the meeting</h3>
+        <p>With 6-9 month cycles, content built with AEs could help hold meetings and keep deals moving.</p>
       </li>
     </ol>
+    <p class="aside reveal"><svg class="icon"><use href="#i-help"/></svg><span>A common rule of thumb, and not Nucleus data, is that 5-10% of a market is in-market at any time. If that is roughly true for the 200, timing matters as much as fit.</span></p>
   </div>
 </section>
 
-<!-- 4. Account tiering -->
-<section class="section section--sage-tint" aria-labelledby="tiers-title">
+<!-- 4. Today vs. what I'd test -->
+<section class="section section--sage-tint" id="shift" data-nav="Today vs. test" aria-labelledby="shift-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">03</p>
-      <h2 id="tiers-title">Account tiering</h2>
-      <p class="lede">Three tiers inside the 200, so effort follows signals. The tier definitions and plays are starting hypotheses.</p>
+      <p class="eyebrow">ABX practices</p>
+      <h2 id="shift-title">Most of this builds on what already works, as tests.</h2>
     </header>
-
-    <div class="tabset reveal" data-tabs>
-      <div class="tabs tabs--3" role="tablist" aria-label="Account tiers">
-        <button class="tab" type="button" role="tab" id="tier-tab-1" aria-controls="tier-1" aria-selected="true" tabindex="0">
-          <span class="tab__num">1</span>
-          <span class="tab__text"><span class="tab__name">Tier 1</span><span class="tab__sub">Showing buying signals</span></span>
-        </button>
-        <button class="tab" type="button" role="tab" id="tier-tab-2" aria-controls="tier-2" aria-selected="false" tabindex="-1">
-          <span class="tab__num">2</span>
-          <span class="tab__text"><span class="tab__name">Tier 2</span><span class="tab__sub">Fit with some engagement</span></span>
-        </button>
-        <button class="tab" type="button" role="tab" id="tier-tab-3" aria-controls="tier-3" aria-selected="false" tabindex="-1">
-          <span class="tab__num">3</span>
-          <span class="tab__text"><span class="tab__name">Tier 3</span><span class="tab__sub">The rest of the list</span></span>
-        </button>
+    <div class="shift reveal" role="table" aria-label="Today compared with what I would test">
+      <div class="shift__row shift__row--head" role="row">
+        <span role="columnheader"><svg class="icon"><use href="#i-eye"/></svg>Today</span>
+        <span class="shift__arrow" aria-hidden="true"></span>
+        <span role="columnheader"><svg class="icon"><use href="#i-flask"/></svg>What I'd test</span>
       </div>
+      <div class="shift__row" role="row"><span role="cell">A 200-account list ranked on fit</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">Fit plus timing, in three tiers reviewed monthly</span></div>
+      <div class="shift__row" role="row"><span role="cell">Intent signals used mainly by BDRs</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">The same signals driving ads, content and tiers too</span></div>
+      <div class="shift__row" role="row"><span role="cell">Display prospecting and retargeting</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">A journey from awareness through opportunity</span></div>
+      <div class="shift__row" role="row"><span role="cell">One message for every industry</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">A verticalized pilot in aviation</span></div>
+      <div class="shift__row" role="row"><span role="cell">Marketing mostly stops at the booked meeting</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">Practitioner nurture built with AEs</span></div>
+      <div class="shift__row" role="row"><span role="cell">Events book meetings that hold less often</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">Pre-targeted events with 48-hour confirmation</span></div>
+      <div class="shift__row" role="row"><span role="cell">Content syndication, tried repeatedly</span><span class="shift__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span><span role="cell">That budget moved to signal-led programs</span></div>
+    </div>
+  </div>
+</section>
 
-      <div class="panel" id="tier-1" role="tabpanel" aria-labelledby="tier-tab-1" tabindex="-1">
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">A small, high-touch group</h3>
-            <p class="panel__who">Fit accounts showing buying signals, such as intent spikes, web visits, engagement and practitioner activity.</p>
-            <p class="hypo"><span class="hypo__label">Hypothesis</span> Concentrating effort on these accounts produces more meetings held per account than spreading the same effort across the list.</p>
-          </div>
-          <div class="plays">
-            <p class="plays__label">What marketing does</p>
-            <ul>
-              <li>Coordinated outreach with BDRs, timed to the signal</li>
-              <li>Practitioner-focused content</li>
-              <li>Tighter ad targeting</li>
-              <li>Account-specific plays built with the AE</li>
-            </ul>
-          </div>
+<!-- 5. Account tiering -->
+<section class="section" id="tiers" data-nav="Tiers" aria-labelledby="tiers-title">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow">Account tiering</p>
+      <h2 id="tiers-title">Three tiers let effort follow buying signals.</h2>
+      <p class="lede">Pick a tier to see its plays, channels and signals. Accounts move up as signals fire, reviewed monthly.</p>
+    </header>
+    <div class="tiers reveal" data-tiers>
+      <div class="tiers__art">
+        <svg class="rings" viewBox="0 0 320 320" aria-hidden="true">
+          <circle class="rings__band rings__band--3" data-tier-ring="3" cx="160" cy="160" r="128"/>
+          <circle class="rings__band rings__band--2" data-tier-ring="2" cx="160" cy="160" r="80"/>
+          <circle class="rings__band rings__band--1" data-tier-ring="1" cx="160" cy="160" r="34"/>
+          <text class="rings__label" x="160" y="22" text-anchor="middle">3</text>
+          <text class="rings__label" x="160" y="72" text-anchor="middle">2</text>
+          <text class="rings__label rings__label--1" x="160" y="165" text-anchor="middle">1</text>
+          <g class="mover">
+            <circle class="mover__ping" r="9"/>
+            <circle class="mover__dot" r="6"/>
+          </g>
+        </svg>
+        <p class="tiers__caption" aria-hidden="true">A signal fires and the account moves up a tier.</p>
+      </div>
+      <div class="tiers__panel">
+        <div class="tiers__pick" role="tablist" aria-label="Account tiers">
+          <button class="tiers__btn" type="button" role="tab" id="tier-tab-1" aria-controls="tier-1" aria-selected="true" data-tier="1"><span class="tiers__btn-num">1</span>Showing buying signals</button>
+          <button class="tiers__btn" type="button" role="tab" id="tier-tab-2" aria-controls="tier-2" aria-selected="false" tabindex="-1" data-tier="2"><span class="tiers__btn-num">2</span>Fit with some engagement</button>
+          <button class="tiers__btn" type="button" role="tab" id="tier-tab-3" aria-controls="tier-3" aria-selected="false" tabindex="-1" data-tier="3"><span class="tiers__btn-num">3</span>The rest of the list</button>
         </div>
-      </div>
-
-      <div class="panel" id="tier-2" role="tabpanel" aria-labelledby="tier-tab-2" tabindex="-1" hidden>
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">Fit accounts with some engagement</h3>
-            <p class="panel__who">Accounts that fit and have engaged a little, without a clear buying signal yet.</p>
-            <p class="hypo"><span class="hypo__label">Hypothesis</span> A steady, lower-cost presence keeps these accounts warm, so a signal turns into a meeting faster when it shows up.</p>
-          </div>
-          <div class="plays">
-            <p class="plays__label">What marketing does</p>
-            <ul>
-              <li>Lighter-touch ads</li>
-              <li>Nurture by role and pain point</li>
-              <li>Watched for signals that would move them to Tier 1</li>
-            </ul>
-          </div>
+        <div class="tier" id="tier-1" role="tabpanel" aria-labelledby="tier-tab-1">
+          <p class="tier__who">A small, high-touch group.</p>
+          <dl class="tier__grid">
+            <div><dt><svg class="icon"><use href="#i-handshake"/></svg>Plays</dt><dd>BDR outreach timed to the signal. Account-specific plays built with the AE.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-layers"/></svg>Channels</dt><dd>Tighter LinkedIn and display targeting. Practitioner content. Direct outreach.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-activity"/></svg>Signals</dt><dd>Intent spikes, web visits, engagement from several people, practitioner activity.</dd></div>
+          </dl>
+          <p class="hypo"><span class="hypo__label">Hypothesis</span>Concentrated effort here yields more meetings held per account.</p>
         </div>
-      </div>
-
-      <div class="panel" id="tier-3" role="tabpanel" aria-labelledby="tier-tab-3" tabindex="-1" hidden>
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">The rest of the list</h3>
-            <p class="panel__who">Every other account on the 200.</p>
-            <p class="hypo"><span class="hypo__label">Hypothesis</span> Keeping this tier broad protects audience size on LinkedIn and display, so tighter targeting in Tier 1 does not shrink reach for the whole program.</p>
-          </div>
-          <div class="plays">
-            <p class="plays__label">What marketing does</p>
-            <ul>
-              <li>Broad enough LinkedIn and display reach to stay efficient</li>
-              <li>Pain-point and "better together" integration messaging</li>
-              <li>Signal monitoring, so accounts can move up</li>
-            </ul>
-          </div>
+        <div class="tier" id="tier-2" role="tabpanel" aria-labelledby="tier-tab-2" hidden>
+          <p class="tier__who">Fit accounts that have engaged a little.</p>
+          <dl class="tier__grid">
+            <div><dt><svg class="icon"><use href="#i-handshake"/></svg>Plays</dt><dd>Lighter-touch ads. Nurture by role and pain point.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-layers"/></svg>Channels</dt><dd>LinkedIn, display and email.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-activity"/></svg>Signals</dt><dd>Watched for spikes that would move them to Tier 1.</dd></div>
+          </dl>
+          <p class="hypo"><span class="hypo__label">Hypothesis</span>A steady presence turns a new signal into a meeting faster.</p>
+        </div>
+        <div class="tier" id="tier-3" role="tabpanel" aria-labelledby="tier-tab-3" hidden>
+          <p class="tier__who">Every other account on the 200.</p>
+          <dl class="tier__grid">
+            <div><dt><svg class="icon"><use href="#i-handshake"/></svg>Plays</dt><dd>Pain-point and "better together" integration messaging.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-layers"/></svg>Channels</dt><dd>LinkedIn and display, kept broad enough to stay efficient.</dd></div>
+            <div><dt><svg class="icon"><use href="#i-activity"/></svg>Signals</dt><dd>Any first intent or engagement.</dd></div>
+          </dl>
+          <p class="hypo"><span class="hypo__label">Hypothesis</span>A broad Tier 3 protects audience size, so tighter Tier 1 targeting does not shrink reach.</p>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="movement reveal">
-      <h3>Accounts move between tiers every month</h3>
-      <p>As signals change, accounts move up or down. Tier 1 stays small enough that BDRs and AEs can give each account real attention. I would set the thresholds with the BDR lead.</p>
-    </div>
-
-    <div class="signals reveal">
-      <h3 class="signals__title">Signals I'd test</h3>
-      <ul class="signals__list">
-        <li><span class="signals__name">Intent spikes</span><span class="signals__desc">Rising research activity on relevant topics, from OnFire, G2 and ZoomInfo.</span></li>
-        <li><span class="signals__name">Web visits</span><span class="signals__desc">Repeat visits or visits to high-intent pages, from ZoomInfo Web Insights and HubSpot.</span></li>
-        <li><span class="signals__name">Engagement breadth</span><span class="signals__desc">Several people at one account engaging with ads, email or content.</span></li>
-        <li><span class="signals__name">Practitioner activity</span><span class="signals__desc">Director-level and below contacts engaging, given the early Gong finding.</span></li>
-        <li><span class="signals__name">Stack changes</span><span class="signals__desc">Changes in the tech stack signals the list was built on.</span></li>
-        <li class="signals__idea"><span class="signals__name">Competitor connections <span class="tag">Idea to test</span></span><span class="signals__desc">Practitioners at a target account connecting with competitors' sales reps on LinkedIn. I have not tested this. It is worth checking whether it can be observed reliably and whether it comes before buying activity.</span></li>
+<!-- 6. Signals -->
+<section class="section section--ink" id="signals" data-nav="Signals" aria-labelledby="signals-title">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow eyebrow--light">Signals I'd test</p>
+      <h2 id="signals-title">Most of the signals already live in tools you have.</h2>
+      <p class="lede lede--light">Thresholds would be set with the BDR lead.</p>
+    </header>
+    <div class="board">
+      <ul class="board__chips">
+        <li class="chip reveal"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-flame"/></svg><span class="chip__name">OnFire</span><span class="chip__what">Intent spikes</span></li>
+        <li class="chip reveal" style="--reveal-delay:60ms"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-search"/></svg><span class="chip__name">ZoomInfo</span><span class="chip__what">Intent and Web Insights</span></li>
+        <li class="chip reveal" style="--reveal-delay:120ms"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-star"/></svg><span class="chip__name">G2</span><span class="chip__what">Category research, if renewed</span></li>
+        <li class="chip reveal" style="--reveal-delay:180ms"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-click"/></svg><span class="chip__name">Web visits</span><span class="chip__what">Repeat and high-intent pages</span></li>
+        <li class="chip reveal" style="--reveal-delay:240ms"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-usercheck"/></svg><span class="chip__name">Practitioner activity</span><span class="chip__what">Director level and below engaging</span></li>
+        <li class="chip chip--test reveal" style="--reveal-delay:300ms"><span class="chip__live" aria-hidden="true"></span><svg class="icon"><use href="#i-network"/></svg><span class="chip__name">Competitor rep connections</span><span class="chip__what">An idea to test</span></li>
       </ul>
+      <figure class="net reveal" style="--reveal-delay:150ms">
+        <svg class="net__svg" viewBox="0 0 360 220" aria-hidden="true">
+          <line class="net__edge" x1="70" y1="70" x2="180" y2="40"/>
+          <line class="net__edge" x1="70" y1="70" x2="90" y2="170"/>
+          <line class="net__edge" x1="290" y1="70" x2="290" y2="170"/>
+          <line class="net__edge" x1="290" y1="170" x2="200" y2="190"/>
+          <line class="net__link" x1="90" y1="170" x2="290" y2="170"/>
+          <circle class="net__node" cx="180" cy="40" r="8"/>
+          <circle class="net__node" cx="200" cy="190" r="8"/>
+          <circle class="net__node" cx="70" cy="70" r="8"/>
+          <circle class="net__node net__node--target" cx="90" cy="170" r="13"/>
+          <circle class="net__node net__node--rep" cx="290" cy="170" r="13"/>
+          <circle class="net__node" cx="290" cy="70" r="8"/>
+          <text class="net__label" x="90" y="208" text-anchor="middle">Target account contact</text>
+          <text class="net__label" x="290" y="208" text-anchor="middle">Competitor sales rep</text>
+        </svg>
+        <figcaption><span class="tag tag--test">Test for 60-90 days</span>A practitioner at a target account connecting with a competitor's rep on LinkedIn may mean an evaluation has started. I have not tested this yet.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- 5. The account journey -->
-<section class="section">
+<!-- 7. Account journey -->
+<section class="section" id="journey" data-nav="Journey" aria-labelledby="journey-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">04</p>
-      <h2>The account journey</h2>
-      <p class="lede">What marketing does at each stage. The emphasis is on the stretch after a meeting is booked.</p>
+      <p class="eyebrow">The account journey</p>
+      <h2 id="journey-title">The biggest gap is after the meeting is booked.</h2>
     </header>
-    <ol class="journey">
-      <li class="stage reveal">
-        <span class="stage__step">1</span>
-        <h3>Aware</h3>
-        <p>Broad LinkedIn and display reach to the list, with pain-point and integration messaging.</p>
-      </li>
-      <li class="stage reveal" style="--reveal-delay:70ms">
-        <span class="stage__step">2</span>
-        <h3>Engaged</h3>
-        <p>Role-based content and retargeting. Signals go to BDRs with context on what the account engaged with.</p>
-      </li>
-      <li class="stage stage--focus reveal" style="--reveal-delay:140ms">
-        <span class="stage__step">3</span>
-        <h3>Meeting</h3>
-        <p>Confirm within 48 hours with practitioner content related to what the account showed interest in.</p>
-      </li>
-      <li class="stage stage--focus reveal" style="--reveal-delay:210ms">
-        <span class="stage__step">4</span>
-        <h3>Opportunity</h3>
-        <p>Nurture built with AEs and aimed at the practitioners on the deal. Ads to the buying group.</p>
-      </li>
-      <li class="stage reveal" style="--reveal-delay:280ms">
-        <span class="stage__step">5</span>
-        <h3>Closed</h3>
-        <p>Wins feed stories and references back into earlier stages. Wins and losses both get a look at which signals came first.</p>
-      </li>
+    <ol class="stepper" data-stepper>
+      <li class="stepper__line" aria-hidden="true"><span class="stepper__fill"></span></li>
+      <li class="stepper__step reveal"><span class="stepper__icon"><svg class="icon"><use href="#i-eye"/></svg></span><h3>Aware</h3><p>Broad LinkedIn and display with pain-point and integration messaging.</p></li>
+      <li class="stepper__step reveal" style="--reveal-delay:80ms"><span class="stepper__icon"><svg class="icon"><use href="#i-activity"/></svg></span><h3>Engaged</h3><p>Role-based content. Signals go to BDRs with context.</p></li>
+      <li class="stepper__step reveal" style="--reveal-delay:160ms"><span class="stepper__icon"><svg class="icon"><use href="#i-calendar"/></svg></span><h3>Meeting</h3><p>Confirm within 48 hours with practitioner content.</p></li>
+      <li class="stepper__step stepper__step--gap reveal" style="--reveal-delay:240ms"><span class="stepper__icon"><svg class="icon"><use href="#i-handshake"/></svg></span><span class="tag tag--gap">Missing today</span><h3>Opportunity</h3><p>Nurture built with AEs, aimed at the practitioners on the deal.</p></li>
+      <li class="stepper__step reveal" style="--reveal-delay:320ms"><span class="stepper__icon"><svg class="icon"><use href="#i-trophy"/></svg></span><h3>Closed</h3><p>Stories and references feed earlier stages. Review which signals came first.</p></li>
     </ol>
-    <p class="journey__key reveal"><span class="journey__swatch" aria-hidden="true"></span>Where I would put the most new effort</p>
-
     <div class="nurture reveal">
-      <div class="nurture__head">
-        <h3>Post-meeting nurture, built with AEs</h3>
-        <p>Aimed at the practitioners on each deal. Sales signs off on it so it supports the deal narrative.</p>
-      </div>
+      <h3 class="nurture__title">Post-meeting content, approved by sales to fit the deal narrative</h3>
       <ul class="nurture__types">
-        <li><h4>Competitive</h4><p>Material that helps practitioners compare options during evaluation.</p></li>
-        <li><h4>Pain-point</h4><p>Content on the problems the account raised in early calls.</p></li>
-        <li><h4>Vertical</h4><p>Industry-specific proof where it exists, starting with aviation.</p></li>
+        <li><svg class="icon"><use href="#i-shield"/></svg><span><strong>Competitive.</strong> Help practitioners compare options.</span></li>
+        <li><svg class="icon"><use href="#i-target"/></svg><span><strong>Pain-point.</strong> Built on what the account raised in calls.</span></li>
+        <li><svg class="icon"><use href="#i-plane"/></svg><span><strong>Vertical.</strong> Industry proof, starting with aviation.</span></li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- 6. Events inside ABX -->
-<section class="section section--cream">
+<!-- 8. Events -->
+<section class="section section--cream" id="events" data-nav="Events" aria-labelledby="events-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">05</p>
-      <h2>Events inside ABX</h2>
-      <p class="lede">Bring events into the ABX program to raise held rates and downstream conversion.</p>
+      <p class="eyebrow">Events inside ABX</p>
+      <h2 id="events-title">The first event question is where meetings drop off.</h2>
     </header>
-    <ol class="steps">
-      <li class="step reveal">
-        <p class="step__when">Before the event</p>
-        <h3>Pre-target Tier 1 and 2 accounts</h3>
-        <p>Ads and BDR outreach to fit accounts before the event, to book meetings with the right people.</p>
-      </li>
-      <li class="step reveal" style="--reveal-delay:80ms">
-        <p class="step__when">Within 48 hours</p>
-        <h3>Confirm every meeting</h3>
-        <p>A confirmation with practitioner content tied to what the account cares about.</p>
-      </li>
-      <li class="step reveal" style="--reveal-delay:160ms">
-        <p class="step__when">After the event</p>
-        <h3>Compare against prior events</h3>
-        <p>Held rates and opportunity rates side by side with earlier events, to see whether either one moved.</p>
-      </li>
-    </ol>
-    <p class="hypo hypo--wide reveal"><span class="hypo__label">Hypothesis</span> Meetings booked with accounts that were already showing signals hold and convert at higher rates than meetings booked with no prior signal.</p>
-  </div>
-</section>
-
-<!-- 7. Aviation pilot -->
-<section class="field field--sage">
-  <div class="wrap pilot">
-    <div class="pilot__intro reveal">
-      <p class="eyebrow eyebrow--light">06</p>
-      <h2>Aviation pilot</h2>
-      <p class="pilot__lede">Three major airline customers, the aviation use case, and an Aviation ISAC presence make aviation a reasonable place to test a verticalized version of the program on a small set of accounts.</p>
+    <div class="events">
+      <figure class="funnel reveal">
+        <span class="tag tag--plain">Illustrative, no data</span>
+        <ol class="funnel__stages">
+          <li style="--w:100%"><span>Booked</span></li>
+          <li style="--w:84%"><span>Held</span><span class="funnel__q" aria-label="Possible drop">?</span></li>
+          <li style="--w:68%"><span>Opportunity</span><span class="funnel__q" aria-label="Possible drop">?</span></li>
+          <li style="--w:54%"><span>POV</span></li>
+          <li style="--w:42%"><span>Closed</span></li>
+        </ol>
+        <figcaption>You noted lower held rates and weaker downstream conversion. The data would show which step matters most.</figcaption>
+      </figure>
+      <ol class="fixes">
+        <li class="fix reveal"><span class="fix__icon"><svg class="icon"><use href="#i-crosshair"/></svg></span><div><h3>Pre-target</h3><p>Reach Tier 1 and 2 accounts before the event to book the right people.</p></div></li>
+        <li class="fix reveal" style="--reveal-delay:80ms"><span class="fix__icon"><svg class="icon"><use href="#i-mail"/></svg></span><div><h3>Confirm in 48 hours</h3><p>A confirmation tied to what the account cares about.</p></div></li>
+        <li class="fix reveal" style="--reveal-delay:160ms"><span class="fix__icon"><svg class="icon"><use href="#i-file"/></svg></span><div><h3>Practitioner content</h3><p>Then compare held and opportunity rates against prior events.</p></div></li>
+      </ol>
     </div>
-    <ul class="pilot__list reveal" style="--reveal-delay:100ms">
-      <li>Pick a small set of aviation accounts from the list or close to it</li>
-      <li>Build content on the aviation use case, using customer proof as far as references allow</li>
-      <li>Use the Aviation ISAC presence for reach and credibility</li>
-      <li>Compare engagement and meetings held against similar accounts without vertical content</li>
-    </ul>
-    <p class="hypo hypo--onfield reveal"><span class="hypo__label">What it would tell us</span> Whether a vertical version earns its extra content cost, and whether the same approach should extend to other verticals.</p>
   </div>
 </section>
 
-<!-- 8. How we'd know it's working -->
-<section class="section">
+<!-- 9. Aviation -->
+<section class="section section--sage" id="aviation" data-nav="Aviation" aria-labelledby="aviation-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">07</p>
-      <h2>How we'd know it's working</h2>
-      <p class="lede">Pipeline from these accounts will take quarters to show up. These leading indicators should move first.</p>
+      <p class="eyebrow eyebrow--light">Aviation pilot</p>
+      <h2 id="aviation-title">Aviation is a natural first vertical to test.</h2>
+      <p class="lede lede--light">A verticalized version of the program, on a small set of aviation accounts, compared against similar accounts without it.</p>
+    </header>
+    <figure class="flight reveal">
+      <svg class="flight__svg" viewBox="0 0 1000 220" aria-hidden="true">
+        <path class="flight__path" id="flight-path" d="M16 170 C 110 70, 180 60, 270 70 C 360 80, 430 170, 524 170 C 620 170, 690 80, 780 70"/>
+        <circle class="flight__way" cx="16" cy="170" r="7"/>
+        <circle class="flight__way" cx="270" cy="70" r="7"/>
+        <circle class="flight__way" cx="524" cy="170" r="7"/>
+        <circle class="flight__way flight__way--goal" cx="780" cy="70" r="11"/>
+        <g class="flight__plane"><g transform="translate(-14 -14) rotate(45 14 14)"><svg width="28" height="28" viewBox="0 0 24 24" class="flight__icon"><use href="#i-plane"/></svg></g>
+          <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" keyPoints="0;1;1" keyTimes="0;0.8;1" calcMode="linear"><mpath href="#flight-path"/></animateMotion>
+        </g>
+      </svg>
+      <ol class="flight__stops">
+        <li><span class="flight__pin">1</span>Three major airline customers</li>
+        <li><span class="flight__pin">2</span>The aviation use case</li>
+        <li><span class="flight__pin">3</span>The Aviation ISAC presence</li>
+        <li class="flight__goal"><span class="flight__pin"><svg class="icon"><use href="#i-plane"/></svg></span>Verticalized ABX pilot</li>
+      </ol>
+    </figure>
+  </div>
+</section>
+
+<!-- 10. Spend -->
+<section class="section" id="spend" data-nav="Spend" aria-labelledby="spend-title">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow">Spend hypothesis</p>
+      <h2 id="spend-title">A starting split would move spend toward signals and late-stage support.</h2>
+      <p class="lede">Share of ABX program spend. No budget figures. To be checked against what has worked.</p>
+    </header>
+    <div class="spend reveal" data-spend>
+      <div class="donut">
+        <svg class="donut__svg" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="donut__track" cx="110" cy="110" r="80"/>
+        </svg>
+        <div class="donut__center"><span class="tag tag--hypo">Starting hypothesis</span><span class="donut__readout" data-spend-readout>Hover a category</span></div>
+      </div>
+      <ul class="legend" data-spend-legend>
+        <li><button type="button" class="legend__item" data-pct="30" data-color="signal" aria-describedby="why-1"><span class="legend__swatch"></span><span class="legend__name">Tier 1 account plays</span><span class="legend__pct">30%</span></button><p class="legend__why" id="why-1">The few accounts showing buying signals get the most attention.</p></li>
+        <li><button type="button" class="legend__item" data-pct="25" data-color="sage" aria-describedby="why-2"><span class="legend__swatch"></span><span class="legend__name">Tier 2 and 3 reach</span><span class="legend__pct">25%</span></button><p class="legend__why" id="why-2">Broad LinkedIn and display keeps audiences big enough to stay efficient.</p></li>
+        <li><button type="button" class="legend__item" data-pct="15" data-color="terracotta" aria-describedby="why-3"><span class="legend__swatch"></span><span class="legend__name">Post-meeting nurture</span><span class="legend__pct">15%</span></button><p class="legend__why" id="why-3">The largest gap today, across a 6-9 month cycle.</p></li>
+        <li><button type="button" class="legend__item" data-pct="15" data-color="gold" aria-describedby="why-4"><span class="legend__swatch"></span><span class="legend__name">Event pre-targeting and follow-up</span><span class="legend__pct">15%</span></button><p class="legend__why" id="why-4">Events already book meetings. This aims to raise held rates.</p></li>
+        <li><button type="button" class="legend__item" data-pct="10" data-color="sky" aria-describedby="why-5"><span class="legend__swatch"></span><span class="legend__name">Aviation pilot</span><span class="legend__pct">10%</span></button><p class="legend__why" id="why-5">Small enough to learn from without starving the core program.</p></li>
+        <li><button type="button" class="legend__item" data-pct="5" data-color="muted" aria-describedby="why-6"><span class="legend__swatch"></span><span class="legend__name">Signal tests</span><span class="legend__pct">5%</span></button><p class="legend__why" id="why-6">Room for tests like the competitor-connection signal.</p></li>
+        <li class="legend__zero"><div class="legend__item"><span class="legend__swatch"></span><span class="legend__name">Content syndication</span><span class="legend__pct">0%</span></div><p class="legend__why">Tried repeatedly with low-converting leads.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 11. Measurement -->
+<section class="section section--sage-tint" id="measure" data-nav="Measurement" aria-labelledby="measure-title">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow">How we'd know it's working</p>
+      <h2 id="measure-title">Leading indicators should move well before pipeline does.</h2>
     </header>
     <ul class="indicators">
-      <li class="indicator reveal">
-        <h3>Engagement depth</h3>
-        <p>How many people at each account engage, and how often.</p>
-      </li>
-      <li class="indicator reveal" style="--reveal-delay:70ms">
-        <h3>Practitioners engaged per account</h3>
-        <p>Director-level and below contacts engaging, tracked by tier.</p>
-      </li>
-      <li class="indicator reveal" style="--reveal-delay:140ms">
-        <h3>Meetings held</h3>
-        <p>Held as a share of booked, by source, with events tracked on their own.</p>
-      </li>
-      <li class="indicator reveal" style="--reveal-delay:210ms">
-        <h3>Stage velocity</h3>
-        <p>Time from meeting to opportunity and between opportunity stages.</p>
-      </li>
+      <li class="ind reveal"><svg class="icon"><use href="#i-layers"/></svg><h3>Engagement depth</h3><p>People and touches per account.</p></li>
+      <li class="ind reveal" style="--reveal-delay:70ms"><svg class="icon"><use href="#i-usercheck"/></svg><h3>Practitioners engaged</h3><p>Director level and below, per account.</p></li>
+      <li class="ind reveal" style="--reveal-delay:140ms"><svg class="icon"><use href="#i-calendar"/></svg><h3>Meetings held</h3><p>As a share of booked, by source.</p></li>
+      <li class="ind reveal" style="--reveal-delay:210ms"><svg class="icon"><use href="#i-gauge"/></svg><h3>Stage velocity</h3><p>Time between stages.</p></li>
     </ul>
-    <div class="control reveal">
-      <h3>Keep the control group</h3>
-      <p>Every change gets measured against the control group already in place, so results stay comparable as the program changes.</p>
-    </div>
+    <figure class="when reveal">
+      <div class="when__track" aria-hidden="true"><span class="when__fill"></span></div>
+      <ol class="when__marks">
+        <li><span class="when__dot"></span><strong>First</strong>Engagement depth, practitioners engaged</li>
+        <li><span class="when__dot"></span><strong>Next</strong>Meetings held, stage velocity</li>
+        <li><span class="when__dot"></span><strong>Then</strong>Pipeline</li>
+        <li><span class="when__dot when__dot--end"></span><strong>Last</strong>Closed-won, after a 6-9 month cycle, or 12-24 months for government</li>
+      </ol>
+      <figcaption>Illustrative order. The control group stays in place so every result can be compared.</figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- 9. First 90 days -->
-<section class="section section--sage-tint" aria-labelledby="days-title">
+<!-- 12. First 90 days -->
+<section class="section" id="days" data-nav="First 90 days" aria-labelledby="days-title">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow">08</p>
-      <h2 id="days-title">First 90 days</h2>
-      <p class="lede">Learn first, then pick a small number of tests, then run them on a regular rhythm.</p>
+      <p class="eyebrow">First 90 days</p>
+      <h2 id="days-title">The first 90 days move from learning to running tests.</h2>
     </header>
-
-    <div class="tabset reveal" data-tabs>
-      <div class="tabs tabs--3" role="tablist" aria-label="First 90 days by month">
-        <button class="tab" type="button" role="tab" id="month-tab-1" aria-controls="month-1" aria-selected="true" tabindex="0">
-          <span class="tab__num">1</span>
-          <span class="tab__text"><span class="tab__name">Month 1</span><span class="tab__sub">Learn</span></span>
-        </button>
-        <button class="tab" type="button" role="tab" id="month-tab-2" aria-controls="month-2" aria-selected="false" tabindex="-1">
-          <span class="tab__num">2</span>
-          <span class="tab__text"><span class="tab__name">Month 2</span><span class="tab__sub">Pick the first tests</span></span>
-        </button>
-        <button class="tab" type="button" role="tab" id="month-tab-3" aria-controls="month-3" aria-selected="false" tabindex="-1">
-          <span class="tab__num">3</span>
-          <span class="tab__text"><span class="tab__name">Month 3</span><span class="tab__sub">Run and review</span></span>
-        </button>
-      </div>
-
-      <div class="panel" id="month-1" role="tabpanel" aria-labelledby="month-tab-1" tabindex="-1">
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">Learn</h3>
-            <p class="panel__who">Check these hypotheses against the data and the people who run the program.</p>
-          </div>
-          <div class="plays">
-            <ul>
-              <li>Go through the data with you, including the 200-account list, the intent sources, the control group and past pipeline</li>
-              <li>Learn from you how the program has evolved since July</li>
-              <li>Meet the team</li>
-              <li>Spend time with sales to understand how deals move</li>
-              <li>Spend time with BDRs on how they use signals today</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel" id="month-2" role="tabpanel" aria-labelledby="month-tab-2" tabindex="-1" hidden>
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">Pick the first tests</h3>
-            <p class="panel__who">Choose a small number of tests based on what Month 1 shows.</p>
-          </div>
-          <div class="plays">
-            <ul>
-              <li>Pick the first tests and agree how each will be measured against the control group</li>
-              <li>Set signal thresholds for each tier with the BDR lead</li>
-              <li>Plan the first post-meeting content with AEs</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel" id="month-3" role="tabpanel" aria-labelledby="month-tab-3" tabindex="-1" hidden>
-        <div class="panel__grid">
-          <div>
-            <h3 class="panel__title">Run and review</h3>
-            <p class="panel__who">Get the first tests running and set the rhythm for reviewing them.</p>
-          </div>
-          <div class="plays">
-            <ul>
-              <li>Launch the first tests</li>
-              <li>Run the first monthly tier review</li>
-              <li>Set a review rhythm with you, sales and the BDR team</li>
-              <li>Report on the leading indicators</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 10. Questions -->
-<section class="section">
-  <div class="wrap">
-    <header class="section__head reveal">
-      <p class="eyebrow">09</p>
-      <h2>Questions I'd want answered first</h2>
-    </header>
-    <ol class="questions">
-      <li class="reveal">How many of the 200 accounts show usable intent today?</li>
-      <li class="reveal" style="--reveal-delay:60ms">Which signals came before past pipeline?</li>
-      <li class="reveal" style="--reveal-delay:120ms">Where is the biggest drop in the event funnel?</li>
-      <li class="reveal" style="--reveal-delay:180ms">What does the Gong analysis show by deal type?</li>
-      <li class="reveal" style="--reveal-delay:240ms">Who approves content used in active deals?</li>
+    <ol class="months">
+      <li class="month reveal"><span class="month__badge">Month 1</span><span class="month__icon"><svg class="icon"><use href="#i-book"/></svg></span><h3>Learn</h3><ul><li>Go through the data with you</li><li>Meet the team, sales and BDRs</li><li>Test these hypotheses against what I learn</li></ul></li>
+      <li class="month reveal" style="--reveal-delay:90ms"><span class="month__badge">Month 2</span><span class="month__icon"><svg class="icon"><use href="#i-crosshair"/></svg></span><h3>Pick</h3><ul><li>Choose the first tests</li><li>Set signal thresholds with the BDR lead</li><li>Plan post-meeting content with AEs</li></ul></li>
+      <li class="month reveal" style="--reveal-delay:180ms"><span class="month__badge">Month 3</span><span class="month__icon"><svg class="icon"><use href="#i-play"/></svg></span><h3>Run</h3><ul><li>Launch the first tests</li><li>Run the first monthly tier review</li><li>Set a review rhythm with sales and BDRs</li></ul></li>
     </ol>
+  </div>
+</section>
+
+<!-- 13. Questions -->
+<section class="section section--cream" id="questions" data-nav="Questions" aria-labelledby="questions-title">
+  <div class="wrap wrap--narrow">
+    <header class="section__head reveal">
+      <p class="eyebrow">Open questions</p>
+      <h2 id="questions-title">Five answers would shape everything above.</h2>
+    </header>
+    <div class="faq">
+      <details class="reveal"><summary><svg class="icon"><use href="#i-help"/></svg><span>How many of the 200 show usable intent today?</span><svg class="icon faq__chev"><use href="#i-chevron"/></svg></summary><p>This sets how big Tier 1 can be and whether signals are dense enough to tier on.</p></details>
+      <details class="reveal" style="--reveal-delay:50ms"><summary><svg class="icon"><use href="#i-help"/></svg><span>Which signals came before past pipeline?</span><svg class="icon faq__chev"><use href="#i-chevron"/></svg></summary><p>Looking back at closed deals is the fastest way to set thresholds.</p></details>
+      <details class="reveal" style="--reveal-delay:100ms"><summary><svg class="icon"><use href="#i-help"/></svg><span>Where is the biggest drop in the event funnel?</span><svg class="icon faq__chev"><use href="#i-chevron"/></svg></summary><p>Held rate and opportunity conversion call for different fixes.</p></details>
+      <details class="reveal" style="--reveal-delay:150ms"><summary><svg class="icon"><use href="#i-help"/></svg><span>What does the Gong analysis show by deal type?</span><svg class="icon faq__chev"><use href="#i-chevron"/></svg></summary><p>The practitioner pattern may differ for government or larger deals.</p></details>
+      <details class="reveal" style="--reveal-delay:200ms"><summary><svg class="icon"><use href="#i-help"/></svg><span>Who approves content used in active deals?</span><svg class="icon faq__chev"><use href="#i-chevron"/></svg></summary><p>Post-meeting nurture only works if sales trusts it.</p></details>
+    </div>
   </div>
 </section>
 
@@ -466,6 +692,8 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="/nucleus/nucleus.js" defer></script>
 </body>
 </html>
