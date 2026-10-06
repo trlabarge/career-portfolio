@@ -89,9 +89,15 @@ await test('every file under /nucleus is blocked without a cookie', async () => 
   }
 });
 
-await test('Payload brand folder does not open anything under /nucleus', async () => {
-  const res = await middleware(req('/nucleus/brand/x.png', { accept: 'image/*' }));
-  assert.equal(res.status, 401);
+await test('the logo folder stays public for the password screen', async () => {
+  assert.ok(passes(await middleware(req('/nucleus/brand/nucleus-logo.png', { accept: 'image/*' }))));
+});
+
+await test('nothing outside the logo folder is public', async () => {
+  for (const path of ['/nucleus/brandx.png', '/nucleus/brand', '/payload/brand/../../nucleus/nucleus.css']) {
+    const res = await middleware(req(path, { accept: 'image/*' }));
+    assert.equal(res.status, 401, path);
+  }
 });
 
 await test('a Payload session does not open /nucleus', async () => {
