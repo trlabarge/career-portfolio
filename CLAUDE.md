@@ -1347,6 +1347,35 @@ screen.
   matters" line at the top of their body. The reasons come from the PDF
   draft of the plan.
 
+## /nucleus, the private ABX hypothesis page
+
+A password-protected starting ABX hypothesis for Nucleus Security, written for
+Kevin Swartz (hiring manager, Director of Demand Generation role) from two
+interview calls. Same rules as /payload: not in the nav, the sitemap,
+`robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
+
+- **Same gate as /payload, separate password.** The session and login logic
+  moved into `/api/_lib/plan-gate.js` (`makeGate`, `makeLoginHandler`).
+  `payload-gate.js` and `nucleus-gate.js` each hold one page's settings and
+  password screen. `/middleware.js` routes by path prefix. Nucleus uses
+  `NUCLEUS_PAGE_PASSWORD`, cookie `nucleus_plan_session` scoped to
+  `Path=/nucleus`, and its own HMAC label, so neither page's session opens the
+  other. With the env var unset nothing gets through. `npm run nucleus:test`
+  covers it, including the cross-page isolation, and `npm run payload:test`
+  must still pass after any change to the shared module.
+- No Nucleus logo or branding. The page and the password screen use the
+  portfolio's own sage accent.
+- **Posture is the whole point.** Kevin knows the program better than Tim, so
+  every recommendation reads as a hypothesis to test, never a prescription.
+  Facts are only what Kevin said on the calls. No invented company facts,
+  stats, customer names, budgets or results. The 5-10% in-market figure is
+  labelled a general rule of thumb, not Nucleus data. The competitor-rep
+  LinkedIn connection signal is an idea to test, with no tool named and no
+  claim Tim has used one. No compensation or process details.
+- The two tab groups (tiers, first 90 days) use a generic `[data-tabs]`
+  pattern in `nucleus.js`. With no JS every panel renders and the tab rows
+  hide.
+
 ## Timbot, the chat widget
 
 An avatar chatbot that speaks as Tim, present on every page. It exists because
