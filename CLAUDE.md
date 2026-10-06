@@ -1385,11 +1385,21 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   cycles, 3 airlines) and the budget percentages appear. Both budget splits
   (by program and by buying stage, toggled on one donut) are Claude's
   draft, badged "Starting hypothesis", and still need Tim's sign off. The
-  events chart is labelled illustrative and carries no numbers.
+  events chart carries no numbers or axis. Its "Illustrative, no data" tag
+  was removed on Tim's instruction (2026-10), so never add figures to it.
   "Test for 60-90 days" on the competitor signal is Tim's wording.
 - **Events are about conversion to revenue.** Tim's correction, 2026-10.
   Events book plenty of meetings, and fewer of those become sales than
   meetings from other channels. Do not frame the problem as held rates.
+- **No single gap is "the" gap.** Tim's correction, 2026-10. Kevin named
+  many things worth trying across the ABX process. Buying-cycle timing and
+  post-meeting nurture are each one gap worth highlighting, never "the
+  biggest gap" or the whole story. Keep headlines and budget notes from
+  sliding back into silver-bullet framing.
+- The page closes with "See more of Tim's work", two link cards to the
+  ConstructConnect ($5.5MM+) and Implicit PLG (0 to 2,500) studies, using
+  the headlines and summaries from `/the-work` verbatim. Linking out from
+  /nucleus is fine. Nothing may link in.
 - **Aviation is a priority ICP segment, not the plan's destination.** It sits
   as one band inside the tiering section and as a vertical in nurture and
   budget. It does not get its own late section.
