@@ -25,7 +25,7 @@
 
   /* Reveal on scroll ------------------------------------------------------ */
   function reveal() {
-    var els = document.querySelectorAll('.reveal, .tiers, .net, .funnel, .shift, .when');
+    var els = document.querySelectorAll('.reveal, .tiers, .flow, .compare, .shift, .when');
     if (!('IntersectionObserver' in window) || reduceMotion) {
       els.forEach(function (el) { el.classList.add('is-visible'); });
       return;
@@ -60,12 +60,16 @@
     });
   }
 
-  /* Hero. 200 dots scatter, then sort into the three tiers. --------------- */
+  /* Hero. 200 dots scatter, then sort into the three tiers. Once sorted
+     they react to the pointer, pushed aside by a spring field, and a click
+     sends a ripple outward. Positions are offsets on the static circles, so
+     the sorted layout in the markup stays the resting state. ----------- */
   function heroDots() {
     var svg = document.querySelector('[data-dots]');
     if (!svg) return;
     var dots = svg.querySelectorAll('.dot');
-    if (!hasGsap) { svg.classList.add('is-sorted'); return; }
+    if (reduceMotion) { svg.classList.add('is-sorted'); return; }
+    if (!hasGsap) { svg.classList.add('is-sorted'); dotField(svg, dots); return; }
     var gsap = window.gsap;
     gsap.from(dots, {
       x: function () { return (Math.random() - 0.5) * 520; },
@@ -75,7 +79,79 @@
       ease: 'power3.inOut',
       delay: 0.25,
       stagger: { amount: 0.7, from: 'random' },
-      onComplete: function () { svg.classList.add('is-sorted'); },
+      onComplete: function () {
+        gsap.set(dots, { clearProps: 'transform' });
+        svg.classList.add('is-sorted');
+        dotField(svg, dots);
+      },
+    });
+  }
+
+  function dotField(svg, dots) {
+    var hero = svg.closest('.hero');
+    var RADIUS = 95;
+    var PUSH = 34;
+    var pts = Array.prototype.map.call(dots, function (el) {
+      return { el: el, x: Number(el.getAttribute('cx')), y: Number(el.getAttribute('cy')), ox: 0, oy: 0, vx: 0, vy: 0 };
+    });
+    var mouse = null;
+    var running = false;
+
+    function toSvg(e) {
+      var m = svg.getScreenCTM();
+      if (!m) return null;
+      var pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      return pt.matrixTransform(m.inverse());
+    }
+    function kick() {
+      if (!running) { running = true; requestAnimationFrame(step); }
+    }
+    function step() {
+      var moving = false;
+      for (var i = 0; i < pts.length; i++) {
+        var q = pts[i];
+        var tx = 0;
+        var ty = 0;
+        if (mouse) {
+          var dx = q.x - mouse.x;
+          var dy = q.y - mouse.y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < RADIUS) {
+            var s = 1 - d / RADIUS;
+            var n = d || 1;
+            tx = (dx / n) * PUSH * s * s;
+            ty = (dy / n) * PUSH * s * s;
+          }
+        }
+        q.vx = (q.vx + (tx - q.ox) * 0.14) * 0.8;
+        q.vy = (q.vy + (ty - q.oy) * 0.14) * 0.8;
+        q.ox += q.vx;
+        q.oy += q.vy;
+        if (Math.abs(q.vx) > 0.02 || Math.abs(q.vy) > 0.02 || Math.abs(q.ox - tx) > 0.05 || Math.abs(q.oy - ty) > 0.05) moving = true;
+        q.el.setAttribute('transform', 'translate(' + q.ox.toFixed(2) + ' ' + q.oy.toFixed(2) + ')');
+      }
+      if (moving) requestAnimationFrame(step);
+      else running = false;
+    }
+
+    hero.addEventListener('pointermove', function (e) { mouse = toSvg(e); kick(); });
+    hero.addEventListener('pointerleave', function () { mouse = null; kick(); });
+    hero.addEventListener('pointerdown', function (e) {
+      var p = toSvg(e);
+      if (!p) return;
+      pts.forEach(function (q) {
+        var dx = q.x - p.x;
+        var dy = q.y - p.y;
+        var d = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (d < 280) {
+          var f = (1 - d / 280) * 16;
+          q.vx += (dx / d) * f;
+          q.vy += (dy / d) * f;
+        }
+      });
+      kick();
     });
   }
 
@@ -242,14 +318,17 @@
     onVisible(el, function () { el.style.setProperty('--fill', 1); });
   }
 
-  /* Spend donut. Built from the legend so the two can never disagree. ----- */
+  /* Budget donut. Built from whichever legend is showing, so the chart and
+     its legend can never disagree. The toggle swaps program and stage. --- */
   function spend() {
     var root = document.querySelector('[data-spend]');
     if (!root) return;
     var svg = root.querySelector('.donut__svg');
     var donut = root.querySelector('.donut');
     var readout = root.querySelector('[data-spend-readout]');
-    var items = Array.prototype.slice.call(root.querySelectorAll('button.legend__item'));
+    var defaultText = readout.innerHTML;
+    var toggles = Array.prototype.slice.call(root.querySelectorAll('[data-spend-view]'));
+    var legends = Array.prototype.slice.call(root.querySelectorAll('[data-spend-legend]'));
     var COLORS = {
       signal: 'var(--color-signal)',
       sage: 'var(--color-sage)',
@@ -261,59 +340,82 @@
     var R = 80;
     var C = 2 * Math.PI * R;
     var GAP = 2.5;
-    var acc = 0;
     var segs = [];
-    var defaultText = readout.innerHTML;
+    var items = [];
+    var seen = false;
 
-    items.forEach(function (btn, i) {
-      var pct = Number(btn.getAttribute('data-pct'));
-      var color = COLORS[btn.getAttribute('data-color')];
-      btn.style.setProperty('--c', color);
-      var seg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      seg.setAttribute('class', 'donut__seg');
-      seg.setAttribute('cx', '110');
-      seg.setAttribute('cy', '110');
-      seg.setAttribute('r', String(R));
-      seg.style.stroke = color;
-      var len = Math.max(0, (C * pct) / 100 - GAP);
-      seg.setAttribute('stroke-dashoffset', String((-C * acc) / 100));
-      seg.dataset.len = String(len);
-      seg.style.strokeDasharray = reduceMotion ? len + ' ' + C : '0 ' + C;
-      acc += pct;
-      svg.appendChild(seg);
-      segs.push(seg);
-
-      function focus() {
-        donut.classList.add('is-focusing');
-        segs.forEach(function (s, j) { s.classList.toggle('is-focus', j === i); });
-        items.forEach(function (b, j) { b.parentNode.classList.toggle('is-focus', j === i); });
-        readout.innerHTML = '<strong>' + pct + '%</strong>';
-        readout.appendChild(document.createTextNode(btn.querySelector('.legend__name').textContent));
-      }
-      function blur() {
-        donut.classList.remove('is-focusing');
-        segs.forEach(function (s) { s.classList.remove('is-focus'); });
-        items.forEach(function (b) { b.parentNode.classList.remove('is-focus'); });
-        readout.innerHTML = defaultText;
-      }
-      btn.addEventListener('mouseenter', focus);
-      btn.addEventListener('focus', focus);
-      btn.addEventListener('click', focus);
-      btn.addEventListener('mouseleave', function () { if (document.activeElement !== btn) blur(); });
-      btn.addEventListener('blur', blur);
-      seg.addEventListener('mouseenter', focus);
-      seg.addEventListener('mouseleave', blur);
-    });
-
-    if (reduceMotion) return;
-    onVisible(root, function () {
+    function blur() {
+      donut.classList.remove('is-focusing');
+      segs.forEach(function (s) { s.classList.remove('is-focus'); });
+      items.forEach(function (b) { b.parentNode.classList.remove('is-focus'); });
+      readout.innerHTML = defaultText;
+    }
+    function focus(i) {
+      donut.classList.add('is-focusing');
+      segs.forEach(function (s, j) { s.classList.toggle('is-focus', j === i); });
+      items.forEach(function (b, j) { b.parentNode.classList.toggle('is-focus', j === i); });
+      readout.innerHTML = '<strong>' + items[i].getAttribute('data-pct') + '%</strong>';
+      readout.appendChild(document.createTextNode(items[i].querySelector('.legend__name').textContent));
+    }
+    function draw(animate) {
       segs.forEach(function (seg, i) {
-        seg.style.transition = 'stroke-dasharray 0.9s cubic-bezier(0.22, 1, 0.36, 1) ' + (0.15 + i * 0.14) + 's';
-        requestAnimationFrame(function () {
-          seg.style.strokeDasharray = seg.dataset.len + ' ' + C;
-        });
+        var full = seg.dataset.len + ' ' + C;
+        if (!animate || reduceMotion) { seg.style.transition = 'none'; seg.style.strokeDasharray = full; return; }
+        seg.style.transition = 'stroke-dasharray 0.9s cubic-bezier(0.22, 1, 0.36, 1) ' + (0.1 + i * 0.12) + 's';
+        requestAnimationFrame(function () { requestAnimationFrame(function () { seg.style.strokeDasharray = full; }); });
+      });
+    }
+    function build(legend, animate) {
+      segs.forEach(function (s) { s.remove(); });
+      segs = [];
+      items = Array.prototype.slice.call(legend.querySelectorAll('button.legend__item'));
+      var acc = 0;
+      items.forEach(function (btn, i) {
+        var pct = Number(btn.getAttribute('data-pct'));
+        var color = COLORS[btn.getAttribute('data-color')];
+        btn.style.setProperty('--c', color);
+        var seg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        seg.setAttribute('class', 'donut__seg');
+        seg.setAttribute('cx', '110');
+        seg.setAttribute('cy', '110');
+        seg.setAttribute('r', String(R));
+        seg.style.stroke = color;
+        seg.setAttribute('stroke-dashoffset', String((-C * acc) / 100));
+        seg.dataset.len = String(Math.max(0, (C * pct) / 100 - GAP));
+        seg.style.strokeDasharray = '0 ' + C;
+        seg.addEventListener('mouseenter', function () { focus(i); });
+        seg.addEventListener('mouseleave', blur);
+        acc += pct;
+        svg.appendChild(seg);
+        segs.push(seg);
+      });
+      blur();
+      draw(animate);
+    }
+
+    legends.forEach(function (legend) {
+      legend.querySelectorAll('button.legend__item').forEach(function (btn, i) {
+        btn.addEventListener('mouseenter', function () { focus(i); });
+        btn.addEventListener('focus', function () { focus(i); });
+        btn.addEventListener('click', function () { focus(i); });
+        btn.addEventListener('mouseleave', function () { if (document.activeElement !== btn) blur(); });
+        btn.addEventListener('blur', blur);
       });
     });
+
+    toggles.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var view = t.getAttribute('data-spend-view');
+        toggles.forEach(function (o) { o.setAttribute('aria-pressed', String(o === t)); });
+        legends.forEach(function (l) { l.hidden = l.getAttribute('data-spend-legend') !== view; });
+        build(root.querySelector('[data-spend-legend="' + view + '"]'), true);
+      });
+    });
+
+    build(legends[0], false);
+    segs.forEach(function (s) { s.style.strokeDasharray = '0 ' + C; });
+    if (reduceMotion) { draw(false); return; }
+    onVisible(root, function () { if (!seen) { seen = true; draw(true); } });
   }
 
   function init() {

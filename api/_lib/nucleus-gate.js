@@ -13,13 +13,15 @@ export const gate = makeGate({
   cookieName: 'nucleus_plan_session',
   label: 'nucleus-plan',
   envVar: 'NUCLEUS_PAGE_PASSWORD',
+  /* Files anyone may fetch without a session. The logo only, never plan copy. */
+  publicPrefix: '/nucleus/brand/',
 });
 
 /**
  * The password screen. Self-contained so it needs no file behind the gate.
  * It carries a title and no share image, so a pasted link previews as the
- * page's name and nothing else. No Nucleus logo, the page uses the
- * portfolio's own sage accent rather than borrowing their branding.
+ * page's name and nothing else. The Nucleus logo is the one file served from
+ * the public /nucleus/brand/ folder, so it can show here before login.
  */
 export function gateHtml({ error = false } = {}) {
   const message = error
@@ -46,7 +48,7 @@ html,body{height:100%}
 body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:1.125rem;line-height:1.6;color:var(--text);background:var(--bg);display:grid;place-items:center;padding:24px}
 .gate{width:100%;max-width:480px;background:#fff;border:1px solid #E4E1D8;border-radius:16px;padding:48px 44px;box-shadow:0 30px 60px -30px rgba(59,86,66,.3);position:relative;overflow:hidden}
 .gate::before{content:'';position:absolute;inset:0 0 auto;height:6px;background:linear-gradient(90deg,var(--sage-tint),var(--sage) 60%,var(--gold))}
-.gate__mark{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:10px;background:var(--sage);color:var(--bg);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;margin:0 0 28px}
+.gate__brand{margin:0 0 28px}.gate__brand img{height:34px;width:auto;display:block}
 .gate__eyebrow{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 h1{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;line-height:1.1;letter-spacing:-.03em;margin:0 0 28px;color:var(--text)}
 label{display:block;font-weight:600;font-size:1rem;margin-bottom:8px}
@@ -63,9 +65,9 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 </head>
 <body>
 <main class="gate">
-<p class="gate__mark" aria-hidden="true">TL</p>
+<p class="gate__brand"><img src="/nucleus/brand/nucleus-logo.png" alt="Nucleus" width="187" height="34" onerror="this.replaceWith(document.createTextNode('Nucleus Security'))"></p>
 <p class="gate__eyebrow">Private</p>
-<h1>Nucleus Security: A Starting ABX Hypothesis</h1>
+<h1>A Starting ABX Hypothesis</h1>
 ${message}
 <form method="post" action="/api/nucleus-auth">
 <label for="password">Password</label>

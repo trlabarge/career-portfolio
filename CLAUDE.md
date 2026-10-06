@@ -1363,11 +1363,16 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   other. With the env var unset nothing gets through. `npm run nucleus:test`
   covers it, including the cross-page isolation, and `npm run payload:test`
   must still pass after any change to the shared module.
-- No Nucleus logo or branding. The page and the password screen use the
-  portfolio's own sage accent.
-- **Posture is the whole point.** Kevin knows the program better than Tim, so
-  every recommendation reads as a hypothesis to test, never a prescription.
-  Facts are only what Kevin said on the calls. No invented company facts,
+- **The Nucleus logo is used, on Tim's request** (2026-10), top left on the
+  page and on the password screen. `/nucleus/brand/nucleus-logo.png` is the
+  one public file, served before login the same way `/payload/brand/` is.
+  It was keyed off white to real transparency and cropped, at native size.
+  The page's colours stay the portfolio's own, not Nucleus's.
+- **Voice is a plan, not a letter.** Third person, no "I", "you" or "we",
+  and nothing that says "as we discussed". It reads as an authoritative plan
+  with a few marked caveats ("Assumption to test", "Starting hypothesis",
+  "Illustrative"). Speak plainly.
+- **Facts are only what Kevin said on the calls.** No invented company facts,
   stats, customer names, budgets or results. The 5-10% in-market figure is
   labelled a general rule of thumb, not Nucleus data. The competitor-rep
   LinkedIn connection signal is an idea to test, with no tool named and no
@@ -1377,10 +1382,25 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   and no text block runs past about 40 words. One added accent, signal blue
   (`--color-signal`, `#34588C`), carries highlights and data only.
 - **Numbers.** Only Kevin's real figures (200, 3-4x, 6-9 and 12-24 month
-  cycles, 3 airlines) and the spend percentages appear. The spend split is
-  Claude's draft, badged "Starting hypothesis", and still needs Tim's sign
-  off. The event funnel is labelled illustrative and carries no numbers.
+  cycles, 3 airlines) and the budget percentages appear. Both budget splits
+  (by program and by buying stage, toggled on one donut) are Claude's
+  draft, badged "Starting hypothesis", and still need Tim's sign off. The
+  events chart is labelled illustrative and carries no numbers.
   "Test for 60-90 days" on the competitor signal is Tim's wording.
+- **Events are about conversion to revenue.** Tim's correction, 2026-10.
+  Events book plenty of meetings, and fewer of those become sales than
+  meetings from other channels. Do not frame the problem as held rates.
+- **Aviation is a priority ICP segment, not the plan's destination.** It sits
+  as one band inside the tiering section and as a vertical in nurture and
+  budget. It does not get its own late section.
+- **Priority 03's headline and the rule-of-thumb aside are Tim's wording**,
+  as are the ABX practices headline and the Tier 2 signal line.
+- **The hero dots are interactive.** After the sort, `dotField()` runs a
+  spring field. Dots push away from the pointer within 95 units and a click
+  sends a ripple outward. Offsets are a `transform` on each static circle, so
+  the sorted markup stays the resting state. It listens on the whole hero,
+  since the art itself is `pointer-events: none`, and it is off under
+  reduced motion.
 - **GSAP 3.12.5 and ScrollTrigger load from cdnjs** for the hero dot sort and
   the scrubbed journey line. Everything checks for GSAP and falls back, and
   the markup ships in its end state (the 200 hero dots are static circles in
