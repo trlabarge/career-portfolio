@@ -1435,9 +1435,14 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
   `MAGICARE_PAGE_PASSWORD` the password (set in Vercel, never in the repo),
   cookie `magicare_plan_session` scoped to `Path=/magicare`. Both briefs
   asked for a client-side JS check. It was not built, since a JS check ships
-  the whole plan to anyone who views source. No public `/magicare/brand/`
-  folder, since the page uses no logos. `npm run magicare:test` covers it,
-  including isolation from the other two gates.
+  the whole plan to anyone who views source. `npm run magicare:test` covers
+  it, including isolation from the other two gates.
+- **The Magicare logo is used, on Tim's request** (2026-10), top left on the
+  page and on the password screen. `/magicare/brand/magicare-logo.png` is the
+  one public file, served before login the same way `/nucleus/brand/` is. It
+  was cropped from Tim's square upload and its cream and white background
+  keyed to real transparency, at 480px wide. The page's colours stay the
+  portfolio's own.
 - **Voice is a plan, not a letter** (Tim, 2026-10). Third person throughout.
   No "you", "your", "I", "we" or "our", and nothing that refers to a call, a
   meeting or a request. Caveats are impersonal open questions, one per
@@ -1445,6 +1450,26 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
 - **No contrast constructions.** No "not X but Y", "rather than", "instead
   of" or "it wins on". The brief's own copy carried several and every one was
   rewritten as a direct statement. Keep it that way.
+- **Banned words on this page** (Tim, 2026-10): "win" in any form (so no
+  "win rate" or "win-loss"), "actually", "quiet" or "quietly", "unlock", and
+  "matters". Also no jargon pull lines. "Fewer assets, each one demonstrably
+  relevant" was cut as jargon.
+- **Hedge claims about outcomes.** The benchmark "could" reach buyers earlier
+  and "can" earn coverage. Trade press "often" runs original data. Keep that
+  register.
+- **"An additional 30 or more content outputs"** under the multiplication
+  diagram is a sum of the brief's own figures for the benchmark's formats (20
+  to 30 social posts, a one-pager for each of 3 or 4 findings, 2 segment
+  variants, a webinar, the grader, the annual edition, plus press placements
+  and session proposals). Re-add it if the format list changes.
+- **No trade byline commitment.** Tim cut the one-per-month byline from
+  production capacity as too aggressive. The month graphic shows listening as
+  an always-on band across the whole month, so it never implies a research
+  phase where nothing ships.
+- **The team comparison is framed as competitors.** "Traditional approach",
+  competitor teams of 5 to 10 people organized by channel.
+- **There is no closing "verified first" section.** Tim removed it. The page
+  ends on initiative 3 and the footer.
 - **Every number comes from Tim's brief.** No invented metrics, including
   inside diagrams. The scorecard demo has blank skeleton criteria, unnamed
   vendors and nothing pre-filled, and its totals come only from the viewer's
@@ -1454,7 +1479,8 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
 - **There is no "system" section.** It ordered the ideas 3, 1, 2, which Tim
   found confusing. The initiatives stand alone in their own order.
 - **Reads short by default.** Each initiative shows its summary and one
-  visual (multiplication fan, today-versus-framework bars, the loop). The
+  visual (multiplication fan, today-versus-framework bars, the loop). "Read
+  the full plan" opens the rest and "Close expanded plan" closes it. The
   rest sits in a `.more` region that animates open via
   `grid-template-rows` and is `inert` while closed. With no JS, or in print,
   everything is open.

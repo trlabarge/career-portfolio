@@ -152,6 +152,8 @@ html:not(.js) .pnav { display: none; }
    ========================================================================== */
 .hero { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); overflow: hidden; }
 .hero__top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.hero__logo { display: block; height: 31px; width: auto; max-width: 62vw; }
+.hero__eyebrow { margin-bottom: 1.1rem; }
 .hero__top a { color: var(--color-text-muted); text-decoration: none; font-size: 0.92rem; }
 .hero__top a:hover { color: var(--color-sage); }
 .hero__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
@@ -566,12 +568,14 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
 .month__val { text-align: right; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--color-gold-dark); line-height: 1.15; }
 .month__val small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 0.75rem; letter-spacing: 0; color: var(--color-text-muted); }
 .month__track { position: relative; height: 34px; }
-.month__core { position: absolute; left: 0; top: 2px; bottom: 2px; width: 30%; border-radius: 7px; background: var(--color-gold); }
-.month__derivs { position: absolute; left: 30%; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4px; padding-left: 6px; }
+.month__listen { position: absolute; left: 0; right: 0; top: 9px; bottom: 9px; border-radius: 8px; background: repeating-linear-gradient(90deg, var(--color-gold) 0 10px, var(--color-gold-tint) 10px 16px); opacity: 0.85; }
+.month__core { position: absolute; left: 0; right: 0; top: 9px; bottom: 9px; border-radius: 8px; background: linear-gradient(90deg, var(--color-gold-tint), var(--color-gold)); }
+.month__core::after { content: ''; position: absolute; right: -2px; top: 50%; width: 14px; height: 14px; border-radius: 3px; background: var(--color-gold-dark); transform: translateY(-50%) rotate(45deg); }
+.month__note { margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted); }
+.month__derivs { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4px; }
 .month__derivs i { border-radius: 3px; background: var(--color-gold-tint); box-shadow: inset 0 0 0 1px rgba(201, 160, 81, 0.5); }
 .month__daily { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(4, 1fr); gap: 3px; }
 .month__daily i { background: radial-gradient(circle, var(--color-gold-dark) 0 2.2px, transparent 2.6px) 0 50% / 4.5% 100% repeat-x; opacity: 0.8; }
-.month__byline { position: absolute; left: 62%; top: 1px; bottom: 1px; width: 6%; min-width: 22px; border-radius: 7px; background: var(--color-ink); }
 @media (prefers-reduced-motion: no-preference) {
   html.js .month .month__track > * { transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.8s var(--ease-out); transition-delay: var(--d, 0s); }
   html.js .month.is-visible .month__track > * { transform: none; }
@@ -591,21 +595,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
 .org-t { font-family: var(--font-display); font-weight: 600; font-size: 15px; }
 .org-ts { font-family: var(--font-body); font-weight: 500; font-size: 13px; }
 
-/* ==========================================================================
-   Closing
-   ========================================================================== */
-.verify { background: var(--color-ink); color: var(--color-bg); padding-block: var(--space-xl); }
-.verify .eyebrow { color: var(--color-gold); }
-.verify h2 { margin-top: 0.7rem; font-size: clamp(2rem, 4.4vw, 3.3rem); letter-spacing: -0.04em; max-width: 16ch; }
-.vgrid { margin-top: clamp(2rem, 5vw, 3rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem; counter-reset: v; }
-.vgrid li { counter-increment: v; border-radius: var(--radius-lg); padding: 1.3rem 1.3rem 1.4rem; background: rgba(250, 249, 246, 0.05); box-shadow: inset 0 0 0 1px rgba(250, 249, 246, 0.14); }
-.vgrid__top { display: flex; align-items: center; justify-content: space-between; color: var(--color-gold); }
-.vgrid__top::after { content: counter(v, decimal-leading-zero); font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: rgba(250, 249, 246, 0.45); }
-.vgrid .icon { width: 28px; height: 28px; }
-.vgrid p { margin-top: 1rem; font-size: 1rem; line-height: 1.5; }
-.verify__close { margin-top: clamp(2rem, 5vw, 3rem); max-width: 52ch; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.1rem, 1.8vw, 1.3rem); line-height: 1.4; color: #DDE3DE; padding-left: 1.1rem; border-left: 3px solid var(--color-gold); }
-
-.foot { padding-block: 2rem 2.5rem; font-size: 0.95rem; }
+.foot { border-top: 1px solid var(--color-line); padding-block: 2rem 2.5rem; font-size: 0.95rem; }
 .foot__inner { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; align-items: baseline; }
 .foot__name { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; margin-right: auto; }
 .foot a { color: var(--color-sage); text-decoration-color: var(--color-gold); }
@@ -617,7 +607,6 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
   .blk { grid-template-columns: minmax(0, 1fr); }
   .ai-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fmt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr); }
@@ -640,7 +629,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
   body { font-size: 1rem; }
   .init__head { grid-template-columns: minmax(0, 1fr); }
   .init__num { font-size: 4rem; margin-bottom: 0.9rem; }
-  .ai-grid, .fmt-grid, .vgrid { grid-template-columns: minmax(0, 1fr); }
+  .ai-grid, .fmt-grid { grid-template-columns: minmax(0, 1fr); }
   .sc__main { grid-template-columns: 1.6rem minmax(0, 1fr) 2.4rem; grid-template-areas: 'n crit open' 'n rate rate'; padding-left: 1rem; row-gap: 0.6rem; }
   .sc__n { grid-area: n; align-self: start; padding-top: 0.1rem; }
   .sc__crit { grid-area: crit; }
@@ -653,7 +642,10 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
   .sc__total { grid-template-columns: 4.8rem minmax(0, 1fr) 5.8rem; font-size: 0.82rem; gap: 0.5rem; }
   .month { padding: 1.1rem; }
   .month__scale { display: none; }
-  .month__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'what val' 'track track'; gap: 0.5rem 0.75rem; }
+  .month__row { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'what' 'val' 'track'; gap: 0.35rem; }
+  .month__val { text-align: left; font-size: 1.05rem; }
+  .month__track { margin-top: 0.3rem; }
+  .hero__logo { height: 24px; }
   .month__what { grid-area: what; }
   .month__val { grid-area: val; }
   .month__track { grid-area: track; }
@@ -689,12 +681,8 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
   .loop__chev { display: none !important; }
   .sc__detail { grid-template-rows: 1fr; }
   .init { break-before: page; padding-block: 6mm; }
-  .verify { break-before: page; background: #fff; color: var(--color-text); }
-  .verify .eyebrow { color: var(--color-gold-dark); }
-  .vgrid li { box-shadow: inset 0 0 0 1px var(--color-line); }
-  .verify__close { color: var(--color-text); }
   .org__panel.is-new { background: #fff; color: var(--color-text); border-color: var(--color-line); }
-  .blk, .ai-card, .needs__box, .mult, .sc, .month, .org__panel, .vgrid li, .loop__item, .steps li, .fmt-grid li { break-inside: avoid; }
+  .blk, .ai-card, .needs__box, .mult, .sc, .month, .org__panel, .loop__item, .steps li, .fmt-grid li { break-inside: avoid; }
   .foot a::after { content: ' (' attr(href) ')'; font-size: 0.85em; }
   a { color: inherit; }
 }
@@ -761,11 +749,12 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
 <header class="hero">
   <div class="wrap">
     <div class="hero__top">
-      <span class="eyebrow">Growth plan · October 2026</span>
+      <img class="hero__logo" src="/magicare/brand/magicare-logo.png" alt="Magicare.ai" width="240" height="31">
       <a href="/">timsmarketing.com</a>
     </div>
     <div class="hero__grid">
       <div>
+        <p class="eyebrow hero__eyebrow">Growth plan · October 2026</p>
         <h1>Three growth initiatives for <span>Magicare</span></h1>
         <p class="hero__sub">Building category authority in post-acute care</p>
         <div class="hero__rule" aria-hidden="true"></div>
@@ -777,19 +766,19 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <li class="reveal" style="--d:0ms"><a class="preview" href="#initiative-1" style="--c:var(--color-sage);--t:var(--color-sage-tint)">
         <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-bench"/></svg></span><span class="preview__num">01</span></span>
         <h2>The post-acute referral benchmark</h2>
-        <p>Publish the first real dataset on how referrals move through skilled nursing facilities.</p>
+        <p>Publish a real dataset on how referrals move through skilled nursing facilities.</p>
         <span class="preview__go">See initiative 1 <svg class="icon"><use href="#i-arrow"/></svg></span>
       </a></li>
       <li class="reveal" style="--d:80ms"><a class="preview" href="#initiative-2" style="--c:var(--color-terracotta);--t:var(--color-terracotta-tint)">
         <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-score"/></svg></span><span class="preview__num">02</span></span>
         <h2>Category definition and the buying scorecard</h2>
-        <p>Define the category, then publish the criteria operators should use to evaluate every vendor in it.</p>
+        <p>Define the category, then publish the criteria operators should use to evaluate competing vendors.</p>
         <span class="preview__go">See initiative 2 <svg class="icon"><use href="#i-arrow"/></svg></span>
       </a></li>
       <li class="reveal" style="--d:160ms"><a class="preview" href="#initiative-3" style="--c:var(--color-gold-dark);--t:var(--color-gold-tint)">
         <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-engine"/></svg></span><span class="preview__num">03</span></span>
         <h2>The market intelligence engine</h2>
-        <p>A continuous loop where what buyers are actually discussing determines what gets built next.</p>
+        <p>A continuous loop where real buyer conversations determine the content that gets created next.</p>
         <span class="preview__go">See initiative 3 <svg class="icon"><use href="#i-arrow"/></svg></span>
       </a></li>
     </ol>
@@ -808,7 +797,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <div>
         <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-bench"/></svg>Initiative 1</p>
         <h2 id="i1-title">The post-acute referral benchmark</h2>
-        <p class="init__summary">Publish the first real dataset on how referrals move through skilled nursing facilities.</p>
+        <p class="init__summary">Publish a real dataset on how referrals move through skilled nursing facilities.</p>
       </div>
     </div>
 
@@ -816,7 +805,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <p class="vis-caption reveal">What one report produces</p>
       <figure class="mult reveal" data-mult style="margin:0">
         <svg class="mult__svg" viewBox="0 0 1000 660" aria-hidden="true" focusable="false"><circle class="mult__orbit" cx="500" cy="330" r="150"/><ellipse class="mult__orbit is-outer" cx="500" cy="330" rx="290" ry="205"/><path class="mult__spoke" d="M432.5,291 Q361.9,273.6 248.9,227.5" pathLength="1" style="--d:0.00s"/><path class="mult__sub-spoke" d="M248.9,227.5 L209.2,221.9" pathLength="1" style="--d:0.45s"/><circle class="mult__sub" cx="209.2" cy="221.9" r="4.2" style="--d:0.55s"/><path class="mult__sub-spoke" d="M248.9,227.5 L214.2,207.5" pathLength="1" style="--d:0.48s"/><circle class="mult__sub" cx="214.2" cy="207.5" r="4.2" style="--d:0.58s"/><path class="mult__sub-spoke" d="M248.9,227.5 L224.2,196" pathLength="1" style="--d:0.52s"/><circle class="mult__sub" cx="224.2" cy="196" r="4.2" style="--d:0.62s"/><circle class="mult__node" cx="248.9" cy="227.5" r="10" style="--d:0.35s"/><text class="mult__label" x="195.2" y="192.5" text-anchor="end" style="--d:0.55s"><tspan x="195.2" dy="0">Trade press</tspan><tspan x="195.2" dy="18">placements</tspan></text><path class="mult__spoke" d="M475.9,255.8 Q450.7,222.8 410.4,135" pathLength="1" style="--d:0.09s"/><path class="mult__sub-spoke" d="M410.4,135 L391,100" pathLength="1" style="--d:0.54s"/><circle class="mult__sub" cx="391" cy="100" r="4.2" style="--d:0.64s"/><path class="mult__sub-spoke" d="M410.4,135 L405.5,95.3" pathLength="1" style="--d:0.58s"/><circle class="mult__sub" cx="405.5" cy="95.3" r="4.2" style="--d:0.68s"/><circle class="mult__node" cx="410.4" cy="135" r="10" style="--d:0.44s"/><text class="mult__label" x="391.2" y="54.1" text-anchor="middle" style="--d:0.64s"><tspan x="391.2" dy="0">Conference session</tspan><tspan x="391.2" dy="18">proposals</tspan></text><path class="mult__spoke" d="M524.1,255.8 Q549.3,222.8 589.6,135" pathLength="1" style="--d:0.18s"/><circle class="mult__node" cx="589.6" cy="135" r="10" style="--d:0.53s"/><text class="mult__label" x="596.4" y="92.1" text-anchor="middle" style="--d:0.73s"><tspan x="596.4" dy="0">Interactive</tspan><tspan x="596.4" dy="18">grader</tspan></text><path class="mult__spoke" d="M567.5,291 Q638.1,273.6 751.1,227.5" pathLength="1" style="--d:0.27s"/><circle class="mult__node" cx="751.1" cy="227.5" r="10" style="--d:0.62s"/><text class="mult__label" x="770.2" y="212.5" text-anchor="start" style="--d:0.82s"><tspan x="770.2" dy="0">Webinar with</tspan><tspan x="770.2" dy="18">a customer</tspan></text><path class="mult__spoke" d="M567.5,369 Q638.1,386.4 751.1,432.5" pathLength="1" style="--d:0.36s"/><path class="mult__sub-spoke" d="M751.1,432.5 L788.7,418.8" pathLength="1" style="--d:0.81s"/><circle class="mult__sub" cx="788.7" cy="418.8" r="4.2" style="--d:0.91s"/><path class="mult__sub-spoke" d="M751.1,432.5 L812.4,422.9" pathLength="1" style="--d:0.85s"/><circle class="mult__sub" cx="812.4" cy="422.9" r="4.2" style="--d:0.95s"/><path class="mult__sub-spoke" d="M751.1,432.5 L791.1,434.1" pathLength="1" style="--d:0.88s"/><circle class="mult__sub" cx="791.1" cy="434.1" r="4.2" style="--d:0.98s"/><path class="mult__sub-spoke" d="M751.1,432.5 L811.5,446.8" pathLength="1" style="--d:0.92s"/><circle class="mult__sub" cx="811.5" cy="446.8" r="4.2" style="--d:1.02s"/><path class="mult__sub-spoke" d="M751.1,432.5 L787.6,449.1" pathLength="1" style="--d:0.95s"/><circle class="mult__sub" cx="787.6" cy="449.1" r="4.2" style="--d:1.05s"/><path class="mult__sub-spoke" d="M751.1,432.5 L801.6,468.6" pathLength="1" style="--d:0.99s"/><circle class="mult__sub" cx="801.6" cy="468.6" r="4.2" style="--d:1.09s"/><path class="mult__sub-spoke" d="M751.1,432.5 L778.6,461.6" pathLength="1" style="--d:1.02s"/><circle class="mult__sub" cx="778.6" cy="461.6" r="4.2" style="--d:1.12s"/><path class="mult__sub-spoke" d="M751.1,432.5 L784.2,485" pathLength="1" style="--d:1.06s"/><circle class="mult__sub" cx="784.2" cy="485" r="4.2" style="--d:1.16s"/><path class="mult__sub-spoke" d="M751.1,432.5 L765.6,469.8" pathLength="1" style="--d:1.09s"/><circle class="mult__sub" cx="765.6" cy="469.8" r="4.2" style="--d:1.19s"/><path class="mult__sub-spoke" d="M751.1,432.5 L761.9,493.6" pathLength="1" style="--d:1.12s"/><circle class="mult__sub" cx="761.9" cy="493.6" r="4.2" style="--d:1.23s"/><circle class="mult__node" cx="751.1" cy="432.5" r="10" style="--d:0.71s"/><text class="mult__label" x="823.9" y="470.5" text-anchor="start" style="--d:0.91s"><tspan x="823.9" dy="0">20 to 30</tspan><tspan x="823.9" dy="18">social posts</tspan></text><path class="mult__spoke" d="M524.1,404.2 Q549.3,437.2 589.6,525" pathLength="1" style="--d:0.45s"/><path class="mult__sub-spoke" d="M589.6,525 L620.7,550.1" pathLength="1" style="--d:0.90s"/><circle class="mult__sub" cx="620.7" cy="550.1" r="4.2" style="--d:1.00s"/><path class="mult__sub-spoke" d="M589.6,525 L609,560" pathLength="1" style="--d:0.93s"/><circle class="mult__sub" cx="609" cy="560" r="4.2" style="--d:1.03s"/><path class="mult__sub-spoke" d="M589.6,525 L594.5,564.7" pathLength="1" style="--d:0.97s"/><circle class="mult__sub" cx="594.5" cy="564.7" r="4.2" style="--d:1.07s"/><path class="mult__sub-spoke" d="M589.6,525 L579.3,563.6" pathLength="1" style="--d:1.00s"/><circle class="mult__sub" cx="579.3" cy="563.6" r="4.2" style="--d:1.10s"/><circle class="mult__node" cx="589.6" cy="525" r="10" style="--d:0.80s"/><text class="mult__label" x="608.8" y="597.9" text-anchor="middle" style="--d:1.00s"><tspan x="608.8" dy="0">One-pager</tspan><tspan x="608.8" dy="18">per finding</tspan></text><path class="mult__spoke" d="M475.9,404.2 Q450.7,437.2 410.4,525" pathLength="1" style="--d:0.54s"/><path class="mult__sub-spoke" d="M410.4,525 L405.5,564.7" pathLength="1" style="--d:0.99s"/><circle class="mult__sub" cx="405.5" cy="564.7" r="4.2" style="--d:1.09s"/><path class="mult__sub-spoke" d="M410.4,525 L391,560" pathLength="1" style="--d:1.02s"/><circle class="mult__sub" cx="391" cy="560" r="4.2" style="--d:1.12s"/><circle class="mult__node" cx="410.4" cy="525" r="10" style="--d:0.89s"/><text class="mult__label" x="391.2" y="597.9" text-anchor="middle" style="--d:1.09s"><tspan x="391.2" dy="0">Segment</tspan><tspan x="391.2" dy="18">variants</tspan></text><path class="mult__spoke" d="M432.5,369 Q361.9,386.4 248.9,432.5" pathLength="1" style="--d:0.63s"/><path class="mult__sub-spoke" d="M248.9,432.5 L214.2,452.5" pathLength="1" style="--d:1.08s"/><circle class="mult__sub" cx="214.2" cy="452.5" r="4.2" style="--d:1.18s"/><circle class="mult__node" cx="248.9" cy="432.5" r="10" style="--d:0.98s"/><text class="mult__label" x="195.2" y="459.5" text-anchor="end" style="--d:1.18s"><tspan x="195.2" dy="0">Annual</tspan><tspan x="195.2" dy="18">edition</tspan></text><g class="mult__core"><circle class="mult__core-halo" cx="500" cy="330" r="96"/><circle class="mult__core-disc" cx="500" cy="330" r="74"/><use href="#i-doc" class="mult__core-icon" x="483" y="284" width="34" height="34"/><text class="mult__core-title" x="500" y="342" text-anchor="middle">The report</text><text class="mult__core-sub" x="500" y="363" text-anchor="middle">Roughly 15 pages</text></g></svg>
-        <figcaption class="mult__note">One core asset at the center. Every endpoint is a format built from it.</figcaption>
+        <figcaption class="mult__note">One core asset at the center, which generates an additional 30 or more content outputs.</figcaption>
         <div class="mult__list">
           <div class="mult__root"><svg class="icon"><use href="#i-doc"/></svg><div><strong>The report</strong><span>Roughly 15 pages, three or four findings</span></div></div>
           <ul class="mult__branches">
@@ -833,14 +822,14 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       </figure>
     </div>
 
-    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-1"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-1"><span class="toggle__more">Read the full plan</span><span class="toggle__less">Close expanded plan</span><svg class="icon"><use href="#i-chev"/></svg></button>
 
     <div class="more" id="more-1"><div class="more__inner"><div class="more__body">
 
       <div class="blk">
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-target"/></svg></span><h3>The opportunity</h3></div>
         <div class="blk__body">
-          <p class="reveal">Every vendor in this category makes the same claims in the same language. Buyers have no independent reference point for what good performance looks like, and no vendor claim can be verified against anything.</p>
+          <p class="reveal">Every vendor in this category makes the same claims in the same language. Buyers have no independent reference point for what good performance looks like, and no vendor claim can be verified.</p>
           <p class="reveal">Magicare's platform holds data no competitor has.</p>
           <ul class="chips reveal">
             <li class="chip"><svg class="icon"><use href="#i-clock"/></svg>Referral response times</li>
@@ -849,12 +838,12 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
             <li class="chip"><svg class="icon"><use href="#i-shield"/></svg>Authorization turnaround</li>
             <li class="chip"><svg class="icon"><use href="#i-segment"/></svg>Census patterns by operator size and region</li>
           </ul>
-          <p class="pull reveal">Published as an industry benchmark, that data becomes the reference point. The company that publishes it becomes the authority behind it.</p>
+          <p class="pull reveal">Published as an industry benchmark, Magicare's data becomes a reference point for the industry. The company that publishes that benchmark becomes the authority.</p>
         </div>
       </div>
 
       <div class="blk">
-        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-clock"/></svg></span><h3>Why it reaches buyers earlier than any other channel</h3></div>
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-clock"/></svg></span><h3>Why it could reach buyers earlier than other channels</h3></div>
         <div class="blk__body">
           <div class="reach reveal">
             <div class="reach__col">
@@ -866,14 +855,14 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
               <div class="reach__by"><span>The benchmark</span></div>
             </div>
           </div>
-          <p class="reveal">An owner who learns the median referral sits unanswered for a given number of hours, and realizes no one at their organization knows their own number, has entered the market without a vendor conversation ever taking place. That makes the benchmark the one mechanism in this plan that creates new demand.</p>
+          <p class="reveal">An owner who learns the median referral sits unanswered for a given number of hours, and then realizes no one at their organization knows that number, has entered the market without a vendor conversation ever taking place. That makes Magicare's benchmark a mechanism that creates new demand.</p>
         </div>
       </div>
 
       <div class="blk">
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-press"/></svg></span><h3>It closes the trade publication gap</h3></div>
         <div class="blk__body">
-          <p class="reveal">Long-term care trade press runs original industry data. A benchmark is the asset that earns that coverage, and benchmark data keeps getting cited for years after publication.</p>
+          <p class="reveal">Trade press often runs original industry data. An original, data-driven benchmark is an asset that can earn that coverage, and benchmark data keeps getting cited for years after publication.</p>
         </div>
       </div>
 
@@ -895,9 +884,9 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
           <ul class="ai-grid">
             <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-analyze"/></svg></span><h4>Pattern analysis</h4><p>Across the exported dataset, compressing an analyst engagement into days.</p></li>
             <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Narrative and derivatives</h4><p>The narrative and every derivative asset, drafted from one source of truth.</p></li>
-            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-code"/></svg></span><h4>The grader tool</h4><p>Built directly in code, so engineering time stays on the product.</p></li>
+            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-code"/></svg></span><h4>Interactive SNF grader</h4><p>Built directly in code, so engineering time stays on the product.</p></li>
             <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-press"/></svg></span><h4>Trade outreach</h4><p>Research on the right editor at each outlet, and a pitch drafted for each one.</p></li>
-            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>Segment variants</h4><p>Generated at volume. This is normally the first work cut for lack of hours.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>Segment variants</h4><p>The same findings, re-cut for each audience. A large multi-facility operator and an RCM vendor each get a version built around the numbers that apply to them.</p></li>
           </ul>
         </div>
       </div>
@@ -914,7 +903,6 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="needs__box needs__box--q">
           <p class="needs__title"><svg class="icon"><use href="#i-question"/></svg>Open question</p>
           <p>Is customer volume sufficient for statistically defensible numbers?</p>
-          <p>This is the first thing to verify.</p>
         </div>
       </div>
 
@@ -932,7 +920,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <div>
         <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-score"/></svg>Initiative 2</p>
         <h2 id="i2-title">Category definition and the buying scorecard</h2>
-        <p class="init__summary">Define the category, then publish the criteria operators should use to evaluate every vendor in it.</p>
+        <p class="init__summary">Define the category, then publish the criteria operators should use to evaluate competing vendors.</p>
       </div>
     </div>
 
@@ -964,7 +952,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       </div>
     </div>
 
-    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-2"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-2"><span class="toggle__more">Read the full plan</span><span class="toggle__less">Close expanded plan</span><svg class="icon"><use href="#i-chev"/></svg></button>
 
     <div class="more" id="more-2"><div class="more__inner"><div class="more__body">
 
@@ -981,7 +969,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="blk__body">
           <ol class="steps reveal">
             <li><span class="steps__when">Before the deal</span><p>An operator who structures an evaluation around published criteria has had the competition shaped before the first vendor call.</p></li>
-            <li><span class="steps__when">During the deal</span><p>The framework improves win rate in deals already in motion, so it returns faster than most category work.</p></li>
+            <li><span class="steps__when">During the deal</span><p>The framework can improve close rates in deals already in motion, so it returns faster than most category work.</p></li>
             <li><span class="steps__when">In sales hands</span><p>Sales gets an asset that reframes an active evaluation and reads as guidance to the buyer.</p></li>
           </ol>
         </div>
@@ -990,7 +978,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <div class="blk">
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-doc"/></svg></span><h3>The core asset</h3></div>
         <div class="blk__body">
-          <p class="reveal">A public buyer's evaluation guide. Six to eight criteria, each with the question to ask, what a strong answer looks like, and how to verify the answer independently.</p>
+          <p class="reveal">Create a public buyer's evaluation guide with six to eight criteria. Criteria should include a question each prospect can ask themselves, guidance on what a strong answer looks like to those questions, and how to verify the answer independently.</p>
           <p class="pull reveal">The guide must include at least one criterion where Magicare holds no obvious advantage. Without it, the guide reads as marketing and gets discarded.</p>
         </div>
       </div>
@@ -1006,7 +994,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
               <button class="sc__vendor" type="button" data-vendor="2" aria-pressed="false">Vendor C</button>
             </div>
           </div>
-          <p class="sc__intro">Each vendor is rated from 1 to 5 on every criterion. The criteria are written from customer interviews, so they are left blank here. Nothing is pre-filled.</p>
+          <p class="sc__intro">Each vendor is rated from 1 to 5 on every criterion.</p>
           <p class="sc__anatomy"><span><i></i>The question to ask</span><span><i></i>What a strong answer looks like</span><span><i></i>How to verify it independently</span></p>
           <ol class="sc__rows" data-sc-rows></ol>
           <div class="sc__foot">
@@ -1024,10 +1012,9 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
             <li class="reveal" style="--d:40ms"><svg class="icon"><use href="#i-score"/></svg>A scored self-assessment operators can complete</li>
             <li class="reveal" style="--d:80ms"><svg class="icon"><use href="#i-page"/></svg>A sales edition for active evaluations</li>
             <li class="reveal" style="--d:120ms"><svg class="icon"><use href="#i-layers"/></svg>One content piece per criterion, six to eight pieces from a single effort</li>
-            <li class="reveal" style="--d:160ms"><svg class="icon"><use href="#i-stage"/></svg>A conference session, since a buyer's framework is a strong session topic</li>
             <li class="reveal" style="--d:200ms"><svg class="icon"><use href="#i-webinar"/></svg>A panel or webinar with an operator and an independent consultant</li>
-            <li class="reveal" style="--d:240ms"><svg class="icon"><use href="#i-press"/></svg>Trade bylines</li>
-            <li class="reveal" style="--d:280ms"><svg class="icon"><use href="#i-map"/></svg>The messaging foundation for the website</li>
+            <li class="reveal" style="--d:240ms"><svg class="icon"><use href="#i-stage"/></svg>Thought leadership, leading to potential trade publication articles or conference sessions</li>
+            <li class="reveal" style="--d:280ms"><svg class="icon"><use href="#i-map"/></svg>Messaging and positioning foundation for subsequent marketing material</li>
           </ul>
         </div>
       </div>
@@ -1036,11 +1023,11 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Where AI carries the load</h3></div>
         <div class="blk__body">
           <ul class="ai-grid">
-            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-wave"/></svg></span><h4>Interview synthesis</h4><p>Extracts the language buyers actually use and the objections that recur. This is weeks of manual work and the stage where most positioning efforts stall.</p></li>
+            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-wave"/></svg></span><h4>Interview synthesis</h4><p>Extracts the language buyers use and the objections that recur. This is weeks of manual work and the stage where most positioning efforts stall.</p></li>
             <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-map"/></svg></span><h4>Competitive analysis</h4><p>Maps what every competitor claims across vendor sites, materials, and public reviews, and identifies unclaimed ground.</p></li>
             <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Drafting</h4><p>The criteria set and every derivative, drafted from one agreed document.</p></li>
-            <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>Decision-layer variants</h4><p>Owners and operations leaders evaluate on different terms, so each layer gets its own version.</p></li>
-            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-refresh"/></svg></span><h4>Regeneration</h4><p>When a competitor shifts positioning, the affected pieces regenerate within hours.</p></li>
+            <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>A version for each buyer</h4><p>Owners and operations leaders judge these products on different terms. Each gets a version of the guide written around the questions they ask.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-refresh"/></svg></span><h4>Regeneration</h4><p>When a competitor shifts positioning, the affected pieces can be quickly adjusted and regenerated.</p></li>
           </ul>
         </div>
       </div>
@@ -1075,12 +1062,12 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       <div>
         <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-engine"/></svg>Initiative 3</p>
         <h2 id="i3-title">The market intelligence engine</h2>
-        <p class="init__summary">A continuous loop where what buyers are actually discussing determines what gets built next.</p>
+        <p class="init__summary">A continuous loop where real buyer conversations determine the content that gets created next.</p>
       </div>
     </div>
 
     <div class="init__visual">
-      <p class="vis-caption reveal">The loop, in six stages</p>
+      <p class="vis-caption reveal">Listening and content engine loop</p>
       <div class="loop reveal" data-loop>
         <div class="loop__ring">
           <svg class="loop__svg" viewBox="0 0 480 480" aria-hidden="true" focusable="false">
@@ -1115,16 +1102,16 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
                   <li class="chip"><svg class="icon"><use href="#i-chat"/></svg>LinkedIn comment threads, where this market demonstrably engages</li>
                   <li class="chip"><svg class="icon"><use href="#i-press"/></svg>Trade publication articles and the discussion around them</li>
                   <li class="chip"><svg class="icon"><use href="#i-users"/></svg>State and national association groups</li>
-                  <li class="chip"><svg class="icon"><use href="#i-listen"/></svg>Discharge planners, case managers, and RCM vendor staff, who publish more openly than owners do</li>
+                  <li class="chip"><svg class="icon"><use href="#i-listen"/></svg>Discharge planners, case managers, and RCM vendor staff</li>
                   <li class="chip"><svg class="icon"><use href="#i-score"/></svg>Review sites where evaluation research happens</li>
-                  <li class="chip"><svg class="icon"><use href="#i-stage"/></svg>Conference agendas, a published signal of what the industry has decided matters</li>
+                  <li class="chip"><svg class="icon"><use href="#i-stage"/></svg>Conference agendas, a published signal of the topics the industry considers important</li>
                 </ul>
               </div>
             </li>
             <li class="loop__item" id="stage-2">
               <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-gauge"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 2</span><span class="loop__head-title">Score</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
               <div class="loop__body">
-                <p>Each captured conversation is rated on three tests. Only what clears the threshold reaches a human.</p>
+                <p>Each captured conversation is rated on three tests.</p>
                 <ul class="chips">
                   <li class="chip"><svg class="icon"><use href="#i-users"/></svg>Buying-group membership</li>
                   <li class="chip"><svg class="icon"><use href="#i-target"/></svg>Fit against the large-operator profile</li>
@@ -1135,7 +1122,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
             <li class="loop__item" id="stage-3">
               <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-split"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 3</span><span class="loop__head-title">Categorize</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
               <div class="loop__body">
-                <p>Three streams, each with its own downstream action.</p>
+                <p>Three primary listening and content streams, each with defined downstream actions.</p>
                 <ul class="flows">
                   <li><span>Pain points</span><svg class="icon"><use href="#i-arrow"/></svg><span>Content and messaging</span></li>
                   <li><span>Competitor discussion</span><svg class="icon"><use href="#i-arrow"/></svg><span>The evaluation framework</span></li>
@@ -1146,7 +1133,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
             <li class="loop__item" id="stage-4">
               <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-chat"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 4</span><span class="loop__head-title">Engage</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
               <div class="loop__body">
-                <p>Leadership and sales respond in their own voices with substantive answers. AI drafts in each person's voice with the context summarized, which cuts review to a few minutes. Nothing publishes without human approval.</p>
+                <p>Leadership and sales respond in their own voices with substantive answers. AI drafts replies in each person's voice with the context summarized, which cuts the workflow to a few minutes. Nothing publishes without human approval.</p>
               </div>
             </li>
             <li class="loop__item" id="stage-5">
@@ -1166,7 +1153,7 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
               <div class="loop__body">
                 <ul class="chips">
                   <li class="chip"><svg class="icon"><use href="#i-measure"/></svg>Engagement by topic</li>
-                  <li class="chip"><svg class="icon"><use href="#i-users"/></svg>Named accounts moving from silent to active</li>
+                  <li class="chip"><svg class="icon"><use href="#i-users"/></svg>Named accounts showing more engagement</li>
                   <li class="chip"><svg class="icon"><use href="#i-chat"/></svg>Conversations converting to meetings</li>
                 </ul>
                 <p>Results tune the scoring model and the cycle repeats.</p>
@@ -1179,15 +1166,15 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
       </div>
     </div>
 
-    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-3"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-3"><span class="toggle__more">Read the full plan</span><span class="toggle__less">Close expanded plan</span><svg class="icon"><use href="#i-chev"/></svg></button>
 
     <div class="more" id="more-3"><div class="more__inner"><div class="more__body">
 
       <div class="blk">
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-target"/></svg></span><h3>The opportunity</h3></div>
         <div class="blk__body">
-          <p class="reveal">Conventional content planning sets a calendar in advance and learns whether it was right a quarter later. A listening-led system shortens that loop to weeks and grounds every asset in language a real buyer used.</p>
-          <p class="pull reveal">Fewer assets, each one demonstrably relevant, produced faster. Against a larger team organized by channel, that is the structural advantage.</p>
+          <p class="reveal">Conventional content planning sets a calendar in advance and measures as it is published to determine its effectiveness. A listening-led system shortens that loop and grounds every asset in language buyers are using.</p>
+          <p class="pull reveal">Every piece of content starts from what buyers are saying right now. That is how one person keeps pace with a larger competitor team.</p>
         </div>
       </div>
 
@@ -1197,25 +1184,26 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
           <div class="month reveal" aria-label="One month of output">
             <div class="month__scale" aria-hidden="true"><span></span><div><span>Start of month</span><span>End</span></div><span></span></div>
             <div class="month__row">
+              <span class="month__what"><svg class="icon"><use href="#i-listen"/></svg>Listening and scoring</span>
+              <span class="month__track" aria-hidden="true"><span class="month__listen" style="--d:.1s"></span></span>
+              <span class="month__val">Always on<small>every day</small></span>
+            </div>
+            <div class="month__row">
               <span class="month__what"><svg class="icon"><use href="#i-doc"/></svg>Core research asset</span>
-              <span class="month__track" aria-hidden="true"><span class="month__core" style="--d:.1s"></span></span>
+              <span class="month__track" aria-hidden="true"><span class="month__core" style="--d:.2s"></span></span>
               <span class="month__val">1<small>per month</small></span>
             </div>
             <div class="month__row">
               <span class="month__what"><svg class="icon"><use href="#i-layers"/></svg>Derivative pieces</span>
-              <span class="month__track" aria-hidden="true"><span class="month__derivs" style="--d:.25s"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
-              <span class="month__val">20 to 30<small>from that asset</small></span>
+              <span class="month__track" aria-hidden="true"><span class="month__derivs" style="--d:.3s"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+              <span class="month__val">20 to 30<small>from the core asset</small></span>
             </div>
             <div class="month__row">
               <span class="month__what"><svg class="icon"><use href="#i-users"/></svg>Leadership posts</span>
               <span class="month__track" aria-hidden="true"><span class="month__daily" style="--d:.4s"><i></i><i></i><i></i><i></i></span></span>
               <span class="month__val">Daily<small>across four accounts</small></span>
             </div>
-            <div class="month__row">
-              <span class="month__what"><svg class="icon"><use href="#i-press"/></svg>Trade byline</span>
-              <span class="month__track" aria-hidden="true"><span class="month__byline" style="--d:.55s"></span></span>
-              <span class="month__val">1<small>per month</small></span>
-            </div>
+            <p class="month__note">Listening never pauses. Content ships all month, each piece drawing on the most recent core asset.</p>
           </div>
         </div>
       </div>
@@ -1225,8 +1213,8 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="blk__body">
           <div class="org">
             <figure class="org__panel reveal" style="margin:0">
-              <p class="org__title">A five-person team</p>
-              <p class="org__by">Organized by channel</p>
+              <p class="org__title">Traditional approach</p>
+              <p class="org__by">Competitor teams of 5 to 10 people, organized by channel</p>
               <svg class="org__svg" viewBox="0 0 400 250" aria-hidden="true" focusable="false">
                 <g fill="none" stroke="#B5C7B4" stroke-width="1.5">
                   <path d="M0 50.5h400M0 100.5h400M0 150.5h400M0 200.5h400" stroke="#E4E1D8" stroke-dasharray="3 4"/>
@@ -1246,11 +1234,11 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
               <p class="org__by">Organized by asset</p>
               <svg class="org__svg" viewBox="0 0 400 250" aria-hidden="true" focusable="false">
                 <g fill="none" stroke="#C9A051" stroke-width="1.6" stroke-linecap="round">
-                  <path d="M178 125 C 222 125, 222 25, 262 25"/>
-                  <path d="M178 125 C 222 125, 222 75, 262 75"/>
-                  <path d="M178 125 H 262"/>
-                  <path d="M178 125 C 222 125, 222 175, 262 175"/>
-                  <path d="M178 125 C 222 125, 222 225, 262 225"/>
+                  <path d="M178 125 C 214 125, 214 25, 248 25"/>
+                  <path d="M178 125 C 214 125, 214 75, 248 75"/>
+                  <path d="M178 125 H 248"/>
+                  <path d="M178 125 C 214 125, 214 175, 248 175"/>
+                  <path d="M178 125 C 214 125, 214 225, 248 225"/>
                   <path d="M62 125 H 92" stroke="#7A8A80" stroke-dasharray="3 4"/>
                 </g>
                 <circle cx="34" cy="125" r="24" fill="#2E3D33" stroke="#C9A051" stroke-width="1.5"/>
@@ -1261,14 +1249,14 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
                 <text class="org-t" x="137" y="121" text-anchor="middle" fill="#1F2C24">Core</text>
                 <text class="org-t" x="137" y="138" text-anchor="middle" fill="#1F2C24">asset</text>
                 <g>
-                  <rect x="262" y="12" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="29" fill="#FAF9F6">Content</text>
-                  <rect x="262" y="62" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="79" fill="#FAF9F6">Social</text>
-                  <rect x="262" y="112" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="129" fill="#FAF9F6">Events</text>
-                  <rect x="262" y="162" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="179" fill="#FAF9F6">PR and trade press</text>
-                  <rect x="262" y="212" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="229" fill="#FAF9F6">Web and email</text>
+                  <rect x="248" y="12" width="150" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="261" y="29" fill="#FAF9F6">Content</text>
+                  <rect x="248" y="62" width="150" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="261" y="79" fill="#FAF9F6">Social</text>
+                  <rect x="248" y="112" width="150" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="261" y="129" fill="#FAF9F6">Events</text>
+                  <rect x="248" y="162" width="150" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="261" y="179" fill="#FAF9F6">PR and trade press</text>
+                  <rect x="248" y="212" width="150" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="261" y="229" fill="#FAF9F6">Web and email</text>
                 </g>
               </svg>
-              <figcaption class="org__cap">Every channel draws from one asset, and each asset starts from something a real buyer said that month.</figcaption>
+              <figcaption class="org__cap">Every channel draws from a core asset, and each asset starts from something a real buyer said.</figcaption>
             </figure>
           </div>
         </div>
@@ -1278,11 +1266,11 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Where AI carries the load</h3></div>
         <div class="blk__body">
           <ul class="ai-grid">
-            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-listen"/></svg></span><h4>Continuous monitoring</h4><p>Across many surfaces. For a person this is a full-time role. For software it runs in the background.</p></li>
+            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-listen"/></svg></span><h4>Continuous monitoring</h4><p>Software checks LinkedIn, trade press, association groups, and review sites every day and flags new conversations worth a look. Doing the same by hand would be a full-time job.</p></li>
             <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-split"/></svg></span><h4>Classification at volume</h4><p>Every conversation checked against the named-account list.</p></li>
-            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-measure"/></svg></span><h4>Trend detection</h4><p>A tripling in one complaint category is invisible thread by thread. Analysis over time catches it.</p></li>
+            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-measure"/></svg></span><h4>Trend detection</h4><p>Tracks how often each topic comes up from month to month. When one complaint starts appearing far more often, the change shows up in the counts, even when no single post makes it obvious.</p></li>
             <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Voice-matched drafting</h4><p>Drafts in each person's voice, and every draft goes to that person for approval.</p></li>
-            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-stack"/></svg></span><h4>A ranked production queue</h4><p>Hundreds of conversations synthesized into what to make next, with the source phrasing attached.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-stack"/></svg></span><h4>A ranked production queue</h4><p>Dozens of conversations synthesized into a ranked list of what to make next, with the buyers' own phrasing attached.</p></li>
           </ul>
         </div>
       </div>
@@ -1299,28 +1287,11 @@ html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
         <div class="needs__box needs__box--q">
           <p class="needs__title"><svg class="icon"><use href="#i-question"/></svg>Open question</p>
           <p>Is online conversation volume in this market sufficient to sustain the listening input?</p>
-          <p>If it is thin, recorded customer calls and conference floor conversations feed the identical engine. The engine runs on buyer signal from any source.</p>
+          <p>If it is thin, recorded customer calls and conference floor conversations supplement the ideation engine, ensuring it still runs on buyer signal and language.</p>
         </div>
       </div>
 
     </div></div></div>
-  </div>
-</section>
-
-<!-- ======================================================================
-     Closing
-     ====================================================================== -->
-<section class="verify" id="verify" aria-labelledby="verify-title">
-  <div class="wrap">
-    <p class="eyebrow reveal">Before any of this starts</p>
-    <h2 id="verify-title" class="reveal">What would be verified first</h2>
-    <ol class="vgrid">
-      <li class="reveal" style="--d:0ms"><span class="vgrid__top"><svg class="icon"><use href="#i-layers"/></svg></span><p>Which decision layer owns the problem, champions the purchase, and approves it</p></li>
-      <li class="reveal" style="--d:70ms"><span class="vgrid__top"><svg class="icon"><use href="#i-shield"/></svg></span><p>Which use cases and customer outcomes carry the strongest evidence</p></li>
-      <li class="reveal" style="--d:140ms"><span class="vgrid__top"><svg class="icon"><use href="#i-ticket"/></svg></span><p>What recent conference investment produced, and how performance is assessed</p></li>
-      <li class="reveal" style="--d:210ms"><span class="vgrid__top"><svg class="icon"><use href="#i-stack"/></svg></span><p>What production volume is expected in formats, cadence, and available support</p></li>
-    </ol>
-    <p class="verify__close reveal">These are starting hypotheses, refined against internal data, customer conversations, and win-loss history.</p>
   </div>
 </section>
 
