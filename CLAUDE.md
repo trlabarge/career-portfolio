@@ -1423,6 +1423,42 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   an ARIA tablist and the rings mirror it. The spend donut is built from the
   legend's `data-pct`, so the chart and legend cannot disagree.
 
+## /magicare, the private ideas page
+
+A password-protected page of three ideas for Magicare.ai, written for its CEO
+and co-founder, Daniel Schoenbrun, who asked for two ideas to "make some
+noise". Same rules as /payload and /nucleus: not in the nav, the sitemap,
+`robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
+
+- **Same server-side gate, separate password.** `api/_lib/magicare-gate.js`
+  holds the settings and password screen, `/api/magicare-auth` the login,
+  `MAGICARE_PAGE_PASSWORD` the password (env var, set in Vercel), cookie
+  `magicare_plan_session` scoped to `Path=/magicare`. The brief asked for a
+  client-side JS check with the password in the script. That was not built,
+  since a JS check ships the whole page to anyone who views source, and this
+  page names the company's leaders and repeats what they said on calls.
+  There is no public `/magicare/brand/` folder, because the page uses no
+  logos. `npm run magicare:test` covers it, including isolation from the
+  other two gates.
+- **One self-contained file.** `magicare/index.html` carries its CSS and JS
+  inline, with tokens copied from `/css/style.css`. No added accent colour.
+  The site has no dark mode, so neither does this page.
+- **Copy is Tim's, close to verbatim.** Every number on the page came from
+  his brief. Do not add metrics, logos, testimonials, pricing, dates or a
+  contact form. Names (Daniel, Sam, Chen, Bob) are his to use here.
+- **Reads short by default.** Each idea is a title and a summary line over a
+  native `<details>`, so all three skim in about 90 seconds and the detail
+  opens on demand. It works with no JS. "Open all three" toggles every one.
+  Print opens all of them twice over, via `::details-content` in the print
+  stylesheet and a `beforeprint` handler, so a PDF export never drops the
+  detail.
+- **The system diagram runs engine, benchmark, scorecard,** which is ideas 3,
+  1, 2. That is the order Tim gave for running them, so each box names its
+  idea number. Do not renumber the ideas to match.
+- The idea 3 ring is drawn by JS from the six `.stage` items and is
+  `aria-hidden`, since the ordered list beside it is the real content. Its
+  labels set `text-anchor` as an attribute, so no CSS rule may set it.
+
 ## Timbot, the chat widget
 
 An avatar chatbot that speaks as Tim, present on every page. It exists because

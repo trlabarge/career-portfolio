@@ -9,7 +9,8 @@
     "timbot:test": "node scripts/test-timbot.mjs",
     "og:build": "node scripts/render-og-image.mjs",
     "payload:test": "node scripts/test-payload-gate.mjs",
-    "nucleus:test": "node scripts/test-nucleus-gate.mjs"
+    "nucleus:test": "node scripts/test-nucleus-gate.mjs",
+    "magicare:test": "node scripts/test-magicare-gate.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
