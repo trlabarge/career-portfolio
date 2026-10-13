@@ -77,7 +77,7 @@ await test('page request without a cookie gets the Magicare password screen', as
   assert.equal(res.status, 401);
   const html = await res.text();
   assert.match(html, /<form method="post" action="\/api\/magicare-auth">/);
-  assert.match(html, /Magicare: Three Ideas/);
+  assert.match(html, /Magicare Growth Plan/);
   assert.match(html, /noindex, nofollow/);
   assert.doesNotMatch(html, /Payload|Nucleus/);
   assert.doesNotMatch(html, /benchmark|scorecard|Daniel/i, 'no page copy on the gate');

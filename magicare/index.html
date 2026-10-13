@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Magicare: Three Ideas</title>
-<meta name="description" content="Three ideas to make some noise, prepared for Magicare by Tim LaBarge">
-<meta property="og:title" content="Magicare: Three Ideas">
+<title>Magicare Growth Plan</title>
+<meta name="description" content="Three growth initiatives for Magicare, prepared by Tim LaBarge">
+<meta property="og:title" content="Magicare Growth Plan">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Magicare: Three Ideas">
+<meta name="twitter:title" content="Magicare Growth Plan">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 <script>document.documentElement.classList.add('js');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,9 +16,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <style>
 /* ==========================================================================
-   Magicare, three ideas to make some noise
+   Magicare Growth Plan
    Self-contained, same as /payload and /nucleus. Tokens mirror
-   /css/style.css. No Magicare branding and no added accent colour.
+   /css/style.css. Each initiative takes one accent from the site's own
+   palette (sage, terracotta, gold) through --accent, so the three read as
+   distinct inside one system. Geometry in the hero and the multiplication
+   diagram is static markup, generated once.
    ========================================================================== */
 
 :root {
@@ -34,8 +37,12 @@
   --color-terracotta-dark: #8F5241;
   --color-terracotta-tint: #F0DED6;
   --color-gold: #C9A051;
+  --color-gold-dark: #7A5C22;
+  --color-gold-tint: #F3EAD3;
   --color-cream: #F2EFE7;
   --color-line: #E4E1D8;
+  --color-skeleton: #E9E6DD;
+  --color-ink: #1F2C24;
 
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -43,916 +50,1508 @@
   --space-sm: 1rem;
   --space-md: 1.75rem;
   --space-lg: 3rem;
-  --space-xl: clamp(4rem, 8vw, 6.5rem);
+  --space-xl: clamp(4.5rem, 9vw, 7.5rem);
 
-  --max-width: 1040px;
-  --measure: 68ch;
+  --max-width: 1120px;
+  --measure: 62ch;
   --radius: 10px;
   --radius-lg: 18px;
-  --nav-h: 56px;
+  --bar-h: 44px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --accent: var(--color-sage);
+  --accent-ink: var(--color-sage-dark);
+  --accent-tint: var(--color-sage-tint);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 20px); }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar-h) + 16px); }
 body {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-  margin: 0;
-  overflow-wrap: break-word;
-}
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; margin: 0; overflow-wrap: break-word; }
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
-a { color: var(--color-sage); text-underline-offset: 3px; }
-a:hover { color: var(--color-sage-dark); text-decoration-color: var(--color-gold); }
+a { color: var(--accent-ink); text-underline-offset: 3px; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 3px; border-radius: 6px; }
 
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.icon { width: 24px; height: 24px; flex: none; display: block; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
 .wrap { width: 100%; max-width: var(--max-width); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 3rem); }
 
-.skip {
-  position: absolute; left: 1rem; top: -100px; z-index: 50;
-  background: var(--color-sage); color: #fff; padding: 0.6rem 1rem; border-radius: var(--radius);
-  font-family: var(--font-display); font-weight: 600; text-decoration: none;
-}
+.skip { position: absolute; left: 1rem; top: -100px; z-index: 60; background: var(--color-sage); color: #fff; padding: 0.6rem 1rem; border-radius: var(--radius); font-family: var(--font-display); font-weight: 600; text-decoration: none; }
 .skip:focus { top: 1rem; color: #fff; }
 
-.eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
+.eyebrow { font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-muted); }
 
-/* Scroll progress ------------------------------------------------------- */
-.progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 40; pointer-events: none; }
-.progress__bar {
-  display: block; height: 100%; width: 100%;
-  background: linear-gradient(90deg, var(--color-sage), var(--color-gold));
-  transform-origin: 0 50%; transform: scaleX(0);
-}
-html:not(.js) .progress { display: none; }
+/* Reveal on scroll. Hidden only once JS has said it will reveal. */
+html.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.38s ease, transform 0.38s var(--ease-out); transition-delay: var(--d, 0ms); }
+html.js .reveal.is-visible { opacity: 1; transform: none; }
 
-/* Masthead -------------------------------------------------------------- */
-.mast { padding: clamp(3.5rem, 9vw, 7rem) 0 var(--space-lg); }
-.mast__top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
-.mast__top a { color: var(--color-text-muted); text-decoration: none; font-size: 0.95rem; }
-.mast__top a:hover { color: var(--color-sage); }
-.mast h1 {
-  font-size: clamp(2.6rem, 7.2vw, 5.4rem);
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-  max-width: 13ch;
+/* ==========================================================================
+   Progress navigation. A slim top bar below 1280px, a side rail above.
+   ========================================================================== */
+.pnav {
+  position: fixed; inset: 0 0 auto; z-index: 40; height: var(--bar-h);
+  background: rgba(250, 249, 246, 0.94);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--color-line);
+  transform: translateY(-100%); transition: transform 0.35s var(--ease-out);
 }
-.mast h1 em { font-style: normal; color: var(--color-sage); }
-.mast__sub {
-  margin-top: var(--space-md);
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
-  font-weight: 500;
-  color: var(--color-text-muted);
+.pnav.is-shown { transform: none; }
+html:not(.js) .pnav { display: none; }
+.pnav__list { display: flex; height: 100%; max-width: var(--max-width); margin-inline: auto; padding-inline: clamp(0.5rem, 3vw, 3rem); gap: 0.5rem; }
+.pnav__list li { flex: 1 1 0; min-width: 0; }
+.pnav__link {
+  --accent: var(--c);
+  position: relative; display: flex; align-items: center; gap: 0.5rem; height: 100%;
+  padding-inline: 0.25rem; text-decoration: none; color: var(--color-text-muted);
+  font-family: var(--font-display); font-weight: 600; font-size: 0.86rem; white-space: nowrap;
 }
-.mast__frame {
-  margin-top: var(--space-lg);
-  max-width: var(--measure);
-  font-size: clamp(1.15rem, 1.6vw, 1.3rem);
-  line-height: 1.6;
-  padding-left: 1.25rem;
-  border-left: 3px solid var(--color-gold);
-}
-.mast__frame p + p { margin-top: 1em; }
+.pnav__num { font-variant-numeric: tabular-nums; color: var(--c); }
+.pnav__name { overflow: hidden; text-overflow: ellipsis; }
+.pnav__track { position: absolute; left: 0; right: 0; bottom: 6px; height: 3px; border-radius: 3px; background: var(--color-line); overflow: hidden; }
+.pnav__fill { display: block; height: 100%; width: 100%; background: var(--c); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+.pnav__link[aria-current="true"] { color: var(--color-text); }
 
-/* Sticky index ---------------------------------------------------------- */
-.idx {
-  position: sticky; top: 0; z-index: 30;
-  background: rgba(250, 249, 246, 0.92);
-  -webkit-backdrop-filter: saturate(1.4) blur(10px);
-  backdrop-filter: saturate(1.4) blur(10px);
-  border-block: 1px solid var(--color-line);
-}
-.idx__list { display: flex; height: var(--nav-h); align-items: stretch; gap: 0.25rem; }
-.idx__list li { flex: 1 1 0; min-width: 0; }
-.idx__link {
-  height: 100%;
-  display: flex; align-items: center; gap: 0.5rem; justify-content: center;
-  padding: 0 0.5rem;
-  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
-  color: var(--color-text-muted); text-decoration: none; white-space: nowrap;
-  position: relative;
-}
-.idx__link::after {
-  content: ''; position: absolute; left: 0.5rem; right: 0.5rem; bottom: -1px; height: 3px;
-  background: var(--color-sage); border-radius: 3px 3px 0 0;
-  transform: scaleX(0); transition: transform 0.35s var(--ease-out);
-}
-.idx__link:hover { color: var(--color-text); }
-.idx__link[aria-current="true"] { color: var(--color-text); }
-.idx__link[aria-current="true"]::after { transform: scaleX(1); }
-.idx__num {
-  display: inline-grid; place-items: center;
-  width: 1.7rem; height: 1.7rem; border-radius: 50%;
-  border: 1.5px solid currentColor; font-size: 0.78rem; flex: none;
-}
-.idx__link[aria-current="true"] .idx__num { background: var(--color-sage); border-color: var(--color-sage); color: #fff; }
-.idx__name { overflow: hidden; text-overflow: ellipsis; }
-
-/* Sections -------------------------------------------------------------- */
-.section { padding-block: var(--space-xl); }
-.section + .section { border-top: 1px solid var(--color-line); }
-.section__head { max-width: var(--measure); }
-.section__head h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); letter-spacing: -0.035em; margin-top: 0.6rem; }
-.section__lede { margin-top: var(--space-md); max-width: var(--measure); font-size: 1.2rem; }
-
-/* The system ------------------------------------------------------------ */
-.system { background: var(--color-cream); }
-.section.system + .section { border-top: 0; }
-.flow {
-  margin-top: var(--space-lg);
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2.75rem;
-  counter-reset: flow;
-}
-.flow__step {
-  position: relative;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-top: 3px solid var(--color-sage);
-  border-radius: var(--radius);
-  padding: 1.4rem 1.4rem 1.5rem;
-}
-.flow__step:last-child { border-top-color: var(--color-terracotta); }
-/* Connector in the gap, same construction as .chain on the main site. */
-.flow__step:not(:last-child)::after {
-  content: ''; position: absolute; top: 50%; right: -2.75rem; width: 2.75rem; height: 2px;
-  background: linear-gradient(90deg, var(--color-sage-soft), var(--color-sage));
-}
-.flow__step:not(:last-child)::before {
-  content: ''; position: absolute; top: calc(50% - 4px); right: -2.75rem; width: 10px; height: 10px;
-  border-top: 2px solid var(--color-sage); border-right: 2px solid var(--color-sage);
-  transform: rotate(45deg); transform-origin: center;
-}
-.flow__order { font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-muted); }
-.flow__step h3 { font-size: 1.35rem; margin-top: 0.5rem; }
-.flow__does { margin-top: 0.6rem; font-size: 1.02rem; color: var(--color-text); }
-.flow__jump {
-  display: inline-block; margin-top: 0.9rem;
-  font-family: var(--font-display); font-weight: 600; font-size: 0.92rem;
-}
-.flow__note { margin-top: var(--space-lg); max-width: var(--measure); font-size: 1.15rem; }
-
-/* Ideas ----------------------------------------------------------------- */
-.ideas-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-  padding-top: var(--space-lg);
-  color: var(--color-text-muted); font-size: 1rem;
-}
-.ideas-bar__btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  min-height: 44px; padding: 0.5rem 1.1rem;
-  font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
-  background: transparent; border: 1.5px solid var(--color-sage); color: var(--color-sage);
-  border-radius: 999px; cursor: pointer; transition: background 0.2s, color 0.2s;
-}
-.ideas-bar__btn:hover { background: var(--color-sage); color: #fff; }
-html:not(.js) .ideas-bar__btn { display: none; }
-
-.idea { padding-block: var(--space-xl); }
-.idea + .idea { border-top: 1px solid var(--color-line); }
-.idea__head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 clamp(1.25rem, 3vw, 2.5rem); align-items: start; }
-.idea__num {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(3.6rem, 9vw, 6.5rem); line-height: 0.85; letter-spacing: -0.06em;
-  color: var(--color-sage-tint);
-  -webkit-text-stroke: 1.5px var(--color-sage);
-}
-.idea__head h2 { font-size: clamp(1.9rem, 4vw, 3.1rem); letter-spacing: -0.04em; max-width: 20ch; }
-.idea__summary {
-  margin-top: 1rem; max-width: 56ch;
-  font-size: clamp(1.15rem, 1.7vw, 1.35rem); line-height: 1.5; color: var(--color-text);
-}
-.idea__body-wrap { margin-top: var(--space-md); }
-
-/* The disclosure. Native details, so it opens with no JS. */
-.more > summary {
-  list-style: none; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  min-height: 44px; padding: 0.55rem 1.15rem 0.55rem 1rem;
-  border-radius: 999px; background: var(--color-sage); color: #fff;
-  font-family: var(--font-display); font-weight: 600; font-size: 1rem;
-  transition: background 0.2s;
-}
-.more > summary::-webkit-details-marker { display: none; }
-.more > summary:hover { background: var(--color-sage-dark); }
-.more > summary svg { width: 18px; height: 18px; transition: transform 0.3s var(--ease-out); }
-.more[open] > summary { background: transparent; color: var(--color-sage); box-shadow: inset 0 0 0 1.5px var(--color-sage); }
-.more[open] > summary svg { transform: rotate(180deg); }
-.more__close { display: none; }
-.more[open] .more__open { display: none; }
-.more[open] .more__close { display: inline; }
-
-/* Open/close slide where supported. Elsewhere it toggles instantly. */
-@supports (interpolate-size: allow-keywords) {
-  :root { interpolate-size: allow-keywords; }
-  .more::details-content {
-    block-size: 0; overflow: hidden;
-    transition: block-size 0.45s var(--ease-out), content-visibility 0.45s allow-discrete;
+@media (min-width: 1280px) {
+  .pnav {
+    inset: 50% auto auto 22px; height: auto; transform: translate(-12px, -50%); opacity: 0;
+    background: transparent; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
+    transition: opacity 0.35s ease, transform 0.35s var(--ease-out); pointer-events: none;
   }
-  .more[open]::details-content { block-size: auto; }
+  .pnav.is-shown { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+  .pnav__list { flex-direction: column; padding: 0; gap: 1.1rem; }
+  .pnav__link { height: auto; padding: 0 0 0 0.9rem; flex-direction: column; align-items: flex-start; gap: 0; font-size: 0.8rem; }
+  .pnav__num { font-size: 1.05rem; }
+  .pnav__name { max-width: 0; opacity: 0; transition: max-width 0.3s, opacity 0.3s; }
+  .pnav:hover .pnav__name, .pnav:focus-within .pnav__name, .pnav__link[aria-current="true"] .pnav__name { max-width: 9rem; opacity: 1; }
+  .pnav__track { left: 0; right: auto; top: 2px; bottom: 2px; width: 3px; height: auto; }
+  .pnav__fill { transform-origin: 50% 0; transform: scaleY(var(--p, 0)); }
+}
+@media (min-width: 1280px) and (max-width: 1499px) {
+  .pnav__name { display: none; }
+}
+@media (max-width: 460px) {
+  .pnav__name { display: none; }
+  .pnav__link { justify-content: center; }
 }
 
-.detail { padding-top: var(--space-lg); }
-.block {
-  display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 0.5rem 2.5rem;
-  padding-block: 1.6rem;
-  border-top: 1px solid var(--color-line);
-}
-.block:first-child { border-top: 0; padding-top: 0; }
-.block__label {
-  font-family: var(--font-display); font-weight: 600; font-size: 0.82rem;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-sage);
-  padding-top: 0.3rem;
-}
-.block__body { max-width: var(--measure); }
-.block__body p + p { margin-top: 0.9em; }
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); overflow: hidden; }
+.hero__top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.hero__top a { color: var(--color-text-muted); text-decoration: none; font-size: 0.92rem; }
+.hero__top a:hover { color: var(--color-sage); }
+.hero__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+.hero h1 { font-size: clamp(2.6rem, 5.4vw, 4.6rem); letter-spacing: -0.048em; line-height: 0.97; }
+.hero h1 span { color: var(--color-sage); }
+.hero__sub { margin-top: var(--space-md); font-family: var(--font-display); font-weight: 500; font-size: clamp(1.15rem, 2vw, 1.45rem); color: var(--color-text-muted); max-width: 24ch; line-height: 1.3; }
+.hero__rule { margin-top: var(--space-md); width: 64px; height: 3px; border-radius: 3px; background: var(--color-gold); }
+.hero__art { position: relative; }
+.hero__svg { width: 100%; height: auto; display: block; overflow: visible; }
 
-.formats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
-.formats li {
-  background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius);
-  padding: 0.7rem 0.9rem 0.7rem 2.3rem; position: relative; font-size: 1rem; line-height: 1.45;
-}
-.formats li::before {
-  content: ''; position: absolute; left: 0.9rem; top: 1.05rem; width: 8px; height: 8px;
-  border-radius: 2px; background: var(--color-gold); transform: rotate(45deg);
-}
-.formats li:first-child { background: var(--color-sage-tint); border-color: var(--color-sage-tint); font-weight: 600; }
-.formats li:first-child::before { background: var(--color-sage); }
+.hero-field circle { fill: var(--color-sage-soft); opacity: 0.55; }
+.hero-edge { fill: none; stroke: var(--color-sage-soft); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.hero-edge.is-hot { stroke: var(--color-terracotta); stroke-width: 2.2; }
+.hero-edge.is-faint { stroke: var(--color-line); stroke-width: 1.4; }
+.hero-src { fill: var(--color-surface); stroke: var(--color-sage); stroke-width: 2; }
+.hero-src.is-hot { stroke: var(--color-terracotta); fill: var(--color-terracotta-tint); }
+.hero-dst { fill: var(--color-sage-tint); stroke: var(--color-sage); stroke-width: 2; }
+.hero-dst.is-hot { fill: var(--color-terracotta); stroke: var(--color-terracotta); }
+.hero-hub__halo { fill: var(--color-sage-tint); opacity: 0.45; }
+.hero-hub__ring { fill: none; stroke: var(--color-sage); stroke-width: 1.4; stroke-dasharray: 3 5; }
+.hero-hub__core { fill: var(--color-sage); }
+.hero-hub__dot { fill: var(--color-bg); }
+.hero-signal { fill: var(--color-sage); }
+.hero-signal.is-hot { fill: var(--color-terracotta); }
 
-.lift li { position: relative; padding-left: 1.4rem; }
-.lift li + li { margin-top: 0.75rem; }
-.lift li::before {
-  content: ''; position: absolute; left: 0; top: 0.35em; bottom: 0.35em; width: 3px;
-  border-radius: 3px; background: var(--color-gold);
+@media (prefers-reduced-motion: no-preference) {
+  html.js .hero-edge { stroke-dashoffset: 1; animation: draw 0.9s var(--ease-out) forwards; animation-delay: var(--d, 0s); }
+  html.js .hero-src, html.js .hero-dst { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.5s var(--ease-out) forwards; animation-delay: var(--d, 0s); }
+  html.js .hero-hub { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.7s var(--ease-out) forwards; animation-delay: var(--d, 0s); }
+  .hero-hub__ring { transform-box: fill-box; transform-origin: center; animation: spin 26s linear infinite; }
+  .hero-hub__halo { transform-box: fill-box; transform-origin: center; animation: breathe 4.8s ease-in-out infinite; }
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes breathe { 0%, 100% { transform: scale(0.92); opacity: 0.35; } 50% { transform: scale(1.06); opacity: 0.6; } }
+
+/* Preview cards */
+.previews { margin-top: clamp(2.5rem, 6vw, 4.5rem); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.previews > li { display: flex; }
+.preview {
+  flex: 1;
+  --accent: var(--c); --accent-tint: var(--t);
+  position: relative; display: flex; flex-direction: column; gap: 0.75rem;
+  padding: 1.35rem 1.35rem 1.25rem; border-radius: var(--radius-lg);
+  background: var(--color-surface); border: 1px solid var(--color-line);
+  text-decoration: none; color: var(--color-text);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s, border-color 0.3s;
+}
+.preview::before { content: ''; position: absolute; inset: -1px -1px auto; height: 4px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--accent); }
+.preview:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -24px rgba(31, 44, 36, 0.35); border-color: var(--accent-tint); }
+.preview__top { display: flex; align-items: center; justify-content: space-between; }
+.preview__badge { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-tint); color: var(--accent); }
+.preview__num { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.04em; color: var(--accent); }
+.preview h2 { font-size: 1.2rem; letter-spacing: -0.02em; }
+.preview p { font-size: 0.98rem; color: var(--color-text-muted); line-height: 1.5; }
+.preview__go { margin-top: auto; display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--accent); }
+.preview__go .icon { width: 18px; height: 18px; transition: transform 0.25s var(--ease-out); }
+.preview:hover .preview__go .icon { transform: translateX(3px); }
+
+/* ==========================================================================
+   Initiatives
+   ========================================================================== */
+.init { padding-block: var(--space-xl); border-top: 1px solid var(--color-line); position: relative; }
+.init--1 { --accent: var(--color-sage); --accent-ink: var(--color-sage-dark); --accent-tint: var(--color-sage-tint); }
+.init--2 { --accent: var(--color-terracotta); --accent-ink: var(--color-terracotta-dark); --accent-tint: var(--color-terracotta-tint); }
+.init--3 { --accent: var(--color-gold); --accent-ink: var(--color-gold-dark); --accent-tint: var(--color-gold-tint); }
+.init::before { content: ''; position: absolute; left: 0; top: -1px; width: min(38vw, 420px); height: 4px; background: var(--accent); }
+
+.init__head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 clamp(1.25rem, 3.5vw, 3rem); align-items: start; }
+.init__num {
+  font-family: var(--font-display); font-weight: 700; line-height: 0.82; letter-spacing: -0.07em;
+  font-size: clamp(4.2rem, 11vw, 8.5rem);
+  color: var(--accent-tint); -webkit-text-stroke: 2px var(--accent);
+}
+.init__kicker { display: flex; align-items: center; gap: 0.6rem; color: var(--accent-ink); }
+.init__kicker .icon { color: var(--accent); }
+.init__head h2 { margin-top: 0.7rem; font-size: clamp(2rem, 4.4vw, 3.4rem); letter-spacing: -0.042em; max-width: 18ch; }
+.init__summary { margin-top: 1rem; max-width: 50ch; font-size: clamp(1.12rem, 1.7vw, 1.32rem); line-height: 1.5; }
+
+.init__visual { margin-top: clamp(2rem, 5vw, 3.5rem); }
+.vis-caption { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-ink); }
+.vis-caption::before { content: ''; width: 18px; height: 2px; background: var(--accent); }
+
+/* Expand / collapse */
+.toggle {
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  display: inline-flex; align-items: center; gap: 0.6rem; min-height: 48px; padding: 0.6rem 1.3rem 0.6rem 1.15rem;
+  border: 0; border-radius: 999px; background: var(--accent-ink); color: #fff; cursor: pointer;
+  font-family: var(--font-display); font-weight: 600; font-size: 1rem; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.toggle .icon { width: 18px; height: 18px; transition: transform 0.35s var(--ease-out); }
+.toggle[aria-expanded="true"] { background: transparent; color: var(--accent-ink); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.toggle[aria-expanded="true"] .icon { transform: rotate(180deg); }
+.toggle__less { display: none; }
+.toggle[aria-expanded="true"] .toggle__more { display: none; }
+.toggle[aria-expanded="true"] .toggle__less { display: inline; }
+html:not(.js) .toggle { display: none; }
+
+.more { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.55s var(--ease-out); }
+html.js .more:not(.is-open) { grid-template-rows: 0fr; }
+.more__inner { min-height: 0; overflow: hidden; }
+.more__body { padding-top: clamp(2.5rem, 6vw, 4rem); display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+
+/* Detail blocks */
+.blk { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 1rem clamp(1.5rem, 4vw, 3.5rem); }
+.blk__label { display: flex; align-items: flex-start; gap: 0.7rem; }
+.blk__icon { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; flex: none; background: var(--accent-tint); color: var(--accent-ink); }
+.blk__label h3 { font-size: 1.12rem; letter-spacing: -0.015em; padding-top: 0.45rem; }
+.blk__body { min-width: 0; }
+.blk__body > p { max-width: var(--measure); }
+.blk__body > * + * { margin-top: 1rem; }
+
+.pull {
+  margin-top: 1.5rem !important;
+  font-family: var(--font-display); font-weight: 600; font-size: clamp(1.35rem, 2.6vw, 1.85rem); line-height: 1.22; letter-spacing: -0.025em;
+  max-width: 30ch; padding-left: 1.1rem; border-left: 4px solid var(--accent);
 }
 
-.callouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.6rem; }
-.callout { border-radius: var(--radius-lg); padding: 1.4rem 1.5rem; background: var(--color-cream); }
-.callout h3 { font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--color-text-muted); }
-.callout p { margin-top: 0.6rem; font-size: 1.05rem; }
-.callout--open { background: var(--color-terracotta-tint); }
-.callout--open h3 { color: var(--color-terracotta-dark); }
-
-/* The loop (idea 3) ----------------------------------------------------- */
-.loop { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
-.loop__ring { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
-.loop__ring svg { width: 100%; height: auto; display: block; overflow: visible; }
-.ring__track { fill: none; stroke: var(--color-sage-tint); stroke-width: 2; }
-.ring__arc { fill: none; stroke: var(--color-sage-soft); stroke-width: 2; }
-.ring__head { fill: var(--color-sage-soft); }
-.ring__node circle { fill: var(--color-surface); stroke: var(--color-sage); stroke-width: 2; transition: fill 0.25s, stroke 0.25s; }
-.ring__node text { font-family: var(--font-display); font-weight: 700; font-size: 15px; fill: var(--color-sage); text-anchor: middle; dominant-baseline: central; transition: fill 0.25s; }
-.ring__label { font-family: var(--font-display); font-weight: 600; font-size: 12px; fill: var(--color-text-muted); transition: fill 0.25s; }
-.ring__node.is-on circle { fill: var(--color-sage); }
-.ring__node.is-on text { fill: #fff; }
-.ring__label.is-on { fill: var(--color-text); }
-.ring__center { font-family: var(--font-display); text-anchor: middle; }
-.ring__center-big { font-size: 17px; font-weight: 700; fill: var(--color-text); }
-.ring__center-small { font-size: 12px; font-weight: 500; fill: var(--color-text-muted); }
-
-.stages { counter-reset: stage; }
-.stage {
-  position: relative; padding: 1rem 1rem 1rem 3.4rem; border-radius: var(--radius);
-  transition: background 0.25s;
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.85rem; border-radius: 999px;
+  background: var(--color-surface); border: 1px solid var(--color-line); font-size: 0.94rem; line-height: 1.35;
 }
-.stage + .stage { margin-top: 0.25rem; }
-.stage::before {
-  counter-increment: stage; content: counter(stage);
-  position: absolute; left: 0.8rem; top: 1rem;
-  width: 1.9rem; height: 1.9rem; border-radius: 50%;
-  display: grid; place-items: center;
-  border: 1.5px solid var(--color-sage); color: var(--color-sage);
-  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
-  transition: background 0.25s, color 0.25s;
-}
-.stage.is-on { background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-line); }
-.stage.is-on::before { background: var(--color-sage); color: #fff; }
-.stage h3 { font-size: 1.15rem; line-height: 1.9rem; }
-.stage p { margin-top: 0.3rem; font-size: 1.02rem; }
-.stages__return {
-  display: flex; align-items: center; gap: 0.6rem;
-  margin: 0.6rem 0 0 0.8rem; color: var(--color-text-muted); font-size: 0.95rem;
-}
-.stages__return svg { width: 20px; height: 20px; flex: none; stroke: var(--color-sage); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chip .icon { width: 17px; height: 17px; color: var(--accent); }
 
-/* Production math ------------------------------------------------------- */
-.math { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
-.math li { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius); padding: 1rem 1rem 1.1rem; }
-.math__val { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; letter-spacing: -0.03em; line-height: 1.1; color: var(--color-sage); }
-.math__lab { display: block; margin-top: 0.4rem; font-size: 0.95rem; line-height: 1.4; }
-.math-note { margin-top: 1rem; }
+/* Two audiences (initiative 1) */
+.reach { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.reach__col { border-radius: var(--radius-lg); padding: 1.25rem 1.3rem 1.35rem; background: var(--color-cream); }
+.reach__col.is-new { background: var(--accent-tint); }
+.reach__who { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
+.reach__by { margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.reach__by span { font-size: 0.88rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 999px; background: rgba(255, 255, 255, 0.75); }
+.reach__col.is-new .reach__by span { background: var(--accent-ink); color: #fff; }
 
-/* Closing --------------------------------------------------------------- */
-.close { background: var(--color-sage); color: var(--color-bg); }
-.close .eyebrow { color: var(--color-sage-tint); }
-.close h2 { color: var(--color-bg); }
-.close .section__lede { color: var(--color-bg); }
-.questions { margin-top: var(--space-lg); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; counter-reset: q; }
-.questions li {
-  counter-increment: q; position: relative;
-  padding: 1.2rem 1.3rem 1.3rem 3.6rem; border-radius: var(--radius);
-  background: rgba(250, 249, 246, 0.08); box-shadow: inset 0 0 0 1px rgba(250, 249, 246, 0.18);
-  font-size: 1.08rem;
-}
-.questions li::before {
-  content: counter(q, decimal-leading-zero);
-  position: absolute; left: 1.2rem; top: 1.2rem;
-  font-family: var(--font-display); font-weight: 700; color: var(--color-gold);
-}
-.sign { margin-top: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid rgba(250, 249, 246, 0.25); display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; align-items: baseline; }
-.sign__name { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.02em; margin-right: auto; }
-.sign a { color: var(--color-bg); text-decoration-color: var(--color-gold); }
-.sign a:hover { color: #fff; }
+/* Spec sheet */
+.spec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--color-line); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
+.spec li { padding: 1.1rem 1.15rem 1.2rem; border-left: 1px solid var(--color-line); }
+.spec li:first-child { border-left: 0; }
+.spec__v { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; letter-spacing: -0.03em; line-height: 1.1; color: var(--accent-ink); }
+.spec__k { display: block; margin-top: 0.35rem; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.35; }
 
-/* Responsive ------------------------------------------------------------ */
-@media (max-width: 860px) {
-  .flow { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
-  .flow__step:not(:last-child)::after { top: auto; bottom: -2.25rem; right: auto; left: 2rem; width: 2px; height: 2.25rem; background: linear-gradient(180deg, var(--color-sage-soft), var(--color-sage)); }
-  .flow__step:not(:last-child)::before { top: auto; bottom: -2.2rem; right: auto; left: calc(2rem - 4px); transform: rotate(135deg); }
-  .block { grid-template-columns: minmax(0, 1fr); }
+/* AI grid */
+.ai-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; }
+.ai-card { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-lg); padding: 1.15rem 1.2rem 1.25rem; }
+.ai-card__icon { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-tint); color: var(--accent-ink); position: relative; }
+.ai-card__icon::after { content: ''; position: absolute; right: -2px; top: -2px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--color-surface); }
+.ai-card h4 { margin-top: 0.85rem; font-size: 1.02rem; letter-spacing: -0.01em; }
+.ai-card p { margin-top: 0.35rem; font-size: 0.95rem; line-height: 1.5; color: var(--color-text-muted); }
+
+/* Requirements and open question */
+.needs { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1rem; }
+.needs__box { border-radius: var(--radius-lg); padding: 1.4rem 1.45rem 1.5rem; }
+.needs__box--req { background: var(--color-cream); }
+.needs__box--q { background: var(--color-surface); border: 1.5px dashed var(--accent); }
+.needs__title { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-muted); }
+.needs__title .icon { color: var(--accent-ink); }
+.req-list { margin-top: 1rem; display: grid; gap: 0.65rem; }
+.req-list li { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 1rem; line-height: 1.45; }
+.req-list .icon { width: 20px; height: 20px; color: var(--accent-ink); margin-top: 1px; }
+.needs__box--q p { margin-top: 0.9rem; font-size: 1rem; }
+.needs__box--q p:first-of-type { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; line-height: 1.35; }
+
+/* Format grid (initiative 2) */
+.fmt-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; }
+.fmt-grid li { display: flex; flex-direction: column; gap: 0.6rem; padding: 1rem 1rem 1.05rem; border-radius: var(--radius); background: var(--color-surface); border: 1px solid var(--color-line); font-size: 0.94rem; line-height: 1.4; }
+.fmt-grid li:first-child { background: var(--accent-ink); border-color: var(--accent-ink); color: #fff; font-weight: 600; }
+.fmt-grid .icon { color: var(--accent); }
+.fmt-grid li:first-child .icon { color: #fff; }
+
+/* Upstream steps (initiative 2) */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; counter-reset: st; }
+.steps li { position: relative; padding: 1.2rem 1.25rem 1.3rem 0; }
+.steps li + li { padding-left: 1.25rem; border-left: 1px solid var(--color-line); }
+.steps__when { display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent-tint); padding: 0.25rem 0.65rem; border-radius: 999px; }
+.steps p { margin-top: 0.75rem; font-size: 0.98rem; }
+
+/* ==========================================================================
+   Multiplication diagram
+   ========================================================================== */
+.mult { position: relative; border-radius: 24px; background: var(--color-surface); border: 1px solid var(--color-line); padding: clamp(0.5rem, 2vw, 1.5rem); }
+.mult__svg { width: 100%; height: auto; display: block; overflow: visible; }
+.mult__orbit { fill: none; stroke: var(--color-line); stroke-width: 1.2; stroke-dasharray: 2 6; }
+.mult__orbit.is-outer { stroke: var(--color-sage-tint); }
+.mult__spoke { fill: none; stroke: var(--color-sage-soft); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.mult__sub-spoke { fill: none; stroke: var(--color-sage-tint); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.mult__node { fill: var(--color-surface); stroke: var(--color-sage); stroke-width: 3; }
+.mult__sub { fill: var(--color-sage); }
+.mult__label { font-family: var(--font-display); font-weight: 600; font-size: 16.5px; fill: var(--color-text); }
+.mult__core-halo { fill: var(--color-sage-tint); opacity: 0.6; }
+.mult__core-disc { fill: var(--color-sage); }
+.mult__core-icon { color: #fff; }
+.mult__core-title { font-family: var(--font-display); font-weight: 700; font-size: 21px; fill: #fff; }
+.mult__core-sub { font-family: var(--font-body); font-weight: 500; font-size: 13px; fill: var(--color-sage-tint); }
+.mult__core use { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.mult__note { margin-top: 0.85rem; font-size: 0.92rem; color: var(--color-text-muted); text-align: center; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .mult:not(.is-in) .mult__spoke, html.js .mult:not(.is-in) .mult__sub-spoke { stroke-dashoffset: 1; }
+  html.js .mult:not(.is-in) .mult__node, html.js .mult:not(.is-in) .mult__sub, html.js .mult:not(.is-in) .mult__label { opacity: 0; transform: scale(0.5); }
+  html.js .mult:not(.is-in) .mult__core { opacity: 0; transform: scale(0.7); }
+  html.js .mult__spoke, html.js .mult__sub-spoke { transition: stroke-dashoffset 0.7s var(--ease-out); transition-delay: calc(var(--d, 0s) + 0.25s); }
+  html.js .mult__node, html.js .mult__sub, html.js .mult__label { transform-box: fill-box; transform-origin: center; transition: opacity 0.4s ease, transform 0.45s var(--ease-out); transition-delay: calc(var(--d, 0s) + 0.25s); }
+  html.js .mult__core { transform-box: fill-box; transform-origin: center; transition: opacity 0.4s ease, transform 0.5s var(--ease-out); }
+  .mult.is-in .mult__core-halo { transform-box: fill-box; transform-origin: center; animation: breathe 4.8s ease-in-out infinite 1.4s; }
+}
+
+/* Phone variant: the same content as a stacked tree. */
+.mult__list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 719px) {
+  .mult { padding: 1.1rem; }
+  .mult__svg, .mult__note { display: none; }
+  .mult__list { display: block; position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; white-space: normal; }
+  .mult__root { display: flex; align-items: center; gap: 0.85rem; padding: 1rem 1.1rem; border-radius: 14px; background: var(--color-sage); color: #fff; }
+  .mult__root .icon { width: 30px; height: 30px; }
+  .mult__root strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+  .mult__root span { font-size: 0.88rem; color: var(--color-sage-tint); }
+  .mult__branches { position: relative; margin: 0.4rem 0 0 1.6rem; padding-left: 1.15rem; border-left: 2px solid var(--color-sage-soft); }
+  .mult__branches li { position: relative; padding: 0.55rem 0; font-size: 0.97rem; line-height: 1.4; }
+  .mult__branches li::before { content: ''; position: absolute; left: -1.15rem; top: 1.15rem; width: 0.85rem; height: 2px; background: var(--color-sage-soft); }
+  .mult__branches li::after { content: ''; position: absolute; left: -0.45rem; top: calc(1.15rem - 4px); width: 10px; height: 10px; border-radius: 50%; background: var(--color-surface); border: 2.5px solid var(--color-sage); }
+  .mult__branches li { padding-left: 0.75rem; }
+  .mult__dots { display: flex; gap: 4px; margin-top: 0.35rem; flex-wrap: wrap; }
+  .mult__dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-sage); opacity: 0.75; }
+  html.js .mult__branches li { opacity: 0; transform: translateX(-8px); transition: opacity 0.35s ease, transform 0.35s var(--ease-out); transition-delay: var(--d, 0s); }
+  html.js .mult.is-in .mult__branches li { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   Today versus a framework (initiative 2, default visual)
+   ========================================================================== */
+.measure { display: grid; grid-template-columns: minmax(0, 0.8fr) auto minmax(0, 1.2fr); gap: clamp(1rem, 3vw, 2rem); align-items: stretch; }
+.measure__panel { border-radius: var(--radius-lg); padding: 1.35rem 1.4rem 1.45rem; background: var(--color-surface); border: 1px solid var(--color-line); }
+.measure__panel.is-new { border-color: var(--accent-tint); box-shadow: inset 0 0 0 1px var(--accent-tint); }
+.measure__title { font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; }
+.measure__hint { margin-top: 0.2rem; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.45; }
+.measure__rows { margin-top: 1.1rem; display: grid; gap: 0.55rem; }
+.measure__row { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); align-items: center; gap: 0.6rem; font-size: 0.92rem; }
+.measure__row b { font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; color: var(--color-text-muted); }
+.measure__bar { height: 30px; border-radius: 8px; background: var(--color-skeleton); display: flex; align-items: center; padding-inline: 0.75rem; font-weight: 600; font-size: 0.92rem; transform-origin: 0 50%; }
+.measure__panel:not(.is-new) .measure__bar { height: 54px; background: var(--color-cream); }
+.measure__panel.is-new .measure__bar { height: 22px; background: linear-gradient(90deg, var(--accent-tint), rgba(240, 222, 214, 0.45)); }
+.measure__panel.is-new .measure__row.is-flag .measure__bar { background: repeating-linear-gradient(135deg, var(--accent-tint) 0 6px, transparent 6px 11px); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.measure__arrow { align-self: center; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-ink); color: #fff; }
+.measure__legend { margin-top: 0.85rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; color: var(--color-text-muted); }
+.measure__legend i { width: 22px; height: 12px; border-radius: 3px; background: repeating-linear-gradient(135deg, var(--accent-tint) 0 4px, transparent 4px 7px); box-shadow: inset 0 0 0 1.5px var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  html.js .measure .measure__bar { transform: scaleX(0); transition: transform 0.6s var(--ease-out); transition-delay: var(--d, 0s); }
+  html.js .measure.is-visible .measure__bar { transform: none; }
+}
+
+/* ==========================================================================
+   Scorecard mock
+   ========================================================================== */
+.sc { border-radius: 22px; background: var(--color-surface); border: 1px solid var(--color-line); overflow: hidden; box-shadow: 0 30px 60px -40px rgba(31, 44, 36, 0.35); }
+.sc__bar { display: flex; align-items: center; gap: 1rem; justify-content: space-between; flex-wrap: wrap; padding: 1.1rem 1.3rem; background: var(--color-cream); border-bottom: 1px solid var(--color-line); }
+.sc__title { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.sc__title .icon { color: var(--accent); }
+.sc__demo { font-family: var(--font-display); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-ink); border: 1.5px solid var(--accent); border-radius: 999px; padding: 0.15rem 0.55rem; }
+.sc__vendors { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-line); }
+.sc__vendor { border: 0; background: transparent; cursor: pointer; min-height: 38px; padding: 0 0.95rem; border-radius: 999px; font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; color: var(--color-text-muted); }
+.sc__vendor[aria-pressed="true"] { background: var(--accent-ink); color: #fff; }
+.sc__intro { padding: 1rem 1.3rem 0.4rem; font-size: 0.95rem; color: var(--color-text-muted); }
+.sc__anatomy { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; padding: 0.25rem 1.3rem 0.9rem; font-size: 0.85rem; color: var(--color-text-muted); }
+.sc__anatomy span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.sc__anatomy i { width: 9px; height: 9px; border-radius: 2px; background: var(--accent); transform: rotate(45deg); }
+.sc__rows { border-top: 1px solid var(--color-line); }
+.sc__row { border-bottom: 1px solid var(--color-line); }
+.sc__main { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto 2.6rem; gap: 0.75rem; align-items: center; padding: 0.7rem 1rem 0.7rem 1.3rem; }
+.sc__n { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: 0.95rem; }
+.sc__crit { min-width: 0; }
+.sc__crit strong { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; }
+.sc__crit .skel { margin-top: 0.4rem; }
+.sc__flag { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.4rem; font-size: 0.8rem; font-weight: 600; color: var(--accent-ink); }
+.sc__flag .icon { width: 15px; height: 15px; }
+.skel { display: block; height: 8px; border-radius: 6px; background: var(--color-skeleton); }
+.sc__rate { display: inline-flex; gap: 4px; }
+.sc__dot { width: 34px; height: 34px; border-radius: 9px; border: 1.5px solid var(--color-line); background: var(--color-bg); cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; color: var(--color-text-muted); transition: background 0.15s, border-color 0.15s, color 0.15s; }
+.sc__dot:hover { border-color: var(--accent); color: var(--accent-ink); }
+.sc__dot.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sc__dot.is-sel { box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--accent); }
+.sc__open { width: 38px; height: 38px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; color: var(--color-text-muted); }
+.sc__open:hover { background: var(--color-cream); }
+.sc__open .icon { width: 18px; height: 18px; transition: transform 0.3s var(--ease-out); }
+.sc__open[aria-expanded="true"] .icon { transform: rotate(180deg); }
+.sc__detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease-out); }
+.sc__detail.is-open { grid-template-rows: 1fr; }
+.sc__detail > div { min-height: 0; overflow: hidden; }
+.sc__parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; padding: 0.2rem 1.3rem 1.1rem 4.25rem; }
+.sc__part { border-radius: 10px; background: var(--color-bg); padding: 0.75rem 0.85rem 0.85rem; }
+.sc__part b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; color: var(--accent-ink); }
+.sc__part .skel { margin-top: 0.55rem; }
+.sc__part .skel + .skel { margin-top: 0.4rem; width: 72%; }
+.sc__foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem 1.5rem; align-items: center; padding: 1.15rem 1.3rem 1.3rem; background: var(--color-cream); }
+.sc__totals { display: grid; gap: 0.5rem; }
+.sc__total { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 6.5rem; gap: 0.75rem; align-items: center; font-size: 0.88rem; }
+.sc__total b { font-family: var(--font-display); font-weight: 600; }
+.sc__track { height: 10px; border-radius: 6px; background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-line); overflow: hidden; }
+.sc__fill { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); transition: transform 0.4s var(--ease-out); }
+.sc__total.is-cur b { color: var(--accent-ink); }
+.sc__count { color: var(--color-text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.sc__reset { border: 1.5px solid var(--color-line); background: var(--color-surface); border-radius: 999px; min-height: 40px; padding: 0 1rem; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; }
+.sc__reset:hover { border-color: var(--accent); }
+html:not(.js) .sc__rate, html:not(.js) .sc__vendors, html:not(.js) .sc__foot, html:not(.js) .sc__open { display: none; }
+html:not(.js) .sc__detail { grid-template-rows: 1fr; }
+
+/* ==========================================================================
+   The loop (initiative 3)
+   ========================================================================== */
+.loop { display: grid; grid-template-columns: minmax(0, 480px) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+.loop__ring { position: relative; aspect-ratio: 1; width: 100%; margin-block: 0.5rem 2.25rem; }
+.loop__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.loop__track { fill: none; stroke: var(--color-gold-tint); stroke-width: 10; }
+.loop__trackline { fill: none; stroke: var(--color-gold); stroke-width: 1.5; stroke-dasharray: 2 7; opacity: 0.8; }
+.loop__trail { fill: none; stroke: var(--color-gold); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 70 1000; opacity: 0.55; }
+.loop__pulse { fill: var(--color-gold); }
+.loop__pulse-halo { fill: var(--color-gold); opacity: 0.25; }
+.loop__spin { transform-box: view-box; transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .loop__spin { animation: spin 12s linear infinite; }
+  .loop__node { animation: hit 12s ease-out infinite; animation-delay: calc(var(--i) * 2s); }
+}
+@keyframes hit {
+  0% { box-shadow: 0 0 0 1.5px var(--color-gold), 0 0 0 1.5px rgba(201, 160, 81, 0.6), 0 8px 22px -12px rgba(31, 44, 36, 0.4); }
+  7% { box-shadow: 0 0 0 1.5px var(--color-gold-tint), 0 0 0 16px rgba(201, 160, 81, 0), 0 8px 22px -12px rgba(31, 44, 36, 0.4); }
+  100% { box-shadow: 0 0 0 1.5px var(--color-gold-tint), 0 0 0 0 rgba(201, 160, 81, 0), 0 8px 22px -12px rgba(31, 44, 36, 0.4); }
+}
+.loop__center { position: absolute; inset: 30%; display: grid; place-content: center; text-align: center; border-radius: 50%; }
+.loop__center-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1; letter-spacing: -0.05em; color: var(--color-gold-dark); }
+.loop__center-lab { margin-top: 0.35rem; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
+.loop__center-sub { margin-top: 0.3rem; font-size: 0.78rem; color: var(--color-text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.loop__node {
+  position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+  width: 78px; height: 78px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--color-surface); color: var(--color-gold-dark);
+  box-shadow: 0 0 0 1.5px var(--color-gold-tint), 0 8px 22px -12px rgba(31, 44, 36, 0.4);
+  display: grid; place-items: center; transition: background 0.25s, color 0.25s;
+}
+.loop__node .icon { width: 28px; height: 28px; }
+.loop__node-n { position: absolute; top: -4px; right: -4px; width: 24px; height: 24px; border-radius: 50%; background: var(--color-ink); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 0.72rem; display: grid; place-items: center; }
+.loop__node-lab { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; color: var(--color-text); }
+.loop__node[aria-current="step"] { background: var(--color-gold); color: var(--color-ink); }
+.loop__node[aria-current="step"] .loop__node-n { background: var(--color-gold-dark); }
+
+.loop__panel { min-width: 0; }
+.loop__list { counter-reset: stage; }
+.loop__item { min-width: 0; }
+.loop__head { display: flex; align-items: center; gap: 0.8rem; width: 100%; text-align: left; border: 0; background: transparent; padding: 0; cursor: default; }
+.loop__head .icon { width: 26px; height: 26px; color: var(--color-gold-dark); }
+.loop__head-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--color-gold-tint); flex: none; }
+.loop__head-text { min-width: 0; }
+.loop__head-n { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-gold-dark); }
+.loop__head-title { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 2.4vw, 1.85rem); letter-spacing: -0.03em; line-height: 1.1; color: var(--color-text); }
+.loop__chev { display: none; margin-left: auto; }
+.loop__body { margin-top: 1.1rem; }
+.loop__body > p { max-width: 54ch; }
+.loop__body > * + * { margin-top: 0.85rem; }
+.loop__hint { margin-top: 1.4rem; font-size: 0.88rem; color: var(--color-text-muted); display: flex; align-items: center; gap: 0.5rem; }
+.loop__hint .icon { width: 18px; height: 18px; }
+
+.flows { display: grid; gap: 0.45rem; }
+.flows li { display: grid; grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr); align-items: center; gap: 0.6rem; font-size: 0.94rem; line-height: 1.35; }
+.flows li span { padding: 0.5rem 0.75rem; border-radius: 9px; background: var(--color-surface); border: 1px solid var(--color-line); }
+.flows li span:last-child { background: var(--color-gold-tint); border-color: var(--color-gold-tint); font-weight: 600; }
+.flows .icon { width: 20px; height: 20px; color: var(--color-gold-dark); }
+
+/* Desktop: the list acts as the panel for the selected stage. */
+@media (min-width: 900px) {
+  html.js .loop__item:not(.is-active) { display: none; }
+  html.js .loop__item.is-active .loop__body { animation: rise 0.35s var(--ease-out); }
+  html.js .loop__head { pointer-events: none; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+html:not(.js) .loop__ring { display: none; }
+html:not(.js) .loop { grid-template-columns: minmax(0, 1fr); }
+html:not(.js) .loop__item + .loop__item, .loop__item + .loop__item { }
+html:not(.js) .loop__item + .loop__item { margin-top: 2rem; }
+
+/* Phone and tablet: a vertical flow with a connecting line. */
+@media (max-width: 899px) {
   .loop { grid-template-columns: minmax(0, 1fr); }
-  .loop__ring { position: static; max-width: 340px; margin-inline: auto; }
-  .math { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .loop__ring, .loop__hint { display: none; }
+  .loop__list { position: relative; }
+  .loop__list::before { content: ''; position: absolute; left: 25px; top: 26px; bottom: 26px; width: 2px; background: linear-gradient(var(--color-gold), var(--color-gold-tint)); }
+  .loop__item { position: relative; padding-block: 0.5rem; }
+  .loop__head { cursor: pointer; min-height: 56px; }
+  .loop__head-icon { position: relative; z-index: 1; box-shadow: 0 0 0 5px var(--color-bg); }
+  .loop__item.is-active .loop__head-icon { background: var(--color-gold); }
+  .loop__chev { display: block; width: 20px; height: 20px; color: var(--color-text-muted); transition: transform 0.3s var(--ease-out); }
+  .loop__head[aria-expanded="true"] .loop__chev { transform: rotate(180deg); }
+  .loop__head-title { font-size: 1.2rem; }
+  .loop__body { margin: 0.6rem 0 0.4rem 66px; font-size: 0.98rem; }
+  html.js .loop__item:not(.is-active) .loop__body { display: none; }
+  html:not(.js) .loop__chev { display: none; }
+  .flows li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
+  .flows .icon { transform: rotate(90deg); margin-left: 0.75rem; }
+  .loop__return { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.4rem; padding-left: 13px; font-size: 0.9rem; color: var(--color-text-muted); }
+  .loop__return .icon { width: 26px; height: 26px; color: var(--color-gold-dark); background: var(--color-bg); position: relative; z-index: 1; }
 }
-@media (max-width: 720px) {
-  .idx__name { display: none; }
-  .idx__link { gap: 0; }
-  .idx__text { font-size: 0.9rem; }
-  .formats, .callouts, .questions { grid-template-columns: minmax(0, 1fr); }
-  .idea__head { grid-template-columns: minmax(0, 1fr); }
-  .idea__num { margin-bottom: 0.75rem; font-size: 3.4rem; }
+@media (min-width: 900px) { .loop__return { display: none; } }
+
+/* ==========================================================================
+   One month of output
+   ========================================================================== */
+.month { border-radius: var(--radius-lg); background: var(--color-surface); border: 1px solid var(--color-line); padding: 1.3rem 1.4rem 1.4rem; }
+.month__scale { display: grid; grid-template-columns: 11rem minmax(0, 1fr) 7rem; gap: 1rem; font-size: 0.78rem; color: var(--color-text-muted); letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-display); font-weight: 600; }
+.month__scale div { display: flex; justify-content: space-between; border-bottom: 1px solid var(--color-line); padding-bottom: 0.4rem; }
+.month__row { display: grid; grid-template-columns: 11rem minmax(0, 1fr) 7rem; gap: 1rem; align-items: center; padding-block: 0.85rem; border-bottom: 1px dashed var(--color-line); }
+.month__row:last-child { border-bottom: 0; padding-bottom: 0.2rem; }
+.month__what { display: flex; align-items: center; gap: 0.55rem; font-weight: 600; font-size: 0.95rem; line-height: 1.3; }
+.month__what .icon { width: 20px; height: 20px; color: var(--color-gold-dark); }
+.month__val { text-align: right; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--color-gold-dark); line-height: 1.15; }
+.month__val small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 0.75rem; letter-spacing: 0; color: var(--color-text-muted); }
+.month__track { position: relative; height: 34px; }
+.month__core { position: absolute; left: 0; top: 2px; bottom: 2px; width: 30%; border-radius: 7px; background: var(--color-gold); }
+.month__derivs { position: absolute; left: 30%; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4px; padding-left: 6px; }
+.month__derivs i { border-radius: 3px; background: var(--color-gold-tint); box-shadow: inset 0 0 0 1px rgba(201, 160, 81, 0.5); }
+.month__daily { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(4, 1fr); gap: 3px; }
+.month__daily i { background: radial-gradient(circle, var(--color-gold-dark) 0 2.2px, transparent 2.6px) 0 50% / 4.5% 100% repeat-x; opacity: 0.8; }
+.month__byline { position: absolute; left: 62%; top: 1px; bottom: 1px; width: 6%; min-width: 22px; border-radius: 7px; background: var(--color-ink); }
+@media (prefers-reduced-motion: no-preference) {
+  html.js .month .month__track > * { transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.8s var(--ease-out); transition-delay: var(--d, 0s); }
+  html.js .month.is-visible .month__track > * { transform: none; }
+}
+
+/* ==========================================================================
+   Two ways to organize the work
+   ========================================================================== */
+.org { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.org__panel { border-radius: var(--radius-lg); padding: 1.3rem 1.35rem 1.4rem; background: var(--color-surface); border: 1px solid var(--color-line); }
+.org__panel.is-new { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-bg); }
+.org__title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.015em; }
+.org__by { margin-top: 0.2rem; font-size: 0.88rem; color: var(--color-text-muted); }
+.org__panel.is-new .org__by { color: #C8CFC9; }
+.org__svg { margin-top: 1rem; width: 100%; height: auto; display: block; }
+.org__cap { margin-top: 0.9rem; font-size: 0.94rem; line-height: 1.5; }
+.org-t { font-family: var(--font-display); font-weight: 600; font-size: 15px; }
+.org-ts { font-family: var(--font-body); font-weight: 500; font-size: 13px; }
+
+/* ==========================================================================
+   Closing
+   ========================================================================== */
+.verify { background: var(--color-ink); color: var(--color-bg); padding-block: var(--space-xl); }
+.verify .eyebrow { color: var(--color-gold); }
+.verify h2 { margin-top: 0.7rem; font-size: clamp(2rem, 4.4vw, 3.3rem); letter-spacing: -0.04em; max-width: 16ch; }
+.vgrid { margin-top: clamp(2rem, 5vw, 3rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem; counter-reset: v; }
+.vgrid li { counter-increment: v; border-radius: var(--radius-lg); padding: 1.3rem 1.3rem 1.4rem; background: rgba(250, 249, 246, 0.05); box-shadow: inset 0 0 0 1px rgba(250, 249, 246, 0.14); }
+.vgrid__top { display: flex; align-items: center; justify-content: space-between; color: var(--color-gold); }
+.vgrid__top::after { content: counter(v, decimal-leading-zero); font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: rgba(250, 249, 246, 0.45); }
+.vgrid .icon { width: 28px; height: 28px; }
+.vgrid p { margin-top: 1rem; font-size: 1rem; line-height: 1.5; }
+.verify__close { margin-top: clamp(2rem, 5vw, 3rem); max-width: 52ch; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.1rem, 1.8vw, 1.3rem); line-height: 1.4; color: #DDE3DE; padding-left: 1.1rem; border-left: 3px solid var(--color-gold); }
+
+.foot { padding-block: 2rem 2.5rem; font-size: 0.95rem; }
+.foot__inner { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; align-items: baseline; }
+.foot__name { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; margin-right: auto; }
+.foot a { color: var(--color-sage); text-decoration-color: var(--color-gold); }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .blk { grid-template-columns: minmax(0, 1fr); }
+  .ai-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fmt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
+  .hero__art { max-width: 560px; }
+  .previews { grid-template-columns: minmax(0, 1fr); }
+  .preview { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+  .preview__top { width: 100%; }
+  .measure { grid-template-columns: minmax(0, 1fr); }
+  .measure__arrow { justify-self: center; transform: rotate(90deg); width: 44px; height: 44px; }
+  .needs, .org, .reach { grid-template-columns: minmax(0, 1fr); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps li, .steps li + li { padding: 1rem 0; border-left: 0; border-top: 1px solid var(--color-line); }
+  .steps li:first-child { border-top: 0; padding-top: 0; }
+  .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spec li:nth-child(3) { border-left: 0; }
+  .spec li:nth-child(n + 3) { border-top: 1px solid var(--color-line); }
+  .sc__parts { grid-template-columns: minmax(0, 1fr); padding-left: 1.3rem; }
+}
+@media (max-width: 640px) {
+  body { font-size: 1rem; }
+  .init__head { grid-template-columns: minmax(0, 1fr); }
+  .init__num { font-size: 4rem; margin-bottom: 0.9rem; }
+  .ai-grid, .fmt-grid, .vgrid { grid-template-columns: minmax(0, 1fr); }
+  .sc__main { grid-template-columns: 1.6rem minmax(0, 1fr) 2.4rem; grid-template-areas: 'n crit open' 'n rate rate'; padding-left: 1rem; row-gap: 0.6rem; }
+  .sc__n { grid-area: n; align-self: start; padding-top: 0.1rem; }
+  .sc__crit { grid-area: crit; }
+  .sc__rate { grid-area: rate; }
+  .sc__open { grid-area: open; }
+  .sc__dot { width: 40px; height: 40px; }
+  .sc__bar { padding: 1rem; }
+  .sc__intro, .sc__anatomy { padding-inline: 1rem; }
+  .sc__foot { grid-template-columns: minmax(0, 1fr); padding: 1rem; }
+  .sc__total { grid-template-columns: 4.8rem minmax(0, 1fr) 5.8rem; font-size: 0.82rem; gap: 0.5rem; }
+  .month { padding: 1.1rem; }
+  .month__scale { display: none; }
+  .month__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'what val' 'track track'; gap: 0.5rem 0.75rem; }
+  .month__what { grid-area: what; }
+  .month__val { grid-area: val; }
+  .month__track { grid-area: track; }
+  .month__val small { display: inline; margin-left: 0.3rem; }
+  .month__derivs { grid-template-columns: repeat(8, 1fr); }
+  .month__derivs i:nth-child(n + 17) { display: none; }
 }
 @media (max-width: 380px) {
-  .math { grid-template-columns: minmax(0, 1fr); }
-  .idx__link { padding: 0 0.2rem; }
+  .sc__dot { width: 36px; height: 36px; }
+  .sc__vendor { padding: 0 0.7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+  *, *::before, *::after { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+  .hero-signals { display: none; }
 }
 
-/* Print ----------------------------------------------------------------- */
+/* ==========================================================================
+   Print
+   ========================================================================== */
 @media print {
-  @page { margin: 16mm 14mm; }
-  body { font-size: 11pt; background: #fff; }
-  .skip, .progress, .idx, .ideas-bar, .flow__jump, .more > summary, .mast__top a { display: none !important; }
-  .more::details-content { block-size: auto !important; content-visibility: visible !important; }
-  .section, .idea { padding-block: 10mm; }
-  .system, .close { background: #fff; color: var(--color-text); }
-  .close h2, .close .section__lede, .close .eyebrow, .sign a { color: var(--color-text); }
-  .questions li { box-shadow: inset 0 0 0 1px var(--color-line); }
-  .sign { border-top-color: var(--color-line); }
-  .loop__ring { position: static; }
-  .idea { break-before: page; }
-  .block, .flow__step, .callout, .stage, .questions li, .math li, .formats li { break-inside: avoid; }
+  @page { margin: 14mm 12mm; }
+  body { font-size: 10.5pt; background: #fff; }
+  .skip, .pnav, .toggle, .preview__go, .hero__top a, .sc__vendors, .sc__foot, .sc__open, .sc__rate, .loop__hint, .hero-signals { display: none !important; }
+  .more { grid-template-rows: 1fr !important; }
+  .more__inner { overflow: visible; }
+  .reveal, .mult *, .measure__bar, .month__track > * { opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+  .loop { grid-template-columns: minmax(0, 1fr); }
+  .loop__ring { display: none; }
+  .loop__item, .loop__item .loop__body { display: block !important; }
+  .loop__item + .loop__item { margin-top: 1rem; }
+  .loop__chev { display: none !important; }
+  .sc__detail { grid-template-rows: 1fr; }
+  .init { break-before: page; padding-block: 6mm; }
+  .verify { break-before: page; background: #fff; color: var(--color-text); }
+  .verify .eyebrow { color: var(--color-gold-dark); }
+  .vgrid li { box-shadow: inset 0 0 0 1px var(--color-line); }
+  .verify__close { color: var(--color-text); }
+  .org__panel.is-new { background: #fff; color: var(--color-text); border-color: var(--color-line); }
+  .blk, .ai-card, .needs__box, .mult, .sc, .month, .org__panel, .vgrid li, .loop__item, .steps li, .fmt-grid li { break-inside: avoid; }
+  .foot a::after { content: ' (' attr(href) ')'; font-size: 0.85em; }
   a { color: inherit; }
-  .sign a::after { content: ' (' attr(href) ')'; font-size: 0.85em; }
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
-<div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
 
-<header class="mast">
+<!-- Icon set, drawn for this page on a 24 grid at a 1.6 stroke. -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-bench" viewBox="0 0 24 24"><path d="M3.5 20.5h17"/><rect x="5" y="12.5" width="3.2" height="5.5" rx="1"/><rect x="10.4" y="7.5" width="3.2" height="10.5" rx="1"/><rect x="15.8" y="14.5" width="3.2" height="3.5" rx="1"/><path d="M3.5 10.5h17" stroke-dasharray="1.4 2.2"/></symbol>
+  <symbol id="i-score" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2.2"/><path d="M8.3 8.6l1.3 1.3 2.5-2.7"/><path d="M14 8.6h2"/><path d="M8.3 13.6l1.3 1.3 2.5-2.7"/><path d="M14 13.6h2"/><path d="M8.8 17.8h6.4"/></symbol>
+  <symbol id="i-engine" viewBox="0 0 24 24"><path d="M19 12a7 7 0 0 1-12.2 4.7"/><path d="M5 12a7 7 0 0 1 12.2-4.7"/><path d="M17.6 3.6v3.9h-3.9"/><path d="M6.4 20.4v-3.9h3.9"/><circle cx="12" cy="12" r="1.7"/></symbol>
+  <symbol id="i-listen" viewBox="0 0 24 24"><circle cx="6.5" cy="12" r="1.8"/><path d="M10.2 8.4a5 5 0 0 1 0 7.2"/><path d="M13.4 5.6a9 9 0 0 1 0 12.8"/><path d="M16.6 2.9a12.7 12.7 0 0 1 0 18.2"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.8 16.5a8.2 8.2 0 0 1 16.4 0"/><path d="M12 16.5l3.6-4.6"/><circle cx="12" cy="16.5" r="1.4"/><path d="M6.6 16.5H5.3M18.7 16.5h-1.3M12 9.6V8.3M7.3 11.6l-.9-.9M16.7 11.6l.9-.9"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M3 12h5.5"/><path d="M8.5 12c3.2 0 3.3-6 7-6h4.5"/><path d="M8.5 12H20"/><path d="M8.5 12c3.2 0 3.3 6 7 6h4.5"/><path d="M18 4l2 2-2 2M18 10l2 2-2 2M18 16l2 2-2 2"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h10.5A1.5 1.5 0 0 1 16 6.5v6a1.5 1.5 0 0 1-1.5 1.5H9l-3.6 3v-3H4a1.5 1.5 0 0 1-1.5-1.5v-6A1.5 1.5 0 0 1 4 5z"/><path d="M19 8.5h.5A1.5 1.5 0 0 1 21 10v5.5a1.5 1.5 0 0 1-1.5 1.5H19v2.5L15.8 17H12"/><path d="M6 9.5h6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/><path d="M7.5 13.8h2.5M12 13.8h4.5M7.5 17h5"/></symbol>
+  <symbol id="i-measure" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7.2 15.2l3.5-4.1 3 2.6L19 7.4"/><path d="M15.4 7.2H19v3.6"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.2 3h8.3L19 7.5V20a1 1 0 0 1-1 1H6.2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3.2V8h4.8"/><path d="M8.5 12.2h7M8.5 15.6h7M8.5 19h4"/></symbol>
+  <symbol id="i-press" viewBox="0 0 24 24"><rect x="3" y="4.5" width="14.5" height="15.5" rx="1.6"/><path d="M17.5 8.5h2.5a1 1 0 0 1 1 1V18a2 2 0 0 1-4 0"/><path d="M6.3 8.5h8M6.3 12h3.7M6.3 15.5h3.7"/><rect x="12" y="12" width="2.6" height="3.5" rx=".5"/></symbol>
+  <symbol id="i-webinar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="1.8"/><path d="M10.4 8v4.6l4-2.3z"/><path d="M8 20.5h8M12 16.5v4"/></symbol>
+  <symbol id="i-stage" viewBox="0 0 24 24"><path d="M6.5 11h11l-1.6 9.5H8.1z"/><path d="M4.5 11h15"/><path d="M12 11V7.2"/><rect x="10.4" y="2.8" width="3.2" height="4.4" rx="1.6"/><path d="M9.5 15.5h5"/></symbol>
+  <symbol id="i-grader" viewBox="0 0 24 24"><path d="M4 6.5h8.5M16.5 6.5H20M4 12h3M11 12h9M4 17.5h10.5M18.5 17.5H20"/><circle cx="14.5" cy="6.5" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16.5" cy="17.5" r="2"/></symbol>
+  <symbol id="i-social" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.3"/><circle cx="17.6" cy="5.8" r="2.3"/><circle cx="17.6" cy="18.2" r="2.3"/><path d="M8.1 10.9l7.4-4M8.1 13.1l7.4 4"/></symbol>
+  <symbol id="i-page" viewBox="0 0 24 24"><rect x="5.8" y="3" width="12.4" height="18" rx="1.8"/><path d="M8.8 7.5h6.4M8.8 11h6.4M8.8 14.5h3.8"/><circle cx="15" cy="17.5" r=".9"/></symbol>
+  <symbol id="i-segment" viewBox="0 0 24 24"><path d="M11 4a8.5 8.5 0 1 0 9 9h-9z"/><path d="M14 2.8a7.5 7.5 0 0 1 7.2 7.2H14z"/></symbol>
+  <symbol id="i-annual" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20.2 3.8v4.6h-4.6"/><path d="M12 8v4.2l2.6 1.9"/></symbol>
+  <symbol id="i-analyze" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.8"/><path d="M15.4 15.4l5.1 5.1"/><path d="M8 13v-2M10.5 13V8M13 13v-3.2"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l.9-4.4L15.5 5a2 2 0 0 1 2.8 0l.7.7a2 2 0 0 1 0 2.8L8.4 19.1z"/><path d="M13.6 6.9l3.5 3.5"/><path d="M13 20.5h7"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.3 7L3.5 12l4.8 5"/><path d="M15.7 7l4.8 5-4.8 5"/><path d="M13.4 4.5l-2.8 15"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="11" cy="13" r="7.5"/><circle cx="11" cy="13" r="3.6"/><path d="M11 13l8.5-8.5"/><path d="M16.5 4.5h3v3"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3.5l8.5 4.4-8.5 4.4-8.5-4.4z"/><path d="M3.5 12.1l8.5 4.4 8.5-4.4"/><path d="M3.5 16.2l8.5 4.3 8.5-4.3"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h1.5M6.8 8.5v7M10 5v14M13.2 9v6M16.4 6.8v10.4M19.6 10.2v3.6"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M3.5 6.5L9 4l6 2.5L20.5 4v13.5L15 20l-6-2.5-5.5 2.5z"/><path d="M9 4v13.5M15 6.5V20"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4.5 11.5a7.5 7.5 0 0 1 13.1-4.6L20 9.5"/><path d="M20 4.5v5h-5"/><path d="M19.5 12.5a7.5 7.5 0 0 1-13.1 4.6L4 14.5"/><path d="M4 19.5v-5h5"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="4.2"/><path d="M11 12.5l8.8-8.8"/><path d="M15.6 7.9l2.4 2.4M18.1 5.4l2 2"/></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.3c-.8.4-1.2 1-1.2 1.8v.5"/><path d="M12 16.9v.1"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 2.8v5.6c0 4.3-3 7.8-7 9.6-4-1.8-7-5.3-7-9.6V5.8z"/><path d="M9 12l2.2 2.2 3.8-4.2"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3.5 7h17v3.3a1.7 1.7 0 0 0 0 3.4V17h-17v-3.3a1.7 1.7 0 0 0 0-3.4z"/><path d="M14.5 7.5v9" stroke-dasharray="1.4 2.1"/></symbol>
+  <symbol id="i-stack" viewBox="0 0 24 24"><rect x="4" y="13.5" width="16" height="6.5" rx="1.3"/><rect x="5.6" y="8.4" width="12.8" height="5.1" rx="1.1"/><rect x="7.2" y="4" width="9.6" height="4.4" rx="1"/></symbol>
+  <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5a7 7 0 0 1 14 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.1"/><path d="M3.3 19.5a5.7 5.7 0 0 1 11.4 0"/><path d="M15.2 5.6a3.1 3.1 0 0 1 0 5.8"/><path d="M17.2 14.1a5.7 5.7 0 0 1 3.5 5.2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 3.5c.6 4.4 2.4 6.2 6.6 6.6-4.2.4-6 2.2-6.6 6.6-.6-4.4-2.4-6.2-6.6-6.6 4.2-.4 6-2.2 6.6-6.6z"/><path d="M18.4 15.2c.3 1.8 1 2.6 2.6 2.8-1.6.2-2.3 1-2.6 2.8-.3-1.8-1-2.6-2.6-2.8 1.6-.2 2.3-1 2.6-2.8z"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6"/><path d="M5 12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2"/></symbol>
+  <symbol id="i-veil" viewBox="0 0 24 24"><path d="M3 12s3.3-6 9-6 9 6 9 6-3.3 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.6"/><path d="M4.5 19.5l15-15"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 2"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V3.8"/><path d="M5.5 4.5h11.5l-2.2 3.7 2.2 3.8H5.5"/></symbol>
+  <symbol id="i-funnel" viewBox="0 0 24 24"><path d="M3.5 4.5h17l-6.5 8v6l-4 2v-8z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M6 3.5l12.5 6.2-5.6 1.6-2 5.4z"/><path d="M13 11.5l5 5"/></symbol>
+</svg>
+
+<nav class="pnav" aria-label="Initiatives" data-pnav>
+  <ol class="pnav__list">
+    <li><a class="pnav__link" href="#initiative-1" style="--c:var(--color-sage)"><span class="pnav__num">01</span><span class="pnav__name">Benchmark</span><span class="pnav__track" aria-hidden="true"><span class="pnav__fill"></span></span></a></li>
+    <li><a class="pnav__link" href="#initiative-2" style="--c:var(--color-terracotta)"><span class="pnav__num">02</span><span class="pnav__name">Scorecard</span><span class="pnav__track" aria-hidden="true"><span class="pnav__fill"></span></span></a></li>
+    <li><a class="pnav__link" href="#initiative-3" style="--c:var(--color-gold-dark)"><span class="pnav__num">03</span><span class="pnav__name">Engine</span><span class="pnav__track" aria-hidden="true"><span class="pnav__fill"></span></span></a></li>
+  </ol>
+</nav>
+
+<header class="hero">
   <div class="wrap">
-    <div class="mast__top">
-      <span class="eyebrow">October 2026</span>
+    <div class="hero__top">
+      <span class="eyebrow">Growth plan · October 2026</span>
       <a href="/">timsmarketing.com</a>
     </div>
-    <h1>Three ideas to make some <em>noise</em></h1>
-    <p class="mast__sub">For Daniel Schoenbrun and the Magicare team</p>
-    <div class="mast__frame">
-      <p>You asked for two. Here are three, which is partly the point. The question you raised was how one marketer competes with a five-person team at a better-funded competitor. The honest answer is to pick fewer, bigger pieces of work and then exhaust every format each one supports, with AI doing the production lifting that would otherwise require headcount.</p>
-      <p>These three are built that way, and they are built to feed each other. I am proposing them from outside, without having seen your data, your margins, or your win-loss record, so treat each one as a starting hypothesis to test.</p>
+    <div class="hero__grid">
+      <div>
+        <h1>Three growth initiatives for <span>Magicare</span></h1>
+        <p class="hero__sub">Building category authority in post-acute care</p>
+        <div class="hero__rule" aria-hidden="true"></div>
+      </div>
+      <div class="hero__art"><svg class="hero__svg" viewBox="0 0 640 460" aria-hidden="true" focusable="false"><g class="hero-field"><circle cx="20" cy="20" r="1.1"/><circle cx="20" cy="60" r="1.1"/><circle cx="20" cy="100" r="1.1"/><circle cx="20" cy="140" r="1.1"/><circle cx="20" cy="180" r="1.1"/><circle cx="20" cy="220" r="1.1"/><circle cx="20" cy="260" r="1.1"/><circle cx="20" cy="300" r="1.1"/><circle cx="20" cy="340" r="1.1"/><circle cx="20" cy="380" r="1.1"/><circle cx="20" cy="420" r="1.1"/><circle cx="60" cy="20" r="1.1"/><circle cx="60" cy="60" r="1.1"/><circle cx="60" cy="100" r="1.1"/><circle cx="60" cy="140" r="1.1"/><circle cx="60" cy="180" r="1.1"/><circle cx="60" cy="220" r="1.1"/><circle cx="60" cy="260" r="1.1"/><circle cx="60" cy="300" r="1.1"/><circle cx="60" cy="340" r="1.1"/><circle cx="60" cy="380" r="1.1"/><circle cx="60" cy="420" r="1.1"/><circle cx="100" cy="20" r="1.1"/><circle cx="100" cy="60" r="1.1"/><circle cx="100" cy="100" r="1.1"/><circle cx="100" cy="140" r="1.1"/><circle cx="100" cy="180" r="1.1"/><circle cx="100" cy="220" r="1.1"/><circle cx="100" cy="260" r="1.1"/><circle cx="100" cy="300" r="1.1"/><circle cx="100" cy="340" r="1.1"/><circle cx="100" cy="380" r="1.1"/><circle cx="100" cy="420" r="1.1"/><circle cx="140" cy="20" r="1.1"/><circle cx="140" cy="60" r="1.1"/><circle cx="140" cy="100" r="1.1"/><circle cx="140" cy="140" r="1.1"/><circle cx="140" cy="180" r="1.1"/><circle cx="140" cy="220" r="1.1"/><circle cx="140" cy="260" r="1.1"/><circle cx="140" cy="300" r="1.1"/><circle cx="140" cy="340" r="1.1"/><circle cx="140" cy="380" r="1.1"/><circle cx="140" cy="420" r="1.1"/><circle cx="180" cy="20" r="1.1"/><circle cx="180" cy="60" r="1.1"/><circle cx="180" cy="100" r="1.1"/><circle cx="180" cy="140" r="1.1"/><circle cx="180" cy="180" r="1.1"/><circle cx="180" cy="220" r="1.1"/><circle cx="180" cy="260" r="1.1"/><circle cx="180" cy="300" r="1.1"/><circle cx="180" cy="340" r="1.1"/><circle cx="180" cy="380" r="1.1"/><circle cx="180" cy="420" r="1.1"/><circle cx="220" cy="20" r="1.1"/><circle cx="220" cy="60" r="1.1"/><circle cx="220" cy="100" r="1.1"/><circle cx="220" cy="140" r="1.1"/><circle cx="220" cy="180" r="1.1"/><circle cx="220" cy="220" r="1.1"/><circle cx="220" cy="260" r="1.1"/><circle cx="220" cy="300" r="1.1"/><circle cx="220" cy="340" r="1.1"/><circle cx="220" cy="380" r="1.1"/><circle cx="220" cy="420" r="1.1"/><circle cx="260" cy="20" r="1.1"/><circle cx="260" cy="60" r="1.1"/><circle cx="260" cy="100" r="1.1"/><circle cx="260" cy="140" r="1.1"/><circle cx="260" cy="180" r="1.1"/><circle cx="260" cy="220" r="1.1"/><circle cx="260" cy="260" r="1.1"/><circle cx="260" cy="300" r="1.1"/><circle cx="260" cy="340" r="1.1"/><circle cx="260" cy="380" r="1.1"/><circle cx="260" cy="420" r="1.1"/><circle cx="300" cy="20" r="1.1"/><circle cx="300" cy="60" r="1.1"/><circle cx="300" cy="100" r="1.1"/><circle cx="300" cy="140" r="1.1"/><circle cx="300" cy="180" r="1.1"/><circle cx="300" cy="220" r="1.1"/><circle cx="300" cy="260" r="1.1"/><circle cx="300" cy="300" r="1.1"/><circle cx="300" cy="340" r="1.1"/><circle cx="300" cy="380" r="1.1"/><circle cx="300" cy="420" r="1.1"/><circle cx="340" cy="20" r="1.1"/><circle cx="340" cy="60" r="1.1"/><circle cx="340" cy="100" r="1.1"/><circle cx="340" cy="140" r="1.1"/><circle cx="340" cy="180" r="1.1"/><circle cx="340" cy="220" r="1.1"/><circle cx="340" cy="260" r="1.1"/><circle cx="340" cy="300" r="1.1"/><circle cx="340" cy="340" r="1.1"/><circle cx="340" cy="380" r="1.1"/><circle cx="340" cy="420" r="1.1"/><circle cx="380" cy="20" r="1.1"/><circle cx="380" cy="60" r="1.1"/><circle cx="380" cy="100" r="1.1"/><circle cx="380" cy="140" r="1.1"/><circle cx="380" cy="180" r="1.1"/><circle cx="380" cy="220" r="1.1"/><circle cx="380" cy="260" r="1.1"/><circle cx="380" cy="300" r="1.1"/><circle cx="380" cy="340" r="1.1"/><circle cx="380" cy="380" r="1.1"/><circle cx="380" cy="420" r="1.1"/><circle cx="420" cy="20" r="1.1"/><circle cx="420" cy="60" r="1.1"/><circle cx="420" cy="100" r="1.1"/><circle cx="420" cy="140" r="1.1"/><circle cx="420" cy="180" r="1.1"/><circle cx="420" cy="220" r="1.1"/><circle cx="420" cy="260" r="1.1"/><circle cx="420" cy="300" r="1.1"/><circle cx="420" cy="340" r="1.1"/><circle cx="420" cy="380" r="1.1"/><circle cx="420" cy="420" r="1.1"/><circle cx="460" cy="20" r="1.1"/><circle cx="460" cy="60" r="1.1"/><circle cx="460" cy="100" r="1.1"/><circle cx="460" cy="140" r="1.1"/><circle cx="460" cy="180" r="1.1"/><circle cx="460" cy="220" r="1.1"/><circle cx="460" cy="260" r="1.1"/><circle cx="460" cy="300" r="1.1"/><circle cx="460" cy="340" r="1.1"/><circle cx="460" cy="380" r="1.1"/><circle cx="460" cy="420" r="1.1"/><circle cx="500" cy="20" r="1.1"/><circle cx="500" cy="60" r="1.1"/><circle cx="500" cy="100" r="1.1"/><circle cx="500" cy="140" r="1.1"/><circle cx="500" cy="180" r="1.1"/><circle cx="500" cy="220" r="1.1"/><circle cx="500" cy="260" r="1.1"/><circle cx="500" cy="300" r="1.1"/><circle cx="500" cy="340" r="1.1"/><circle cx="500" cy="380" r="1.1"/><circle cx="500" cy="420" r="1.1"/><circle cx="540" cy="20" r="1.1"/><circle cx="540" cy="60" r="1.1"/><circle cx="540" cy="100" r="1.1"/><circle cx="540" cy="140" r="1.1"/><circle cx="540" cy="180" r="1.1"/><circle cx="540" cy="220" r="1.1"/><circle cx="540" cy="260" r="1.1"/><circle cx="540" cy="300" r="1.1"/><circle cx="540" cy="340" r="1.1"/><circle cx="540" cy="380" r="1.1"/><circle cx="540" cy="420" r="1.1"/><circle cx="580" cy="20" r="1.1"/><circle cx="580" cy="60" r="1.1"/><circle cx="580" cy="100" r="1.1"/><circle cx="580" cy="140" r="1.1"/><circle cx="580" cy="180" r="1.1"/><circle cx="580" cy="220" r="1.1"/><circle cx="580" cy="260" r="1.1"/><circle cx="580" cy="300" r="1.1"/><circle cx="580" cy="340" r="1.1"/><circle cx="580" cy="380" r="1.1"/><circle cx="580" cy="420" r="1.1"/><circle cx="620" cy="20" r="1.1"/><circle cx="620" cy="60" r="1.1"/><circle cx="620" cy="100" r="1.1"/><circle cx="620" cy="140" r="1.1"/><circle cx="620" cy="180" r="1.1"/><circle cx="620" cy="220" r="1.1"/><circle cx="620" cy="260" r="1.1"/><circle cx="620" cy="300" r="1.1"/><circle cx="620" cy="340" r="1.1"/><circle cx="620" cy="380" r="1.1"/><circle cx="620" cy="420" r="1.1"/></g><g class="hero-edges"><path id="he0" class="hero-edge" d="M62,70 C204,70 180,230 300,230" pathLength="1" style="--d:0.15s"/><path id="he1" class="hero-edge" d="M62,134 C204,134 180,230 300,230" pathLength="1" style="--d:0.24s"/><path id="he2" class="hero-edge is-hot" d="M62,198 C204,198 180,230 300,230" pathLength="1" style="--d:0.33s"/><path id="he3" class="hero-edge" d="M62,262 C204,262 180,230 300,230" pathLength="1" style="--d:0.42s"/><path id="he4" class="hero-edge" d="M62,326 C204,326 180,230 300,230" pathLength="1" style="--d:0.51s"/><path id="he5" class="hero-edge" d="M62,390 C204,390 180,230 300,230" pathLength="1" style="--d:0.60s"/><path id="he6" class="hero-edge" d="M360,230 C460,230 448,110 576,110" pathLength="1" style="--d:0.75s"/><path id="he7" class="hero-edge is-hot" d="M360,230 C460,230 448,190 576,190" pathLength="1" style="--d:0.85s"/><path id="he8" class="hero-edge" d="M360,230 C460,230 448,270 576,270" pathLength="1" style="--d:0.95s"/><path id="he9" class="hero-edge" d="M360,230 C460,230 448,350 576,350" pathLength="1" style="--d:1.05s"/><path class="hero-edge is-faint" d="M588,122 L588,178" pathLength="1" style="--d:1.30s"/><path class="hero-edge is-faint" d="M588,202 L588,258" pathLength="1" style="--d:1.40s"/><path class="hero-edge is-faint" d="M588,282 L588,338" pathLength="1" style="--d:1.50s"/></g><g class="hero-hub" style="--d:.55s"><circle class="hero-hub__halo" cx="330" cy="230" r="74"/><circle class="hero-hub__ring" cx="330" cy="230" r="46"/><circle class="hero-hub__core" cx="330" cy="230" r="28"/><circle class="hero-hub__dot" cx="330" cy="230" r="7"/></g><g class="hero-nodes"><circle class="hero-src" cx="54" cy="70" r="7" style="--d:0.05s"/><circle class="hero-src" cx="54" cy="134" r="7" style="--d:0.12s"/><circle class="hero-src is-hot" cx="54" cy="198" r="7" style="--d:0.19s"/><circle class="hero-src" cx="54" cy="262" r="7" style="--d:0.26s"/><circle class="hero-src" cx="54" cy="326" r="7" style="--d:0.33s"/><circle class="hero-src" cx="54" cy="390" r="7" style="--d:0.40s"/><rect class="hero-dst" x="577" y="99" width="22" height="22" rx="5" style="--d:1.00s"/><rect class="hero-dst is-hot" x="577" y="179" width="22" height="22" rx="5" style="--d:1.08s"/><rect class="hero-dst" x="577" y="259" width="22" height="22" rx="5" style="--d:1.16s"/><rect class="hero-dst" x="577" y="339" width="22" height="22" rx="5" style="--d:1.24s"/></g><g class="hero-signals"><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.8s" begin="1.6s" repeatCount="indefinite" rotate="auto"><mpath href="#he0"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.8s" begin="1.6s" repeatCount="indefinite"/></circle><circle class="hero-signal is-hot" r="4" opacity="0"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite" rotate="auto"><mpath href="#he2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="3.1s" begin="2.3s" repeatCount="indefinite" rotate="auto"><mpath href="#he4"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="3.1s" begin="2.3s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.7s" begin="3.0s" repeatCount="indefinite" rotate="auto"><mpath href="#he5"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.7s" begin="3.0s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="3.3s" begin="3.6s" repeatCount="indefinite" rotate="auto"><mpath href="#he1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="3.3s" begin="3.6s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.9s" begin="2.0s" repeatCount="indefinite" rotate="auto"><mpath href="#he3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.9s" begin="2.0s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.2s" begin="2.6s" repeatCount="indefinite" rotate="auto"><mpath href="#he6"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.2s" begin="2.6s" repeatCount="indefinite"/></circle><circle class="hero-signal is-hot" r="4" opacity="0"><animateMotion dur="2.0s" begin="2.5s" repeatCount="indefinite" rotate="auto"><mpath href="#he7"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.0s" begin="2.5s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.4s" begin="3.2s" repeatCount="indefinite" rotate="auto"><mpath href="#he8"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.4s" begin="3.2s" repeatCount="indefinite"/></circle><circle class="hero-signal" r="3.2" opacity="0"><animateMotion dur="2.6s" begin="3.9s" repeatCount="indefinite" rotate="auto"><mpath href="#he9"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.82;1" dur="2.6s" begin="3.9s" repeatCount="indefinite"/></circle></g></svg></div>
     </div>
+
+    <ol class="previews" aria-label="The three initiatives">
+      <li class="reveal" style="--d:0ms"><a class="preview" href="#initiative-1" style="--c:var(--color-sage);--t:var(--color-sage-tint)">
+        <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-bench"/></svg></span><span class="preview__num">01</span></span>
+        <h2>The post-acute referral benchmark</h2>
+        <p>Publish the first real dataset on how referrals move through skilled nursing facilities.</p>
+        <span class="preview__go">See initiative 1 <svg class="icon"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li class="reveal" style="--d:80ms"><a class="preview" href="#initiative-2" style="--c:var(--color-terracotta);--t:var(--color-terracotta-tint)">
+        <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-score"/></svg></span><span class="preview__num">02</span></span>
+        <h2>Category definition and the buying scorecard</h2>
+        <p>Define the category, then publish the criteria operators should use to evaluate every vendor in it.</p>
+        <span class="preview__go">See initiative 2 <svg class="icon"><use href="#i-arrow"/></svg></span>
+      </a></li>
+      <li class="reveal" style="--d:160ms"><a class="preview" href="#initiative-3" style="--c:var(--color-gold-dark);--t:var(--color-gold-tint)">
+        <span class="preview__top"><span class="preview__badge"><svg class="icon"><use href="#i-engine"/></svg></span><span class="preview__num">03</span></span>
+        <h2>The market intelligence engine</h2>
+        <p>A continuous loop where what buyers are actually discussing determines what gets built next.</p>
+        <span class="preview__go">See initiative 3 <svg class="icon"><use href="#i-arrow"/></svg></span>
+      </a></li>
+    </ol>
   </div>
 </header>
 
-<nav class="idx" aria-label="Sections">
-  <div class="wrap">
-    <ol class="idx__list">
-      <li><a class="idx__link" href="#system"><span class="idx__text">The system</span></a></li>
-      <li><a class="idx__link" href="#idea-1" aria-label="Idea 1, the benchmark"><span class="idx__num" aria-hidden="true">1</span><span class="idx__name">Benchmark</span></a></li>
-      <li><a class="idx__link" href="#idea-2" aria-label="Idea 2, the scorecard"><span class="idx__num" aria-hidden="true">2</span><span class="idx__name">Scorecard</span></a></li>
-      <li><a class="idx__link" href="#idea-3" aria-label="Idea 3, the engine"><span class="idx__num" aria-hidden="true">3</span><span class="idx__name">Engine</span></a></li>
-      <li><a class="idx__link" href="#next"><span class="idx__text">Next</span></a></li>
-    </ol>
-  </div>
-</nav>
-
 <main id="main">
 
-  <section class="section system" id="system" data-nav>
-    <div class="wrap">
-      <div class="section__head">
-        <p class="eyebrow">The system</p>
-        <h2>Three ideas that feed each other.</h2>
-      </div>
-
-      <ol class="flow" aria-label="The order the three ideas run in">
-        <li class="flow__step">
-          <span class="flow__order">First · Idea 3</span>
-          <h3>The engine</h3>
-          <p class="flow__does">Listens, and tells you what the market is actually talking about.</p>
-          <a class="flow__jump" href="#idea-3">Go to idea 3</a>
-        </li>
-        <li class="flow__step">
-          <span class="flow__order">Then · Idea 1</span>
-          <h3>The benchmark</h3>
-          <p class="flow__does">Turns your platform data into evidence nobody else has.</p>
-          <a class="flow__jump" href="#idea-1">Go to idea 1</a>
-        </li>
-        <li class="flow__step">
-          <span class="flow__order">Then · Idea 2</span>
-          <h3>The scorecard</h3>
-          <p class="flow__does">Turns that evidence into the framework buyers use to judge every vendor, including you.</p>
-          <a class="flow__jump" href="#idea-2">Go to idea 2</a>
-        </li>
-      </ol>
-
-      <p class="flow__note">The engine listens and tells you what the market is actually talking about. The benchmark turns your platform data into evidence nobody else has. The scorecard turns that evidence into the framework buyers use to evaluate every vendor in the category, including you. Run in that order, each one makes the next more credible.</p>
-    </div>
-  </section>
-
+<!-- ======================================================================
+     Initiative 1
+     ====================================================================== -->
+<section class="init init--1" id="initiative-1" data-section aria-labelledby="i1-title">
   <div class="wrap">
-    <div class="ideas-bar">
-      <p>Each idea reads in a few lines. Open any one for the detail.</p>
-      <button class="ideas-bar__btn" type="button" data-toggle-all aria-pressed="false">Open all three</button>
+    <div class="init__head reveal">
+      <span class="init__num" aria-hidden="true">01</span>
+      <div>
+        <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-bench"/></svg>Initiative 1</p>
+        <h2 id="i1-title">The post-acute referral benchmark</h2>
+        <p class="init__summary">Publish the first real dataset on how referrals move through skilled nursing facilities.</p>
+      </div>
     </div>
+
+    <div class="init__visual">
+      <p class="vis-caption reveal">What one report produces</p>
+      <figure class="mult reveal" data-mult style="margin:0">
+        <svg class="mult__svg" viewBox="0 0 1000 660" aria-hidden="true" focusable="false"><circle class="mult__orbit" cx="500" cy="330" r="150"/><ellipse class="mult__orbit is-outer" cx="500" cy="330" rx="290" ry="205"/><path class="mult__spoke" d="M432.5,291 Q361.9,273.6 248.9,227.5" pathLength="1" style="--d:0.00s"/><path class="mult__sub-spoke" d="M248.9,227.5 L209.2,221.9" pathLength="1" style="--d:0.45s"/><circle class="mult__sub" cx="209.2" cy="221.9" r="4.2" style="--d:0.55s"/><path class="mult__sub-spoke" d="M248.9,227.5 L214.2,207.5" pathLength="1" style="--d:0.48s"/><circle class="mult__sub" cx="214.2" cy="207.5" r="4.2" style="--d:0.58s"/><path class="mult__sub-spoke" d="M248.9,227.5 L224.2,196" pathLength="1" style="--d:0.52s"/><circle class="mult__sub" cx="224.2" cy="196" r="4.2" style="--d:0.62s"/><circle class="mult__node" cx="248.9" cy="227.5" r="10" style="--d:0.35s"/><text class="mult__label" x="195.2" y="192.5" text-anchor="end" style="--d:0.55s"><tspan x="195.2" dy="0">Trade press</tspan><tspan x="195.2" dy="18">placements</tspan></text><path class="mult__spoke" d="M475.9,255.8 Q450.7,222.8 410.4,135" pathLength="1" style="--d:0.09s"/><path class="mult__sub-spoke" d="M410.4,135 L391,100" pathLength="1" style="--d:0.54s"/><circle class="mult__sub" cx="391" cy="100" r="4.2" style="--d:0.64s"/><path class="mult__sub-spoke" d="M410.4,135 L405.5,95.3" pathLength="1" style="--d:0.58s"/><circle class="mult__sub" cx="405.5" cy="95.3" r="4.2" style="--d:0.68s"/><circle class="mult__node" cx="410.4" cy="135" r="10" style="--d:0.44s"/><text class="mult__label" x="391.2" y="54.1" text-anchor="middle" style="--d:0.64s"><tspan x="391.2" dy="0">Conference session</tspan><tspan x="391.2" dy="18">proposals</tspan></text><path class="mult__spoke" d="M524.1,255.8 Q549.3,222.8 589.6,135" pathLength="1" style="--d:0.18s"/><circle class="mult__node" cx="589.6" cy="135" r="10" style="--d:0.53s"/><text class="mult__label" x="596.4" y="92.1" text-anchor="middle" style="--d:0.73s"><tspan x="596.4" dy="0">Interactive</tspan><tspan x="596.4" dy="18">grader</tspan></text><path class="mult__spoke" d="M567.5,291 Q638.1,273.6 751.1,227.5" pathLength="1" style="--d:0.27s"/><circle class="mult__node" cx="751.1" cy="227.5" r="10" style="--d:0.62s"/><text class="mult__label" x="770.2" y="212.5" text-anchor="start" style="--d:0.82s"><tspan x="770.2" dy="0">Webinar with</tspan><tspan x="770.2" dy="18">a customer</tspan></text><path class="mult__spoke" d="M567.5,369 Q638.1,386.4 751.1,432.5" pathLength="1" style="--d:0.36s"/><path class="mult__sub-spoke" d="M751.1,432.5 L788.7,418.8" pathLength="1" style="--d:0.81s"/><circle class="mult__sub" cx="788.7" cy="418.8" r="4.2" style="--d:0.91s"/><path class="mult__sub-spoke" d="M751.1,432.5 L812.4,422.9" pathLength="1" style="--d:0.85s"/><circle class="mult__sub" cx="812.4" cy="422.9" r="4.2" style="--d:0.95s"/><path class="mult__sub-spoke" d="M751.1,432.5 L791.1,434.1" pathLength="1" style="--d:0.88s"/><circle class="mult__sub" cx="791.1" cy="434.1" r="4.2" style="--d:0.98s"/><path class="mult__sub-spoke" d="M751.1,432.5 L811.5,446.8" pathLength="1" style="--d:0.92s"/><circle class="mult__sub" cx="811.5" cy="446.8" r="4.2" style="--d:1.02s"/><path class="mult__sub-spoke" d="M751.1,432.5 L787.6,449.1" pathLength="1" style="--d:0.95s"/><circle class="mult__sub" cx="787.6" cy="449.1" r="4.2" style="--d:1.05s"/><path class="mult__sub-spoke" d="M751.1,432.5 L801.6,468.6" pathLength="1" style="--d:0.99s"/><circle class="mult__sub" cx="801.6" cy="468.6" r="4.2" style="--d:1.09s"/><path class="mult__sub-spoke" d="M751.1,432.5 L778.6,461.6" pathLength="1" style="--d:1.02s"/><circle class="mult__sub" cx="778.6" cy="461.6" r="4.2" style="--d:1.12s"/><path class="mult__sub-spoke" d="M751.1,432.5 L784.2,485" pathLength="1" style="--d:1.06s"/><circle class="mult__sub" cx="784.2" cy="485" r="4.2" style="--d:1.16s"/><path class="mult__sub-spoke" d="M751.1,432.5 L765.6,469.8" pathLength="1" style="--d:1.09s"/><circle class="mult__sub" cx="765.6" cy="469.8" r="4.2" style="--d:1.19s"/><path class="mult__sub-spoke" d="M751.1,432.5 L761.9,493.6" pathLength="1" style="--d:1.12s"/><circle class="mult__sub" cx="761.9" cy="493.6" r="4.2" style="--d:1.23s"/><circle class="mult__node" cx="751.1" cy="432.5" r="10" style="--d:0.71s"/><text class="mult__label" x="823.9" y="470.5" text-anchor="start" style="--d:0.91s"><tspan x="823.9" dy="0">20 to 30</tspan><tspan x="823.9" dy="18">social posts</tspan></text><path class="mult__spoke" d="M524.1,404.2 Q549.3,437.2 589.6,525" pathLength="1" style="--d:0.45s"/><path class="mult__sub-spoke" d="M589.6,525 L620.7,550.1" pathLength="1" style="--d:0.90s"/><circle class="mult__sub" cx="620.7" cy="550.1" r="4.2" style="--d:1.00s"/><path class="mult__sub-spoke" d="M589.6,525 L609,560" pathLength="1" style="--d:0.93s"/><circle class="mult__sub" cx="609" cy="560" r="4.2" style="--d:1.03s"/><path class="mult__sub-spoke" d="M589.6,525 L594.5,564.7" pathLength="1" style="--d:0.97s"/><circle class="mult__sub" cx="594.5" cy="564.7" r="4.2" style="--d:1.07s"/><path class="mult__sub-spoke" d="M589.6,525 L579.3,563.6" pathLength="1" style="--d:1.00s"/><circle class="mult__sub" cx="579.3" cy="563.6" r="4.2" style="--d:1.10s"/><circle class="mult__node" cx="589.6" cy="525" r="10" style="--d:0.80s"/><text class="mult__label" x="608.8" y="597.9" text-anchor="middle" style="--d:1.00s"><tspan x="608.8" dy="0">One-pager</tspan><tspan x="608.8" dy="18">per finding</tspan></text><path class="mult__spoke" d="M475.9,404.2 Q450.7,437.2 410.4,525" pathLength="1" style="--d:0.54s"/><path class="mult__sub-spoke" d="M410.4,525 L405.5,564.7" pathLength="1" style="--d:0.99s"/><circle class="mult__sub" cx="405.5" cy="564.7" r="4.2" style="--d:1.09s"/><path class="mult__sub-spoke" d="M410.4,525 L391,560" pathLength="1" style="--d:1.02s"/><circle class="mult__sub" cx="391" cy="560" r="4.2" style="--d:1.12s"/><circle class="mult__node" cx="410.4" cy="525" r="10" style="--d:0.89s"/><text class="mult__label" x="391.2" y="597.9" text-anchor="middle" style="--d:1.09s"><tspan x="391.2" dy="0">Segment</tspan><tspan x="391.2" dy="18">variants</tspan></text><path class="mult__spoke" d="M432.5,369 Q361.9,386.4 248.9,432.5" pathLength="1" style="--d:0.63s"/><path class="mult__sub-spoke" d="M248.9,432.5 L214.2,452.5" pathLength="1" style="--d:1.08s"/><circle class="mult__sub" cx="214.2" cy="452.5" r="4.2" style="--d:1.18s"/><circle class="mult__node" cx="248.9" cy="432.5" r="10" style="--d:0.98s"/><text class="mult__label" x="195.2" y="459.5" text-anchor="end" style="--d:1.18s"><tspan x="195.2" dy="0">Annual</tspan><tspan x="195.2" dy="18">edition</tspan></text><g class="mult__core"><circle class="mult__core-halo" cx="500" cy="330" r="96"/><circle class="mult__core-disc" cx="500" cy="330" r="74"/><use href="#i-doc" class="mult__core-icon" x="483" y="284" width="34" height="34"/><text class="mult__core-title" x="500" y="342" text-anchor="middle">The report</text><text class="mult__core-sub" x="500" y="363" text-anchor="middle">Roughly 15 pages</text></g></svg>
+        <figcaption class="mult__note">One core asset at the center. Every endpoint is a format built from it.</figcaption>
+        <div class="mult__list">
+          <div class="mult__root"><svg class="icon"><use href="#i-doc"/></svg><div><strong>The report</strong><span>Roughly 15 pages, three or four findings</span></div></div>
+          <ul class="mult__branches">
+            <li style="--d:.05s">Trade press placements<span class="mult__dots" aria-hidden="true"><i></i><i></i><i></i></span></li>
+            <li style="--d:.1s">A webinar with a customer</li>
+            <li style="--d:.15s">Conference session proposals, which earn speaking slots</li>
+            <li style="--d:.2s">An interactive grader where operators enter their own numbers and see their rank</li>
+            <li style="--d:.25s">20 to 30 social posts across leadership and sales accounts, each built on one finding<span class="mult__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></li>
+            <li style="--d:.3s">A sales one-pager per finding<span class="mult__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span></li>
+            <li style="--d:.35s">Segment variants for large operators and for RCM vendors<span class="mult__dots" aria-hidden="true"><i></i><i></i></span></li>
+            <li style="--d:.4s">An annual edition, so year two becomes a trend story and the benchmark becomes a fixture</li>
+          </ul>
+        </div>
+      </figure>
+    </div>
+
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-1"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+
+    <div class="more" id="more-1"><div class="more__inner"><div class="more__body">
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-target"/></svg></span><h3>The opportunity</h3></div>
+        <div class="blk__body">
+          <p class="reveal">Every vendor in this category makes the same claims in the same language. Buyers have no independent reference point for what good performance looks like, and no vendor claim can be verified against anything.</p>
+          <p class="reveal">Magicare's platform holds data no competitor has.</p>
+          <ul class="chips reveal">
+            <li class="chip"><svg class="icon"><use href="#i-clock"/></svg>Referral response times</li>
+            <li class="chip"><svg class="icon"><use href="#i-funnel"/></svg>Referral-to-admission conversion</li>
+            <li class="chip"><svg class="icon"><use href="#i-gauge"/></svg>Time to decision</li>
+            <li class="chip"><svg class="icon"><use href="#i-shield"/></svg>Authorization turnaround</li>
+            <li class="chip"><svg class="icon"><use href="#i-segment"/></svg>Census patterns by operator size and region</li>
+          </ul>
+          <p class="pull reveal">Published as an industry benchmark, that data becomes the reference point. The company that publishes it becomes the authority behind it.</p>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-clock"/></svg></span><h3>Why it reaches buyers earlier than any other channel</h3></div>
+        <div class="blk__body">
+          <div class="reach reveal">
+            <div class="reach__col">
+              <p class="reach__who">Operators who are already looking</p>
+              <div class="reach__by"><span>Conferences</span><span>Referrals</span></div>
+            </div>
+            <div class="reach__col is-new">
+              <p class="reach__who">Operators who do not yet know they have a problem</p>
+              <div class="reach__by"><span>The benchmark</span></div>
+            </div>
+          </div>
+          <p class="reveal">An owner who learns the median referral sits unanswered for a given number of hours, and realizes no one at their organization knows their own number, has entered the market without a vendor conversation ever taking place. That makes the benchmark the one mechanism in this plan that creates new demand.</p>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-press"/></svg></span><h3>It closes the trade publication gap</h3></div>
+        <div class="blk__body">
+          <p class="reveal">Long-term care trade press runs original industry data. A benchmark is the asset that earns that coverage, and benchmark data keeps getting cited for years after publication.</p>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-doc"/></svg></span><h3>The core asset</h3></div>
+        <div class="blk__body">
+          <ul class="spec reveal">
+            <li><span class="spec__v">1 report</span><span class="spec__k">Properly designed</span></li>
+            <li><span class="spec__v">~15 pages</span><span class="spec__k">Roughly, in length</span></li>
+            <li><span class="spec__v">3 or 4</span><span class="spec__k">Findings that are genuinely surprising</span></li>
+            <li><span class="spec__v">1 headline</span><span class="spec__k">A number that makes an operator uncomfortable about their own performance</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Where AI carries the load</h3></div>
+        <div class="blk__body">
+          <ul class="ai-grid">
+            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-analyze"/></svg></span><h4>Pattern analysis</h4><p>Across the exported dataset, compressing an analyst engagement into days.</p></li>
+            <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Narrative and derivatives</h4><p>The narrative and every derivative asset, drafted from one source of truth.</p></li>
+            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-code"/></svg></span><h4>The grader tool</h4><p>Built directly in code, so engineering time stays on the product.</p></li>
+            <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-press"/></svg></span><h4>Trade outreach</h4><p>Research on the right editor at each outlet, and a pitch drafted for each one.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>Segment variants</h4><p>Generated at volume. This is normally the first work cut for lack of hours.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="needs reveal">
+        <div class="needs__box needs__box--req">
+          <p class="needs__title"><svg class="icon"><use href="#i-key"/></svg>Requirements</p>
+          <ul class="req-list">
+            <li><svg class="icon"><use href="#i-data"/></svg>Platform data access, with legal and customer consent review</li>
+            <li><svg class="icon"><use href="#i-veil"/></svg>Agreed anonymization thresholds</li>
+            <li><svg class="icon"><use href="#i-users"/></svg>Named customers alongside the findings</li>
+          </ul>
+        </div>
+        <div class="needs__box needs__box--q">
+          <p class="needs__title"><svg class="icon"><use href="#i-question"/></svg>Open question</p>
+          <p>Is customer volume sufficient for statistically defensible numbers?</p>
+          <p>This is the first thing to verify.</p>
+        </div>
+      </div>
+
+    </div></div></div>
   </div>
+</section>
 
-  <!-- Idea 1 -->
-  <article class="idea" id="idea-1" data-nav aria-labelledby="idea-1-title">
-    <div class="wrap">
-      <div class="idea__head">
-        <span class="idea__num" aria-hidden="true">01</span>
-        <div>
-          <p class="eyebrow">Idea 1</p>
-          <h2 id="idea-1-title">The post-acute referral benchmark</h2>
-          <p class="idea__summary">Publish the first real dataset on how referrals actually move through skilled nursing facilities, using your own anonymized platform data.</p>
+<!-- ======================================================================
+     Initiative 2
+     ====================================================================== -->
+<section class="init init--2" id="initiative-2" data-section aria-labelledby="i2-title">
+  <div class="wrap">
+    <div class="init__head reveal">
+      <span class="init__num" aria-hidden="true">02</span>
+      <div>
+        <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-score"/></svg>Initiative 2</p>
+        <h2 id="i2-title">Category definition and the buying scorecard</h2>
+        <p class="init__summary">Define the category, then publish the criteria operators should use to evaluate every vendor in it.</p>
+      </div>
+    </div>
+
+    <div class="init__visual">
+      <p class="vis-caption reveal">What buyers measure</p>
+      <div class="measure reveal">
+        <div class="measure__panel">
+          <p class="measure__title">Evaluations today</p>
+          <p class="measure__hint">Two dimensions, both of which favor the best-funded vendor.</p>
+          <div class="measure__rows">
+            <div class="measure__row"><b></b><span class="measure__bar" style="--d:.1s">Feature count</span></div>
+            <div class="measure__row"><b></b><span class="measure__bar" style="--d:.2s">Price</span></div>
+          </div>
+        </div>
+        <span class="measure__arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>
+        <div class="measure__panel is-new">
+          <p class="measure__title">With a published framework</p>
+          <p class="measure__hint">Six to eight criteria, set before any vendor conversation begins.</p>
+          <div class="measure__rows">
+            <div class="measure__row"><b>1</b><span class="measure__bar" style="--d:.25s"></span></div>
+            <div class="measure__row"><b>2</b><span class="measure__bar" style="--d:.3s"></span></div>
+            <div class="measure__row"><b>3</b><span class="measure__bar" style="--d:.35s"></span></div>
+            <div class="measure__row"><b>4</b><span class="measure__bar" style="--d:.4s"></span></div>
+            <div class="measure__row"><b>5</b><span class="measure__bar" style="--d:.45s"></span></div>
+            <div class="measure__row is-flag"><b>6</b><span class="measure__bar" style="--d:.5s"></span></div>
+          </div>
+          <p class="measure__legend"><i aria-hidden="true"></i>At least one criterion where Magicare holds no obvious advantage</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-2"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+
+    <div class="more" id="more-2"><div class="more__inner"><div class="more__body">
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-target"/></svg></span><h3>The opportunity</h3></div>
+        <div class="blk__body">
+          <p class="reveal">Competitive evaluations in this category collapse into feature count and price, because buyers have no framework for comparing products that all describe themselves the same way. Those two dimensions favor whoever has the most funding.</p>
+          <p class="pull reveal">A published evaluation framework changes what buyers measure, before any vendor conversation begins.</p>
         </div>
       </div>
 
-      <div class="idea__body-wrap">
-        <details class="more">
-          <summary><span class="more__open">Read the detail</span><span class="more__close">Close the detail</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <div class="detail">
-            <div class="block">
-              <h3 class="block__label">What it is</h3>
-              <div class="block__body">
-                <p>Response times, referral-to-admission conversion, time to decision, authorization turnaround, census patterns cut by operator size and region. One properly designed report, roughly 15 pages, with three or four findings that are genuinely surprising and a headline number that makes an operator uncomfortable about their own performance.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">Why it works here</h3>
-              <div class="block__body">
-                <p>You said the product is market-leading but the claim is hard to convey amid the noise around AI. Every competitor is making the same assertions with the same words. Data is the one claim none of them can assert their way past, because it either exists or it does not.</p>
-                <p>You also named trade publications as a gap. Original industry data is what trade press runs. Vendor announcements get ignored. Benchmarks get written up, cited, and referenced for years.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">How it creates demand</h3>
-              <div class="block__body">
-                <p>It reaches buyers before they know they have a problem. An owner who reads that the median referral sits unanswered for some number of hours, and realizes they have no idea what their own number is, has entered the funnel without anyone selling to them. Conferences and referrals cannot do that, because both only reach people already in motion.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">What one piece becomes</h3>
-              <div class="block__body">
-                <ul class="formats">
-                  <li>The report</li>
-                  <li>A press push to the long-term care trades</li>
-                  <li>A webinar walking the findings, with a customer on it</li>
-                  <li>A conference session proposal, since original data is what earns a speaking slot</li>
-                  <li>An interactive grader where an operator enters their own numbers and sees where they rank</li>
-                  <li>20 to 30 social posts across you, Chen, Bob and Sam, each built on a single finding</li>
-                  <li>A sales one-pager per finding</li>
-                  <li>Segment cuts, so the 20+ facility operator version differs from the RCM vendor version</li>
-                  <li>An annual rhythm, so year two is a trend story and the benchmark becomes a fixture</li>
-                </ul>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">Where AI does the lifting</h3>
-              <div class="block__body">
-                <ul class="lift">
-                  <li>Analysis across the exported dataset to find and test patterns, compressing what would be an analyst engagement into days</li>
-                  <li>Drafting the narrative and every derivative asset from one source of truth</li>
-                  <li>Building the grader tool directly with Claude Code, so engineering stays on the product</li>
-                  <li>Researching the right editors at each trade outlet and drafting tailored pitches</li>
-                  <li>Generating the segment variants, which is normally the first work cut for lack of hours</li>
-                </ul>
-              </div>
-            </div>
-            <div class="callouts">
-              <div class="callout">
-                <h3>What it would need from you</h3>
-                <p>Platform data access and whatever legal or customer consent review that requires. A decision on anonymization thresholds. Ideally a customer or two willing to be named alongside it.</p>
-              </div>
-              <div class="callout callout--open">
-                <h3>The open question</h3>
-                <p>This needs enough customer volume for the numbers to hold up. I cannot see that from outside, so it is the first thing I would check.</p>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-    </div>
-  </article>
-
-  <!-- Idea 2 -->
-  <article class="idea" id="idea-2" data-nav aria-labelledby="idea-2-title">
-    <div class="wrap">
-      <div class="idea__head">
-        <span class="idea__num" aria-hidden="true">02</span>
-        <div>
-          <p class="eyebrow">Idea 2</p>
-          <h2 id="idea-2-title">Name the category and publish the buying scorecard</h2>
-          <p class="idea__summary">Define what this category actually is, then publish the criteria operators should use to evaluate any vendor in it, including you.</p>
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-funnel"/></svg></span><h3>Why this works upstream of the deal</h3></div>
+        <div class="blk__body">
+          <ol class="steps reveal">
+            <li><span class="steps__when">Before the deal</span><p>An operator who structures an evaluation around published criteria has had the competition shaped before the first vendor call.</p></li>
+            <li><span class="steps__when">During the deal</span><p>The framework improves win rate in deals already in motion, so it returns faster than most category work.</p></li>
+            <li><span class="steps__when">In sales hands</span><p>Sales gets an asset that reframes an active evaluation and reads as guidance to the buyer.</p></li>
+          </ol>
         </div>
       </div>
 
-      <div class="idea__body-wrap">
-        <details class="more">
-          <summary><span class="more__open">Read the detail</span><span class="more__close">Close the detail</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <div class="detail">
-            <div class="block">
-              <h3 class="block__label">What it is</h3>
-              <div class="block__body">
-                <p>A public buyer's evaluation guide. Six to eight criteria, each with what to ask, what a good answer looks like, and how to check the answer independently. It has to include at least one criterion where Magicare does not obviously win, or it reads as marketing and gets dismissed.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">Why it works here</h3>
-              <div class="block__body">
-                <p>You said the product is market-leading but hard to distinguish. Sam said bake-offs collapse into feature and price comparison. Those are the same problem from two seats.</p>
-                <p>Buyers have no framework for comparing these products, so they fall back on the two dimensions anyone can understand, which are feature count and price. Both favor whoever has more money. Supplying a better framework is how you compete without outspending.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">How it creates demand</h3>
-              <div class="block__body">
-                <p>It works upstream of the deal. If an operator uses your criteria to structure their evaluation, the competition is shaped before the vendor calls start.</p>
-                <p>It also improves win rate in deals already in flight, which means it pays back faster than most brand work, and it gives sales something to send mid-cycle that reframes an active bake-off without sounding like a pitch.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">What one piece becomes</h3>
-              <div class="block__body">
-                <ul class="formats">
-                  <li>The public guide</li>
-                  <li>A scored self-assessment an operator can complete</li>
-                  <li>A sales version for mid-cycle deals</li>
-                  <li>One content piece per criterion, so six to eight pieces from one effort</li>
-                  <li>A conference talk, since a buying framework is a natural session topic</li>
-                  <li>A webinar or panel with an operator and ideally a consultant or analyst</li>
-                  <li>Trade bylines, which addresses the publication gap directly</li>
-                  <li>The messaging spine for the site</li>
-                </ul>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">Where AI does the lifting</h3>
-              <div class="block__body">
-                <ul class="lift">
-                  <li>Synthesizing recorded customer interviews to extract the language buyers actually use, the recurring objections, and what made them switch. Normally weeks of manual work, and where most positioning exercises quietly die</li>
-                  <li>Systematic competitive analysis across competitor sites, materials and public reviews to map what everyone claims and find the unclaimed ground</li>
-                  <li>Drafting the criteria set and every derivative from one agreed document</li>
-                  <li>Generating variants for each buyer layer, which matters because you described an owner removed from operations and people below who know the detail</li>
-                  <li>Keeping it current, so when a competitor shifts positioning the affected pieces regenerate in hours</li>
-                </ul>
-              </div>
-            </div>
-            <div class="callouts">
-              <div class="callout">
-                <h3>What it would need from you</h3>
-                <p>Time with you, Sam, Chen and Bob on what genuinely differentiates Magicare beyond Epic compatibility. Customer access for interviews. Willingness to include criteria where you are not strongest, which is the thing that makes it credible.</p>
-              </div>
-              <div class="callout callout--open">
-                <h3>The open question</h3>
-                <p>I do not yet know what your real differentiators are. The first step is finding out. If the honest answer is that you win on execution, with nothing structural behind it, the scorecard is the wrong play. I would tell you that and skip it.</p>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-    </div>
-  </article>
-
-  <!-- Idea 3 -->
-  <article class="idea" id="idea-3" data-nav aria-labelledby="idea-3-title">
-    <div class="wrap">
-      <div class="idea__head">
-        <span class="idea__num" aria-hidden="true">03</span>
-        <div>
-          <p class="eyebrow">Idea 3</p>
-          <h2 id="idea-3-title">The market intelligence engine</h2>
-          <p class="idea__summary">A continuous loop where what buyers say each month decides what gets made next. The content calendar follows the market and changes when the market does.</p>
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-doc"/></svg></span><h3>The core asset</h3></div>
+        <div class="blk__body">
+          <p class="reveal">A public buyer's evaluation guide. Six to eight criteria, each with the question to ask, what a strong answer looks like, and how to verify the answer independently.</p>
+          <p class="pull reveal">The guide must include at least one criterion where Magicare holds no obvious advantage. Without it, the guide reads as marketing and gets discarded.</p>
         </div>
       </div>
 
-      <div class="idea__body-wrap">
-        <details class="more">
-          <summary><span class="more__open">Read the detail</span><span class="more__close">Close the detail</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <div class="detail">
-            <div class="block">
-              <h3 class="block__label">What it is</h3>
-              <div class="block__body">
-                <p>Six stages, running continuously.</p>
-              </div>
-            </div>
-
-            <div class="loop" data-loop>
-              <div class="loop__ring" aria-hidden="true">
-                <svg viewBox="-40 0 380 300" data-ring></svg>
-              </div>
-              <div>
-                <ol class="stages">
-                  <li class="stage" data-stage="Listen">
-                    <h3>Listen</h3>
-                    <p>LinkedIn comment threads, where this market demonstrably engages. Trade publication articles and the discussion around them. State and national association groups. Adjacent audiences who talk more publicly than owners do, specifically discharge planners, case managers and RCM vendor staff. Review sites where bake-off research happens. Conference agendas, which are a published signal of what the industry decided matters this year.</p>
-                  </li>
-                  <li class="stage" data-stage="Score">
-                    <h3>Score</h3>
-                    <p>Every conversation rated on whether the person sits in the buying group, whether the organization matches the 20+ facility profile, and whether the topic is one Magicare can speak to credibly. Only what clears the bar reaches a human.</p>
-                  </li>
-                  <li class="stage" data-stage="Categorize">
-                    <h3>Categorize</h3>
-                    <p>Three buckets with different downstream actions. Pain points feed content and messaging. Competitor mentions feed the scorecard criteria. Direct Magicare mentions feed response and customer proof.</p>
-                  </li>
-                  <li class="stage" data-stage="Engage">
-                    <h3>Engage</h3>
-                    <p>You, Chen, Bob and Sam respond in your own voices, with useful answers and Magicare mentioned only where relevant. AI drafts in each person's voice with context summarized, so each review takes about two minutes. Nothing publishes without a human reading it.</p>
-                  </li>
-                  <li class="stage" data-stage="Feed the calendar">
-                    <h3>Feed the calendar</h3>
-                    <p>Recurring pain points become the next core pieces. The exact language buyers use becomes the language on the site. Objections in competitor threads become scorecard criteria. Repeated questions become tool features. Where the conversations happen determines where content gets distributed.</p>
-                  </li>
-                  <li class="stage" data-stage="Measure and restart">
-                    <h3>Measure and restart</h3>
-                    <p>Which topics drove engagement, which named accounts went from silent to engaged, which conversations became meetings. That tunes the scoring and the loop runs again.</p>
-                  </li>
-                </ol>
-                <p class="stages__return"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Then back to stage 1, with sharper scoring.</p>
-              </div>
-            </div>
-
-            <div class="block" style="margin-top: 1.6rem; border-top: 1px solid var(--color-line); padding-top: 1.6rem;">
-              <h3 class="block__label">Why it works here</h3>
-              <div class="block__body">
-                <p>You said you need high-volume content creation and asked how one person competes with a five-person team. This is the structural answer.</p>
-                <p>A larger team organized by channel produces more ordinary assets, planned in advance and measured in arrears. One person running this loop produces fewer core assets, and each one is grounded in something a real buyer said that month. Relevance and speed are how one person keeps pace with a bigger team.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">The production math</h3>
-              <div class="block__body">
-                <ul class="math">
-                  <li><span class="math__val">1</span><span class="math__lab">core research piece a month</span></li>
-                  <li><span class="math__val">20 to 30</span><span class="math__lab">derivative assets from it</span></li>
-                  <li><span class="math__val">Daily</span><span class="math__lab">leadership posts across four accounts</span></li>
-                  <li><span class="math__val">1</span><span class="math__lab">trade byline a month</span></li>
-                </ul>
-                <p class="math-note">That is a concrete answer to high-volume, and I would want to know whether it matches what you had in mind.</p>
-              </div>
-            </div>
-            <div class="block">
-              <h3 class="block__label">Where AI does the lifting</h3>
-              <div class="block__body">
-                <ul class="lift">
-                  <li>Continuous monitoring across many surfaces, which is a full-time role for a person and a background process otherwise</li>
-                  <li>Classification at volume against the named-account list</li>
-                  <li>Trend detection over time, which is where it genuinely beats a human, because noticing that authorization complaints tripled this quarter is invisible when you read threads one at a time</li>
-                  <li>Voice-matched drafting with human approval</li>
-                  <li>Synthesizing hundreds of conversations into a ranked list of what to make next, with the actual phrasing attached</li>
-                </ul>
-              </div>
-            </div>
-            <div class="callouts">
-              <div class="callout">
-                <h3>What it would need from you</h3>
-                <p>Leadership willingness to post and review. Agreement on voice and approval workflow. A small tooling budget.</p>
-              </div>
-              <div class="callout callout--open">
-                <h3>The open question</h3>
-                <p>Sam made the point that your buyers are not in open online communities the way other markets are, and that deserves to be taken seriously. So the first two weeks are about confirming where the signal actually is. If the online surface turns out thin, recorded customer calls and conference floor conversations feed the identical engine through a different door. The engine runs on what buyers say, wherever they say it.</p>
-              </div>
+      <div class="reveal">
+        <p class="vis-caption">How the scorecard works</p>
+        <div class="sc" data-scorecard>
+          <div class="sc__bar">
+            <p class="sc__title"><svg class="icon"><use href="#i-score"/></svg>Buyer scorecard <span class="sc__demo">Demo</span></p>
+            <div class="sc__vendors" role="group" aria-label="Vendor being rated">
+              <button class="sc__vendor" type="button" data-vendor="0" aria-pressed="true">Vendor A</button>
+              <button class="sc__vendor" type="button" data-vendor="1" aria-pressed="false">Vendor B</button>
+              <button class="sc__vendor" type="button" data-vendor="2" aria-pressed="false">Vendor C</button>
             </div>
           </div>
-        </details>
+          <p class="sc__intro">Each vendor is rated from 1 to 5 on every criterion. The criteria are written from customer interviews, so they are left blank here. Nothing is pre-filled.</p>
+          <p class="sc__anatomy"><span><i></i>The question to ask</span><span><i></i>What a strong answer looks like</span><span><i></i>How to verify it independently</span></p>
+          <ol class="sc__rows" data-sc-rows></ol>
+          <div class="sc__foot">
+            <div class="sc__totals" data-sc-totals></div>
+            <button class="sc__reset" type="button" data-sc-reset>Clear ratings</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-stack"/></svg></span><h3>What it produces</h3></div>
+        <div class="blk__body">
+          <ul class="fmt-grid">
+            <li class="reveal" style="--d:0ms"><svg class="icon"><use href="#i-doc"/></svg>The public guide</li>
+            <li class="reveal" style="--d:40ms"><svg class="icon"><use href="#i-score"/></svg>A scored self-assessment operators can complete</li>
+            <li class="reveal" style="--d:80ms"><svg class="icon"><use href="#i-page"/></svg>A sales edition for active evaluations</li>
+            <li class="reveal" style="--d:120ms"><svg class="icon"><use href="#i-layers"/></svg>One content piece per criterion, six to eight pieces from a single effort</li>
+            <li class="reveal" style="--d:160ms"><svg class="icon"><use href="#i-stage"/></svg>A conference session, since a buyer's framework is a strong session topic</li>
+            <li class="reveal" style="--d:200ms"><svg class="icon"><use href="#i-webinar"/></svg>A panel or webinar with an operator and an independent consultant</li>
+            <li class="reveal" style="--d:240ms"><svg class="icon"><use href="#i-press"/></svg>Trade bylines</li>
+            <li class="reveal" style="--d:280ms"><svg class="icon"><use href="#i-map"/></svg>The messaging foundation for the website</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Where AI carries the load</h3></div>
+        <div class="blk__body">
+          <ul class="ai-grid">
+            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-wave"/></svg></span><h4>Interview synthesis</h4><p>Extracts the language buyers actually use and the objections that recur. This is weeks of manual work and the stage where most positioning efforts stall.</p></li>
+            <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-map"/></svg></span><h4>Competitive analysis</h4><p>Maps what every competitor claims across vendor sites, materials, and public reviews, and identifies unclaimed ground.</p></li>
+            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Drafting</h4><p>The criteria set and every derivative, drafted from one agreed document.</p></li>
+            <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-layers"/></svg></span><h4>Decision-layer variants</h4><p>Owners and operations leaders evaluate on different terms, so each layer gets its own version.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-refresh"/></svg></span><h4>Regeneration</h4><p>When a competitor shifts positioning, the affected pieces regenerate within hours.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="needs reveal">
+        <div class="needs__box needs__box--req">
+          <p class="needs__title"><svg class="icon"><use href="#i-key"/></svg>Requirements</p>
+          <ul class="req-list">
+            <li><svg class="icon"><use href="#i-users"/></svg>Working sessions with leadership and sales on genuine differentiation</li>
+            <li><svg class="icon"><use href="#i-wave"/></svg>Customer access for interviews</li>
+            <li><svg class="icon"><use href="#i-flag"/></svg>Willingness to publish criteria where Magicare is not strongest, which is what makes the framework credible</li>
+          </ul>
+        </div>
+        <div class="needs__box needs__box--q">
+          <p class="needs__title"><svg class="icon"><use href="#i-question"/></svg>Open question</p>
+          <p>Is the differentiation structural or executional?</p>
+          <p>If it is executional, the framework is the wrong instrument and a different approach applies.</p>
+        </div>
+      </div>
+
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     Initiative 3
+     ====================================================================== -->
+<section class="init init--3" id="initiative-3" data-section aria-labelledby="i3-title">
+  <div class="wrap">
+    <div class="init__head reveal">
+      <span class="init__num" aria-hidden="true">03</span>
+      <div>
+        <p class="init__kicker eyebrow"><svg class="icon"><use href="#i-engine"/></svg>Initiative 3</p>
+        <h2 id="i3-title">The market intelligence engine</h2>
+        <p class="init__summary">A continuous loop where what buyers are actually discussing determines what gets built next.</p>
       </div>
     </div>
-  </article>
 
-  <section class="section close" id="next" data-nav>
-    <div class="wrap">
-      <div class="section__head">
-        <p class="eyebrow">Next</p>
-        <h2>What I would want to know next.</h2>
-        <p class="section__lede">These are starting hypotheses. The plan comes after I have talked to your team and your customers and seen what the data supports.</p>
-      </div>
-      <ol class="questions">
-        <li>Which buyer layer owns the problem, champions the purchase, and approves it</li>
-        <li>Which use cases and customer outcomes have the strongest evidence behind them</li>
-        <li>What the last two conferences actually produced, and how you assess them</li>
-        <li>What "high-volume" means to you in formats, cadence, and available support</li>
-      </ol>
+    <div class="init__visual">
+      <p class="vis-caption reveal">The loop, in six stages</p>
+      <div class="loop reveal" data-loop>
+        <div class="loop__ring">
+          <svg class="loop__svg" viewBox="0 0 480 480" aria-hidden="true" focusable="false">
+            <circle class="loop__track" cx="240" cy="240" r="184.8"/>
+            <circle class="loop__trackline" cx="240" cy="240" r="184.8"/>
+            <g class="loop__spin">
+              <circle class="loop__trail" cx="240" cy="240" r="184.8" transform="rotate(-111.7 240 240)"/>
+              <circle class="loop__pulse-halo" cx="240" cy="55.2" r="13"/>
+              <circle class="loop__pulse" cx="240" cy="55.2" r="6.5"/>
+            </g>
+          </svg>
+          <div class="loop__center" aria-hidden="true">
+            <span class="loop__center-num" data-loop-num>1</span>
+            <span class="loop__center-lab" data-loop-lab>Listen</span>
+            <span class="loop__center-sub">of 6, continuous</span>
+          </div>
+          <button class="loop__node" type="button" style="--x:50.00%;--y:11.50%;--i:0" data-stage="0" aria-label="Stage 1, Listen"><svg class="icon"><use href="#i-listen"/></svg><span class="loop__node-n" aria-hidden="true">1</span><span class="loop__node-lab" aria-hidden="true">Listen</span></button>
+          <button class="loop__node" type="button" style="--x:83.34%;--y:30.75%;--i:1" data-stage="1" aria-label="Stage 2, Score"><svg class="icon"><use href="#i-gauge"/></svg><span class="loop__node-n" aria-hidden="true">2</span><span class="loop__node-lab" aria-hidden="true">Score</span></button>
+          <button class="loop__node" type="button" style="--x:83.34%;--y:69.25%;--i:2" data-stage="2" aria-label="Stage 3, Categorize"><svg class="icon"><use href="#i-split"/></svg><span class="loop__node-n" aria-hidden="true">3</span><span class="loop__node-lab" aria-hidden="true">Categorize</span></button>
+          <button class="loop__node" type="button" style="--x:50.00%;--y:88.50%;--i:3" data-stage="3" aria-label="Stage 4, Engage"><svg class="icon"><use href="#i-chat"/></svg><span class="loop__node-n" aria-hidden="true">4</span><span class="loop__node-lab" aria-hidden="true">Engage</span></button>
+          <button class="loop__node" type="button" style="--x:16.66%;--y:69.25%;--i:4" data-stage="4" aria-label="Stage 5, Feed the calendar"><svg class="icon"><use href="#i-cal"/></svg><span class="loop__node-n" aria-hidden="true">5</span><span class="loop__node-lab" aria-hidden="true">Feed the calendar</span></button>
+          <button class="loop__node" type="button" style="--x:16.66%;--y:30.75%;--i:5" data-stage="5" aria-label="Stage 6, Measure and restart"><svg class="icon"><use href="#i-measure"/></svg><span class="loop__node-n" aria-hidden="true">6</span><span class="loop__node-lab" aria-hidden="true">Measure</span></button>
+        </div>
 
-      <div class="sign">
-        <span class="sign__name">Tim LaBarge</span>
-        <a href="mailto:trlabarge@gmail.com">trlabarge@gmail.com</a>
-        <a href="https://www.linkedin.com/in/tim-labarge-marketing-leader/" rel="noopener">linkedin.com/in/tim-labarge-marketing-leader</a>
-        <a href="https://timsmarketing.com/">timsmarketing.com</a>
+        <div class="loop__panel">
+          <ol class="loop__list">
+            <li class="loop__item" id="stage-1">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-listen"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 1</span><span class="loop__head-title">Listen</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <p>Six sources, monitored continuously.</p>
+                <ul class="chips">
+                  <li class="chip"><svg class="icon"><use href="#i-chat"/></svg>LinkedIn comment threads, where this market demonstrably engages</li>
+                  <li class="chip"><svg class="icon"><use href="#i-press"/></svg>Trade publication articles and the discussion around them</li>
+                  <li class="chip"><svg class="icon"><use href="#i-users"/></svg>State and national association groups</li>
+                  <li class="chip"><svg class="icon"><use href="#i-listen"/></svg>Discharge planners, case managers, and RCM vendor staff, who publish more openly than owners do</li>
+                  <li class="chip"><svg class="icon"><use href="#i-score"/></svg>Review sites where evaluation research happens</li>
+                  <li class="chip"><svg class="icon"><use href="#i-stage"/></svg>Conference agendas, a published signal of what the industry has decided matters</li>
+                </ul>
+              </div>
+            </li>
+            <li class="loop__item" id="stage-2">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-gauge"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 2</span><span class="loop__head-title">Score</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <p>Each captured conversation is rated on three tests. Only what clears the threshold reaches a human.</p>
+                <ul class="chips">
+                  <li class="chip"><svg class="icon"><use href="#i-users"/></svg>Buying-group membership</li>
+                  <li class="chip"><svg class="icon"><use href="#i-target"/></svg>Fit against the large-operator profile</li>
+                  <li class="chip"><svg class="icon"><use href="#i-gauge"/></svg>Topical relevance</li>
+                </ul>
+              </div>
+            </li>
+            <li class="loop__item" id="stage-3">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-split"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 3</span><span class="loop__head-title">Categorize</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <p>Three streams, each with its own downstream action.</p>
+                <ul class="flows">
+                  <li><span>Pain points</span><svg class="icon"><use href="#i-arrow"/></svg><span>Content and messaging</span></li>
+                  <li><span>Competitor discussion</span><svg class="icon"><use href="#i-arrow"/></svg><span>The evaluation framework</span></li>
+                  <li><span>Direct mentions</span><svg class="icon"><use href="#i-arrow"/></svg><span>Response and customer proof</span></li>
+                </ul>
+              </div>
+            </li>
+            <li class="loop__item" id="stage-4">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-chat"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 4</span><span class="loop__head-title">Engage</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <p>Leadership and sales respond in their own voices with substantive answers. AI drafts in each person's voice with the context summarized, which cuts review to a few minutes. Nothing publishes without human approval.</p>
+              </div>
+            </li>
+            <li class="loop__item" id="stage-5">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-cal"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 5</span><span class="loop__head-title">Feed the calendar</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <ul class="flows">
+                  <li><span>Recurring pain points</span><svg class="icon"><use href="#i-arrow"/></svg><span>The next core assets</span></li>
+                  <li><span>Buyer language</span><svg class="icon"><use href="#i-arrow"/></svg><span>Site and campaign language</span></li>
+                  <li><span>Competitor objections</span><svg class="icon"><use href="#i-arrow"/></svg><span>Evaluation criteria</span></li>
+                  <li><span>Repeated questions</span><svg class="icon"><use href="#i-arrow"/></svg><span>Tool features</span></li>
+                  <li><span>Where conversations happen</span><svg class="icon"><use href="#i-arrow"/></svg><span>Where content is distributed</span></li>
+                </ul>
+              </div>
+            </li>
+            <li class="loop__item" id="stage-6">
+              <button class="loop__head" type="button" tabindex="-1"><span class="loop__head-icon"><svg class="icon"><use href="#i-measure"/></svg></span><span class="loop__head-text"><span class="loop__head-n">Stage 6</span><span class="loop__head-title">Measure and restart</span></span><svg class="icon loop__chev"><use href="#i-chev"/></svg></button>
+              <div class="loop__body">
+                <ul class="chips">
+                  <li class="chip"><svg class="icon"><use href="#i-measure"/></svg>Engagement by topic</li>
+                  <li class="chip"><svg class="icon"><use href="#i-users"/></svg>Named accounts moving from silent to active</li>
+                  <li class="chip"><svg class="icon"><use href="#i-chat"/></svg>Conversations converting to meetings</li>
+                </ul>
+                <p>Results tune the scoring model and the cycle repeats.</p>
+              </div>
+            </li>
+          </ol>
+          <p class="loop__return"><svg class="icon"><use href="#i-refresh"/></svg>Back to stage 1, with sharper scoring</p>
+          <p class="loop__hint"><svg class="icon"><use href="#i-pointer"/></svg>Select a stage on the ring to see its detail.</p>
+        </div>
       </div>
     </div>
-  </section>
+
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="more-3"><span class="toggle__more">Read the full initiative</span><span class="toggle__less">Close the initiative</span><svg class="icon"><use href="#i-chev"/></svg></button>
+
+    <div class="more" id="more-3"><div class="more__inner"><div class="more__body">
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-target"/></svg></span><h3>The opportunity</h3></div>
+        <div class="blk__body">
+          <p class="reveal">Conventional content planning sets a calendar in advance and learns whether it was right a quarter later. A listening-led system shortens that loop to weeks and grounds every asset in language a real buyer used.</p>
+          <p class="pull reveal">Fewer assets, each one demonstrably relevant, produced faster. Against a larger team organized by channel, that is the structural advantage.</p>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-cal"/></svg></span><h3>Production capacity</h3></div>
+        <div class="blk__body">
+          <div class="month reveal" aria-label="One month of output">
+            <div class="month__scale" aria-hidden="true"><span></span><div><span>Start of month</span><span>End</span></div><span></span></div>
+            <div class="month__row">
+              <span class="month__what"><svg class="icon"><use href="#i-doc"/></svg>Core research asset</span>
+              <span class="month__track" aria-hidden="true"><span class="month__core" style="--d:.1s"></span></span>
+              <span class="month__val">1<small>per month</small></span>
+            </div>
+            <div class="month__row">
+              <span class="month__what"><svg class="icon"><use href="#i-layers"/></svg>Derivative pieces</span>
+              <span class="month__track" aria-hidden="true"><span class="month__derivs" style="--d:.25s"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+              <span class="month__val">20 to 30<small>from that asset</small></span>
+            </div>
+            <div class="month__row">
+              <span class="month__what"><svg class="icon"><use href="#i-users"/></svg>Leadership posts</span>
+              <span class="month__track" aria-hidden="true"><span class="month__daily" style="--d:.4s"><i></i><i></i><i></i><i></i></span></span>
+              <span class="month__val">Daily<small>across four accounts</small></span>
+            </div>
+            <div class="month__row">
+              <span class="month__what"><svg class="icon"><use href="#i-press"/></svg>Trade byline</span>
+              <span class="month__track" aria-hidden="true"><span class="month__byline" style="--d:.55s"></span></span>
+              <span class="month__val">1<small>per month</small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-users"/></svg></span><h3>Two ways to organize the work</h3></div>
+        <div class="blk__body">
+          <div class="org">
+            <figure class="org__panel reveal" style="margin:0">
+              <p class="org__title">A five-person team</p>
+              <p class="org__by">Organized by channel</p>
+              <svg class="org__svg" viewBox="0 0 400 250" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="#B5C7B4" stroke-width="1.5">
+                  <path d="M0 50.5h400M0 100.5h400M0 150.5h400M0 200.5h400" stroke="#E4E1D8" stroke-dasharray="3 4"/>
+                </g>
+                <g>
+                  <g transform="translate(0 6)"><circle cx="18" cy="19" r="14" fill="#DCE5DA"/><use href="#i-person" x="9" y="10" width="18" height="18" fill="none" stroke="#3B5642" stroke-width="1.6"/><text class="org-t" x="44" y="23" fill="#2B2B2B">Content</text><rect x="200" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="246" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="292" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/></g>
+                  <g transform="translate(0 56)"><circle cx="18" cy="19" r="14" fill="#DCE5DA"/><use href="#i-person" x="9" y="10" width="18" height="18" fill="none" stroke="#3B5642" stroke-width="1.6"/><text class="org-t" x="44" y="23" fill="#2B2B2B">Social</text><rect x="200" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="246" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="292" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="338" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/></g>
+                  <g transform="translate(0 106)"><circle cx="18" cy="19" r="14" fill="#DCE5DA"/><use href="#i-person" x="9" y="10" width="18" height="18" fill="none" stroke="#3B5642" stroke-width="1.6"/><text class="org-t" x="44" y="23" fill="#2B2B2B">Events</text><rect x="200" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="246" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/></g>
+                  <g transform="translate(0 156)"><circle cx="18" cy="19" r="14" fill="#DCE5DA"/><use href="#i-person" x="9" y="10" width="18" height="18" fill="none" stroke="#3B5642" stroke-width="1.6"/><text class="org-t" x="44" y="23" fill="#2B2B2B">PR and trade press</text><rect x="200" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="246" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="292" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/></g>
+                  <g transform="translate(0 206)"><circle cx="18" cy="19" r="14" fill="#DCE5DA"/><use href="#i-person" x="9" y="10" width="18" height="18" fill="none" stroke="#3B5642" stroke-width="1.6"/><text class="org-t" x="44" y="23" fill="#2B2B2B">Web and email</text><rect x="200" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="246" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/><rect x="292" y="9" width="36" height="20" rx="4" fill="#F2EFE7" stroke="#B9B4A8"/></g>
+                </g>
+              </svg>
+              <figcaption class="org__cap">Each lane plans its own work. Assets are made separately, planned in advance, and measured in arrears.</figcaption>
+            </figure>
+            <figure class="org__panel is-new reveal" style="margin:0;--d:120ms">
+              <p class="org__title">One person plus AI workflows</p>
+              <p class="org__by">Organized by asset</p>
+              <svg class="org__svg" viewBox="0 0 400 250" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="#C9A051" stroke-width="1.6" stroke-linecap="round">
+                  <path d="M178 125 C 222 125, 222 25, 262 25"/>
+                  <path d="M178 125 C 222 125, 222 75, 262 75"/>
+                  <path d="M178 125 H 262"/>
+                  <path d="M178 125 C 222 125, 222 175, 262 175"/>
+                  <path d="M178 125 C 222 125, 222 225, 262 225"/>
+                  <path d="M62 125 H 92" stroke="#7A8A80" stroke-dasharray="3 4"/>
+                </g>
+                <circle cx="34" cy="125" r="24" fill="#2E3D33" stroke="#C9A051" stroke-width="1.5"/>
+                <use href="#i-person" x="22" y="113" width="24" height="24" fill="none" stroke="#FAF9F6" stroke-width="1.6"/>
+                <circle cx="52" cy="105" r="9" fill="#C9A051"/>
+                <use href="#i-spark" x="45" y="98" width="14" height="14" fill="none" stroke="#1F2C24" stroke-width="2"/>
+                <rect x="96" y="92" width="82" height="66" rx="10" fill="#C9A051"/>
+                <text class="org-t" x="137" y="121" text-anchor="middle" fill="#1F2C24">Core</text>
+                <text class="org-t" x="137" y="138" text-anchor="middle" fill="#1F2C24">asset</text>
+                <g>
+                  <rect x="262" y="12" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="29" fill="#FAF9F6">Content</text>
+                  <rect x="262" y="62" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="79" fill="#FAF9F6">Social</text>
+                  <rect x="262" y="112" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="129" fill="#FAF9F6">Events</text>
+                  <rect x="262" y="162" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="179" fill="#FAF9F6">PR and trade press</text>
+                  <rect x="262" y="212" width="136" height="26" rx="13" fill="#2E3D33"/><text class="org-ts" x="276" y="229" fill="#FAF9F6">Web and email</text>
+                </g>
+              </svg>
+              <figcaption class="org__cap">Every channel draws from one asset, and each asset starts from something a real buyer said that month.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <div class="blk__label reveal"><span class="blk__icon"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Where AI carries the load</h3></div>
+        <div class="blk__body">
+          <ul class="ai-grid">
+            <li class="ai-card reveal" style="--d:0ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-listen"/></svg></span><h4>Continuous monitoring</h4><p>Across many surfaces. For a person this is a full-time role. For software it runs in the background.</p></li>
+            <li class="ai-card reveal" style="--d:60ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-split"/></svg></span><h4>Classification at volume</h4><p>Every conversation checked against the named-account list.</p></li>
+            <li class="ai-card reveal" style="--d:120ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-measure"/></svg></span><h4>Trend detection</h4><p>A tripling in one complaint category is invisible thread by thread. Analysis over time catches it.</p></li>
+            <li class="ai-card reveal" style="--d:180ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><h4>Voice-matched drafting</h4><p>Drafts in each person's voice, and every draft goes to that person for approval.</p></li>
+            <li class="ai-card reveal" style="--d:240ms"><span class="ai-card__icon"><svg class="icon"><use href="#i-stack"/></svg></span><h4>A ranked production queue</h4><p>Hundreds of conversations synthesized into what to make next, with the source phrasing attached.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="needs reveal">
+        <div class="needs__box needs__box--req">
+          <p class="needs__title"><svg class="icon"><use href="#i-key"/></svg>Requirements</p>
+          <ul class="req-list">
+            <li><svg class="icon"><use href="#i-users"/></svg>Leadership participation and review</li>
+            <li><svg class="icon"><use href="#i-shield"/></svg>An agreed voice and approval workflow</li>
+            <li><svg class="icon"><use href="#i-grader"/></svg>A modest tooling budget</li>
+          </ul>
+        </div>
+        <div class="needs__box needs__box--q">
+          <p class="needs__title"><svg class="icon"><use href="#i-question"/></svg>Open question</p>
+          <p>Is online conversation volume in this market sufficient to sustain the listening input?</p>
+          <p>If it is thin, recorded customer calls and conference floor conversations feed the identical engine. The engine runs on buyer signal from any source.</p>
+        </div>
+      </div>
+
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     Closing
+     ====================================================================== -->
+<section class="verify" id="verify" aria-labelledby="verify-title">
+  <div class="wrap">
+    <p class="eyebrow reveal">Before any of this starts</p>
+    <h2 id="verify-title" class="reveal">What would be verified first</h2>
+    <ol class="vgrid">
+      <li class="reveal" style="--d:0ms"><span class="vgrid__top"><svg class="icon"><use href="#i-layers"/></svg></span><p>Which decision layer owns the problem, champions the purchase, and approves it</p></li>
+      <li class="reveal" style="--d:70ms"><span class="vgrid__top"><svg class="icon"><use href="#i-shield"/></svg></span><p>Which use cases and customer outcomes carry the strongest evidence</p></li>
+      <li class="reveal" style="--d:140ms"><span class="vgrid__top"><svg class="icon"><use href="#i-ticket"/></svg></span><p>What recent conference investment produced, and how performance is assessed</p></li>
+      <li class="reveal" style="--d:210ms"><span class="vgrid__top"><svg class="icon"><use href="#i-stack"/></svg></span><p>What production volume is expected in formats, cadence, and available support</p></li>
+    </ol>
+    <p class="verify__close reveal">These are starting hypotheses, refined against internal data, customer conversations, and win-loss history.</p>
+  </div>
+</section>
 
 </main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <span class="foot__name">Tim LaBarge</span>
+    <a href="mailto:trlabarge@gmail.com">trlabarge@gmail.com</a>
+    <a href="https://www.linkedin.com/in/tim-labarge-marketing-leader/" rel="noopener">linkedin.com/in/tim-labarge-marketing-leader</a>
+    <a href="https://timsmarketing.com/">timsmarketing.com</a>
+  </div>
+</footer>
 
 <script>
 (function () {
   'use strict';
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* Scroll progress bar. */
-  var bar = document.querySelector('.progress__bar');
+  /* Hero signals are SMIL. Drop them under reduced motion. */
+  if (reduceMotion) $$('.hero-signals').forEach(function (g) { g.remove(); });
+
+  /* Reveal on scroll. Threshold stays 0, the margin holds it until in view. */
+  var revealIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('is-visible'); revealIO.unobserve(e.target); }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -8% 0px' }) : null;
+  $$('.reveal').forEach(function (el) {
+    if (revealIO && !reduceMotion) revealIO.observe(el); else el.classList.add('is-visible');
+  });
+
+  /* The multiplication diagram fans out once it is in view. */
+  var mult = $('[data-mult]');
+  if (mult) {
+    if (!('IntersectionObserver' in window) || reduceMotion) mult.classList.add('is-in');
+    else {
+      var mio = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { mult.classList.add('is-in'); mio.disconnect(); }
+      }, { threshold: 0, rootMargin: '0px 0px -22% 0px' });
+      mio.observe(mult);
+    }
+  }
+
+  /* Progress navigation. Shown once the hero has scrolled away. */
+  var pnav = $('[data-pnav]');
+  var links = $$('.pnav__link');
+  var sections = $$('[data-section]');
+  var hero = $('.hero');
   var ticking = false;
   function paint() {
     ticking = false;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+    var vh = window.innerHeight;
+    pnav.classList.toggle('is-shown', hero.getBoundingClientRect().bottom < vh * 0.25);
+    var line = vh * 0.35;
+    var current = -1;
+    sections.forEach(function (s, i) {
+      var r = s.getBoundingClientRect();
+      var p = (line - r.top) / r.height;
+      p = Math.max(0, Math.min(1, p));
+      links[i].style.setProperty('--p', p.toFixed(3));
+      if (r.top <= line && r.bottom > line) current = i;
+    });
+    links.forEach(function (a, i) {
+      if (i === current) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
   }
-  window.addEventListener('scroll', function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(paint); }
-  }, { passive: true });
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
   paint();
 
-  /* Sticky index. The current section is the last one whose top has passed
-     a line just under the nav. */
-  var links = Array.prototype.slice.call(document.querySelectorAll('.idx__link'));
-  var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
-  function current() {
-    var line = 120;
-    var active = -1;
-    sections.forEach(function (s, i) { if (s.getBoundingClientRect().top <= line) active = i; });
-    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) active = sections.length - 1;
-    links.forEach(function (a, i) {
-      if (i === active) a.setAttribute('aria-current', 'true');
-      else a.removeAttribute('aria-current');
-    });
-  }
-  var navTick = false;
-  window.addEventListener('scroll', function () {
-    if (!navTick) { navTick = true; requestAnimationFrame(function () { navTick = false; current(); }); }
-  }, { passive: true });
-  window.addEventListener('resize', current);
-  current();
-
-  /* Open all / close all. */
-  var all = Array.prototype.slice.call(document.querySelectorAll('details.more'));
-  var toggle = document.querySelector('[data-toggle-all]');
-  function syncToggle() {
-    var open = all.every(function (d) { return d.open; });
-    toggle.textContent = open ? 'Close all three' : 'Open all three';
-    toggle.setAttribute('aria-pressed', String(open));
-  }
-  toggle.addEventListener('click', function () {
-    var open = !all.every(function (d) { return d.open; });
-    all.forEach(function (d) { d.open = open; });
-    syncToggle();
-  });
-  all.forEach(function (d) { d.addEventListener('toggle', syncToggle); });
-
-  /* A link to an idea from the system diagram opens that idea. */
-  document.querySelectorAll('.flow__jump').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var d = document.querySelector(a.getAttribute('href') + ' details.more');
-      if (d) d.open = true;
+  /* Expand and collapse. Height animates through grid-template-rows. The
+     closed region is inert so keyboard focus never lands inside it. */
+  $$('.toggle').forEach(function (btn) {
+    var region = document.getElementById(btn.getAttribute('aria-controls'));
+    region.inert = true;
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      region.classList.toggle('is-open', open);
+      region.inert = !open;
+      if (!open) {
+        var top = btn.closest('section').getBoundingClientRect().top;
+        if (top < 0) btn.closest('section').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
     });
   });
 
-  /* Print and PDF export get every idea open, then the reader's state back. */
-  var before = null;
+  /* Print and PDF export open everything, then restore. */
+  var saved = null;
   window.addEventListener('beforeprint', function () {
-    before = all.map(function (d) { return d.open; });
-    all.forEach(function (d) { d.open = true; });
+    saved = $$('.more').map(function (m) { return m.classList.contains('is-open'); });
+    $$('.more').forEach(function (m) { m.classList.add('is-open'); m.inert = false; });
+    $$('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
+    if (mult) mult.classList.add('is-in');
   });
   window.addEventListener('afterprint', function () {
-    if (before) all.forEach(function (d, i) { d.open = before[i]; });
-    before = null;
-    syncToggle();
+    if (!saved) return;
+    $$('.more').forEach(function (m, i) {
+      m.classList.toggle('is-open', saved[i]);
+      m.inert = !saved[i];
+    });
+    saved = null;
   });
 
-  /* The loop ring for idea 3. Built from the stage list so the two cannot
-     disagree. Hovering a stage lights its node. */
-  var svg = document.querySelector('[data-ring]');
-  var stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
-  if (svg && stages.length) {
-    var NS = 'http://www.w3.org/2000/svg';
-    var cx = 150, cy = 150, r = 104, n = stages.length;
-    function el(name, attrs, parent) {
-      var e = document.createElementNS(NS, name);
-      for (var k in attrs) e.setAttribute(k, attrs[k]);
-      (parent || svg).appendChild(e);
-      return e;
-    }
-    function pt(angle, rad) {
-      return { x: cx + rad * Math.cos(angle), y: cy + rad * Math.sin(angle) };
-    }
-    var angles = stages.map(function (_, i) { return -Math.PI / 2 + (i / n) * Math.PI * 2; });
-    el('circle', { cx: cx, cy: cy, r: r, class: 'ring__track' });
-
-    /* Arcs between nodes, each ending in a small arrowhead. */
-    var gap = 0.27;
-    angles.forEach(function (a, i) {
-      var a0 = a + gap, a1 = a + (Math.PI * 2) / n - gap;
-      var p0 = pt(a0, r), p1 = pt(a1, r);
-      el('path', { d: 'M' + p0.x + ' ' + p0.y + ' A' + r + ' ' + r + ' 0 0 1 ' + p1.x + ' ' + p1.y, class: 'ring__arc' });
-      var tip = pt(a1 + 0.04, r);
-      var tx = -Math.sin(a1), ty = Math.cos(a1);
-      var nx = Math.cos(a1), ny = Math.sin(a1);
-      var back = { x: tip.x - tx * 8, y: tip.y - ty * 8 };
-      el('path', {
-        d: 'M' + tip.x + ' ' + tip.y +
-           ' L' + (back.x + nx * 4.5) + ' ' + (back.y + ny * 4.5) +
-           ' L' + (back.x - nx * 4.5) + ' ' + (back.y - ny * 4.5) + 'Z',
-        class: 'ring__head'
+  /* The loop. One active stage, driven by the ring on wide screens and by
+     the stage headers on narrow ones. */
+  var loop = $('[data-loop]');
+  if (loop) {
+    var nodes = $$('.loop__node', loop);
+    var items = $$('.loop__item', loop);
+    var heads = $$('.loop__head', loop);
+    var num = $('[data-loop-num]', loop);
+    var lab = $('[data-loop-lab]', loop);
+    var narrow = window.matchMedia('(max-width: 899px)');
+    var active = 0;
+    function setStage(i, fromHead) {
+      if (fromHead && narrow.matches && i === active && items[i].classList.contains('is-active')) i = -1;
+      active = i;
+      items.forEach(function (it, j) { it.classList.toggle('is-active', j === i); });
+      nodes.forEach(function (n, j) {
+        if (j === i) n.setAttribute('aria-current', 'step'); else n.removeAttribute('aria-current');
       });
+      heads.forEach(function (h, j) { h.setAttribute('aria-expanded', String(j === i)); });
+      if (i >= 0) {
+        num.textContent = String(i + 1);
+        lab.textContent = items[i].querySelector('.loop__head-title').textContent;
+      }
+    }
+    function syncMode() {
+      heads.forEach(function (h) { h.tabIndex = narrow.matches ? 0 : -1; });
+      if (!narrow.matches && active < 0) setStage(0);
+    }
+    nodes.forEach(function (n, i) {
+      n.setAttribute('aria-controls', items[i].id);
+      n.addEventListener('click', function () { setStage(i); });
+      n.addEventListener('mouseenter', function () { setStage(i); });
+      n.addEventListener('focus', function () { setStage(i); });
     });
+    heads.forEach(function (h, i) {
+      h.setAttribute('aria-controls', items[i].id);
+      h.addEventListener('click', function () { if (narrow.matches) setStage(i, true); });
+    });
+    if (narrow.addEventListener) narrow.addEventListener('change', syncMode);
+    setStage(0);
+    syncMode();
+  }
 
-    var center = el('text', { x: cx, y: cy - 6, class: 'ring__center' });
-    var big = el('tspan', { x: cx, class: 'ring__center-big' }, center);
-    big.textContent = 'Runs';
-    var big2 = el('tspan', { x: cx, dy: 20, class: 'ring__center-big' }, center);
-    big2.textContent = 'continuously';
+  /* Scorecard demo. Eight blank criteria, three unnamed vendors, nothing
+     pre-filled. Totals come only from what the viewer enters. */
+  var sc = $('[data-scorecard]');
+  if (sc) {
+    var CRITERIA = 8, MAX = 5, FLAG = 7;
+    var vendors = ['Vendor A', 'Vendor B', 'Vendor C'];
+    var ratings = vendors.map(function () { return new Array(CRITERIA).fill(0); });
+    var cur = 0;
+    var rows = $('[data-sc-rows]', sc);
+    var totals = $('[data-sc-totals]', sc);
+    var html = '';
+    for (var c = 0; c < CRITERIA; c++) {
+      var flag = c === FLAG;
+      html += '<li class="sc__row">' +
+        '<div class="sc__main">' +
+          '<span class="sc__n">' + String(c + 1).padStart(2, '0') + '</span>' +
+          '<div class="sc__crit"><strong>Criterion ' + (c + 1) + '</strong>' +
+            (flag ? '<span class="sc__flag"><svg class="icon"><use href="#i-flag"/></svg>Included on purpose. Magicare holds no obvious advantage here.</span>'
+                  : '<span class="skel" style="width:' + [62, 48, 70, 54, 66, 44, 58][c % 7] + '%"></span>') +
+          '</div>' +
+          '<div class="sc__rate" role="group" aria-label="Rating for criterion ' + (c + 1) + '">';
+      for (var v = 1; v <= MAX; v++) {
+        html += '<button class="sc__dot" type="button" data-c="' + c + '" data-v="' + v + '" aria-pressed="false" aria-label="' + v + ' of 5">' + v + '</button>';
+      }
+      html += '</div>' +
+          '<button class="sc__open" type="button" aria-expanded="false" aria-controls="sc-d-' + c + '" aria-label="Show the parts of criterion ' + (c + 1) + '"><svg class="icon"><use href="#i-chev"/></svg></button>' +
+        '</div>' +
+        '<div class="sc__detail" id="sc-d-' + c + '"><div><div class="sc__parts">' +
+          '<div class="sc__part"><b>The question to ask</b><span class="skel"></span><span class="skel"></span></div>' +
+          '<div class="sc__part"><b>What a strong answer looks like</b><span class="skel"></span><span class="skel"></span></div>' +
+          '<div class="sc__part"><b>How to verify it independently</b><span class="skel"></span><span class="skel"></span></div>' +
+        '</div></div></div>' +
+      '</li>';
+    }
+    rows.innerHTML = html;
+    totals.innerHTML = vendors.map(function (name, i) {
+      return '<div class="sc__total" data-total="' + i + '"><b>' + name + '</b><span class="sc__track"><span class="sc__fill"></span></span><span class="sc__count"></span></div>';
+    }).join('');
+    $$('.sc__detail', sc).forEach(function (d) { d.firstChild.inert = true; });
 
-    var nodes = [], labels = [];
-    angles.forEach(function (a, i) {
-      var p = pt(a, r);
-      var g = el('g', { class: 'ring__node' });
-      el('circle', { cx: p.x, cy: p.y, r: 17 }, g);
-      var t = el('text', { x: p.x, y: p.y }, g);
-      t.textContent = String(i + 1);
-      nodes.push(g);
-
-      var lp = pt(a, Math.abs(Math.cos(a)) < 0.2 ? r + 32 : r + 26);
-      var words = stages[i].getAttribute('data-stage').split(' ');
-      var lines = words.length > 2 ? [words.slice(0, 2).join(' '), words.slice(2).join(' ')] : [words.join(' ')];
-      var cos = Math.cos(a);
-      var anchor = Math.abs(cos) < 0.2 ? 'middle' : (cos > 0 ? 'start' : 'end');
-      var shift = 0;
-      var top = lp.y - (lines.length - 1) * 7 + (Math.abs(cos) < 0.2 ? (Math.sin(a) < 0 ? -2 : 6) : 4);
-      var label = el('text', { x: lp.x + shift, y: top, class: 'ring__label', 'text-anchor': anchor });
-      lines.forEach(function (line, j) {
-        var s = el('tspan', { x: lp.x + shift, dy: j ? 14 : 0 }, label);
-        s.textContent = line;
+    function render() {
+      $$('.sc__dot', sc).forEach(function (b) {
+        var r = ratings[cur][+b.dataset.c];
+        var v = +b.dataset.v;
+        b.classList.toggle('is-on', r >= v);
+        b.classList.toggle('is-sel', r === v);
+        b.setAttribute('aria-pressed', String(r === v));
       });
-      labels.push(label);
-    });
-
-    function light(i) {
-      nodes.forEach(function (g, j) { g.classList.toggle('is-on', j === i); });
-      labels.forEach(function (l, j) { l.classList.toggle('is-on', j === i); });
-      stages.forEach(function (s, j) { s.classList.toggle('is-on', j === i); });
+      $$('.sc__vendor', sc).forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.vendor === cur)); });
+      $$('.sc__total', sc).forEach(function (t, i) {
+        var sum = ratings[i].reduce(function (a, b) { return a + b; }, 0);
+        var rated = ratings[i].filter(Boolean).length;
+        t.classList.toggle('is-cur', i === cur);
+        $('.sc__fill', t).style.transform = 'scaleX(' + (sum / (CRITERIA * MAX)) + ')';
+        $('.sc__count', t).textContent = rated ? sum + ' pts · ' + rated + ' of ' + CRITERIA : 'Not rated';
+      });
     }
-    stages.forEach(function (s, i) {
-      s.addEventListener('mouseenter', function () { light(i); });
+    sc.addEventListener('click', function (e) {
+      var dot = e.target.closest('.sc__dot');
+      var ven = e.target.closest('.sc__vendor');
+      var open = e.target.closest('.sc__open');
+      if (dot) {
+        var ci = +dot.dataset.c, vi = +dot.dataset.v;
+        ratings[cur][ci] = ratings[cur][ci] === vi ? 0 : vi;
+        render();
+      } else if (ven) {
+        cur = +ven.dataset.vendor;
+        render();
+      } else if (open) {
+        var d = document.getElementById(open.getAttribute('aria-controls'));
+        var isOpen = open.getAttribute('aria-expanded') !== 'true';
+        open.setAttribute('aria-expanded', String(isOpen));
+        d.classList.toggle('is-open', isOpen);
+        d.firstChild.inert = !isOpen;
+      } else if (e.target.closest('[data-sc-reset]')) {
+        ratings = vendors.map(function () { return new Array(CRITERIA).fill(0); });
+        render();
+      }
     });
-    document.querySelector('.stages').addEventListener('mouseleave', function () { light(-1); });
-
-    /* Without a pointer, light the stage nearest the reading line as the
-       reader scrolls through the list, so the ring still tracks position. */
-    if (!window.matchMedia('(hover: hover)').matches) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) light(stages.indexOf(e.target)); });
-      }, { rootMargin: '-45% 0px -45% 0px' });
-      stages.forEach(function (s) { io.observe(s); });
-    }
+    render();
   }
 })();
 </script>

@@ -31,10 +31,10 @@ export function gateHtml({ error = false } = {}) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Magicare: Three Ideas</title>
-<meta property="og:title" content="Magicare: Three Ideas">
+<title>Magicare Growth Plan</title>
+<meta property="og:title" content="Magicare Growth Plan">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Magicare: Three Ideas">
+<meta name="twitter:title" content="Magicare Growth Plan">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +63,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 <body>
 <main class="gate">
 <p class="gate__eyebrow">Private · For Magicare</p>
-<h1>Three ideas to make some noise</h1>
+<h1>Three growth initiatives</h1>
 ${message}
 <form method="post" action="/api/magicare-auth">
 <label for="password">Password</label>
