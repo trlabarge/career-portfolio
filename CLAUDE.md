@@ -1469,7 +1469,14 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
 - **The team comparison is framed as competitors.** "Traditional approach",
   competitor teams of 5 to 10 people organized by channel.
 - **There is no closing "verified first" section.** Tim removed it. The page
-  ends on initiative 3 and the footer.
+  closes with "See more of Tim's work" (`.worklinks`), three link cards in
+  Tim's order: SEO and content, then conversion optimization, then PLG.
+  Headlines and summaries come from `/the-work`, except the ConstructConnect
+  summary, whose "instead of capturing form fills" was rewritten to "measured
+  on closed revenue" for this page's no-contrast rule. Linking out is fine.
+  Nothing may link in.
+- **Leadership posts are 3 to 4 per week, to start.** Tim cut "daily across
+  four accounts" as more than the team could deliver.
 - **Every number comes from Tim's brief.** No invented metrics, including
   inside diagrams. The scorecard demo has blank skeleton criteria, unnamed
   vendors and nothing pre-filled, and its totals come only from the viewer's
