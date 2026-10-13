@@ -1,12 +1,13 @@
 /**
- * Vercel Routing Middleware. Guards everything under /payload and /nucleus.
+ * Vercel Routing Middleware. Guards everything under /payload, /nucleus
+ * and /magicare.
  *
  * Runs before Vercel's cache and static file serving, so a request without a
  * valid session never reaches a plan's HTML, CSS, or JS. Page requests get
  * the password screen at the same URL. Anything else gets a bare 401.
  *
  * Each page has its own password env var and cookie, so a session for one
- * never opens the other.
+ * never opens another.
  *
  * Fails closed. If a page's password env var is not set, nothing gets through.
  */
@@ -15,12 +16,13 @@ import { next } from '@vercel/functions';
 import { readCookie } from './api/_lib/plan-gate.js';
 import * as payload from './api/_lib/payload-gate.js';
 import * as nucleus from './api/_lib/nucleus-gate.js';
+import * as magicare from './api/_lib/magicare-gate.js';
 
 export const config = {
-  matcher: ['/payload', '/payload/:path*', '/nucleus', '/nucleus/:path*'],
+  matcher: ['/payload', '/payload/:path*', '/nucleus', '/nucleus/:path*', '/magicare', '/magicare/:path*'],
 };
 
-const GATES = [payload, nucleus];
+const GATES = [payload, nucleus, magicare];
 
 const PRIVATE_HEADERS = {
   'Cache-Control': 'private, no-store',
