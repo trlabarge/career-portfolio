@@ -1443,7 +1443,11 @@ noise". Same rules as /payload and /nucleus: not in the nav, the sitemap,
 - **One self-contained file.** `magicare/index.html` carries its CSS and JS
   inline, with tokens copied from `/css/style.css`. No added accent colour.
   The site has no dark mode, so neither does this page.
-- **Copy is Tim's, close to verbatim.** Every number on the page came from
+- **Copy is Tim's, close to verbatim, minus every contrast construction.**
+  The brief itself carried several "not X but Y", "rather than" and "instead
+  of" lines, plus an "It wins on..." line Tim called AI speak. All of them
+  were rewritten as direct positive statements on his instruction (2026-10).
+  Keep it that way if the copy is edited. Every number on the page came from
   his brief. Do not add metrics, logos, testimonials, pricing, dates or a
   contact form. Names (Daniel, Sam, Chen, Bob) are his to use here.
 - **Reads short by default.** Each idea is a title and a summary line over a
