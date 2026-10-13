@@ -1423,45 +1423,87 @@ interview calls. Same rules as /payload: not in the nav, the sitemap,
   an ARIA tablist and the rings mirror it. The spend donut is built from the
   legend's `data-pct`, so the chart and legend cannot disagree.
 
-## /magicare, the private ideas page
+## /magicare, the private growth plan page
 
-A password-protected page of three ideas for Magicare.ai, written for its CEO
-and co-founder, Daniel Schoenbrun, who asked for two ideas to "make some
-noise". Same rules as /payload and /nucleus: not in the nav, the sitemap,
-`robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
+A password-protected growth plan for Magicare.ai, three initiatives for its
+CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
+/payload and /nucleus: not in the nav, the sitemap, `robots.txt`, or Timbot's
+`PAGES`, and it must stay out of all four.
 
 - **Same server-side gate, separate password.** `api/_lib/magicare-gate.js`
   holds the settings and password screen, `/api/magicare-auth` the login,
-  `MAGICARE_PAGE_PASSWORD` the password (env var, set in Vercel), cookie
-  `magicare_plan_session` scoped to `Path=/magicare`. The brief asked for a
-  client-side JS check with the password in the script. That was not built,
-  since a JS check ships the whole page to anyone who views source, and this
-  page names the company's leaders and repeats what they said on calls.
-  There is no public `/magicare/brand/` folder, because the page uses no
-  logos. `npm run magicare:test` covers it, including isolation from the
-  other two gates.
-- **One self-contained file.** `magicare/index.html` carries its CSS and JS
-  inline, with tokens copied from `/css/style.css`. No added accent colour.
-  The site has no dark mode, so neither does this page.
-- **Copy is Tim's, close to verbatim, minus every contrast construction.**
-  The brief itself carried several "not X but Y", "rather than" and "instead
-  of" lines, plus an "It wins on..." line Tim called AI speak. All of them
-  were rewritten as direct positive statements on his instruction (2026-10).
-  Keep it that way if the copy is edited. Every number on the page came from
-  his brief. Do not add metrics, logos, testimonials, pricing, dates or a
-  contact form. Names (Daniel, Sam, Chen, Bob) are his to use here.
-- **Reads short by default.** Each idea is a title and a summary line over a
-  native `<details>`, so all three skim in about 90 seconds and the detail
-  opens on demand. It works with no JS. "Open all three" toggles every one.
-  Print opens all of them twice over, via `::details-content` in the print
-  stylesheet and a `beforeprint` handler, so a PDF export never drops the
-  detail.
-- **The system diagram runs engine, benchmark, scorecard,** which is ideas 3,
-  1, 2. That is the order Tim gave for running them, so each box names its
-  idea number. Do not renumber the ideas to match.
-- The idea 3 ring is drawn by JS from the six `.stage` items and is
-  `aria-hidden`, since the ordered list beside it is the real content. Its
-  labels set `text-anchor` as an attribute, so no CSS rule may set it.
+  `MAGICARE_PAGE_PASSWORD` the password (set in Vercel, never in the repo),
+  cookie `magicare_plan_session` scoped to `Path=/magicare`. Both briefs
+  asked for a client-side JS check. It was not built, since a JS check ships
+  the whole plan to anyone who views source. `npm run magicare:test` covers
+  it, including isolation from the other two gates.
+- **The Magicare logo is used, on Tim's request** (2026-10), top left on the
+  page and on the password screen. `/magicare/brand/magicare-logo.png` is the
+  one public file, served before login the same way `/nucleus/brand/` is. It
+  was cropped from Tim's square upload and its cream and white background
+  keyed to real transparency, at 480px wide. The page's colours stay the
+  portfolio's own.
+- **Voice is a plan, not a letter** (Tim, 2026-10). Third person throughout.
+  No "you", "your", "I", "we" or "our", and nothing that refers to a call, a
+  meeting or a request. Caveats are impersonal open questions, one per
+  initiative. No names of people at Magicare and no competitor names.
+- **No contrast constructions.** No "not X but Y", "rather than", "instead
+  of" or "it wins on". The brief's own copy carried several and every one was
+  rewritten as a direct statement. Keep it that way.
+- **Banned words on this page** (Tim, 2026-10): "win" in any form (so no
+  "win rate" or "win-loss"), "actually", "quiet" or "quietly", "unlock", and
+  "matters". Also no jargon pull lines. "Fewer assets, each one demonstrably
+  relevant" was cut as jargon.
+- **Hedge claims about outcomes.** The benchmark "could" reach buyers earlier
+  and "can" earn coverage. Trade press "often" runs original data. Keep that
+  register.
+- **"An additional 30 or more content outputs"** under the multiplication
+  diagram is a sum of the brief's own figures for the benchmark's formats (20
+  to 30 social posts, a one-pager for each of 3 or 4 findings, 2 segment
+  variants, a webinar, the grader, the annual edition, plus press placements
+  and session proposals). Re-add it if the format list changes.
+- **No trade byline commitment.** Tim cut the one-per-month byline from
+  production capacity as too aggressive. The month graphic shows listening as
+  an always-on band across the whole month, so it never implies a research
+  phase where nothing ships.
+- **The team comparison is framed as competitors.** "Traditional approach",
+  competitor teams of 5 to 10 people organized by channel.
+- **There is no closing "verified first" section.** Tim removed it. The page
+  closes with "See more of Tim's work" (`.worklinks`), three link cards in
+  Tim's order: SEO and content, then conversion optimization, then PLG.
+  Headlines and summaries come from `/the-work`, except the ConstructConnect
+  summary, whose "instead of capturing form fills" was rewritten to "measured
+  on closed revenue" for this page's no-contrast rule. Linking out is fine.
+  Nothing may link in.
+- **Leadership posts are 3 to 4 per week, to start.** Tim cut "daily across
+  four accounts" as more than the team could deliver.
+- **Every number comes from Tim's brief.** No invented metrics, including
+  inside diagrams. The scorecard demo has blank skeleton criteria, unnamed
+  vendors and nothing pre-filled, and its totals come only from the viewer's
+  clicks. The production-capacity month and the team comparison show shape,
+  not figures. The dot clusters in the multiplication diagram are visual
+  only.
+- **There is no "system" section.** It ordered the ideas 3, 1, 2, which Tim
+  found confusing. The initiatives stand alone in their own order.
+- **Reads short by default.** Each initiative shows its summary and one
+  visual (multiplication fan, today-versus-framework bars, the loop). "Read
+  the full plan" opens the rest and "Close expanded plan" closes it. The
+  rest sits in a `.more` region that animates open via
+  `grid-template-rows` and is `inert` while closed. With no JS, or in print,
+  everything is open.
+- **Each initiative takes one accent** through `--accent`: sage, terracotta,
+  gold. All three are site palette colours. Gold text uses
+  `--color-gold-dark` for contrast.
+- **The hero and multiplication SVG geometry is generated markup.** It was
+  built once by a throwaway script and ships static, so it renders with no
+  JS. Edit the markup directly. Hero signals are SMIL `animateMotion` and JS
+  removes them under reduced motion. The multiplication diagram has a phone
+  variant, `.mult__list`, which is also the accessible text for the SVG on
+  desktop.
+- **The loop** is a ring of buttons above 900px, where the stage list acts as
+  one panel showing the selected stage. Below 900px it is a vertical
+  accordion with a connecting line. The pulse turns once every 12s, and each
+  node's glow is delayed `--i * 2s` so the glow lands as the pulse passes.
 
 ## Timbot, the chat widget
 

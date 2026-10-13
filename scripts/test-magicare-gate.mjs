@@ -77,7 +77,7 @@ await test('page request without a cookie gets the Magicare password screen', as
   assert.equal(res.status, 401);
   const html = await res.text();
   assert.match(html, /<form method="post" action="\/api\/magicare-auth">/);
-  assert.match(html, /Magicare: Three Ideas/);
+  assert.match(html, /Magicare Growth Plan/);
   assert.match(html, /noindex, nofollow/);
   assert.doesNotMatch(html, /Payload|Nucleus/);
   assert.doesNotMatch(html, /benchmark|scorecard|Daniel/i, 'no page copy on the gate');
@@ -85,10 +85,21 @@ await test('page request without a cookie gets the Magicare password screen', as
 });
 
 await test('every file under /magicare is blocked without a cookie', async () => {
-  for (const path of ['/magicare/', '/magicare/index.html', '/magicare/brand/x.png']) {
+  for (const path of ['/magicare/', '/magicare/index.html']) {
     const res = await middleware(req(path, { accept: '*/*' }));
     assert.equal(res.status, 401, path);
     assert.ok(!passes(res), path);
+  }
+});
+
+await test('the logo folder stays public for the password screen', async () => {
+  assert.ok(passes(await middleware(req('/magicare/brand/magicare-logo.png', { accept: 'image/*' }))));
+});
+
+await test('nothing outside the logo folder is public', async () => {
+  for (const path of ['/magicare/brandx.png', '/magicare/brand', '/nucleus/brand/../../magicare/index.html']) {
+    const res = await middleware(req(path, { accept: 'image/*' }));
+    assert.equal(res.status, 401, path);
   }
 });
 

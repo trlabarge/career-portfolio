@@ -13,13 +13,15 @@ export const gate = makeGate({
   cookieName: 'magicare_plan_session',
   label: 'magicare-plan',
   envVar: 'MAGICARE_PAGE_PASSWORD',
-  /* No public folder. The page carries no logo, so nothing needs to load before login. */
+  /* Files anyone may fetch without a session. The logo only, never plan copy. */
+  publicPrefix: '/magicare/brand/',
 });
 
 /**
  * The password screen. Self-contained so it needs no file behind the gate.
  * It carries a title and no share image, so a pasted link previews as the
- * page's name and nothing else. It carries no Magicare logo, on purpose.
+ * page's name and nothing else. The Magicare logo is the one file served from
+ * the public /magicare/brand/ folder, so it can show here before login.
  */
 export function gateHtml({ error = false } = {}) {
   const message = error
@@ -31,10 +33,10 @@ export function gateHtml({ error = false } = {}) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Magicare: Three Ideas</title>
-<meta property="og:title" content="Magicare: Three Ideas">
+<title>Magicare Growth Plan</title>
+<meta property="og:title" content="Magicare Growth Plan">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Magicare: Three Ideas">
+<meta name="twitter:title" content="Magicare Growth Plan">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +48,7 @@ html,body{height:100%}
 body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:1.125rem;line-height:1.6;color:var(--text);background:var(--bg);display:grid;place-items:center;padding:24px}
 .gate{width:100%;max-width:480px;background:#fff;border:1px solid #E4E1D8;border-radius:16px;padding:48px 44px;box-shadow:0 30px 60px -30px rgba(59,86,66,.3);position:relative;overflow:hidden}
 .gate::before{content:'';position:absolute;inset:0 0 auto;height:6px;background:linear-gradient(90deg,var(--sage-tint),var(--sage) 60%,var(--gold))}
+.gate__brand{margin:0 0 28px}.gate__brand img{height:28px;width:auto;display:block;max-width:100%}
 .gate__eyebrow{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 h1{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;line-height:1.1;letter-spacing:-.03em;margin:0 0 28px;color:var(--text)}
 label{display:block;font-weight:600;font-size:1rem;margin-bottom:8px}
@@ -62,8 +65,9 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 </head>
 <body>
 <main class="gate">
+<p class="gate__brand"><img src="/magicare/brand/magicare-logo.png" alt="Magicare.ai" width="218" height="28" onerror="this.replaceWith(document.createTextNode('Magicare.ai'))"></p>
 <p class="gate__eyebrow">Private · For Magicare</p>
-<h1>Three ideas to make some noise</h1>
+<h1>Three growth initiatives</h1>
 ${message}
 <form method="post" action="/api/magicare-auth">
 <label for="password">Password</label>
