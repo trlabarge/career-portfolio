@@ -559,7 +559,7 @@
     <!-- Pipeline model. Markup ships with the default results so it reads with no JS. -->
     <div class="block reveal">
       <p class="eyebrow">Pipeline model</p>
-      <h3>Two BDRs have the capacity, if the signal lifts reply rates.</h3>
+      <h3>BDR outreach strategy</h3>
       <p class="prose prose--sm">Adjust any assumption to recalculate the plan live.</p>
       <div class="model" data-model="signal">
         <div class="model__viz">
@@ -707,7 +707,7 @@
 
     <div class="block reveal">
       <p class="eyebrow">Outreach messaging</p>
-      <h3>Every message names the account's open roles.</h3>
+      <h3>Lead with the signal, then stay persistent across channels.</h3>
       <div class="msg">
         <figure class="email">
           <div class="email__bar" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -715,12 +715,35 @@
           <blockquote class="email__body"><p>Saw you're hiring four SOC analysts. Most teams screen on certs and résumés, then find out in month two who can actually triage an alert. SkillBit has candidates work a real scenario in 20 minutes, so you see the skill before the offer. Worth a look before interviews start?</p></blockquote>
         </figure>
         <ul class="cadence">
-          <li><span class="cadence__num">4</span><span class="cadence__txt">touches</span></li>
-          <li><span class="cadence__num">2</span><span class="cadence__txt">weeks</span></li>
+          <li><span class="cadence__num">10-12</span><span class="cadence__txt">touches</span></li>
+          <li><span class="cadence__num">4-6</span><span class="cadence__txt">weeks</span></li>
           <li><span class="cadence__num">3</span><span class="cadence__txt">channels</span><span class="cadence__icons"><svg class="icon"><use href="#i-mail"/></svg><svg class="icon"><use href="#i-network"/></svg><svg class="icon"><use href="#i-phone"/></svg></span></li>
         </ul>
       </div>
-      <p class="note">Sample first-touch email. The sequence runs across email, LinkedIn and phone.</p>
+      <p class="note">Sample first-touch email for an account showing the open-roles signal.</p>
+
+      <h4 class="sub">Message angles</h4>
+      <p class="prose prose--sm">The opening angle matches the account's strongest signal. Later touches rotate through the others, so no single angle carries the sequence.</p>
+      <ul class="angles">
+        <li><svg class="icon"><use href="#i-briefcase"/></svg>Open security roles</li>
+        <li><svg class="icon"><use href="#i-userplus"/></svg>New security leader</li>
+        <li><svg class="icon"><use href="#i-flask"/></svg>Labs activity at the company</li>
+        <li><svg class="icon"><use href="#i-wallet"/></svg>Funding or compliance trigger</li>
+        <li><svg class="icon"><use href="#i-cap"/></svg>Onboarding and upskilling</li>
+      </ul>
+
+      <h4 class="sub">Sample sequence</h4>
+      <div class="seq" aria-label="Illustrative 12-touch sequence over six weeks: three touches in weeks 1 and 2, two in weeks 3 and 4, one in weeks 5 and 6, across email, LinkedIn and phone.">
+        <ol class="seq__weeks" aria-hidden="true">
+          <li style="--i: 0"><span class="seq__week">Week 1</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 1"><span class="seq__week">Week 2</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span></span></li>
+          <li style="--i: 2"><span class="seq__week">Week 3</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 3"><span class="seq__week">Week 4</span><span class="seq__touches"><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span></span></li>
+          <li style="--i: 4"><span class="seq__week">Week 5</span><span class="seq__touches"><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 5"><span class="seq__week">Week 6</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span></span></li>
+        </ol>
+        <p class="seq__legend" aria-hidden="true"><span><i class="seq__key seq__key--email"></i>Email</span><span><i class="seq__key seq__key--li"></i>LinkedIn</span><span><i class="seq__key seq__key--phone"></i>Phone</span><span class="seq__note">Illustrative. Front-loaded, then tapering.</span></p>
+      </div>
     </div>
 
     <aside class="feature reveal" aria-labelledby="feature-2-title">
@@ -741,7 +764,7 @@
         <div class="programs__col">
           <h4 class="programs__title"><svg class="icon"><use href="#i-zap"/></svg>AI-enabled programs</h4>
           <ul class="cards">
-            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-search"/></svg></span><div><h5>Posting analysis</h5><p>Claude extracts the skills each posting requires (cloud, incident response, AppSec) and maps them to SkillBit labs, so every message states what the company is hiring for.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-search"/></svg></span><div><h5>Posting analysis</h5><p>Claude extracts the skills each posting requires (cloud, incident response, AppSec) and maps them to SkillBit labs, so outreach can reference what the company is hiring for.</p></div></li>
             <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><div><h5>First-draft outreach</h5><p>Claude drafts the email from the posting, and the BDR edits and sends it. Research time drops and 50 accounts per week stays realistic.</p></div></li>
             <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-gauge"/></svg></span><div><h5>Automated weekly scorecard</h5><p>Every Monday a Slack post compares results to plan, so no one builds a report by hand.</p></div></li>
             <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-tag"/></svg></span><div><h5>Reply classification</h5><p>AI sorts reply text by objection (“already hired,” “no budget,” “wrong person”) so the messaging improves every week.</p></div></li>

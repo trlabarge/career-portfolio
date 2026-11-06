@@ -1558,6 +1558,16 @@ the other plan pages: not in the nav, the sitemap, `robots.txt`, or Timbot's
   outreach copy, and are the sanctioned first-person exceptions alongside
   the prospect email. The leaderboard closes Thursday afternoon, which is
   April 8, 2027, the last day of RSAC.
+- **Outreach is multi-angle and 10-12 touches over 4-6 weeks** (Tim,
+  2026-11). Nothing may say every message names the account's open roles.
+  The open-roles email is labelled as one signal's first touch, "Message
+  angles" lists the plan's own signals, and the six-week sequence strip is
+  marked illustrative (12 touches, front-loaded). Part 2's model heading is
+  "BDR outreach strategy", on Tim's instruction.
+- Budget icon colours and the allocation bar share one rule per line item
+  (`.alloc__seg--N, .ti__icon.ti__icon--N`). The doubled class is
+  load-bearing, since the base `.ti__icon` rule comes later in the file and
+  otherwise repaints every icon sage tint.
 - Display headings use curly quotes. Space Grotesk draws a straight `"` as a
   closing quote, which makes an opening quote look backwards.
 
