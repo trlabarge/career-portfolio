@@ -1547,6 +1547,17 @@ the other plan pages: not in the nav, the sitemap, `robots.txt`, or Timbot's
   changes, update the static markup and re-check that no-JS and JS text agree.
 - **Account tiering reuses /nucleus's rings, mover animation and tablist**,
   relabelled A, B, C with Tier A at the center in gold.
+- **The street challenge is "The 3-Minute Flag"** (Tim, 2026-11), renamed
+  from "The 20-Minute Rule". The 20-minute rule stays the product pitch and
+  the event format stays short. A "Challenge design" block follows the
+  Featured initiative with three formats (60-second speed round, 3-minute
+  single flag badged "Recommended lead", flag ladder), how they combine, and
+  four example challenges by category and difficulty only, no descriptions,
+  on Tim's instruction. The core invitation ("Try our 3-minute challenge,
+  then let's talk...") and the follow-up line are Tim's wording, quoted as
+  outreach copy, and are the sanctioned first-person exceptions alongside
+  the prospect email. The leaderboard closes Thursday afternoon, which is
+  April 8, 2027, the last day of RSAC.
 - Display headings use curly quotes. Space Grotesk draws a straight `"` as a
   closing quote, which makes an opening quote look backwards.
 
