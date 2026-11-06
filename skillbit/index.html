@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>SkillBit Working Session</title>
-<meta name="description" content="SkillBit working session, prepared by Tim LaBarge">
-<meta property="og:title" content="SkillBit Working Session">
+<title>SkillBit Marketing Plan</title>
+<meta name="description" content="SkillBit marketing plan. RSAC 2027 and the growing-team signal.">
+<meta property="og:title" content="SkillBit Marketing Plan">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SkillBit Working Session">
+<meta name="twitter:title" content="SkillBit Marketing Plan">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 <script>document.documentElement.classList.add('js');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,10 +19,63 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
+<!-- Icon sprite. Paths from Lucide (ISC license), inlined so nothing loads at runtime. -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-radar" viewBox="0 0 24 24"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-usercheck" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></symbol>
+  <symbol id="i-network" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-6 9H2"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+  <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+  <symbol id="i-userplus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol>
+  <symbol id="i-phone2" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></symbol>
+</svg>
+
 <header class="topbar">
   <div class="topbar__inner">
-    <span class="topbar__title">SkillBit working session</span>
-    <nav class="topbar__nav" aria-label="Session parts">
+    <a class="topbar__title" href="#top">SkillBit Marketing Plan</a>
+    <nav class="topbar__nav" aria-label="Plan parts">
       <a class="topbar__tab" href="#part-1" data-tab="part-1"><span class="topbar__num">1</span><span class="topbar__label"><span class="topbar__pre">Part 1: </span>RSAC 2027</span></a>
       <a class="topbar__tab" href="#part-2" data-tab="part-2"><span class="topbar__num">2</span><span class="topbar__label"><span class="topbar__pre">Part 2: </span>Growing-team signal</span></a>
     </nav>
@@ -32,16 +85,200 @@
 <main id="main">
 
 <!-- ======================================================================
-     Header
+     Hero
      ====================================================================== -->
-<section class="intro">
+<section class="hero" id="top" data-hero>
   <div class="wrap">
-    <h1>SkillBit working session</h1>
-    <p class="intro__meta">Tim LaBarge · November 6, 2026</p>
-    <p class="intro__lede">A starting point for today's conversation, built from what Thomas shared and from public information. The conversion rates are my assumptions, and I'd expect to replace them with SkillBit's real numbers in the first few weeks.</p>
-    <ul class="legend" aria-label="Idea labels">
-      <li><span class="tag tag--ai">AI</span></li>
-      <li><span class="tag tag--scrappy">Scrappy</span></li>
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">Private · Prepared for SkillBit</p>
+        <h1>SkillBit Marketing Plan</h1>
+        <p class="hero__sub">RSAC 2027 and Growing-team Signal</p>
+        <span class="hero__rule" aria-hidden="true"></span>
+        <p class="hero__lede">A two-part plan built from initial conversations with SkillBit and from public information. Conversion rates are working assumptions, to be replaced with SkillBit's real numbers within the first few weeks.</p>
+      </div>
+
+      <figure class="hero__art">
+        <svg class="radar" viewBox="0 0 520 520" data-radar aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="radar-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#DCE5DA" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#DCE5DA" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle class="radar__bg" cx="260" cy="260" r="246"/>
+          <circle class="radar__ring" cx="260" cy="260" r="246"/>
+          <circle class="radar__ring" cx="260" cy="260" r="186"/>
+          <circle class="radar__ring" cx="260" cy="260" r="126"/>
+          <circle class="radar__ring" cx="260" cy="260" r="66"/>
+          <line class="radar__axis" x1="14" y1="260" x2="506" y2="260"/>
+          <line class="radar__axis" x1="260" y1="14" x2="260" y2="506"/>
+          <g class="radar__sweep" data-sweep transform="rotate(48 260 260)">
+            <path class="radar__wedge" d="M260 260 L64.2 117.8 A242 242 0 0 1 80.2 98.1 Z" style="opacity:0.033"/>
+            <path class="radar__wedge" d="M260 260 L80.2 98.1 A242 242 0 0 1 98.1 80.2 Z" style="opacity:0.043"/>
+            <path class="radar__wedge" d="M260 260 L98.1 80.2 A242 242 0 0 1 117.8 64.2 Z" style="opacity:0.060"/>
+            <path class="radar__wedge" d="M260 260 L117.8 64.2 A242 242 0 0 1 139.0 50.4 Z" style="opacity:0.083"/>
+            <path class="radar__wedge" d="M260 260 L139.0 50.4 A242 242 0 0 1 161.6 38.9 Z" style="opacity:0.113"/>
+            <path class="radar__wedge" d="M260 260 L161.6 38.9 A242 242 0 0 1 185.2 29.8 Z" style="opacity:0.150"/>
+            <path class="radar__wedge" d="M260 260 L185.2 29.8 A242 242 0 0 1 209.7 23.3 Z" style="opacity:0.193"/>
+            <path class="radar__wedge" d="M260 260 L209.7 23.3 A242 242 0 0 1 234.7 19.3 Z" style="opacity:0.243"/>
+            <path class="radar__wedge" d="M260 260 L234.7 19.3 A242 242 0 0 1 260.0 18.0 Z" style="opacity:0.300"/>
+            <line class="radar__beam" x1="260" y1="260" x2="260" y2="16"/>
+          </g>
+          <g class="radar__dots" data-dots>
+            <circle class="rd rd--c" cx="199.9" cy="412.5" r="3.6"/>
+            <circle class="rd rd--c" cx="309.1" cy="483.9" r="3.6"/>
+            <circle class="rd rd--b" cx="169.8" cy="407.5" r="5"/>
+            <circle class="rd rd--c" cx="251.7" cy="370.8" r="3.6"/>
+            <circle class="rd rd--c" cx="75.8" cy="209.0" r="3.6"/>
+            <circle class="rd rd--c" cx="341.3" cy="288.4" r="3.6"/>
+            <circle class="rd rd--c" cx="180.9" cy="228.9" r="3.6"/>
+            <circle class="rd rd--c" cx="312.0" cy="66.9" r="3.6"/>
+            <circle class="rd rd--c" cx="208.2" cy="29.8" r="3.6"/>
+            <circle class="rd rd--c" cx="130.8" cy="405.5" r="3.6"/>
+            <circle class="rd rd--c" cx="269.8" cy="156.2" r="3.6"/>
+            <circle class="rd rd--b" cx="324.4" cy="96.1" r="5"/>
+            <circle class="rd rd--c" cx="372.3" cy="254.3" r="3.6"/>
+            <circle class="rd rd--c" cx="274.1" cy="321.2" r="3.6"/>
+            <circle class="rd rd--c" cx="124.6" cy="171.1" r="3.6"/>
+            <circle class="rd rd--b" cx="125.2" cy="371.1" r="5"/>
+            <circle class="rd rd--c" cx="113.7" cy="349.7" r="3.6"/>
+            <circle class="rd rd--c" cx="422.2" cy="289.0" r="3.6"/>
+            <circle class="rd rd--c" cx="253.6" cy="22.4" r="3.6"/>
+            <circle class="rd rd--b" cx="48.6" cy="317.4" r="5"/>
+            <circle class="rd rd--c" cx="398.3" cy="242.2" r="3.6"/>
+            <circle class="rd rd--c" cx="317.3" cy="138.6" r="3.6"/>
+            <circle class="rd rd--c" cx="382.8" cy="429.9" r="3.6"/>
+            <circle class="rd rd--c" cx="403.8" cy="426.2" r="3.6"/>
+            <circle class="rd rd--c" cx="69.1" cy="126.2" r="3.6"/>
+            <circle class="rd rd--c" cx="306.8" cy="247.9" r="3.6"/>
+            <circle class="rd rd--c" cx="401.6" cy="448.5" r="3.6"/>
+            <circle class="rd rd--b" cx="202.5" cy="314.4" r="5"/>
+            <circle class="rd rd--a" cx="469.6" cy="286.2" r="6.5"/>
+            <circle class="rd rd--b" cx="26.4" cy="248.2" r="5"/>
+            <circle class="rd rd--b" cx="292.4" cy="177.9" r="5"/>
+            <circle class="rd rd--a" cx="451.9" cy="166.3" r="6.5"/>
+            <circle class="rd rd--c" cx="318.7" cy="431.0" r="3.6"/>
+            <circle class="rd rd--b" cx="148.2" cy="272.8" r="5"/>
+            <circle class="rd rd--b" cx="304.4" cy="341.6" r="5"/>
+            <circle class="rd rd--b" cx="38.4" cy="182.7" r="5"/>
+            <circle class="rd rd--c" cx="169.2" cy="157.1" r="3.6"/>
+            <circle class="rd rd--c" cx="332.3" cy="352.3" r="3.6"/>
+            <circle class="rd rd--c" cx="88.3" cy="398.7" r="3.6"/>
+            <circle class="rd rd--b" cx="254.1" cy="172.1" r="5"/>
+            <circle class="rd rd--c" cx="445.1" cy="360.2" r="3.6"/>
+            <circle class="rd rd--c" cx="217.8" cy="333.6" r="3.6"/>
+            <circle class="rd rd--a" cx="186.0" cy="360.2" r="6.5"/>
+            <circle class="rd rd--c" cx="303.5" cy="403.6" r="3.6"/>
+            <circle class="rd rd--c" cx="283.8" cy="492.1" r="3.6"/>
+            <circle class="rd rd--c" cx="123.8" cy="137.6" r="3.6"/>
+            <circle class="rd rd--c" cx="351.2" cy="197.3" r="3.6"/>
+            <circle class="rd rd--c" cx="53.0" cy="166.1" r="3.6"/>
+            <circle class="rd rd--b" cx="377.0" cy="213.5" r="5"/>
+            <circle class="rd rd--b" cx="184.6" cy="68.2" r="5"/>
+            <circle class="rd rd--c" cx="224.9" cy="151.6" r="3.6"/>
+            <circle class="rd rd--c" cx="124.3" cy="438.4" r="3.6"/>
+            <circle class="rd rd--c" cx="356.4" cy="133.8" r="3.6"/>
+            <circle class="rd rd--c" cx="244.6" cy="195.4" r="3.6"/>
+            <circle class="rd rd--c" cx="141.5" cy="294.8" r="3.6"/>
+            <circle class="rd rd--c" cx="145.9" cy="203.0" r="3.6"/>
+            <circle class="rd rd--b" cx="439.4" cy="310.2" r="5"/>
+            <circle class="rd rd--b" cx="337.0" cy="249.5" r="5"/>
+            <circle class="rd rd--c" cx="478.9" cy="194.9" r="3.6"/>
+            <circle class="rd rd--c" cx="316.2" cy="266.8" r="3.6"/>
+            <circle class="rd rd--b" cx="394.4" cy="136.2" r="5"/>
+            <circle class="rd rd--c" cx="63.4" cy="390.1" r="3.6"/>
+            <circle class="rd rd--c" cx="159.0" cy="432.2" r="3.6"/>
+            <circle class="rd rd--a" cx="229.4" cy="211.6" r="6.5"/>
+            <circle class="rd rd--c" cx="213.4" cy="64.5" r="3.6"/>
+            <circle class="rd rd--c" cx="92.4" cy="280.6" r="3.6"/>
+            <circle class="rd rd--b" cx="259.4" cy="119.9" r="5"/>
+            <circle class="rd rd--c" cx="139.2" cy="93.4" r="3.6"/>
+            <circle class="rd rd--a" cx="125.6" cy="318.0" r="6.5"/>
+            <circle class="rd rd--b" cx="96.0" cy="103.9" r="5"/>
+            <circle class="rd rd--c" cx="107.1" cy="220.2" r="3.6"/>
+            <circle class="rd rd--c" cx="162.0" cy="459.1" r="3.6"/>
+            <circle class="rd rd--c" cx="388.3" cy="400.7" r="3.6"/>
+            <circle class="rd rd--c" cx="177.2" cy="259.9" r="3.6"/>
+            <circle class="rd rd--c" cx="427.3" cy="239.1" r="3.6"/>
+            <circle class="rd rd--b" cx="263.5" cy="460.6" r="5"/>
+            <circle class="rd rd--c" cx="169.5" cy="94.2" r="3.6"/>
+            <circle class="rd rd--a" cx="158.0" cy="133.9" r="6.5"/>
+            <circle class="rd rd--c" cx="308.1" cy="363.8" r="3.6"/>
+            <circle class="rd rd--c" cx="428.5" cy="334.8" r="3.6"/>
+            <circle class="rd rd--c" cx="317.5" cy="44.5" r="3.6"/>
+            <circle class="rd rd--c" cx="303.6" cy="222.0" r="3.6"/>
+            <circle class="rd rd--c" cx="285.4" cy="97.6" r="3.6"/>
+            <circle class="rd rd--b" cx="477.0" cy="242.8" r="5"/>
+            <circle class="rd rd--c" cx="101.9" cy="367.4" r="3.6"/>
+            <circle class="rd rd--c" cx="448.8" cy="197.8" r="3.6"/>
+            <circle class="rd rd--c" cx="411.1" cy="187.3" r="3.6"/>
+            <circle class="rd rd--c" cx="367.8" cy="334.0" r="3.6"/>
+            <circle class="rd rd--c" cx="234.3" cy="458.8" r="3.6"/>
+            <circle class="rd rd--c" cx="71.2" cy="252.6" r="3.6"/>
+            <circle class="rd rd--c" cx="378.3" cy="66.2" r="3.6"/>
+            <circle class="rd rd--c" cx="33.3" cy="299.7" r="3.6"/>
+            <circle class="rd rd--a" cx="74.7" cy="175.1" r="6.5"/>
+            <circle class="rd rd--c" cx="71.2" cy="298.9" r="3.6"/>
+            <circle class="rd rd--a" cx="190.7" cy="164.6" r="6.5"/>
+            <circle class="rd rd--c" cx="184.8" cy="141.5" r="3.6"/>
+            <circle class="rd rd--c" cx="439.9" cy="388.2" r="3.6"/>
+            <circle class="rd rd--c" cx="344.3" cy="62.1" r="3.6"/>
+            <circle class="rd rd--c" cx="56.7" cy="341.4" r="3.6"/>
+            <circle class="rd rd--b" cx="126.8" cy="277.8" r="5"/>
+            <circle class="rd rd--c" cx="354.2" cy="361.8" r="3.6"/>
+            <circle class="rd rd--b" cx="165.9" cy="190.9" r="5"/>
+            <circle class="rd rd--c" cx="224.5" cy="491.7" r="3.6"/>
+            <circle class="rd rd--a" cx="256.5" cy="437.2" r="6.5"/>
+            <circle class="rd rd--a" cx="292.5" cy="75.2" r="6.5"/>
+            <circle class="rd rd--b" cx="351.6" cy="412.3" r="5"/>
+            <circle class="rd rd--c" cx="152.2" cy="53.4" r="3.6"/>
+            <circle class="rd rd--c" cx="281.8" cy="388.3" r="3.6"/>
+            <circle class="rd rd--c" cx="426.6" cy="102.5" r="3.6"/>
+            <circle class="rd rd--c" cx="290.1" cy="50.9" r="3.6"/>
+            <circle class="rd rd--c" cx="159.5" cy="367.3" r="3.6"/>
+            <circle class="rd rd--b" cx="338.0" cy="389.0" r="5"/>
+            <circle class="rd rd--b" cx="408.7" cy="165.3" r="5"/>
+            <circle class="rd rd--c" cx="175.0" cy="338.6" r="3.6"/>
+            <circle class="rd rd--a" cx="467.5" cy="351.1" r="6.5"/>
+            <circle class="rd rd--c" cx="333.3" cy="155.0" r="3.6"/>
+            <circle class="rd rd--b" cx="363.1" cy="452.1" r="5"/>
+            <circle class="rd rd--c" cx="415.4" cy="84.6" r="3.6"/>
+          </g>
+          <g class="radar__pings" data-pings></g>
+          <circle class="radar__halo" cx="260" cy="260" r="40" fill="url(#radar-glow)"/>
+          <circle class="radar__core" cx="260" cy="260" r="15"/>
+          <circle class="radar__core-dot" cx="260" cy="260" r="5"/>
+        </svg>
+        <figcaption class="radar__legend">
+          <span><i class="key key--a"></i>Tier A</span>
+          <span><i class="key key--b"></i>Tier B</span>
+          <span><i class="key key--c"></i>Tier C</span>
+          <span class="radar__hint">Hiring signals across the market</span>
+        </figcaption>
+        <p class="visually-hidden">Illustration. A radar sweep passes over a field of accounts and pings the ones showing hiring signals, tiered A, B and C as in Part 2.</p>
+      </figure>
+    </div>
+
+    <ul class="previews">
+      <li>
+        <a class="preview" href="#part-1">
+          <span class="preview__num">Part 1</span>
+          <span class="preview__title">RSAC 2027</span>
+          <span class="preview__goal"><strong>$200K</strong> pipeline from a <strong>$25K</strong> budget</span>
+          <span class="preview__meta"><svg class="icon"><use href="#i-pin"/></svg>April 5 to 8, 2027 · Moscone Center, San Francisco</span>
+          <svg class="icon preview__arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="preview preview--two" href="#part-2">
+          <span class="preview__num">Part 2</span>
+          <span class="preview__title">Growing-team signal</span>
+          <span class="preview__goal"><strong>15</strong> opportunities and <strong>$300K</strong> pipeline next quarter</span>
+          <span class="preview__meta"><svg class="icon"><use href="#i-users"/></svg>Signal-based outbound from two BDRs</span>
+          <svg class="icon preview__arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+      </li>
     </ul>
   </div>
 </section>
@@ -52,149 +289,269 @@
 <section class="part" id="part-1" aria-labelledby="part-1-title">
   <div class="part__head">
     <div class="wrap">
-      <h2 id="part-1-title"><span class="part__num">Part 1:</span> RSAC Conference 2027</h2>
-      <p class="part__when">April 5 to 8, 2027 · Moscone Center, San Francisco</p>
-      <p class="part__goal">Goal: $200K in pipeline from $25K (travel not included)</p>
+      <p class="part__eyebrow">Part 1</p>
+      <h2 id="part-1-title">RSAC Conference 2027</h2>
+      <ul class="part__facts">
+        <li><svg class="icon"><use href="#i-calendar"/></svg><span>April 5 to 8, 2027</span></li>
+        <li><svg class="icon"><use href="#i-pin"/></svg><span>Moscone Center, San Francisco</span></li>
+        <li><svg class="icon"><use href="#i-target"/></svg><span><strong>$200K</strong> pipeline goal</span></li>
+        <li><svg class="icon"><use href="#i-wallet"/></svg><span><strong>$25K</strong> budget, travel excluded</span></li>
+      </ul>
     </div>
   </div>
 
   <div class="wrap part__body">
 
-    <div class="block">
-      <h3>How I'd approach it</h3>
-      <p class="prose">I'd skip the show floor. A booth at RSAC would use up most of the budget on space, so I'd put the money into meetings booked before the event and a couple of experiences people remember and talk about afterward.</p>
+    <div class="block reveal">
+      <p class="eyebrow">Strategy</p>
+      <h3>Skip the show floor and invest in meetings.</h3>
+      <p class="prose">A booth at RSAC would consume most of the budget on floor space. The plan puts the money into meetings booked before the event and a small number of memorable experiences that attendees discuss afterward.</p>
     </div>
 
-    <div class="block">
-      <h3>The math, working backward</h3>
-      <ul class="stats stats--5">
-        <li class="stat"><span class="stat__num">10</span><span class="stat__text">opportunities ($200K ÷ $20K average deal)</span></li>
-        <li class="stat"><span class="stat__num">25</span><span class="stat__text">meetings (at a 40% meeting-to-opportunity rate)</span></li>
-        <li class="stat"><span class="stat__num">~17</span><span class="stat__text">booked before the event through outreach</span></li>
-        <li class="stat"><span class="stat__num">~8</span><span class="stat__text">from two hosted dinners</span></li>
-        <li class="stat stat--accent"><span class="stat__num">$2,500</span><span class="stat__text">cost per opportunity</span></li>
-      </ul>
+    <!-- Pipeline model. Markup ships with the default results so it reads with no JS. -->
+    <div class="block reveal">
+      <p class="eyebrow">Pipeline model</p>
+      <h3>Working backward from $200K in pipeline.</h3>
+      <p class="prose prose--sm">Adjust any assumption to recalculate the plan live.</p>
+      <div class="model" data-model="rsac">
+        <div class="model__viz">
+          <ol class="funnel">
+            <li class="funnel__stage" data-stage="accounts">
+              <div class="funnel__label"><span class="funnel__value" data-out="accounts">~340</span><span class="funnel__name">Accounts contacted</span><span class="funnel__formula" data-formula="accounts">outreach meetings ÷ booking rate = 17 ÷ 5%</span></div>
+              <div class="funnel__track"><span class="funnel__bar" data-bar="accounts" style="--w: 1"></span></div>
+            </li>
+            <li class="funnel__stage" data-stage="meetings">
+              <div class="funnel__label"><span class="funnel__value" data-out="meetings">25</span><span class="funnel__name">Meetings</span><span class="funnel__formula" data-formula="meetings">opportunities ÷ meeting-to-opportunity rate = 10 ÷ 40%</span></div>
+              <div class="funnel__track">
+                <span class="funnel__bar funnel__bar--split" data-bar="meetings" style="--w: 0.612">
+                  <span class="funnel__seg funnel__seg--outreach" data-seg="outreach" style="--share: 0.68"></span>
+                  <span class="funnel__seg funnel__seg--dinner" data-seg="dinner" style="--share: 0.32"></span>
+                </span>
+              </div>
+              <ul class="funnel__split">
+                <li><i class="key key--sage"></i><output data-out="outreach">~17</output> from pre-event outreach</li>
+                <li><i class="key key--gold"></i><output data-out="dinner">~8</output> from two hosted dinners <span class="funnel__formula" data-formula="dinner">guests × guest-to-meeting rate = 28 × 30% = 8.4</span></li>
+              </ul>
+            </li>
+            <li class="funnel__stage" data-stage="opps">
+              <div class="funnel__label"><span class="funnel__value" data-out="opps">10</span><span class="funnel__name">Opportunities</span><span class="funnel__formula" data-formula="opps">pipeline goal ÷ average deal = $200,000 ÷ $20,000</span></div>
+              <div class="funnel__track"><span class="funnel__bar" data-bar="opps" style="--w: 0.482"></span></div>
+            </li>
+            <li class="funnel__stage funnel__stage--result">
+              <div class="funnel__label"><span class="funnel__value" data-out="pipeline">$200,000</span><span class="funnel__name">Pipeline</span></div>
+              <div class="funnel__track"><span class="funnel__bar funnel__bar--result" style="--w: 0.482"></span></div>
+            </li>
+          </ol>
+          <div class="kpi">
+            <svg class="icon kpi__icon"><use href="#i-gauge"/></svg>
+            <span class="kpi__label">Cost per opportunity</span>
+            <output class="kpi__value" data-out="cpo">$2,500</output>
+            <span class="kpi__formula" data-formula="cpo">budget ÷ opportunities = $25,000 ÷ 10</span>
+          </div>
+        </div>
+        <form class="model__controls" onsubmit="return false">
+          <div class="model__controls-head"><span><svg class="icon"><use href="#i-sliders"/></svg>Assumptions</span><button type="reset" class="model__reset">Reset</button></div>
+          <label class="slider"><span class="slider__top"><span>Pipeline goal</span><output data-show="goal">$200,000</output></span><input type="range" name="goal" min="50000" max="500000" step="10000" value="200000" data-fmt="usd"></label>
+          <label class="slider"><span class="slider__top"><span>Average deal</span><output data-show="deal">$20,000</output></span><input type="range" name="deal" min="5000" max="60000" step="1000" value="20000" data-fmt="usd"></label>
+          <label class="slider"><span class="slider__top"><span>Meeting-to-opportunity rate</span><output data-show="m2o">40%</output></span><input type="range" name="m2o" min="10" max="80" step="5" value="40" data-fmt="pct"></label>
+          <label class="slider"><span class="slider__top"><span>Booking rate per account contacted</span><output data-show="book">5%</output></span><input type="range" name="book" min="1" max="15" step="0.5" value="5" data-fmt="pct"></label>
+          <label class="slider"><span class="slider__top"><span>Dinner guests</span><output data-show="guests">28</output></span><input type="range" name="guests" min="0" max="60" step="1" value="28" data-fmt="int"></label>
+          <label class="slider"><span class="slider__top"><span>Dinner guest-to-meeting rate</span><output data-show="g2m">30%</output></span><input type="range" name="g2m" min="0" max="60" step="5" value="30" data-fmt="pct"></label>
+          <label class="slider"><span class="slider__top"><span>Budget</span><output data-show="budget">$25,000</output></span><input type="range" name="budget" min="5000" max="60000" step="1000" value="25000" data-fmt="usd"></label>
+        </form>
+      </div>
     </div>
 
-    <div class="block">
-      <h3>Who we'd go after</h3>
-      <ul class="bullets">
-        <li>Security leaders (CISOs and SecOps and AppSec directors) at companies with growing security teams, which overlaps with Part 2 so one list does double duty</li>
-        <li>Labs users and existing customers at target accounts, since they already know us</li>
-        <li>Talent acquisition leaders, if the hiring assessment is live by April</li>
-        <li>A target list of about 340 accounts that are attending or based in the Bay Area</li>
-      </ul>
+    <div class="block reveal">
+      <p class="eyebrow">Target audience</p>
+      <h3>Three buyer profiles, one shared account list.</h3>
+      <div class="profiles">
+        <article class="profile">
+          <div class="profile__head"><span class="profile__avatar"><svg class="icon"><use href="#i-shield"/></svg></span><h4>Security leaders</h4></div>
+          <ul class="profile__roles"><li>CISO</li><li>SecOps director</li><li>AppSec director</li></ul>
+          <p>Leaders at companies with growing security teams. This audience overlaps with Part 2, so one list serves both programs.</p>
+        </article>
+        <article class="profile">
+          <div class="profile__head"><span class="profile__avatar"><svg class="icon"><use href="#i-flask"/></svg></span><h4>Labs users and customers</h4></div>
+          <ul class="profile__roles"><li>Labs users</li><li>Existing customers</li></ul>
+          <p>Practitioners at target accounts who already know SkillBit.</p>
+        </article>
+        <article class="profile">
+          <div class="profile__head"><span class="profile__avatar"><svg class="icon"><use href="#i-usercheck"/></svg></span><h4>Talent acquisition leaders</h4></div>
+          <ul class="profile__roles"><li>Talent acquisition</li><li class="profile__cond">If the assessment is live</li></ul>
+          <p>Included if the hiring assessment launches before April.</p>
+        </article>
+        <article class="profile profile--list">
+          <span class="profile__big">~340</span>
+          <h4>Target accounts</h4>
+          <p>Companies attending RSAC or based in the Bay Area.</p>
+          <ul class="profile__tags"><li><svg class="icon"><use href="#i-calendar"/></svg>Attending</li><li><svg class="icon"><use href="#i-pin"/></svg>Bay Area</li></ul>
+        </article>
+      </div>
     </div>
 
-    <div class="block">
-      <h3>Budget (estimates I'd verify)</h3>
+    <div class="block reveal">
+      <p class="eyebrow">Budget</p>
+      <h3>$25K, weighted toward dinners and the street challenge.</h3>
+      <div class="alloc" data-alloc aria-hidden="true">
+        <span class="alloc__seg alloc__seg--1" style="--v: 10" data-seg="1"></span>
+        <span class="alloc__seg alloc__seg--2" style="--v: 5" data-seg="2"></span>
+        <span class="alloc__seg alloc__seg--3" style="--v: 4" data-seg="3"></span>
+        <span class="alloc__seg alloc__seg--4" style="--v: 3" data-seg="4"></span>
+        <span class="alloc__seg alloc__seg--5" style="--v: 1" data-seg="5"></span>
+        <span class="alloc__seg alloc__seg--6" style="--v: 2" data-seg="6"></span>
+      </div>
       <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th scope="col">Item</th><th scope="col" class="num">Cost</th></tr></thead>
+        <table class="table table--icons" data-alloc-table>
+          <thead><tr><th scope="col">Line item</th><th scope="col" class="num">Estimate</th></tr></thead>
           <tbody>
-            <tr><td>Two security leader dinners, about 14 guests each</td><td class="num">~$10K</td></tr>
-            <tr><td>"The 20-Minute Rule" street challenge near Moscone</td><td class="num">~$5K</td></tr>
-            <tr><td>Meeting room or suite for two days</td><td class="num">~$4K</td></tr>
-            <tr><td>Incentive for booked meetings</td><td class="num">~$3K</td></tr>
-            <tr><td>List and data tools</td><td class="num">~$1K</td></tr>
-            <tr><td>Reserve</td><td class="num">~$2K</td></tr>
+            <tr data-row="1"><td><span class="ti"><span class="ti__icon ti__icon--1"><svg class="icon"><use href="#i-utensils"/></svg></span>Two security leader dinners, about 14 guests each</span></td><td class="num">~$10K</td></tr>
+            <tr data-row="2"><td><span class="ti"><span class="ti__icon ti__icon--2"><svg class="icon"><use href="#i-coffee"/></svg></span>“The 3-Minute Flag” street challenge near Moscone</span></td><td class="num">~$5K</td></tr>
+            <tr data-row="3"><td><span class="ti"><span class="ti__icon ti__icon--3"><svg class="icon"><use href="#i-building"/></svg></span>Meeting room or suite for two days</span></td><td class="num">~$4K</td></tr>
+            <tr data-row="4"><td><span class="ti"><span class="ti__icon ti__icon--4"><svg class="icon"><use href="#i-gift"/></svg></span>Incentive for booked meetings</span></td><td class="num">~$3K</td></tr>
+            <tr data-row="5"><td><span class="ti"><span class="ti__icon ti__icon--5"><svg class="icon"><use href="#i-database"/></svg></span>List and data tools</span></td><td class="num">~$1K</td></tr>
+            <tr data-row="6"><td><span class="ti"><span class="ti__icon ti__icon--6"><svg class="icon"><use href="#i-wallet"/></svg></span>Reserve</span></td><td class="num">~$2K</td></tr>
           </tbody>
           <tfoot><tr><th scope="row">Total</th><td class="num">$25K</td></tr></tfoot>
         </table>
       </div>
+      <p class="note">All figures are estimates, subject to verification.</p>
     </div>
 
-    <aside class="bold" aria-labelledby="bold-1-title">
-      <p class="bold__eyebrow">Bold idea</p>
-      <h3 id="bold-1-title">"The 20-Minute Rule" street challenge</h3>
-      <p>A coffee cart or pop-up a block from Moscone, off the show floor. Anyone who solves a 20-minute challenge gets free coffee, and a live leaderboard ranks companies against each other. Every company on the board is a lead, the board gives people something to post about, and it's SkillBit's whole idea (prove the skill) in a format people walk up to. I'd check RSAC's rules and city permits first.</p>
+    <aside class="feature reveal" aria-labelledby="feature-1-title">
+      <p class="feature__eyebrow">Featured initiative</p>
+      <h3 id="feature-1-title">“The 3-Minute Flag”</h3>
+      <p class="feature__body">A coffee cart or pop-up one block from Moscone, away from the show floor. Anyone who solves a 3-minute challenge, with harder flags unlocked on their phone all week, receives free coffee, and a live leaderboard ranks companies against each other. Every company on the board becomes a lead, the leaderboard gives attendees something to post about, and the format puts SkillBit's core idea (prove the skill) in front of people who walk up to it.</p>
+      <ol class="feature__flow">
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-coffee"/></svg></span>Walk up to the cart</li>
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-flag"/></svg></span>Capture a 3-minute flag</li>
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-trophy"/></svg></span>Company joins the live leaderboard</li>
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-mail"/></svg></span>Results email and a link to book time</li>
+      </ol>
+      <p class="feature__note"><svg class="icon"><use href="#i-alert"/></svg>RSAC rules and city permits to be confirmed first.</p>
     </aside>
 
-    <div class="block">
-      <h3>Getting meetings on the calendar</h3>
-      <ol class="timeline">
-        <li><span class="timeline__when">Early February (8 weeks out)</span><span class="timeline__what">Build the list and start BDR outreach</span></li>
-        <li><span class="timeline__when">Late February</span><span class="timeline__what">Dinner invites go out with a personal note from Thomas</span></li>
-        <li class="timeline__pitch"><span class="timeline__when">The pitch</span><span class="timeline__what">"Let's run your team through a 20-minute challenge while you're in town"</span></li>
-        <li><span class="timeline__when">Week before</span><span class="timeline__what">Confirm every meeting and send calendar holds with the location</span></li>
-        <li><span class="timeline__when">At the event</span><span class="timeline__what">The AE and Thomas take meetings, and the BDRs book follow-ups on site</span></li>
-        <li><span class="timeline__when">Within 48 hours</span><span class="timeline__what">Personal follow-up that includes the person's challenge results</span></li>
+    <div class="block reveal">
+      <p class="eyebrow">Challenge design</p>
+      <h3>Three formats, one leaderboard.</h3>
+      <ol class="formats">
+        <li class="format">
+          <span class="format__icon"><svg class="icon"><use href="#i-phone2"/></svg></span>
+          <span class="format__num">Option 1</span>
+          <h4>60-second speed round</h4>
+          <span class="format__tag">Phone-friendly</span>
+          <ul>
+            <li>Scan a QR code for five rapid-fire items. Real or malicious? (a phishing email, a login alert, a suspicious link)</li>
+            <li>Scored on accuracy and speed</li>
+            <li>Anyone can play while standing in line for coffee</li>
+          </ul>
+        </li>
+        <li class="format format--lead">
+          <span class="format__icon"><svg class="icon"><use href="#i-flag"/></svg></span>
+          <span class="format__num">Option 2</span>
+          <h4>3-minute single flag</h4>
+          <span class="format__tag">Recommended lead</span>
+          <ul>
+            <li>One scenario, one answer. For example, “Here are 10 log lines. Which IP address is the attacker?”</li>
+            <li>Short enough to finish at the cart, but still feels like real security work</li>
+          </ul>
+        </li>
+        <li class="format">
+          <span class="format__icon"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <span class="format__num">Option 3</span>
+          <h4>Flag ladder</h4>
+          <span class="format__tag">Runs all week</span>
+          <ul>
+            <li>One easy flag at the cart (2 to 3 minutes)</li>
+            <li>Two harder flags unlock on the phone afterward</li>
+            <li>The leaderboard stays open all week, so people keep playing from their hotel or between sessions without holding up the line</li>
+          </ul>
+        </li>
       </ol>
-    </div>
 
-    <div class="ideas">
-      <div class="block">
-        <h3>Where AI helps</h3>
-        <ul class="idea-list">
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>A target list from public signals.</strong> The same workflow I built at Implicit (which drove about 30% of new leads) can pull the RSAC speaker and sponsor lists and LinkedIn posts like "headed to RSAC." Claude scores the accounts and drafts outreach that mentions their talk or post.</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>Personalized challenge invites.</strong> Claude reads a prospect's open job postings and picks the matching Labs challenge, so the invite says "here's the challenge we'd give your cloud security candidates, try it with us at RSAC."</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>An instant results email.</strong> Anyone who plays the street challenge gets a short skills snapshot within the hour, with a link to book time.</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>Same-day meeting follow-ups.</strong> Notes from each meeting become a draft follow-up the AE approves that night.</p></li>
-        </ul>
-      </div>
-      <div class="block">
-        <h3>Where we can be scrappy</h3>
-        <ul class="idea-list">
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Co-host the dinners</strong> with a vendor that sells to the same buyer without competing with us (identity or SOC tooling, for example), splitting the cost and the guest list. That turns two dinners into four, or frees up $5K.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Ask customers to host.</strong> A security leader from a customer co-hosting a dinner fills seats better than a vendor invite does.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Use community events.</strong> Sponsor a challenge at BSides SF or a local ISSA meetup that week instead of throwing our own event.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Publish what we learned.</strong> A week after the show, share anonymized leaderboard results ("What we learned from 300 practitioners in 20 minutes"). It's a second round of follow-up and a PR story from data we already collected.</p></li>
-        </ul>
-      </div>
-    </div>
+      <h4 class="sub">How the formats combine</h4>
+      <ol class="combo">
+        <li><span class="combo__icon"><svg class="icon"><use href="#i-coffee"/></svg></span><span class="combo__where">At the cart</span><p>The 3-minute single flag</p></li>
+        <li><span class="combo__icon"><svg class="icon"><use href="#i-qr"/></svg></span><span class="combo__where">QR code on cups and stickers</span><p>The flag ladder, so the challenge travels around the conference without a full-time staffer</p></li>
+        <li><span class="combo__icon"><svg class="icon"><use href="#i-trophy"/></svg></span><span class="combo__where">Leaderboard</span><p>Fastest correct time by company, closing Thursday afternoon, with winners announced on LinkedIn</p></li>
+        <li class="combo__quote"><span class="combo__icon"><svg class="icon"><use href="#i-mail"/></svg></span><span class="combo__where">Follow-up line</span><p>“That took you three minutes. Here’s what 20 minutes with your whole team would show you.”<span class="combo__why">The 20-minute rule stays the product pitch, and the event format stays short.</span></p></li>
+      </ol>
 
-    <div class="block">
-      <h3>How we'd know it worked</h3>
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th scope="col">When</th><th scope="col">What we track</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Before the event</th><td>Meetings booked against a target of 25 by April 1, checked weekly</td></tr>
-            <tr><th scope="row">At the event</th><td>Meetings held and show rate</td></tr>
-            <tr><th scope="row">After the event</th><td>Opportunities created within 45 days, pipeline dollars, cost per opportunity</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note">Everything gets tagged "RSAC27" in the CRM from the first email.</p>
-    </div>
-
-    <div class="block">
-      <h3>Questions for the team</h3>
-      <ul class="questions">
-        <li>Does the $20K average deal assume the hiring assessment?</li>
-        <li>Who from SkillBit will be at RSAC?</li>
-        <li>Does expansion pipeline from existing customers count toward the $200K?</li>
-        <li>RSAC outreach in February and March overlaps with the Part 2 quarter and uses the same BDRs, so should we build one shared target list?</li>
+      <h4 class="sub">Example challenges</h4>
+      <ul class="examples">
+        <li style="--lvl: 1"><span class="examples__icon"><svg class="icon"><use href="#i-mail"/></svg></span><span class="examples__name">Phishing triage</span><span class="examples__meta"><span class="lvl" aria-hidden="true"><i></i><i></i><i></i></span>Easy</span></li>
+        <li style="--lvl: 2"><span class="examples__icon"><svg class="icon"><use href="#i-activity"/></svg></span><span class="examples__name">SOC alert triage</span><span class="examples__meta"><span class="lvl" aria-hidden="true"><i></i><i></i><i></i></span>Medium</span></li>
+        <li style="--lvl: 2"><span class="examples__icon"><svg class="icon"><use href="#i-cloud"/></svg></span><span class="examples__name">Cloud misconfiguration</span><span class="examples__meta"><span class="lvl" aria-hidden="true"><i></i><i></i><i></i></span>Medium</span></li>
+        <li style="--lvl: 3"><span class="examples__icon"><svg class="icon"><use href="#i-globe"/></svg></span><span class="examples__name">Web app flag</span><span class="examples__meta"><span class="lvl" aria-hidden="true"><i></i><i></i><i></i></span>Harder</span></li>
       </ul>
     </div>
 
-    <!-- Part 1 calculator. Markup ships with the default results so it reads with no JS. -->
-    <section class="calc" data-calc="rsac" aria-labelledby="calc-1-title">
-      <div class="calc__head">
-        <h3 id="calc-1-title">Assumption calculator</h3>
-        <button type="button" class="calc__reset" data-reset>Reset</button>
-      </div>
-      <div class="calc__grid">
-        <fieldset class="calc__inputs">
-          <legend class="visually-hidden">Assumptions</legend>
-          <label class="field"><span class="field__label">Pipeline goal</span><span class="field__box"><span class="field__affix">$</span><input type="number" name="goal" value="200000" min="0" step="10000" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Average deal</span><span class="field__box"><span class="field__affix">$</span><input type="number" name="deal" value="20000" min="0" step="1000" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Meeting-to-opportunity rate</span><span class="field__box"><input type="number" name="m2o" value="40" min="0" max="100" step="5" inputmode="decimal"><span class="field__affix">%</span></span></label>
-          <label class="field"><span class="field__label">Booking rate per account contacted</span><span class="field__box"><input type="number" name="book" value="5" min="0" max="100" step="0.5" inputmode="decimal"><span class="field__affix">%</span></span></label>
-          <label class="field"><span class="field__label">Dinner guests</span><span class="field__box"><input type="number" name="guests" value="28" min="0" step="1" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Dinner guest-to-meeting rate</span><span class="field__box"><input type="number" name="g2m" value="30" min="0" max="100" step="5" inputmode="decimal"><span class="field__affix">%</span></span></label>
-          <label class="field"><span class="field__label">Budget</span><span class="field__box"><span class="field__affix">$</span><input type="number" name="budget" value="25000" min="0" step="1000" inputmode="numeric"></span></label>
-        </fieldset>
-        <div class="calc__outputs">
-          <div class="out"><span class="out__label">Opportunities needed</span><output class="out__value" data-out="opps">10</output><span class="out__formula" data-formula="opps">goal ÷ deal = $200,000 ÷ $20,000</span></div>
-          <div class="out"><span class="out__label">Meetings needed</span><output class="out__value" data-out="meetings">25</output><span class="out__formula" data-formula="meetings">opps ÷ meeting-to-opp rate = 10 ÷ 40%</span></div>
-          <div class="out"><span class="out__label">Meetings from dinners</span><output class="out__value" data-out="dinner">~8</output><span class="out__formula" data-formula="dinner">guests × rate = 28 × 30% = 8.4</span></div>
-          <div class="out"><span class="out__label">Meetings still needed from outreach</span><output class="out__value" data-out="outreach">~17</output><span class="out__formula" data-formula="outreach">meetings needed − dinner meetings = 25 − 8</span></div>
-          <div class="out"><span class="out__label">Accounts to contact</span><output class="out__value" data-out="accounts">~340</output><span class="out__formula" data-formula="accounts">outreach meetings ÷ booking rate = 17 ÷ 5%</span></div>
-          <div class="out out--accent"><span class="out__label">Cost per opportunity</span><output class="out__value" data-out="cpo">$2,500</output><span class="out__formula" data-formula="cpo">budget ÷ opps = $25,000 ÷ 10</span></div>
+    <div class="block reveal">
+      <p class="eyebrow">Execution timeline</p>
+      <h3>Outreach starts eight weeks out. Follow-up lands within 48 hours.</h3>
+      <h4 class="sub">Core invitations, by persona</h4>
+      <ol class="invites">
+        <li class="invite">
+          <div class="invite__head"><span class="invite__avatar"><svg class="icon"><use href="#i-flask"/></svg></span><div><span class="invite__who">Practitioners and Labs users</span><span class="invite__format"><svg class="icon"><use href="#i-flag"/></svg>The 3-Minute Flag</span></div></div>
+          <p class="invite__quote">“Try our 3-minute challenge, then let's talk about running your team through it.”</p>
+          <p class="invite__via"><svg class="icon"><use href="#i-mail"/></svg>Personalized challenge invitations, plus QR codes at the cart</p>
+        </li>
+        <li class="invite invite--lead">
+          <div class="invite__head"><span class="invite__avatar"><svg class="icon"><use href="#i-shield"/></svg></span><div><span class="invite__who">CISOs and SecOps and AppSec directors</span><span class="invite__format"><svg class="icon"><use href="#i-utensils"/></svg>Security leader dinner</span></div></div>
+          <p class="invite__quote">“Join 13 other security leaders for a private dinner on building, and proving, a growing team.”</p>
+          <p class="invite__via"><svg class="icon"><use href="#i-pen"/></svg>Personal note from SkillBit leadership, late February</p>
+        </li>
+        <li class="invite">
+          <div class="invite__head"><span class="invite__avatar"><svg class="icon"><use href="#i-usercheck"/></svg></span><div><span class="invite__who">Talent acquisition leaders and hiring managers</span><span class="invite__format"><svg class="icon"><use href="#i-building"/></svg>Meeting suite session</span></div></div>
+          <p class="invite__quote">“Bring one open security role. Leave with a 20-minute skills assessment built for it.”</p>
+          <p class="invite__via"><svg class="icon"><use href="#i-calendar"/></svg>Booked through BDR outreach. Runs if the hiring assessment is live by April.</p>
+        </li>
+      </ol>
+      <h4 class="sub">Timeline</h4>
+      <ol class="timeline" data-timeline>
+        <li style="--i: 0"><span class="timeline__dot"><svg class="icon"><use href="#i-database"/></svg></span><span class="timeline__when">Early February</span><span class="timeline__sub">8 weeks out</span><span class="timeline__what">Build the target list and start BDR outreach</span></li>
+        <li style="--i: 1"><span class="timeline__dot"><svg class="icon"><use href="#i-mail"/></svg></span><span class="timeline__when">Late February</span><span class="timeline__sub">Invitations</span><span class="timeline__what">Dinner invitations go out with a personal note from SkillBit leadership</span></li>
+        <li style="--i: 2"><span class="timeline__dot"><svg class="icon"><use href="#i-calendar"/></svg></span><span class="timeline__when">Week before</span><span class="timeline__sub">Confirmations</span><span class="timeline__what">Confirm every meeting and send calendar holds with the location</span></li>
+        <li style="--i: 3" class="timeline__peak"><span class="timeline__dot"><svg class="icon"><use href="#i-handshake"/></svg></span><span class="timeline__when">At the event</span><span class="timeline__sub">April 5 to 8</span><span class="timeline__what">The account executive and SkillBit leadership take meetings, and BDRs book follow-ups on site</span></li>
+        <li style="--i: 4"><span class="timeline__dot"><svg class="icon"><use href="#i-zap"/></svg></span><span class="timeline__when">Within 48 hours</span><span class="timeline__sub">Follow-up</span><span class="timeline__what">Personalized follow-up that includes each attendee's challenge results</span></li>
+      </ol>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Programs</p>
+      <h3>AI does the research and follow-up. Partners stretch the budget.</h3>
+      <div class="programs">
+        <div class="programs__col">
+          <h4 class="programs__title"><svg class="icon"><use href="#i-zap"/></svg>AI-enabled programs</h4>
+          <ul class="cards">
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-radar"/></svg></span><div><h5>Target list from public signals</h5><p>The signal-listening workflow behind about 30% of new leads at Implicit can pull the RSAC speaker and sponsor lists and LinkedIn posts such as “headed to RSAC.” Claude scores the accounts and drafts outreach that references each prospect's talk or post.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-target"/></svg></span><div><h5>Personalized challenge invitations</h5><p>Claude reads a prospect's open job postings and selects the matching Labs challenge, so the invitation reads “here is the challenge built for your cloud security candidates, try it at RSAC.”</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-mail"/></svg></span><div><h5>Instant results email</h5><p>Every street challenge participant receives a short skills snapshot within the hour, with a link to book time.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><div><h5>Same-day meeting follow-up</h5><p>Notes from each meeting become a draft follow-up that the account executive approves the same night.</p></div></li>
+          </ul>
+        </div>
+        <div class="programs__col">
+          <h4 class="programs__title"><svg class="icon"><use href="#i-wallet"/></svg>Capital-efficient programs</h4>
+          <ul class="cards">
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-handshake"/></svg></span><div><h5>Co-hosted dinners</h5><p>A non-competing vendor that sells to the same buyer (identity or SOC tooling, for example) splits the cost and the guest list. That turns two dinners into four, or frees up $5K.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-star"/></svg></span><div><h5>Customer-hosted dinners</h5><p>A security leader from a customer co-hosting a dinner fills seats better than a vendor invitation.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-network"/></svg></span><div><h5>Community events</h5><p>A sponsored challenge at BSides SF or a local ISSA meetup that week replaces a standalone event.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-file"/></svg></span><div><h5>Published findings</h5><p>One week after the show, anonymized leaderboard results are published (“What 300 practitioners showed in 3 minutes”). The report creates a second round of follow-up and a PR story from data already collected.</p></div></li>
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Success criteria</p>
+      <h3>Measured before, during and after the event.</h3>
+      <ol class="criteria">
+        <li class="criterion"><span class="criterion__icon"><svg class="icon"><use href="#i-calendar"/></svg></span><span class="criterion__when">Before the event</span><p>Meetings booked against a target of 25 by April 1, reviewed weekly</p></li>
+        <li class="criterion"><span class="criterion__icon"><svg class="icon"><use href="#i-users"/></svg></span><span class="criterion__when">At the event</span><p>Meetings held and show rate</p></li>
+        <li class="criterion"><span class="criterion__icon"><svg class="icon"><use href="#i-trend"/></svg></span><span class="criterion__when">After the event</span><p>Opportunities created within 45 days, pipeline dollars, cost per opportunity</p></li>
+      </ol>
+      <p class="note"><svg class="icon"><use href="#i-tag"/></svg>All activity is tagged “RSAC27” in the CRM from the first email.</p>
+    </div>
 
   </div>
 </section>
@@ -205,150 +562,263 @@
 <section class="part part--two" id="part-2" aria-labelledby="part-2-title">
   <div class="part__head">
     <div class="wrap">
-      <h2 id="part-2-title"><span class="part__num">Part 2:</span> Growing security teams as a buying signal</h2>
-      <p class="part__goal">Goal: 15 opportunities ($300K in pipeline) next quarter from two BDRs</p>
+      <p class="part__eyebrow">Part 2</p>
+      <h2 id="part-2-title">Growing security teams as a buying signal</h2>
+      <ul class="part__facts">
+        <li><svg class="icon"><use href="#i-target"/></svg><span><strong>15</strong> opportunities next quarter</span></li>
+        <li><svg class="icon"><use href="#i-trend"/></svg><span><strong>$300K</strong> in pipeline</span></li>
+        <li><svg class="icon"><use href="#i-users"/></svg><span>Two BDRs</span></li>
+      </ul>
     </div>
   </div>
 
   <div class="wrap part__body">
 
-    <div class="block">
-      <h3>The math</h3>
-      <ul class="stats stats--4">
-        <li class="stat"><span class="stat__num">30</span><span class="stat__text">meetings (15 opportunities at a 50% meeting-to-opportunity rate)</span></li>
-        <li class="stat"><span class="stat__num">1,300</span><span class="stat__text">accounts of capacity (2 BDRs × 50 accounts a week × 13 weeks)</span></li>
-        <li class="stat"><span class="stat__num">1,000</span><span class="stat__text">accounts needed at a 3% meeting rate</span></li>
-        <li class="stat stat--accent"><span class="stat__num">77%</span><span class="stat__text">of capacity, which leaves room for a slow start</span></li>
-      </ul>
-      <p class="prose prose--callout">The capacity is there, but only if the signal lifts the reply rate above cold outbound. At 2% we'd need 1,500 accounts, which is more than two BDRs can work.</p>
-    </div>
-
-    <div class="block">
-      <h3>Spotting the companies</h3>
-      <ul class="tiers">
-        <li class="tier tier--a"><span class="tier__name">Tier A</span><p>Three or more open security roles in the last 60 days, plus a Labs user at the company or a new security leader</p></li>
-        <li class="tier tier--b"><span class="tier__name">Tier B</span><p>Three or more open security roles</p></li>
-        <li class="tier tier--c"><span class="tier__name">Tier C</span><p>Security headcount growth on LinkedIn, a recent funding round, or a compliance trigger like SOC 2 or FedRAMP</p></li>
-      </ul>
-      <p class="note">Sources: job boards and career pages pulled through Clay or something similar, Sales Navigator headcount growth by department, and Labs signups matched to company domains.</p>
-    </div>
-
-    <div class="block">
-      <h3>When to reach out</h3>
-      <p class="prose">Two moments for every account:</p>
-      <ol class="moments">
-        <li class="moment"><span class="moment__n">1</span><span class="moment__when">While they're hiring (within one to two weeks of the posting)</span><p>The hiring assessment, sent to the hiring manager with talent acquisition copied</p></li>
-        <li class="moment"><span class="moment__n">2</span><span class="moment__when">30 to 60 days after the hires start</span><p>Onboarding and upskilling for the new team, which gives every account a second touch at no extra sourcing cost</p></li>
-      </ol>
-    </div>
-
-    <div class="block">
-      <h3>What we'd say</h3>
-      <figure class="email">
-        <div class="email__bar" aria-hidden="true"><span></span><span></span><span></span></div>
-        <p class="email__subject"><span class="email__k">Subject:</span> your 4 open SOC roles</p>
-        <blockquote class="email__body"><p>Saw you're hiring four SOC analysts. Most teams screen on certs and résumés, then find out in month two who can actually triage an alert. SkillBit has candidates work a real scenario in 20 minutes, so you see the skill before the offer. Worth a look before interviews start?</p></blockquote>
-      </figure>
-      <p class="note">Four touches over two weeks across email, LinkedIn and phone, and every message names their actual open roles.</p>
-    </div>
-
-    <aside class="bold" aria-labelledby="bold-2-title">
-      <p class="bold__eyebrow">Bold idea</p>
-      <h3 id="bold-2-title">A free "job description to skills test" tool</h3>
-      <p>A security leader pastes in a job description, and Claude returns a 20-minute assessment plan for that role built from SkillBit's library. Anyone who uses it is showing us the exact signal we're looking for, so outbound starts generating inbound. It's cheap to build as a simple AI-powered page, and the timing lines up with the hiring assessment launch.</p>
-    </aside>
-
-    <div class="ideas">
-      <div class="block">
-        <h3>Where AI helps</h3>
-        <ul class="idea-list">
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>Read the postings.</strong> Claude pulls the skills each posting asks for (cloud, incident response, AppSec) and maps them to SkillBit labs, so each message says exactly what the company is hiring for.</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>Draft the first message.</strong> Claude writes the email from the posting, and the BDR edits and sends it. That cuts research time and keeps 50 accounts a week realistic.</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>An automatic weekly scorecard.</strong> Every Monday a Slack post compares results to plan, so nobody builds a report by hand.</p></li>
-          <li class="idea"><span class="tag tag--ai">AI</span><p><strong>Tag every reply.</strong> AI sorts reply text by objection ("already hired," "no budget," "wrong person") so we can fix the message every week.</p></li>
-        </ul>
-        <p class="note">With two BDRs, I'd use AI to take the research and first drafts so their time goes to conversations.</p>
-      </div>
-      <div class="block">
-        <h3>Where we can be scrappy</h3>
-        <ul class="idea-list">
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Track job changes for Labs users.</strong> A Labs user who joins a new company is a warm contact, often on a team that's growing.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Watch for "I'm hiring" posts.</strong> Security leaders post about open roles on LinkedIn, sometimes before the job boards, and the listening workflow catches them quickly.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Partner with security recruiters.</strong> Staffing agencies see hiring before it's posted, and a referral fee or co-marketing deal costs very little.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Make an easy offer.</strong> "Free assessments for your first five candidates on this role" is an easier yes than a demo.</p></li>
-          <li class="idea"><span class="tag tag--scrappy">Scrappy</span><p><strong>Send a short video to Tier A accounts.</strong> A 60-second screen recording of their job posting next to the matching challenge takes a BDR about five minutes.</p></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="block">
-      <h3>Weekly scorecard</h3>
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th scope="col">Metric</th><th scope="col" class="num">Weekly target</th></tr></thead>
-          <tbody>
-            <tr><td>New signal accounts added</td><td class="num">~100</td></tr>
-            <tr><td>Accounts entering a sequence</td><td class="num">~100</td></tr>
-            <tr><td>Positive reply rate</td><td class="num">Set from the week 1 and 2 baseline</td></tr>
-            <tr><td>Meetings booked</td><td class="num">2 to 3</td></tr>
-            <tr><td>Opportunities created</td><td class="num">1 to 2 (15 by week 13)</td></tr>
-            <tr><td>Pipeline added</td><td class="num">~$25K</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note">Results get broken out by signal tier so we learn which signal converts. At the week 4 checkpoint, if the meeting rate is under 2%, I'd narrow to Tier A or change the message.</p>
-    </div>
-
-    <div class="block">
-      <h3>Questions for the team</h3>
-      <ul class="questions">
-        <li>What meeting rate do the BDRs get on cold outbound today? That's the baseline for judging the signal.</li>
-        <li>Will the hiring assessment be live for the whole quarter?</li>
-        <li>Who should own the signal list each week, marketing or the BDRs?</li>
-      </ul>
-    </div>
-
-    <!-- Part 2 calculator. Markup ships with the default results so it reads with no JS. -->
-    <section class="calc" data-calc="signal" aria-labelledby="calc-2-title">
-      <div class="calc__head">
-        <h3 id="calc-2-title">Assumption calculator</h3>
-        <button type="button" class="calc__reset" data-reset>Reset</button>
-      </div>
-      <div class="calc__grid">
-        <fieldset class="calc__inputs">
-          <legend class="visually-hidden">Assumptions</legend>
-          <label class="field"><span class="field__label">Opportunity goal</span><span class="field__box"><input type="number" name="opps" value="15" min="0" step="1" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Average deal</span><span class="field__box"><span class="field__affix">$</span><input type="number" name="deal" value="20000" min="0" step="1000" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Meeting-to-opportunity rate</span><span class="field__box"><input type="number" name="m2o" value="50" min="0" max="100" step="5" inputmode="decimal"><span class="field__affix">%</span></span></label>
-          <label class="field"><span class="field__label">BDRs</span><span class="field__box"><input type="number" name="bdrs" value="2" min="0" step="1" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Accounts per BDR per week</span><span class="field__box"><input type="number" name="apw" value="50" min="0" step="5" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Weeks in quarter</span><span class="field__box"><input type="number" name="weeks" value="13" min="1" step="1" inputmode="numeric"></span></label>
-          <label class="field"><span class="field__label">Meeting rate per account worked</span><span class="field__box"><input type="number" name="rate" value="3" min="0" max="100" step="0.5" inputmode="decimal"><span class="field__affix">%</span></span></label>
-        </fieldset>
-        <div class="calc__outputs">
-          <div class="out"><span class="out__label">Pipeline goal</span><output class="out__value" data-out="pipeline">$300,000</output><span class="out__formula" data-formula="pipeline">opps × deal = 15 × $20,000</span></div>
-          <div class="out"><span class="out__label">Meetings needed</span><output class="out__value" data-out="meetings">30</output><span class="out__formula" data-formula="meetings">opps ÷ meeting-to-opp rate = 15 ÷ 50%</span></div>
-          <div class="out"><span class="out__label">Account capacity</span><output class="out__value" data-out="capacity">1,300</output><span class="out__formula" data-formula="capacity">BDRs × accounts per week × weeks = 2 × 50 × 13</span></div>
-          <div class="out"><span class="out__label">Accounts needed</span><output class="out__value" data-out="needed">1,000</output><span class="out__formula" data-formula="needed">meetings ÷ meeting rate = 30 ÷ 3%</span></div>
-          <div class="out out--accent out--wide" data-capacity-card>
-            <span class="out__label">Capacity used</span>
-            <output class="out__value" data-out="used">77%</output>
-            <span class="meter" aria-hidden="true"><span class="meter__fill" data-meter style="--fill: 0.77"></span></span>
-            <span class="out__formula" data-formula="used">accounts needed ÷ capacity = 1,000 ÷ 1,300</span>
-            <p class="out__warn" data-warn hidden>Over capacity. This needs <span data-warn-needed>1,000</span> accounts and the team can work <span data-warn-capacity>1,300</span>.</p>
-          </div>
-          <div class="out out--wide">
-            <span class="out__label">Weekly targets</span>
-            <div class="weekly">
-              <span><output class="out__value out__value--sm" data-out="wkAccounts">77</output> accounts</span>
-              <span><output class="out__value out__value--sm" data-out="wkMeetings">2.3</output> meetings</span>
-              <span><output class="out__value out__value--sm" data-out="wkOpps">1.2</output> opportunities</span>
+    <!-- Pipeline model. Markup ships with the default results so it reads with no JS. -->
+    <div class="block reveal">
+      <p class="eyebrow">Pipeline model</p>
+      <h3>BDR outreach strategy</h3>
+      <p class="prose prose--sm">Adjust any assumption to recalculate the plan live.</p>
+      <div class="model" data-model="signal">
+        <div class="model__viz">
+          <div class="capacity" data-capacity>
+            <div class="capacity__top">
+              <span class="capacity__label">Capacity used</span>
+              <output class="capacity__pct" data-out="used">77%</output>
             </div>
-            <span class="out__formula" data-formula="weekly">each quarterly total ÷ 13 weeks</span>
+            <div class="capacity__track"><span class="capacity__fill" data-meter style="--fill: 0.77"></span></div>
+            <div class="capacity__nums">
+              <span><output data-out="needed">1,000</output> accounts needed <span class="funnel__formula" data-formula="needed">meetings ÷ meeting rate = 30 ÷ 3%</span></span>
+              <span><output data-out="capacity">1,300</output> account capacity <span class="funnel__formula" data-formula="capacity">BDRs × accounts per week × weeks = 2 × 50 × 13</span></span>
+            </div>
+            <p class="capacity__warn" data-warn hidden><svg class="icon"><use href="#i-alert"/></svg><span>Over capacity. The plan needs <span data-warn-needed>1,000</span> accounts and the team can work <span data-warn-capacity>1,300</span>.</span></p>
+          </div>
+          <ol class="funnel">
+            <li class="funnel__stage">
+              <div class="funnel__label"><span class="funnel__value" data-out="needed2">1,000</span><span class="funnel__name">Accounts worked</span></div>
+              <div class="funnel__track"><span class="funnel__bar" data-bar="needed" style="--w: 1"></span></div>
+            </li>
+            <li class="funnel__stage">
+              <div class="funnel__label"><span class="funnel__value" data-out="meetings">30</span><span class="funnel__name">Meetings</span><span class="funnel__formula" data-formula="meetings">opportunities ÷ meeting-to-opportunity rate = 15 ÷ 50%</span></div>
+              <div class="funnel__track"><span class="funnel__bar" data-bar="meetings" style="--w: 0.557"></span></div>
+            </li>
+            <li class="funnel__stage">
+              <div class="funnel__label"><span class="funnel__value" data-out="opps">15</span><span class="funnel__name">Opportunities</span></div>
+              <div class="funnel__track"><span class="funnel__bar" data-bar="opps" style="--w: 0.473"></span></div>
+            </li>
+            <li class="funnel__stage funnel__stage--result">
+              <div class="funnel__label"><span class="funnel__value" data-out="pipeline">$300,000</span><span class="funnel__name">Pipeline</span><span class="funnel__formula" data-formula="pipeline">opportunities × average deal = 15 × $20,000</span></div>
+              <div class="funnel__track"><span class="funnel__bar funnel__bar--result" style="--w: 0.473"></span></div>
+            </li>
+          </ol>
+          <div class="weekly">
+            <span class="weekly__label">Weekly targets <span class="funnel__formula" data-formula="weekly">quarterly totals ÷ 13 weeks</span></span>
+            <div class="weekly__row">
+              <span><output data-out="wkAccounts">77</output>accounts</span>
+              <span><output data-out="wkMeetings">2.3</output>meetings</span>
+              <span><output data-out="wkOpps">1.2</output>opportunities</span>
+            </div>
+          </div>
+        </div>
+        <form class="model__controls" onsubmit="return false">
+          <div class="model__controls-head"><span><svg class="icon"><use href="#i-sliders"/></svg>Assumptions</span><button type="reset" class="model__reset">Reset</button></div>
+          <div class="presets" role="group" aria-label="Compare meeting rates">
+            <span class="presets__label">Compare</span>
+            <button type="button" class="preset" data-preset-rate="2">2% meeting rate</button>
+            <button type="button" class="preset" data-preset-rate="3">3% meeting rate</button>
+          </div>
+          <label class="slider"><span class="slider__top"><span>Opportunity goal</span><output data-show="opps">15</output></span><input type="range" name="opps" min="5" max="40" step="1" value="15" data-fmt="int"></label>
+          <label class="slider"><span class="slider__top"><span>Average deal</span><output data-show="deal">$20,000</output></span><input type="range" name="deal" min="5000" max="60000" step="1000" value="20000" data-fmt="usd"></label>
+          <label class="slider"><span class="slider__top"><span>Meeting-to-opportunity rate</span><output data-show="m2o">50%</output></span><input type="range" name="m2o" min="10" max="80" step="5" value="50" data-fmt="pct"></label>
+          <label class="slider"><span class="slider__top"><span>BDRs</span><output data-show="bdrs">2</output></span><input type="range" name="bdrs" min="1" max="6" step="1" value="2" data-fmt="int"></label>
+          <label class="slider"><span class="slider__top"><span>Accounts per BDR per week</span><output data-show="apw">50</output></span><input type="range" name="apw" min="10" max="100" step="5" value="50" data-fmt="int"></label>
+          <label class="slider"><span class="slider__top"><span>Weeks in quarter</span><output data-show="weeks">13</output></span><input type="range" name="weeks" min="4" max="26" step="1" value="13" data-fmt="int"></label>
+          <label class="slider"><span class="slider__top"><span>Meeting rate per account worked</span><output data-show="rate">3%</output></span><input type="range" name="rate" min="0.5" max="8" step="0.5" value="3" data-fmt="pct"></label>
+        </form>
+      </div>
+      <p class="prose prose--callout">Capacity holds only if the signal lifts reply rates above cold outbound. At a 2% meeting rate the program needs 1,500 accounts, more than two BDRs can work.</p>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Account tiering</p>
+      <h3>Three tiers rank accounts by the strength of the hiring signal.</h3>
+      <div class="tiers" data-tiers>
+        <div class="tiers__art">
+          <svg class="rings" viewBox="0 0 320 320" aria-hidden="true">
+            <circle class="rings__band rings__band--3" data-tier-ring="3" cx="160" cy="160" r="128"/>
+            <circle class="rings__band rings__band--2" data-tier-ring="2" cx="160" cy="160" r="80"/>
+            <circle class="rings__band rings__band--1" data-tier-ring="1" cx="160" cy="160" r="34"/>
+            <text class="rings__label" x="160" y="22" text-anchor="middle">C</text>
+            <text class="rings__label" x="160" y="72" text-anchor="middle">B</text>
+            <text class="rings__label rings__label--1" x="160" y="165" text-anchor="middle">A</text>
+            <g class="mover">
+              <circle class="mover__ping" r="9"/>
+              <circle class="mover__dot" r="6"/>
+            </g>
+          </svg>
+          <p class="tiers__caption" aria-hidden="true">Each added signal moves an account closer to Tier A.</p>
+        </div>
+        <div class="tiers__panel">
+          <div class="tiers__pick" role="tablist" aria-label="Account tiers">
+            <button class="tiers__btn" type="button" role="tab" id="tier-tab-1" aria-controls="tier-1" aria-selected="true" data-tier="1"><span class="tiers__btn-num">Tier A</span>Strongest signal</button>
+            <button class="tiers__btn" type="button" role="tab" id="tier-tab-2" aria-controls="tier-2" aria-selected="false" tabindex="-1" data-tier="2"><span class="tiers__btn-num">Tier B</span>Active hiring</button>
+            <button class="tiers__btn" type="button" role="tab" id="tier-tab-3" aria-controls="tier-3" aria-selected="false" tabindex="-1" data-tier="3"><span class="tiers__btn-num">Tier C</span>Early growth</button>
+          </div>
+          <div class="tier" id="tier-1" role="tabpanel" aria-labelledby="tier-tab-1">
+            <p class="tier__who">Three or more open security roles in the last 60 days, plus a Labs user at the company or a new security leader.</p>
+            <ul class="tier__signals">
+              <li><svg class="icon"><use href="#i-briefcase"/></svg>3+ open security roles in 60 days</li>
+              <li><svg class="icon"><use href="#i-flask"/></svg>Labs user at the company</li>
+              <li><svg class="icon"><use href="#i-userplus"/></svg>New security leader</li>
+            </ul>
+          </div>
+          <div class="tier" id="tier-2" role="tabpanel" aria-labelledby="tier-tab-2" hidden>
+            <p class="tier__who">Three or more open security roles.</p>
+            <ul class="tier__signals">
+              <li><svg class="icon"><use href="#i-briefcase"/></svg>3+ open security roles</li>
+            </ul>
+          </div>
+          <div class="tier" id="tier-3" role="tabpanel" aria-labelledby="tier-tab-3" hidden>
+            <p class="tier__who">Security headcount growth on LinkedIn, a recent funding round, or a compliance trigger such as SOC 2 or FedRAMP.</p>
+            <ul class="tier__signals">
+              <li><svg class="icon"><use href="#i-trend"/></svg>Security headcount growth</li>
+              <li><svg class="icon"><use href="#i-wallet"/></svg>Recent funding round</li>
+              <li><svg class="icon"><use href="#i-shield"/></svg>SOC 2 or FedRAMP trigger</li>
+            </ul>
           </div>
         </div>
       </div>
-    </section>
+      <div class="sources">
+        <span class="sources__label">Signal sources</span>
+        <ul>
+          <li><svg class="icon"><use href="#i-search"/></svg>Job boards and career pages, pulled through Clay or a similar tool</li>
+          <li><svg class="icon"><use href="#i-users"/></svg>Sales Navigator headcount growth by department</li>
+          <li><svg class="icon"><use href="#i-flask"/></svg>Labs signups matched to company domains</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Outreach timing</p>
+      <h3>Two moments to reach every account.</h3>
+      <div class="moments" data-moments>
+        <div class="moments__line" aria-hidden="true">
+          <span class="moments__mark moments__mark--post"><svg class="icon"><use href="#i-megaphone"/></svg>Role posted</span>
+          <span class="moments__mark moments__mark--start"><svg class="icon"><use href="#i-userplus"/></svg>New hires start</span>
+        </div>
+        <ol class="moments__list">
+          <li class="moment">
+            <span class="moment__icon"><svg class="icon"><use href="#i-clipboard"/></svg></span>
+            <span class="moment__when">During hiring</span>
+            <span class="moment__sub">Within one to two weeks of the posting</span>
+            <p>The hiring assessment, sent to the hiring manager with talent acquisition copied.</p>
+          </li>
+          <li class="moment">
+            <span class="moment__icon"><svg class="icon"><use href="#i-cap"/></svg></span>
+            <span class="moment__when">After onboarding</span>
+            <span class="moment__sub">30 to 60 days after new hires start</span>
+            <p>Onboarding and upskilling for the new team. Every account receives a second touch at no extra sourcing cost.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Outreach messaging</p>
+      <h3>Lead with the signal, then stay persistent across channels.</h3>
+      <div class="msg">
+        <figure class="email">
+          <div class="email__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="email__subject"><span class="email__k">Subject</span>your 4 open SOC roles</p>
+          <blockquote class="email__body"><p>Saw you're hiring four SOC analysts. Most teams screen on certs and résumés, then find out in month two who can actually triage an alert. SkillBit has candidates work a real scenario in 20 minutes, so you see the skill before the offer. Worth a look before interviews start?</p></blockquote>
+        </figure>
+        <ul class="cadence">
+          <li><span class="cadence__num">10-12</span><span class="cadence__txt">touches</span></li>
+          <li><span class="cadence__num">4-6</span><span class="cadence__txt">weeks</span></li>
+          <li><span class="cadence__num">3</span><span class="cadence__txt">channels</span><span class="cadence__icons"><svg class="icon"><use href="#i-mail"/></svg><svg class="icon"><use href="#i-network"/></svg><svg class="icon"><use href="#i-phone"/></svg></span></li>
+        </ul>
+      </div>
+      <p class="note">Sample first-touch email for an account showing the open-roles signal.</p>
+
+      <h4 class="sub">Message angles</h4>
+      <p class="prose prose--sm">The opening angle matches the account's strongest signal. Later touches rotate through the others, so no single angle carries the sequence.</p>
+      <ul class="angles">
+        <li><svg class="icon"><use href="#i-briefcase"/></svg>Open security roles</li>
+        <li><svg class="icon"><use href="#i-userplus"/></svg>New security leader</li>
+        <li><svg class="icon"><use href="#i-flask"/></svg>Labs activity at the company</li>
+        <li><svg class="icon"><use href="#i-wallet"/></svg>Funding or compliance trigger</li>
+        <li><svg class="icon"><use href="#i-cap"/></svg>Onboarding and upskilling</li>
+      </ul>
+
+      <h4 class="sub">Sample sequence</h4>
+      <div class="seq" aria-label="Illustrative 12-touch sequence over six weeks: three touches in weeks 1 and 2, two in weeks 3 and 4, one in weeks 5 and 6, across email, LinkedIn and phone.">
+        <ol class="seq__weeks" aria-hidden="true">
+          <li style="--i: 0"><span class="seq__week">Week 1</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 1"><span class="seq__week">Week 2</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span></span></li>
+          <li style="--i: 2"><span class="seq__week">Week 3</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 3"><span class="seq__week">Week 4</span><span class="seq__touches"><span class="seq__touch seq__touch--li" title="LinkedIn"><svg class="icon"><use href="#i-network"/></svg></span><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span></span></li>
+          <li style="--i: 4"><span class="seq__week">Week 5</span><span class="seq__touches"><span class="seq__touch seq__touch--phone" title="Phone"><svg class="icon"><use href="#i-phone"/></svg></span></span></li>
+          <li style="--i: 5"><span class="seq__week">Week 6</span><span class="seq__touches"><span class="seq__touch seq__touch--email" title="Email"><svg class="icon"><use href="#i-mail"/></svg></span></span></li>
+        </ol>
+        <p class="seq__legend" aria-hidden="true"><span><i class="seq__key seq__key--email"></i>Email</span><span><i class="seq__key seq__key--li"></i>LinkedIn</span><span><i class="seq__key seq__key--phone"></i>Phone</span><span class="seq__note">Illustrative. Front-loaded, then tapering.</span></p>
+      </div>
+    </div>
+
+    <aside class="feature reveal" aria-labelledby="feature-2-title">
+      <p class="feature__eyebrow">Featured initiative</p>
+      <h3 id="feature-2-title">A free “job description to skills test” tool</h3>
+      <p class="feature__body">A security leader pastes in a job description, and Claude returns a 20-minute assessment plan for that role built from SkillBit's library. Every user of the tool displays the exact signal this program targets, so outbound starts generating inbound. The tool is inexpensive to build as a simple AI-powered page, and its timing lines up with the hiring assessment launch.</p>
+      <ol class="feature__flow">
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-file"/></svg></span>Paste a job description</li>
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-clipboard"/></svg></span>Receive a 20-minute assessment plan</li>
+        <li><span class="feature__icon"><svg class="icon"><use href="#i-radar"/></svg></span>The visit registers as a buying signal</li>
+      </ol>
+    </aside>
+
+    <div class="block reveal">
+      <p class="eyebrow">Programs</p>
+      <h3>AI handles research and first drafts, so BDR time goes to conversations.</h3>
+      <div class="programs">
+        <div class="programs__col">
+          <h4 class="programs__title"><svg class="icon"><use href="#i-zap"/></svg>AI-enabled programs</h4>
+          <ul class="cards">
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-search"/></svg></span><div><h5>Posting analysis</h5><p>Claude extracts the skills each posting requires (cloud, incident response, AppSec) and maps them to SkillBit labs, so outreach can reference what the company is hiring for.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-pen"/></svg></span><div><h5>First-draft outreach</h5><p>Claude drafts the email from the posting, and the BDR edits and sends it. Research time drops and 50 accounts per week stays realistic.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-gauge"/></svg></span><div><h5>Automated weekly scorecard</h5><p>Every Monday a Slack post compares results to plan, so no one builds a report by hand.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-tag"/></svg></span><div><h5>Reply classification</h5><p>AI sorts reply text by objection (“already hired,” “no budget,” “wrong person”) so the messaging improves every week.</p></div></li>
+          </ul>
+        </div>
+        <div class="programs__col">
+          <h4 class="programs__title"><svg class="icon"><use href="#i-wallet"/></svg>Capital-efficient programs</h4>
+          <ul class="cards">
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-usercheck"/></svg></span><div><h5>Labs user job changes</h5><p>A Labs user who joins a new company is a warm contact, often on a growing team.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-eye"/></svg></span><div><h5>Hiring posts on LinkedIn</h5><p>Security leaders post open roles on LinkedIn, sometimes before the job boards, and the listening workflow catches them quickly.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-handshake"/></svg></span><div><h5>Security recruiter partnerships</h5><p>Staffing agencies see hiring before roles are posted, and a referral fee or co-marketing arrangement costs very little.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-gift"/></svg></span><div><h5>Low-friction offer</h5><p>“Free assessments for your first five candidates on this role” is an easier yes than a demo.</p></div></li>
+            <li class="card"><span class="card__icon"><svg class="icon"><use href="#i-video"/></svg></span><div><h5>Personalized video for Tier A</h5><p>A 60-second screen recording of the account's job posting beside the matching challenge takes a BDR about five minutes.</p></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <p class="eyebrow">Weekly scorecard</p>
+      <h3>Six numbers, reviewed every Monday.</h3>
+      <div class="table-wrap">
+        <table class="table table--icons">
+          <thead><tr><th scope="col">Metric</th><th scope="col" class="num">Weekly target</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-radar"/></svg></span>New signal accounts added</span></td><td class="num">~100</td></tr>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-layers"/></svg></span>Accounts entering a sequence</span></td><td class="num">~100</td></tr>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-message"/></svg></span>Positive reply rate</span></td><td class="num">Set from the week 1 and 2 baseline</td></tr>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-calendar"/></svg></span>Meetings booked</span></td><td class="num">2 to 3</td></tr>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-target"/></svg></span>Opportunities created</span></td><td class="num">1 to 2 (15 by week 13)</td></tr>
+            <tr><td><span class="ti"><span class="ti__icon"><svg class="icon"><use href="#i-trend"/></svg></span>Pipeline added</span></td><td class="num">~$25K</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Results are reported by signal tier to show which signal converts. At the week 4 checkpoint, a meeting rate under 2% triggers a narrower focus on Tier A or a message revision.</p>
+    </div>
 
   </div>
 </section>
@@ -357,7 +827,7 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>Tim LaBarge · <a href="/">timsmarketing.com</a></p>
+    <p>Prepared by Tim LaBarge · <a href="/">timsmarketing.com</a></p>
   </div>
 </footer>
 
