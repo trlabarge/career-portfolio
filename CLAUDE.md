@@ -1505,6 +1505,37 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
   accordion with a connecting line. The pulse turns once every 12s, and each
   node's glow is delayed `--i * 2s` so the glow lands as the pulse passes.
 
+## /skillbit, the private working-session page
+
+A password-protected page Tim screen-shares during a one-hour working session
+for his SkillBit interview (2026-11-06). SkillBit asked for no slides, so this
+is what he talks from. Same rules as the other plan pages: not in the nav, the
+sitemap, `robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
+
+- **Same server-side gate, separate password.** `api/_lib/skillbit-gate.js`,
+  `/api/skillbit-auth`, `SKILLBIT_PAGE_PASSWORD` (set in Vercel, never in the
+  repo), cookie `skillbit_plan_session` scoped to `Path=/skillbit`. There is no
+  SkillBit logo, so the gate has no public prefix and nothing under /skillbit
+  is served before login. `npm run skillbit:test` covers it, including
+  isolation from the other three gates.
+- **Copy is Tim's, verbatim.** He asked that nothing be rewritten or added.
+  The only words not from his brief are UI labels (the "Bold idea" eyebrow,
+  "Assumption calculator", "Reset", the input and output labels, the formula
+  lines, and the over-capacity warning). Ask him before editing his copy.
+- Two parts, each sized for a 25-minute conversation, with a sticky bar whose
+  tabs are anchor links tracking the part on screen. Every idea carries an AI
+  (slate blue) or Scrappy (terracotta) label. Body copy is 17 to 19px for
+  screen share at 1440px.
+- **The calculators ship with their default results in the markup**, so the
+  page reads with no JS. `skillbit.js` recomputes on every input. Rates are
+  entered as percentages and divided as `x * 100 / pct`, and `up()` trims
+  float noise before `Math.ceil`, since a plain `30 / 0.03` rounds up to 1,001.
+  Part 1 rounds dinner meetings first (28 x 30% = 8.4 becomes 8), so outreach
+  is 17 and accounts land on the brief's ~340. Part 2 turns the capacity card
+  terracotta with a warning whenever accounts needed exceeds capacity (e.g. a
+  2% meeting rate). If an input default changes, update the static markup to
+  match, and check that the no-JS and JS values still agree.
+
 ## Timbot, the chat widget
 
 An avatar chatbot that speaks as Tim, present on every page. It exists because
