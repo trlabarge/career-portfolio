@@ -1568,6 +1568,13 @@ the other plan pages: not in the nav, the sitemap, `robots.txt`, or Timbot's
   (`.alloc__seg--N, .ti__icon.ti__icon--N`). The doubled class is
   load-bearing, since the base `.ti__icon` rule comes later in the file and
   otherwise repaints every icon sage tint.
+- **Three core invitations, by persona** (Tim, 2026-11), at the top of the
+  Execution timeline, mapped to the three Target audience profiles and to
+  budget lines. Practitioners and Labs users get Tim's 3-Minute Flag line,
+  security leaders get the dinner, and talent acquisition leaders and hiring
+  managers get a meeting suite session ("Bring one open security role"),
+  conditional on the hiring assessment being live. The dinner and suite
+  quotes were Claude's drafts, open to Tim's edits.
 - Display headings use curly quotes. Space Grotesk draws a straight `"` as a
   closing quote, which makes an opening quote look backwards.
 
