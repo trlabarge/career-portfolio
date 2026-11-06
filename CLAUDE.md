@@ -1505,12 +1505,13 @@ CEO, built as a work sample for a Head of Growth Marketing role. Same rules as
   accordion with a connecting line. The pulse turns once every 12s, and each
   node's glow is delayed `--i * 2s` so the glow lands as the pulse passes.
 
-## /skillbit, the private working-session page
+## /skillbit, the private marketing plan page
 
-A password-protected page Tim screen-shares during a one-hour working session
-for his SkillBit interview (2026-11-06). SkillBit asked for no slides, so this
-is what he talks from. Same rules as the other plan pages: not in the nav, the
-sitemap, `robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
+A password-protected two-part marketing plan (RSAC 2027, and growing security
+teams as a buying signal) that Tim screen-shares during a working session for
+his SkillBit interview (2026-11-06). SkillBit asked for no slides. Same rules as
+the other plan pages: not in the nav, the sitemap, `robots.txt`, or Timbot's
+`PAGES`, and it must stay out of all four.
 
 - **Same server-side gate, separate password.** `api/_lib/skillbit-gate.js`,
   `/api/skillbit-auth`, `SKILLBIT_PAGE_PASSWORD` (set in Vercel, never in the
@@ -1518,23 +1519,36 @@ sitemap, `robots.txt`, or Timbot's `PAGES`, and it must stay out of all four.
   SkillBit logo, so the gate has no public prefix and nothing under /skillbit
   is served before login. `npm run skillbit:test` covers it, including
   isolation from the other three gates.
-- **Copy is Tim's, verbatim.** He asked that nothing be rewritten or added.
-  The only words not from his brief are UI labels (the "Bold idea" eyebrow,
-  "Assumption calculator", "Reset", the input and output labels, the formula
-  lines, and the over-capacity warning). Ask him before editing his copy.
-- Two parts, each sized for a 25-minute conversation, with a sticky bar whose
-  tabs are anchor links tracking the part on screen. Every idea carries an AI
-  (slate blue) or Scrappy (terracotta) label. Body copy is 17 to 19px for
-  screen share at 1440px.
-- **The calculators ship with their default results in the markup**, so the
-  page reads with no JS. `skillbit.js` recomputes on every input. Rates are
-  entered as percentages and divided as `x * 100 / pct`, and `up()` trims
-  float noise before `Math.ceil`, since a plain `30 / 0.03` rounds up to 1,001.
+- **Voice is a formal plan** (Tim, 2026-11). No first person (no "I", "we",
+  "our", "us"), no named individuals (Thomas became "SkillBit leadership"), and
+  no colloquial headings ("What we'd say" became "Outreach messaging", "How
+  we'd know it worked" became "Success criteria"). Each H3 is a takeaway
+  sentence under a small eyebrow label. The prospect email is quoted verbatim
+  and is the one place second person appears.
+- **No AI or Scrappy chips anywhere**, and no "Bold idea". Idea cards carry
+  icons, grouped under "AI-enabled programs" and "Capital-efficient programs".
+  The callout is "Featured initiative". The questions-for-the-team lists were
+  removed on Tim's instruction.
+- **Hero radar** (`[data-radar]`). 118 account dots, generated once by a
+  seeded script and shipped static, tiered A (gold), B (sage), C (pale) to
+  match Part 2. JS rotates the sweep and pings A and B dots as it passes,
+  pushes dots away from the pointer (the spring field from /nucleus) and sends
+  a ripple on click. It only runs while on screen and is off under reduced
+  motion, where the static sweep stays put.
+- **"The math" is a pipeline model per part**, a log-scaled funnel next to
+  range sliders. The separate calculators were merged into it. Every output and
+  formula ships in the markup at its default, and `skillbit.js` must produce the
+  same text on init. Rates divide as `x * 100 / pct` and `up()` trims float
+  noise before `Math.ceil`, since a plain `30 / 0.03` rounds up to 1,001.
   Part 1 rounds dinner meetings first (28 x 30% = 8.4 becomes 8), so outreach
-  is 17 and accounts land on the brief's ~340. Part 2 turns the capacity card
-  terracotta with a warning whenever accounts needed exceeds capacity (e.g. a
-  2% meeting rate). If an input default changes, update the static markup to
-  match, and check that the no-JS and JS values still agree.
+  is 17 and accounts land on ~340. Part 2's capacity card turns terracotta with
+  a warning when accounts needed exceed capacity, and the "Compare" presets
+  flip the meeting rate between 2% and 3% to show it live. If a default
+  changes, update the static markup and re-check that no-JS and JS text agree.
+- **Account tiering reuses /nucleus's rings, mover animation and tablist**,
+  relabelled A, B, C with Tier A at the center in gold.
+- Display headings use curly quotes. Space Grotesk draws a straight `"` as a
+  closing quote, which makes an opening quote look backwards.
 
 ## Timbot, the chat widget
 

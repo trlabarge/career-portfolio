@@ -80,7 +80,7 @@ await test('page request without a cookie gets the SkillBit password screen', as
   assert.equal(res.status, 401);
   const html = await res.text();
   assert.match(html, /<form method="post" action="\/api\/skillbit-auth">/);
-  assert.match(html, /SkillBit Working Session/);
+  assert.match(html, /SkillBit Marketing Plan/);
   assert.match(html, /noindex, nofollow/);
   assert.doesNotMatch(html, /Payload|Nucleus/);
   assert.doesNotMatch(html, /RSAC|BDR|Moscone|Thomas/i, 'no page copy on the gate');

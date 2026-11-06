@@ -1,6 +1,6 @@
 /**
- * Shared pieces for the password-protected /skillbit page, the working-session
- * page for the SkillBit interview (2026-11-06).
+ * Shared pieces for the password-protected /skillbit page, the SkillBit
+ * marketing plan presented in a working session (2026-11-06).
  *
  * The session and cookie logic lives in ./plan-gate.js, shared with /payload and /nucleus.
  * This file holds the SkillBit gate's settings and its password screen.
@@ -32,10 +32,10 @@ export function gateHtml({ error = false } = {}) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>SkillBit Working Session</title>
-<meta property="og:title" content="SkillBit Working Session">
+<title>SkillBit Marketing Plan</title>
+<meta property="og:title" content="SkillBit Marketing Plan">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SkillBit Working Session">
+<meta name="twitter:title" content="SkillBit Marketing Plan">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A6B52'/><text x='16' y='22' font-family='Arial,sans-serif' font-size='15' font-weight='bold' text-anchor='middle' fill='%23FAF9F6'>TL</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 <body>
 <main class="gate">
 <p class="gate__eyebrow">Private · For SkillBit</p>
-<h1>Working session</h1>
+<h1>Marketing plan</h1>
 ${message}
 <form method="post" action="/api/skillbit-auth">
 <label for="password">Password</label>
