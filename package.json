@@ -10,7 +10,8 @@
     "og:build": "node scripts/render-og-image.mjs",
     "payload:test": "node scripts/test-payload-gate.mjs",
     "nucleus:test": "node scripts/test-nucleus-gate.mjs",
-    "magicare:test": "node scripts/test-magicare-gate.mjs"
+    "magicare:test": "node scripts/test-magicare-gate.mjs",
+    "skillbit:test": "node scripts/test-skillbit-gate.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",

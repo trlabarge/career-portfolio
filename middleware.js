@@ -1,6 +1,6 @@
 /**
- * Vercel Routing Middleware. Guards everything under /payload, /nucleus
- * and /magicare.
+ * Vercel Routing Middleware. Guards everything under /payload, /nucleus,
+ * /magicare and /skillbit.
  *
  * Runs before Vercel's cache and static file serving, so a request without a
  * valid session never reaches a plan's HTML, CSS, or JS. Page requests get
@@ -17,12 +17,13 @@ import { readCookie } from './api/_lib/plan-gate.js';
 import * as payload from './api/_lib/payload-gate.js';
 import * as nucleus from './api/_lib/nucleus-gate.js';
 import * as magicare from './api/_lib/magicare-gate.js';
+import * as skillbit from './api/_lib/skillbit-gate.js';
 
 export const config = {
-  matcher: ['/payload', '/payload/:path*', '/nucleus', '/nucleus/:path*', '/magicare', '/magicare/:path*'],
+  matcher: ['/payload', '/payload/:path*', '/nucleus', '/nucleus/:path*', '/magicare', '/magicare/:path*', '/skillbit', '/skillbit/:path*'],
 };
 
-const GATES = [payload, nucleus, magicare];
+const GATES = [payload, nucleus, magicare, skillbit];
 
 const PRIVATE_HEADERS = {
   'Cache-Control': 'private, no-store',
